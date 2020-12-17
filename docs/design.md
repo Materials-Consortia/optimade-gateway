@@ -127,7 +127,7 @@ Here the response will contain the currently retrieved results as well as som me
 
 This would ideally result in the following search sequence:
 
-![Search sequence](searching_get.svg)
+![Search sequence](images/searching_get.svg)
 
 The final `GET` request can be repeated to retrieve more results during the timeline of the search happening, and to retrieve the final list of results in a set time period after the search has finished.
 
@@ -142,7 +142,7 @@ This differs from the section above, where a `GET` request should contain query 
 
 A sequence would ideally look this:
 
-![Search sequence](searching_post.svg)
+![Search sequence](images/searching_post.svg)
 
 #### Conclusion
 
@@ -154,7 +154,7 @@ However, to ensure the "freshness" of the data, the "live"-period for any unique
 
 **Suggested search sequence diagram**:
 
-![Search sequence](searching.svg)
+![Search sequence](images/searching.svg)
 
 ##### Design discussions (17.12.2020)
 

@@ -2,4 +2,4 @@
 
 A REST API server acting as a gateway for databases with an OPTIMADE API.
 
-- Design: [design.md](design.md)
+- Design: [design.md](docs/design.md)
