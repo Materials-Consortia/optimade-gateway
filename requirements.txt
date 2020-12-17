@@ -1,0 +1,4 @@
+fastapi~=0.62.0
+optimade~=0.12.5
+pydantic~=1.6
+uvicorn~=0.13.1
