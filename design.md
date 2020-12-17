@@ -29,36 +29,42 @@ The suggested OPTIMADE gateway API.
 This API is based on the expected capabilities [outlined below](#OPTIMADE-gateway-capabilities).
 
 `/optimade/`  
-Methods: `GET`  
-Behavior: Introspective/static metadata overview of server
+**Methods**: `GET`  
+**Behavior**: Introspective/static metadata overview of server.
 
 - `/search/`  
-  Methods: `POST` **or** `GET`  
-  Behavior: Create/retrieve gateway ID -> redirect to `/gateways/{gateway_id}`)
+  **Methods**: `POST` **or** `GET`  
+  **Behavior**: Orchestrate a search.
 
 - `/gateways/`  
-  Methods: `GET`  
-  Behavior: Introspective/static metadata overview of all gateways
+  **Methods**: `GET`  
+  **Behavior**:  
+  _Standard reponse_: Introspective/static metadata overview of all gateways.  
+  _Using special query parameter_: Create/retrieve and return unique gateway ID.
 
   - `/{gateway_id}/`  
-    Methods: `POST` **or** `GET`  
-    Behavior: Create/retrieve search ID -> redirect to `/searches/{search_id}` **or** `/{search_id}`
+    **Methods**: `POST` **or** `GET`  
+    **Behavior**: Create/retrieve search ID and return unique search ID.
+    Start asynchronous search task.
 
     Either:
 
     - `/searches/`  
-      Methods: None  
-      Behavior: Disallowed
+      **Methods**: None  
+      **Behavior**: Disallowed.  
+      _Note_: This endpoint could support `GET` requests with similar functionality and behavior as for `/gateways/`?
+      This would move some functionality away from `/{gateway_id}/` to this endpoint.
+      Making `/{gateway_id}/` act as a mix of `/search/` and `/gateways/` in terms of orchestrating the search and returning introspective/static metadata about the gateway.
 
       - `/{search_id}/`  
-        Methods: `GET`  
-        Behavior: Return results
+        **Methods**: `GET`  
+        **Behavior**: Return current results according to state of asynchronous search task.
 
     or:
 
     - `/{search_id}/`  
-        Methods: `GET`  
-        Behavior: Return results
+        **Methods**: `GET`  
+        **Behavior**: Return current results according to state of asynchronous search task.
 
 ## OPTIMADE gateway capabilities
 
@@ -144,6 +150,10 @@ In the same way that gateways may be reused, search results may be reused.
 However, to ensure the "freshness" of the data, the "live"-period for any unique search should be significantly smaller than that of any unique gateway.
 
 `POST` requests may be preferred due to the ability of combining OPTIMADE-specific query data and gateway-specific data.
+
+**Suggested search sequence diagram**:
+
+![Search sequence](searching.svg)
 
 ### OPTIMADE filter language
 

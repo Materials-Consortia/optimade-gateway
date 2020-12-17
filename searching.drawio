@@ -1,0 +1,102 @@
+<mxfile host="65bd71144e" modified="2020-12-17T10:48:36.598Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.52.1 Chrome/83.0.4103.122 Electron/9.3.5 Safari/537.36" etag="g3iO_dM922ti3EAKO6f3" version="13.10.0" type="embed">
+    <diagram id="x_nLoLKzpzyb_sDTTqQj" name="Page-1">
+        <mxGraphModel dx="933" dy="594" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#FFFFCC" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <object label="User" id="2">
+                    <mxCell style="shape=umlLifeline;participant=umlActor;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;spacingTop=36;outlineConnect=0;fillColor=none;strokeColor=#000000;fontColor=#000000;size=40;" parent="1" vertex="1">
+                        <mxGeometry x="50" y="40" width="20" height="350" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="3" value="/search" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;fillColor=none;strokeColor=#000000;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="170" y="40" width="100" height="350" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="/gateways/{unique ID}" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;fillColor=none;strokeColor=#000000;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="490" y="40" width="120" height="350" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="GET /&amp;nbsp;POST" style="html=1;verticalAlign=bottom;endArrow=block;fillColor=none;strokeColor=#000000;fontColor=#000000;labelBackgroundColor=none;" parent="1" edge="1">
+                    <mxGeometry width="80" relative="1" as="geometry">
+                        <mxPoint x="60" y="110" as="sourcePoint"/>
+                        <mxPoint x="219.5" y="110" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="10" value="GET" style="html=1;verticalAlign=bottom;endArrow=block;fillColor=none;strokeColor=#000000;fontColor=#000000;labelBackgroundColor=none;" parent="1" edge="1">
+                    <mxGeometry width="80" relative="1" as="geometry">
+                        <mxPoint x="60.25" y="332" as="sourcePoint"/>
+                        <mxPoint x="742" y="332" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="11" value="All collated search results" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;fillColor=none;strokeColor=#000000;fontColor=#000000;labelBackgroundColor=none;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="741" y="350" as="sourcePoint"/>
+                        <mxPoint x="59.25" y="350" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="13" value="Return search ID" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;labelBackgroundColor=none;strokeColor=#000000;fontColor=#000000;exitX=-0.163;exitY=0.089;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="539.1800000000001" y="199.99999999999994" as="sourcePoint"/>
+                        <mxPoint x="220.81" y="200.32" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="14" value="(/searches)/{search unique ID}" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;strokeColor=#000000;fillColor=none;fontColor=#000000;size=40;" parent="1" vertex="1">
+                    <mxGeometry x="660" y="40" width="165" height="350" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="GET search with normal OPTIMADE filter" style="html=1;verticalAlign=bottom;endArrow=block;fillColor=none;strokeColor=#000000;fontColor=#000000;labelBackgroundColor=none;entryX=0.16;entryY=0.002;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" target="7" edge="1">
+                    <mxGeometry width="80" relative="1" as="geometry">
+                        <mxPoint x="219.92857142857133" y="180" as="sourcePoint"/>
+                        <mxPoint x="550" y="180" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="19" value="GET gateway ID" style="html=1;verticalAlign=bottom;endArrow=block;strokeColor=#000000;fontColor=#000000;labelBackgroundColor=none;entryX=-0.12;entryY=-0.003;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="16">
+                    <mxGeometry width="80" relative="1" as="geometry">
+                        <mxPoint x="220" y="120" as="sourcePoint"/>
+                        <mxPoint x="300" y="120" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="20" value="Return gateway ID" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;labelBackgroundColor=none;strokeColor=#000000;fontColor=#000000;" edge="1" parent="1" target="3">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="370" y="160" as="sourcePoint"/>
+                        <mxPoint x="290" y="160" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="25" value="/gateways" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;fillColor=none;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="320" y="40" width="120" height="350" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;labelBackgroundColor=none;fillColor=none;strokeColor=#000000;" parent="25" vertex="1">
+                    <mxGeometry x="50" y="80" width="10" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=none;strokeColor=#000000;fontColor=#000000;direction=east;" parent="1" vertex="1">
+                    <mxGeometry x="540" y="180" width="10" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="24" value="Async. GET /structures&lt;br&gt;&amp;nbsp; &amp;nbsp; + query parameters from databases" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontColor=#000000;fontSize=10;" vertex="1" parent="1">
+                    <mxGeometry x="551" y="245" width="190" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" value="Redirect to (/searches)/{unique ID}" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;labelBackgroundColor=none;strokeColor=#000000;fontSize=10;fontColor=#000000;" edge="1" parent="1" target="2">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="220" y="210" as="sourcePoint"/>
+                        <mxPoint x="140" y="210" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="27" value="&lt;span style=&quot;color: rgb(0 , 0 , 0) ; font-family: &amp;#34;helvetica&amp;#34; ; font-size: 11px ; font-style: normal ; font-weight: 400 ; letter-spacing: normal ; text-align: left ; text-indent: 0px ; text-transform: none ; word-spacing: 0px ; display: inline ; float: none&quot;&gt;Start search&lt;/span&gt;&lt;br style=&quot;color: rgb(0 , 0 , 0) ; font-family: &amp;#34;helvetica&amp;#34; ; font-size: 11px ; font-style: normal ; font-weight: 400 ; letter-spacing: normal ; text-align: left ; text-indent: 0px ; text-transform: none ; word-spacing: 0px&quot;&gt;&lt;span style=&quot;color: rgb(0 , 0 , 0) ; font-family: &amp;#34;helvetica&amp;#34; ; font-size: 11px ; font-style: normal ; font-weight: 400 ; letter-spacing: normal ; text-align: left ; text-indent: 0px ; text-transform: none ; word-spacing: 0px ; display: inline ; float: none&quot;&gt;&amp;nbsp; &amp;nbsp; + generate/find search ID&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;fontSize=10;fontColor=#000000;labelBackgroundColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="551" y="173" width="140" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" value="GET" style="html=1;verticalAlign=bottom;endArrow=block;fillColor=none;strokeColor=#000000;fontColor=#000000;labelBackgroundColor=none;" edge="1" parent="1">
+                    <mxGeometry width="80" relative="1" as="geometry">
+                        <mxPoint x="59.250000000000114" y="280" as="sourcePoint"/>
+                        <mxPoint x="741" y="280" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="29" value="Current list of search results" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;fillColor=none;strokeColor=#000000;fontColor=#000000;labelBackgroundColor=none;" edge="1" parent="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="740" y="298" as="sourcePoint"/>
+                        <mxPoint x="58.249999999999886" y="298" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="30" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: helvetica; font-size: 11px; font-style: normal; font-weight: 400; letter-spacing: normal; text-align: left; text-indent: 0px; text-transform: none; word-spacing: 0px; display: inline; float: none;&quot;&gt;Generate/find gateway ID&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;fontSize=10;fontColor=#000000;labelBackgroundColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="380" y="125" width="150" height="30" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
