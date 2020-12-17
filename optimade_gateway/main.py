@@ -12,9 +12,15 @@ APP = FastAPI(
 )
 
 
-@APP.get("/")
+@APP.get("/optimade")
 def get_root() -> JSONResponse:
-    """See overview of available endpoints"""
+    """Introspective overview of gateway server."""
+    return JSONResponse(content={"data": {}}, status_code=200)
+
+
+@APP.get("/gateways")
+def get_root() -> JSONResponse:
+    """Introspective overview of all currently active gateways."""
     return JSONResponse(content={"data": {}}, status_code=200)
 
 
