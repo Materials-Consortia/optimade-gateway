@@ -32,9 +32,9 @@ This API is based on the expected capabilities [outlined below](#OPTIMADE-gatewa
 **Methods**: `GET`  
 **Behavior**: Introspective/static metadata overview of server.
 
-- `/search/`  
+- `/query/`  
   **Methods**: `POST` **or** `GET`  
-  **Behavior**: Orchestrate a search.
+  **Behavior**: Orchestrate an OPTIMADE query.
 
 - `/gateways/`  
   **Methods**: `GET`  
@@ -49,12 +49,12 @@ This API is based on the expected capabilities [outlined below](#OPTIMADE-gatewa
 
     Either:
 
-    - `/searches/`  
+    - `/queries/`  
       **Methods**: None  
       **Behavior**: Disallowed.  
       _Note_: This endpoint could support `GET` requests with similar functionality and behavior as for `/gateways/`?
       This would move some functionality away from `/{gateway_id}/` to this endpoint.
-      Making `/{gateway_id}/` act as a mix of `/search/` and `/gateways/` in terms of orchestrating the search and returning introspective/static metadata about the gateway.
+      Making `/{gateway_id}/` act as a mix of `/query/` and `/gateways/` in terms of orchestrating the search and returning introspective/static metadata about the gateway.
 
       - `/{search_id}/`  
         **Methods**: `GET`  
@@ -71,6 +71,7 @@ This API is based on the expected capabilities [outlined below](#OPTIMADE-gatewa
 - [Searching in multiple OPTIMADE databases](#Searching).
 - [Utilize the OPTIMADE filter language](#OPTIMADE-filter-language).
 - [Retrieve entries (OPTIMADE structures) as JSON-serialized CUDS](#Retrieval-formats).
+  **Not a required capability for the base gateway API**.
 
 ### Design ideas and comments by Simon Adorf ([@csadorf](https://github.com/csadorf))
 
@@ -154,6 +155,23 @@ However, to ensure the "freshness" of the data, the "live"-period for any unique
 **Suggested search sequence diagram**:
 
 ![Search sequence](searching.svg)
+
+##### Design discussions (17.12.2020)
+
+To be backwards compatible (where each gateway may represent a fully fledged OPTIMADE database), make `/gateways/{unique ID}/` redirect to `/gateways/{unique ID}/structures/`.
+
+Note, remove CUDS as a required capability, content negotiation might be with different means than a URL query parameter.
+
+###### Caching
+
+Caching should be segmented for each database.
+For each new user query that retrieves and caches individual resources from a database, the lifetime of the cached resource should be updated to the set default (or what is determined by caching headers from the side of the database).
+Either the [CacheControl](https://github.com/ionrock/cachecontrol) or [requests-cache](https://github.com/reclosedev/requests-cache) packages will be utilized for caching.
+
+Since the time it takes for an OPTIMADE database to change its content varies, but is mainly quite long, individual search life times (`/gateways/{gateway ID}(/queries)/{search ID}/`) can be "long", e.g., a couple of hours.
+However, these two ways of "caching" should be separate.
+
+It should always be possible to forcefully ensure a "fresh" search.
 
 ### OPTIMADE filter language
 
