@@ -1,9 +1,16 @@
-from optimade.models import EntryResource, SupportLevel
-from pydantic import BaseModel, Field
+from typing import List
+
+from optimade.models import EntryResource, EntryResourceAttributes, LinksResource
+from pydantic import Field
 
 
-class GatewayResourceAttributes(BaseModel):
+class GatewayResourceAttributes(EntryResourceAttributes):
     """Attributes for an OPTIMADE gateway"""
+
+    databases: List[LinksResource] = Field(
+        ...,
+        description="List of databases (OPTIMADE 'links') to be queried in this gateway.",
+    )
 
 
 class GatewayResource(EntryResource):
@@ -18,9 +25,6 @@ class GatewayResource(EntryResource):
         "gateways",
         const="gateways",
         description="The name of the type of an entry.",
-        pattern="^gateways$",
-        support=SupportLevel.MUST,
-        queryable=SupportLevel.MUST,
+        regex="^gateways$",
     )
-
     attributes: GatewayResourceAttributes
