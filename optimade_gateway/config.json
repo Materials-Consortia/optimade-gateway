@@ -1,0 +1,28 @@
+{
+    "debug": false,
+    "use_real_mongo": true,
+    "mongo_database": "optimade_gateway",
+    "mongo_uri": "mongodb://$HOST_IP:27017",
+    "page_limit": 20,
+    "page_limit_max": 500,
+    "default_db": "test_server",
+    "base_url": null,
+    "implementation": {
+        "name": "OPTIMADE Gateway",
+        "version": "0.1.0",
+        "source_url": "https://github.com/epfl-theos/optimade-gateway",
+        "maintainer": {"email": "casper.andersen@epfl.ch"}
+    },
+    "index_base_url": null,
+    "provider": {
+        "name": "OPTIMADE gateway",
+        "description": "A gateway server to query multiple OPTIMADE databases.",
+        "prefix": "gateway",
+        "homepage": "https://github.com/epfl-theos/optimade-gateway"
+    },
+    "provider_fields": {},
+    "aliases": {},
+    "length_aliases": {},
+    "log_level": "info",
+    "log_dir": "./logs/"
+}
