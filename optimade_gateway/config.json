@@ -2,7 +2,6 @@
     "debug": false,
     "use_real_mongo": true,
     "mongo_database": "optimade_gateway",
-    "mongo_uri": "mongodb://$HOST_IP:27017",
     "page_limit": 20,
     "page_limit_max": 500,
     "default_db": "test_server",
