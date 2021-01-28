@@ -1,5 +1,5 @@
-fastapi~=0.62.0
+fastapi~=0.63.0
 motor~=2.3
 optimade~=0.12.5
-pydantic~=1.6
-uvicorn~=0.13.1
+pydantic~=1.7
+uvicorn~=0.13.3
