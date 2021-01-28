@@ -7,6 +7,8 @@ from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import meta_values
 
 from optimade_gateway.common.config import CONFIG
+from optimade_gateway.common.logger import LOGGER
+from optimade_gateway.common.utils import clean_python_types
 from optimade_gateway.mappers import GatewaysMapper
 from optimade_gateway.models import (
     GatewayCreate,
@@ -76,7 +78,10 @@ async def post_gateways(
     Create or return existing gateway according to `gateway`.
     """
     mongo_query = {
-        "databases": {"$all": gateway.databases, "$size": len(gateway.databases)}
+        "databases": {
+            "$all": await clean_python_types(gateway.databases),
+            "$size": len(gateway.databases),
+        }
     }
     result, more_data_available, _ = await GATEWAYS_COLLECTION.find(
         criteria={"filter": mongo_query}
@@ -89,8 +94,9 @@ async def post_gateways(
         )
 
     created = False
-    if result is None:
+    if not result:
         result = await GATEWAYS_COLLECTION.create_one(gateway)
+        LOGGER.debug("Created new gateway: %r", result)
         created = True
 
     return GatewaysResponseSingle(
@@ -99,9 +105,11 @@ async def post_gateways(
         meta=meta_values(
             url=request.url,
             data_returned=1,
-            data_available=GATEWAYS_COLLECTION.data_available + 1
-            if created
-            else GATEWAYS_COLLECTION.data_available,
+            data_available=(
+                GATEWAYS_COLLECTION.data_available + 1
+                if created
+                else GATEWAYS_COLLECTION.data_available
+            ),
             more_data_available=more_data_available,
             _optimade_gateway_created=created,
         ),
@@ -110,7 +118,7 @@ async def post_gateways(
 
 @ROUTER.get(
     "/gateways/{gateway_id}",
-    response_model=RedirectResponse,
+    response_model=Union[GatewaysResponseSingle, ErrorResponse],
     response_model_exclude_defaults=False,
     response_model_exclude_none=True,
     response_model_exclude_unset=False,

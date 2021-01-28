@@ -11,6 +11,7 @@ from optimade.server.mappers.entries import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 
 from optimade_gateway.common.logger import LOGGER
+from optimade_gateway.common.utils import clean_python_types
 
 
 class AsyncMongoCollection(EntryCollection):
@@ -62,7 +63,7 @@ class AsyncMongoCollection(EntryCollection):
         self._data_returned: int = None
         self._latest_filter: dict = None
 
-        LOGGER.debug("Caching properties %s for %s", self._caching, self)
+        LOGGER.debug("Caching properties %s for %r", self._caching, self)
 
         for cache_property in self._caching:
             if cache_property not in dir(self):
@@ -72,7 +73,18 @@ class AsyncMongoCollection(EntryCollection):
                     f"A property ({cache_property}) passed for caching does not exist for {self}."
                 )
 
-    def _check_aliases(self, aliases: Tuple[Tuple(str, str)]) -> None:
+    def __repr__(self) -> str:
+        """Representation of instance"""
+        return f"{self.__class__.__name__}(collection={self.collection}, resource_cls={self.resource_cls}, resource_mapper={self.resource_mapper}, cached_properties={self._caching})"
+
+    def __len__(self) -> int:
+        """Length of collection"""
+        import warnings
+
+        warnings.warn("Cannot calculate length of collection using `len()`.")
+        return 0
+
+    def _check_aliases(self, aliases: Tuple[Tuple[str, str]]) -> None:
         """Check that aliases do not clash with mongo keywords.
 
         Parameters:
@@ -87,7 +99,8 @@ class AsyncMongoCollection(EntryCollection):
         ):
             raise RuntimeError(f"Cannot define an alias starting with a '$': {aliases}")
 
-    def _valid_find_keys(self, **kwargs) -> Dict[str, Any]:
+    @staticmethod
+    def _valid_find_keys(**kwargs) -> Dict[str, Any]:
         """Return valid MongoDB find() keys with values from kwargs
 
         Note, not including deprecated flags
@@ -184,7 +197,7 @@ class AsyncMongoCollection(EntryCollection):
         await self.set_data_returned(**criteria)
 
         results = []
-        async for doc in self.collection.find(**self._valid_find_keys(criteria)):
+        async for doc in self.collection.find(**self._valid_find_keys(**criteria)):
             if criteria.get("projection", {}).get("_id"):
                 doc["_id"] = str(doc["_id"])
             results.append(self.resource_cls(**self.resource_mapper.map_back(doc)))
@@ -276,15 +289,18 @@ class AsyncMongoCollection(EntryCollection):
 
         """
         resource.last_modified = datetime.now()
-        result = await self.collection.insert_one(resource.dict())
+        result = await self.collection.insert_one(
+            await clean_python_types(resource.dict(exclude_unset=True))
+        )
         LOGGER.debug(
-            "Inserted resource %s in DB collection %s with ID %s",
+            "Inserted resource %r in DB collection %s with ID %s",
             resource,
             self.collection.name,
             result.inserted_id,
         )
-        return await self.resource_cls(
+
+        return self.resource_cls(
             **self.resource_mapper.map_back(
-                self.collection.find_one({"_id": result.inserted_id})
+                await self.collection.find_one({"_id": result.inserted_id})
             )
         )

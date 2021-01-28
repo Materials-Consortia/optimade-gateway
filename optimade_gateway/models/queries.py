@@ -67,11 +67,11 @@ class OptimadeQueryParameters(BaseModel):
         query_parameters.include.default,
         description=query_parameters.include.description,
     )
-    api_hint: Optional[str] = Field(
-        query_parameters.api_hint.default,
-        description=query_parameters.api_hint.description,
-        regex=query_parameters.api_hint.regex,
-    )
+    # api_hint: Optional[str] = Field(
+    #     query_parameters.api_hint.default,
+    #     description=query_parameters.api_hint.description,
+    #     regex=query_parameters.api_hint.regex,
+    # )
 
 
 class GatewayQueryResourceAttributes(EntryResourceAttributes):
