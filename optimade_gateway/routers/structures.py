@@ -7,16 +7,17 @@ from optimade.models import (
     StructureResponseMany,
     StructureResponseOne,
 )
-from optimade.server.config import CONFIG
-from optimade.server.entry_collections import MongoCollection, client
 from optimade.server.mappers import StructureMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
+
+from optimade_gateway.mongo.collection import AsyncMongoCollection
+from optimade_gateway.mongo.database import MONGO_CLIENT
 
 
 ROUTER = APIRouter(redirect_slashes=True)
 
-STRUCTURE_COLLECTION = MongoCollection(
-    collection=client[CONFIG.mongo_database][CONFIG.structures_collection],
+STRUCTURE_COLLECTION = AsyncMongoCollection(
+    collection=MONGO_CLIENT["optimade_gateway"]["structures"],
     resource_cls=StructureResource,
     resource_mapper=StructureMapper,
 )
@@ -30,7 +31,7 @@ STRUCTURE_COLLECTION = MongoCollection(
     response_model_exclude_unset=False,
     tags=["Structures"],
 )
-def get_structures(
+async def get_structures(
     request: Request, gateway_id: int, params: EntryListingQueryParams = Depends()
 ):
     """GET /gateways/{gateway_id}/structures
@@ -38,7 +39,6 @@ def get_structures(
     Retrieve and serve structure entries from the gateway's providers.
     Store entries in DB.
     """
-
     return StructureResponseMany(data=[])
 
 
@@ -50,7 +50,7 @@ def get_structures(
     response_model_exclude_unset=False,
     tags=["Structures"],
 )
-def get_single_structure(
+async def get_single_structure(
     request: Request, entry_id: str, params: SingleEntryQueryParams = Depends()
 ):
     return StructureResponseOne(data={})

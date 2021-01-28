@@ -12,9 +12,18 @@ class GatewaysResponse(EntryResponseMany):
 
     data: Union[List[GatewayResource], List[Dict[str, Any]]] = Field(
         ...,
-        description="""List of unique OPTIMADE gateway resource objects.
-This may also be a list of a single OPTIMADE gateway resource object that has just been created or found according to the specific query parameter(s).""",
+        description="""List of unique OPTIMADE gateway resource objects.""",
         uniqueItems=True,
+    )
+
+
+class GatewaysResponseSingle(EntryResponseOne):
+    """Successful response for POST /gateways and GET /gateways/{gateway_id}"""
+
+    data: Union[GatewayResource, Dict[str, Any], None] = Field(
+        ...,
+        description="""A unique OPTIMADE gateway resource object.
+The OPTIMADE gateway resource object has just been created or found according to the specific query parameter(s) or URL id.""",
     )
 
 

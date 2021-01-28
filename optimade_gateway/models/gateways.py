@@ -28,3 +28,10 @@ class GatewayResource(EntryResource):
         regex="^gateways$",
     )
     attributes: GatewayResourceAttributes
+
+
+class GatewayCreate(GatewayResourceAttributes):
+    """Model for creating new Gateway resources in the MongoDB"""
+
+    class Config:
+        extra = "ignore"
