@@ -1,4 +1,4 @@
-from optimade.server.mappers.entries import BaseResourceMapper
+from optimade_gateway.mappers.base import BaseResourceMapper
 
 __all__ = ("GatewaysMapper",)
 
