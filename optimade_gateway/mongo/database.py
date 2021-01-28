@@ -1,10 +1,8 @@
-import os
-
 from motor.motor_asyncio import AsyncIOMotorClient
 
+from optimade_gateway.common.config import CONFIG
 
-MONGO_URI = f"mongodb://{os.getenv('HOST_IP', 'localhost')}:27017"
 
-MONGO_CLIENT = AsyncIOMotorClient(MONGO_URI)
+MONGO_CLIENT = AsyncIOMotorClient(CONFIG.mongo_uri)
 
-MONGO_DB = MONGO_CLIENT["optimade_gateway"]
+MONGO_DB = MONGO_CLIENT[CONFIG.mongo_database]

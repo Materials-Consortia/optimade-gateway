@@ -10,14 +10,15 @@ from optimade.models import (
 from optimade.server.mappers import StructureMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 
+from optimade_gateway.common.config import CONFIG
 from optimade_gateway.mongo.collection import AsyncMongoCollection
-from optimade_gateway.mongo.database import MONGO_CLIENT
+from optimade_gateway.mongo.database import MONGO_DB
 
 
 ROUTER = APIRouter(redirect_slashes=True)
 
-STRUCTURE_COLLECTION = AsyncMongoCollection(
-    collection=MONGO_CLIENT["optimade_gateway"]["structures"],
+STRUCTURES_COLLECTION = AsyncMongoCollection(
+    collection=MONGO_DB[CONFIG.structures_collection],
     resource_cls=StructureResource,
     resource_mapper=StructureMapper,
 )

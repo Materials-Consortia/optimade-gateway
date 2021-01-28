@@ -6,6 +6,7 @@ from optimade.models import ErrorResponse, ToplevelLinks
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import meta_values
 
+from optimade_gateway.common.config import CONFIG
 from optimade_gateway.mappers import GatewaysMapper
 from optimade_gateway.models import (
     GatewayCreate,
@@ -14,13 +15,13 @@ from optimade_gateway.models import (
     GatewaysResponseSingle,
 )
 from optimade_gateway.mongo.collection import AsyncMongoCollection
-from optimade_gateway.mongo.database import MONGO_CLIENT
+from optimade_gateway.mongo.database import MONGO_DB
 
 
 ROUTER = APIRouter(redirect_slashes=True)
 
-GATEWAY_COLLECTION = AsyncMongoCollection(
-    collection=MONGO_CLIENT["optimade_gateway"]["gateways"],
+GATEWAYS_COLLECTION = AsyncMongoCollection(
+    collection=MONGO_DB[CONFIG.gateways_collection],
     resource_cls=GatewayResource,
     resource_mapper=GatewaysMapper,
     cached_properties=[],  # Don't use in-memory caching
@@ -77,7 +78,7 @@ async def post_gateways(
     mongo_query = {
         "databases": {"$all": gateway.databases, "$size": len(gateway.databases)}
     }
-    result, more_data_available, _ = await GATEWAY_COLLECTION.find(
+    result, more_data_available, _ = await GATEWAYS_COLLECTION.find(
         criteria={"filter": mongo_query}
     )
 
@@ -89,7 +90,7 @@ async def post_gateways(
 
     created = False
     if result is None:
-        result = await GATEWAY_COLLECTION.create_one(gateway)
+        result = await GATEWAYS_COLLECTION.create_one(gateway)
         created = True
 
     return GatewaysResponseSingle(
@@ -98,9 +99,9 @@ async def post_gateways(
         meta=meta_values(
             url=request.url,
             data_returned=1,
-            data_available=GATEWAY_COLLECTION.data_available + 1
+            data_available=GATEWAYS_COLLECTION.data_available + 1
             if created
-            else GATEWAY_COLLECTION.data_available,
+            else GATEWAYS_COLLECTION.data_available,
             more_data_available=more_data_available,
             _optimade_gateway_created=created,
         ),

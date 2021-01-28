@@ -1,6 +1,6 @@
 {
     "debug": false,
-    "use_real_mongo": true,
+    "mongo_uri": "mongodb://{host_ip}:27017",
     "mongo_database": "optimade_gateway",
     "page_limit": 20,
     "page_limit_max": 500,
@@ -8,7 +8,6 @@
     "base_url": null,
     "implementation": {
         "name": "OPTIMADE Gateway",
-        "version": "0.1.0",
         "source_url": "https://github.com/epfl-theos/optimade-gateway",
         "maintainer": {"email": "casper.andersen@epfl.ch"}
     },
