@@ -14,6 +14,9 @@ from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.common.utils import clean_python_types
 
 
+__all__ = ("AsyncMongoCollection",)
+
+
 class AsyncMongoCollection(EntryCollection):
     """MongoDB Collection for use with asyncio
 
@@ -72,6 +75,10 @@ class AsyncMongoCollection(EntryCollection):
                 warnings.warn(
                     f"A property ({cache_property}) passed for caching does not exist for {self}."
                 )
+
+    def __str__(self) -> str:
+        """Standard printing result for an instance"""
+        return f"<{self.__class__.__name__}: resource={self.resource_cls.__name__} endpoint(mapper)={self.resource_mapper.ENDPOINT} DB_collection={self.collection.name} caching={[','.join(self._caching)]}>"
 
     def __repr__(self) -> str:
         """Representation of instance"""
