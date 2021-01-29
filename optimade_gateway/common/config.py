@@ -1,5 +1,4 @@
 import os
-from pathlib import Path
 import re
 import warnings
 
@@ -7,9 +6,6 @@ from optimade.server.config import ServerConfig as OptimadeServerConfig
 from pydantic import Field, validator
 
 from optimade_gateway import __version__
-
-
-DEFAULT_CONFIG_FILE_PATH = str(Path.home().joinpath(".optimade.json"))
 
 
 class ServerConfig(OptimadeServerConfig):

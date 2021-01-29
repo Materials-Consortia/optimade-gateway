@@ -4,9 +4,20 @@ import pytest
 pytestmark = pytest.mark.asyncio
 
 
-# @pytest.mark.asyncio
-# async def test_get_gateways():
-#     """Test GET /gateways"""
+@pytest.mark.asyncio
+async def test_get_gateways(client):
+    """Test GET /gateways"""
+    from optimade_gateway.models.responses import GatewaysResponse
+
+    response = await client("/gateways")
+
+    assert response.status_code == 200, f"Request failed: {response.json()}"
+    response = GatewaysResponse(**response.json())
+    assert response
+
+    assert response.meta.data_returned == 4
+    assert response.meta.data_available == 4
+    assert not response.meta.more_data_available
 
 
 async def test_post_gateways(client):

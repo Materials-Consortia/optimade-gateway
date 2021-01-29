@@ -9,5 +9,6 @@ class GatewaysMapper(BaseResourceMapper):
 
     @classmethod
     def map_back(cls, doc: dict) -> dict:
-        doc["id"] = str(doc.pop("_id"))
+        if "_id" in doc:
+            doc["id"] = str(doc.pop("_id"))
         return super().map_back(doc)

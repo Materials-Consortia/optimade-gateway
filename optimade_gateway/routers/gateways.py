@@ -46,19 +46,36 @@ async def get_gateways(
 
     Return overview of all (active) gateways.
     """
-    gateways = []  # get_all_gateways()
-    included = []
+    import urllib
+    from optimade.server.routers.utils import get_base_url, handle_response_fields
+
+    gateways, more_data_available, fields = await GATEWAYS_COLLECTION.find(
+        params=params
+    )
+
+    if more_data_available:
+        # Deduce the `next` link from the current request
+        query = urllib.parse.parse_qs(request.url.query)
+        query["page_offset"] = int(query.get("page_offset", [0])[0]) + len(gateways)
+        urlencoded = urllib.parse.urlencode(query, doseq=True)
+        base_url = get_base_url(request.url)
+
+        links = ToplevelLinks(next=f"{base_url}{request.url.path}?{urlencoded}")
+    else:
+        links = ToplevelLinks(next=None)
+
+    if fields:
+        gateways = handle_response_fields(gateways, fields)
 
     return GatewaysResponse(
-        links=ToplevelLinks(next=None),
+        links=links,
         data=gateways,
         meta=meta_values(
             url=request.url,
-            data_returned=len(gateways),
-            data_available=len(gateways),
-            more_data_available=False,
+            data_returned=GATEWAYS_COLLECTION.data_returned,
+            data_available=GATEWAYS_COLLECTION.data_available,
+            more_data_available=more_data_available,
         ),
-        included=included,
     )
 
 

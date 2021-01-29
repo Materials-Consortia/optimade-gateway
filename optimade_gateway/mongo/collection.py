@@ -157,7 +157,7 @@ class AsyncMongoCollection(EntryCollection):
         )
         criteria = {key: kwargs[key] for key in valid_method_keys if key in kwargs}
 
-        if criteria["filter"] is None:
+        if criteria.get("filter") is None:
             criteria["filter"] = {}
 
         return await self.collection.count_documents(**criteria)
@@ -244,9 +244,9 @@ class AsyncMongoCollection(EntryCollection):
         """Set _data_available if it has not yet been set"""
         if "data_available" in self._caching:
             if not self._data_available:
-                self._data_available = await self.collection.estimated_document_count()
+                self._data_available = await self.count()
         else:
-            self._data_available = await self.collection.estimated_document_count()
+            self._data_available = await self.count()
 
     @property
     def data_returned(self) -> int:
