@@ -40,6 +40,8 @@ for prefix in ("", BASE_URL_PREFIXES["major"]):
 def run(argv: Sequence[Text] = None) -> None:
     """Run OPTIMADE Gateway REST API server."""
     import argparse
+    import os
+    from pathlib import Path
     import uvicorn
 
     parser = argparse.ArgumentParser(
@@ -50,4 +52,12 @@ def run(argv: Sequence[Text] = None) -> None:
 
     parser.parse_args(args=argv)
 
-    uvicorn.run("optimade_gateway.main:APP", reload=True)
+    os.environ["OPTIMADE_GATEWAY_CONFIG_FILE"] = str(
+        Path(__file__).parent.joinpath("config.json").resolve()
+    )
+
+    uvicorn.run(
+        "optimade_gateway.main:APP",
+        reload=True,
+        reload_dirs=[str(Path(__file__).parent.resolve())],
+    )
