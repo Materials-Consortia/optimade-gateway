@@ -59,7 +59,7 @@ FILE_FORMATTER = logging.Formatter(
 )
 FILE_HANDLER.setFormatter(FILE_FORMATTER)
 
-CONSOLE_FORMATTER = DefaultFormatter("%(levelprefix)s %(name)s - %(message)s")
+CONSOLE_FORMATTER = DefaultFormatter("%(levelprefix)s [%(name)s] %(message)s")
 CONSOLE_HANDLER.setFormatter(CONSOLE_FORMATTER)
 
 # Finalize LOGGER
