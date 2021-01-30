@@ -66,7 +66,7 @@ setup(
     install_requires=BASE,
     extras_require={"dev": DEV},
     entry_points={
-        "console_scripts": ["optimade-gateway = optimade_gateway.main:run"],
+        "console_scripts": ["optimade-gateway = optimade_gateway.run:run"],
     },
     keywords="optimade materials database",
     classifiers=[

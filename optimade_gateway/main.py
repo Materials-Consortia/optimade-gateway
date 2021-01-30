@@ -1,5 +1,3 @@
-from typing import Sequence, Text
-
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
@@ -35,29 +33,3 @@ for exception, handler in OPTIMADE_EXCEPTIONS:
 for prefix in ("", BASE_URL_PREFIXES["major"]):
     for endpoint in (gateways, structures):
         APP.include_router(endpoint.ROUTER, prefix=prefix)
-
-
-def run(argv: Sequence[Text] = None) -> None:
-    """Run OPTIMADE Gateway REST API server."""
-    import argparse
-    import os
-    from pathlib import Path
-    import uvicorn
-
-    parser = argparse.ArgumentParser(
-        "optimade-gateway",
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        description=run.__doc__,
-    )
-
-    parser.parse_args(args=argv)
-
-    os.environ["OPTIMADE_GATEWAY_CONFIG_FILE"] = str(
-        Path(__file__).parent.joinpath("config.json").resolve()
-    )
-
-    uvicorn.run(
-        "optimade_gateway.main:APP",
-        reload=True,
-        reload_dirs=[str(Path(__file__).parent.resolve())],
-    )
