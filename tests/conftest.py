@@ -1,3 +1,5 @@
+"""Pytest fixtures and configuration for all tests"""
+# pylint: disable=import-error
 import asyncio
 import json
 import os
@@ -16,6 +18,7 @@ def pytest_configure(config):
     """Method that runs before pytest collects tests so no modules are imported"""
     cwd = Path(__file__).parent.resolve()
     os.environ["OPTIMADE_GATEWAY_CONFIG_FILE"] = str(cwd / "static/test_config.json")
+    os.environ["OPTIMADE_CONFIG_FILE"] = str(cwd / "static/test_config.json")
     os.environ["OPTIMADE_CI_FORCE_MONGO"] = "1"
 
 

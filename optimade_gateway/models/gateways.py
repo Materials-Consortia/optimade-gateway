@@ -1,3 +1,5 @@
+"""Pydantic models/schemas for the Gateway resource"""
+# pylint: disable=no-self-argument
 from datetime import datetime
 from typing import List, Optional
 import warnings
