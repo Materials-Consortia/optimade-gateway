@@ -86,3 +86,16 @@ def client() -> Callable:
         return response
 
     return _client
+
+
+@pytest.fixture
+def get_gateway() -> Callable:
+    """Return function to find a single gateway in the current MongoDB"""
+
+    async def _get_gateway(id: str) -> dict:
+        """Get a gateway that's currently in the MongoDB"""
+        from optimade_gateway.mongo.database import MONGO_DB
+
+        return await MONGO_DB["gateways"].find_one({"id": id})
+
+    return _get_gateway
