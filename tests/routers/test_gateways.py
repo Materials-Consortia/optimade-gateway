@@ -6,7 +6,6 @@ import pytest
 pytestmark = pytest.mark.asyncio
 
 
-@pytest.mark.asyncio
 async def test_get_gateways(client):
     """Test GET /gateways"""
     from optimade_gateway.models.responses import GatewaysResponse
@@ -24,10 +23,12 @@ async def test_get_gateways(client):
 
 async def test_post_gateways(client):
     """Test POST /gateways"""
+    from bson.objectid import ObjectId
     from optimade.models import LinksResource
     from optimade.server.routers.utils import BASE_URL_PREFIXES
     from pydantic import AnyUrl
     from optimade_gateway.models.responses import GatewaysResponseSingle
+    from optimade_gateway.mongo.database import MONGO_DB
 
     data = {
         "databases": [
@@ -69,3 +70,13 @@ async def test_post_gateways(client):
             host=url.host,
         )
     }
+
+    mongo_filter = {"_id": ObjectId(datum.id)}
+    assert await MONGO_DB["gateways"].count_documents(mongo_filter) == 1
+    db_datum = await MONGO_DB["gateways"].find_one(mongo_filter)
+    assert db_datum["databases"] == data["databases"]
+
+    # Remove it and assert it has been removed
+    await MONGO_DB["gateways"].delete_one(mongo_filter)
+    assert await MONGO_DB["gateways"].count_documents(mongo_filter) == 0
+    assert await MONGO_DB["gateways"].count_documents({}) == 4
