@@ -1,11 +1,11 @@
+"""Configuration of the FastAPI server"""
+# pylint: disable=no-self-argument
 import os
 import re
 import warnings
 
 from optimade.server.config import ServerConfig as OptimadeServerConfig
 from pydantic import Field, validator
-
-from optimade_gateway import __version__
 
 
 class ServerConfig(OptimadeServerConfig):
@@ -33,13 +33,6 @@ class ServerConfig(OptimadeServerConfig):
                 warnings.warn(
                     f"Could not find an environment variable for {match.group()!r} from mongo_uri: {v}"
                 )
-        return res
-
-    @validator("implementation", pre=True)
-    def set_implementation_version(cls, v):
-        """Set defaults and modify bypassed value(s)"""
-        res = {"version": __version__}
-        res.update(v)
         return res
 
     class Config:
