@@ -1,10 +1,15 @@
 from typing import Union
+import urllib
 
 from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import RedirectResponse
 from optimade.models import ErrorResponse, ToplevelLinks
 from optimade.server.query_params import EntryListingQueryParams
-from optimade.server.routers.utils import meta_values
+from optimade.server.routers.utils import (
+    get_base_url,
+    handle_response_fields,
+    meta_values,
+)
 
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.common.logger import LOGGER
@@ -46,9 +51,6 @@ async def get_gateways(
 
     Return overview of all (active) gateways.
     """
-    import urllib
-    from optimade.server.routers.utils import get_base_url, handle_response_fields
-
     gateways, more_data_available, fields = await GATEWAYS_COLLECTION.find(
         params=params
     )
@@ -142,11 +144,13 @@ async def post_gateways(
     tags=["Gateways"],
 )
 async def get_gateway(
-    request: Request, gateway_id: int
+    request: Request, gateway_id: str
 ) -> Union[GatewaysResponseSingle, ErrorResponse]:
     """GET /gateways/{gateway ID}
 
     Represent an OPTIMADE server.
     For now, redirect to the gateway's /structures entry listing endpoint
     """
-    return RedirectResponse(f"{request.url}/structures")
+    return RedirectResponse(
+        request.url.replace(path=f"{request.url.path.rstrip('/')}/structures")
+    )
