@@ -53,7 +53,9 @@ async def ci_startup():
     LOGGER.info("CI detected - Will load test gateways!")
 
     collection = "gateways"
-    test_data = Path(__file__).parent.joinpath("test_gateways.json").resolve()
+    test_data = (
+        Path(__file__).parent.parent.joinpath(".ci/test_gateways.json").resolve()
+    )
 
     assert await MONGO_DB[collection].count_documents({}) == 0
     assert test_data.exists()

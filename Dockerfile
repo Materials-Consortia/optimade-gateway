@@ -4,8 +4,8 @@ WORKDIR /app
 
 # Copy repo contents
 COPY setup.py README.md requirements*.txt ./
-COPY optimade_gateway optimade_gateway
-COPY tests/static/test_gateways.json .ci/
+COPY optimade_gateway ./optimade_gateway
+COPY tests/static/test_gateways.json ./.ci/
 RUN apk add git \
     && pip install git+https://github.com/Materials-Consortia/optimade-python-tools.git@master#egg=optimade \
     && pip install -e .

@@ -116,7 +116,6 @@ jobs:
     - name: OPTIMADE Validator for /structures
       uses: Materials-Consortia/optimade-validator-action@v2
       with:
-        domain: localhost
         port: 5000
         path: /gateways/twodb/structures
         as type: structures
