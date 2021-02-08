@@ -33,3 +33,31 @@ for exception, handler in OPTIMADE_EXCEPTIONS:
 for prefix in ("", BASE_URL_PREFIXES["major"]):
     for endpoint in (gateways, structures):
         APP.include_router(endpoint.ROUTER, prefix=prefix)
+
+
+@APP.on_event("startup")
+async def ci_startup():
+    """Function to run at app startup - only relevant for CI to add test data"""
+    import os
+
+    if not os.getenv("CI"):
+        return
+
+    # Add test gateways
+    import json
+    from optimade_gateway.common.logger import LOGGER
+    from optimade_gateway.mongo.database import MONGO_DB
+    from pathlib import Path
+
+    LOGGER.info("CI detected - Will load test gateways!")
+
+    collection = "gateways"
+    test_data = Path(__file__).parent.joinpath("test_gateways.json").resolve()
+
+    assert await MONGO_DB[collection].count_documents({}) == 0
+    assert test_data.exists()
+
+    with open(test_data) as handle:
+        data = json.load(handle)
+
+    await MONGO_DB[collection].insert_many(data)

@@ -94,3 +94,32 @@ jobs:
 
       - name: Check build and install source distribution
         uses: CasperWA/check-sdist-action@v1
+
+  docker:
+    runs-on: ubuntu-latest
+    # timeout-minutes
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 2
+
+    - name: Build the Docker app
+      run: docker-compose build
+
+    - name: Start the Docker app
+      run: |
+        docker-compose up &
+        .github/workflows/wait_for_it.sh localhost:5000 -t 120
+        sleep 5
+
+    - name: OPTIMADE Validator for /structures
+      uses: Materials-Consortia/optimade-validator-action@v2
+      with:
+        port: 5000
+        path: /gateways/twodb/structures
+        as type: structures
+        all versioned paths: yes
+        validate unversioned path: yes
+        validator version: latest
+        verbosity: 2

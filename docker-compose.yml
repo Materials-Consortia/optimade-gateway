@@ -1,0 +1,28 @@
+version: "3"
+services:
+
+  db:
+    image: mongo:4.2
+    restart: on-failure
+    networks:
+      - gateway
+
+  optimade-gateway:
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: on-failure
+    environment:
+      OPTIMADE_CI_FORCE_MONGO: 1
+      OPTIMADE_CONFIG_FILE: /app/optimade_gateway/config.json
+      OPTIMADE_GATEWAY_CONFIG_FILE: /app/optimade_gateway/config.json
+      OPTIMADE_GATEWAY_MONGO_URI: "mongodb://db:27017"
+    ports:
+      - "${PORT:-5000}:80"
+    networks:
+      - gateway
+
+networks:
+  gateway:
