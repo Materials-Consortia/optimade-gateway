@@ -1,3 +1,5 @@
+"""Pytest fixtures and configuration for all tests"""
+# pylint: disable=import-error
 import asyncio
 import json
 import os
@@ -16,6 +18,7 @@ def pytest_configure(config):
     """Method that runs before pytest collects tests so no modules are imported"""
     cwd = Path(__file__).parent.resolve()
     os.environ["OPTIMADE_GATEWAY_CONFIG_FILE"] = str(cwd / "static/test_config.json")
+    os.environ["OPTIMADE_CONFIG_FILE"] = str(cwd / "static/test_config.json")
     os.environ["OPTIMADE_CI_FORCE_MONGO"] = "1"
 
 
@@ -83,3 +86,16 @@ def client() -> Callable:
         return response
 
     return _client
+
+
+@pytest.fixture
+def get_gateway() -> Callable:
+    """Return function to find a single gateway in the current MongoDB"""
+
+    async def _get_gateway(id: str) -> dict:
+        """Get a gateway that's currently in the MongoDB"""
+        from optimade_gateway.mongo.database import MONGO_DB
+
+        return await MONGO_DB["gateways"].find_one({"id": id})
+
+    return _get_gateway

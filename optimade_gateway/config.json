@@ -8,6 +8,7 @@
     "base_url": null,
     "implementation": {
         "name": "OPTIMADE Gateway",
+        "version": "0.1.0",
         "source_url": "https://github.com/epfl-theos/optimade-gateway",
         "maintainer": {"email": "casper.andersen@epfl.ch"}
     },

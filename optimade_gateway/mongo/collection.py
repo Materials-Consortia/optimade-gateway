@@ -82,7 +82,7 @@ class AsyncMongoCollection(EntryCollection):
 
     def __repr__(self) -> str:
         """Representation of instance"""
-        return f"{self.__class__.__name__}(collection={self.collection}, resource_cls={self.resource_cls}, resource_mapper={self.resource_mapper}, cached_properties={self._caching})"
+        return f"{self.__class__.__name__}(collection={self.collection!r}, resource_cls={self.resource_cls!r}, resource_mapper={self.resource_mapper!r}, cached_properties={self._caching!r})"
 
     def __len__(self) -> int:
         """Length of collection"""
@@ -136,7 +136,7 @@ class AsyncMongoCollection(EntryCollection):
         )
         criteria = {key: kwargs[key] for key in valid_method_keys if key in kwargs}
 
-        if criteria["filter"] is None:
+        if criteria.get("filter") is None:
             # Ensure documents are included in the result set
             criteria["filter"] = {}
 
@@ -169,11 +169,32 @@ class AsyncMongoCollection(EntryCollection):
 
         return await self.collection.count_documents(**criteria)
 
+    async def get_one(self, **criteria: Dict[str, Any]) -> EntryResource:
+        """Get one resource based on criteria or id
+
+        NOTE: This is not to be used for creating a REST API response,
+        but is rather a utility function to easily retrieve a single resource.
+
+        Parameters:
+            criteria: Already handled/parsed URL query parameters.
+
+        Returns:
+            A single resource from the MongoDB.
+
+        """
+        criteria = criteria or {}
+
+        return self.resource_cls(
+            **self.resource_mapper.map_back(
+                await self.collection.find_one(**self._valid_find_keys(**criteria))
+            )
+        )
+
     async def find(
         self,
         params: Union[EntryListingQueryParams, SingleEntryQueryParams] = None,
         criteria: Dict[str, Any] = None,
-    ) -> Tuple[List[EntryResource], bool, set]:
+    ) -> Tuple[Union[List[EntryResource], EntryResource], bool, set]:
         """Perform the query on the underlying MongoDB Collection, handling projection
         and pagination of the output.
 
