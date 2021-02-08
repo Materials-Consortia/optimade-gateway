@@ -59,6 +59,9 @@ async def get_structures(
     data_returned = 0
     results = []
     errors = []
+    parsed_params = urllib.parse.urlencode(
+        {param: value for param, value in params.__dict__.items() if value}
+    )
 
     PY38_DEFAULT = None
     if sys.version_info.minor < 8:
@@ -67,7 +70,11 @@ async def get_structures(
     with concurrent.futures.ThreadPoolExecutor(max_workers=PY38_DEFAULT) as executor:
         future_to_db_id = {
             executor.submit(
-                db_find_many, db, "structures", StructureResponseMany, request.url.query
+                db_find_many,
+                db,
+                "structures",
+                StructureResponseMany,
+                parsed_params,
             ): db.id
             for db in gateway.attributes.databases
         }
@@ -118,11 +125,14 @@ async def get_structures(
             ),
         )
 
-    # Sort results by (original) "id", since "id" MUST always be present.
+    # Sort results over two steps, first by database id,
+    # and then by (original) "id", since "id" MUST always be present.
     if getattr(params, "response_fields", False):
-        results = sorted(results, key=lambda data: "/".join(data["id"].split("/")[1:]))
+        results.sort(key=lambda data: data["id"])
+        results.sort(key=lambda data: "/".join(data["id"].split("/")[1:]))
     else:
-        results = sorted(results, key=lambda data: "/".join(data.id.split("/")[1:]))
+        results.sort(key=lambda data: data.id)
+        results.sort(key=lambda data: "/".join(data.id.split("/")[1:]))
 
     if more_data_available:
         # Deduce the `next` link from the current request
