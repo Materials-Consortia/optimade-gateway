@@ -8,7 +8,7 @@ pytestmark = pytest.mark.asyncio
 
 async def test_get_gateways(client, get_gateway):
     """Test GET /gateways/{gateway_id}/structures"""
-    from optimade.models import StructureResponseMany  # , StructureResource
+    from optimade.models import StructureResponseMany, StructureResource
     from optimade.server.config import CONFIG
     import requests
 
@@ -50,5 +50,6 @@ async def test_get_gateways(client, get_gateway):
     assert more_data_available == response.meta.more_data_available
 
     data = sorted(data, key=lambda datum: "/".join(datum["id"].split("/")[1:]))
-    # TODO: Uncomment when aiidateam/aiida-optimade#197 has been fixed (https://github.com/aiidateam/aiida-optimade/issues/197).
-    # assert [StructureResource(**_).dict() for _ in data] == [_.dict() for _ in response.data]
+    assert [StructureResource(**_).dict() for _ in data] == [
+        _.dict() for _ in response.data
+    ]
