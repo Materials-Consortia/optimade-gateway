@@ -39,13 +39,14 @@ for prefix in ("", BASE_URL_PREFIXES["major"]):
 async def ci_startup():
     """Function to run at app startup - only relevant for CI to add test data"""
     import os
+    from optimade_gateway.common.logger import LOGGER
 
-    if not os.getenv("CI"):
+    if not bool(os.getenv("CI", False)):
+        LOGGER.debug("Not in CI - will start normally.")
         return
 
     # Add test gateways
     import json
-    from optimade_gateway.common.logger import LOGGER
     from optimade_gateway.mongo.database import MONGO_DB
     from pathlib import Path
 

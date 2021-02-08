@@ -12,4 +12,9 @@ RUN apk add git \
 
 EXPOSE 80
 
+ARG CONFIG_FILE=config.json
+COPY ${CONFIG_FILE} ./config.json
+ENV OPTIMADE_CONFIG_FILE /app/config.json
+ENV OPTIMADE_GATEWAY_CONFIG_FILE ${OPTIMADE_CONFIG_FILE}
+
 CMD [ "uvicorn", "--host", "0.0.0.0", "--port", "80", "--loop", "asyncio", "optimade_gateway.main:APP" ]
