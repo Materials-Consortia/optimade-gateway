@@ -12,7 +12,7 @@ RUN apk add git \
 
 EXPOSE 80
 
-ARG CONFIG_FILE=config.json
+ARG CONFIG_FILE=optimade_config/config.json
 COPY ${CONFIG_FILE} ./config.json
 ENV OPTIMADE_CONFIG_FILE /app/config.json
 ENV OPTIMADE_GATEWAY_CONFIG_FILE ${OPTIMADE_CONFIG_FILE}

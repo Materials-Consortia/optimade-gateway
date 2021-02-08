@@ -105,11 +105,11 @@ jobs:
         fetch-depth: 2
 
     - name: Build the Docker app
-      run: docker-compose build
+      run: docker-compose --env-file .github/docker/.env.ci build --build-arg CONFIG_FILE=".github/docker/docker_config.json"
 
     - name: Start the Docker app
       run: |
-        docker-compose --env-file .github/workflows/.env.ci up &
+        docker-compose --env-file .github/docker/.env.ci up &
         .github/workflows/wait_for_it.sh localhost:5000 -t 120
         sleep 5
 
