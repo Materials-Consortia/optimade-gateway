@@ -50,12 +50,16 @@ async def ci_startup():
     from optimade_gateway.mongo.database import MONGO_DB
     from pathlib import Path
 
-    LOGGER.info("CI detected - Will load test gateways!")
+    LOGGER.info(
+        "CI detected - Will load test gateways (after dropping the collection)!"
+    )
 
     collection = "gateways"
     test_data = (
         Path(__file__).parent.parent.joinpath(".ci/test_gateways.json").resolve()
     )
+
+    await MONGO_DB[collection].drop()
 
     assert await MONGO_DB[collection].count_documents({}) == 0
     assert test_data.exists()

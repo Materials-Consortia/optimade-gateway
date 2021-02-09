@@ -119,7 +119,5 @@ jobs:
         port: 5000
         path: /gateways/twodb/structures
         as type: structures
-        all versioned paths: yes
-        validate unversioned paths: yes
         validator version: latest
         verbosity: 2
