@@ -1,5 +1,5 @@
-from fastapi import FastAPI
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI, Request
+from fastapi.responses import RedirectResponse
 
 from optimade.server.exception_handlers import OPTIMADE_EXCEPTIONS
 from optimade.server.middleware import OPTIMADE_MIDDLEWARE
@@ -15,10 +15,17 @@ APP = FastAPI(
 )
 
 
-@APP.get("/optimade")
-async def get_root() -> JSONResponse:
-    """Introspective overview of gateway server."""
-    return JSONResponse(content={"data": {}}, status_code=200)
+@APP.get("/")
+async def get_root(request: Request) -> RedirectResponse:
+    """Get /
+
+    Introspective overview of gateway server.
+
+    NOTE: Temporarily redirecting to GET /docs
+    """
+    return RedirectResponse(
+        request.url.replace(path=f"{request.url.path.strip('/')}/docs")
+    )
 
 
 # Add OPTIMADE middleware
