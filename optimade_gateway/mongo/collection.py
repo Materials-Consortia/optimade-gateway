@@ -332,3 +332,7 @@ class AsyncMongoCollection(EntryCollection):
                 await self.collection.find_one({"_id": result.inserted_id})
             )
         )
+
+    async def exists(self, entry_id: str) -> bool:
+        """Assert whether entry_id exists in the collection (value of `id`)"""
+        return bool(await self.count(filter={"id": entry_id}))

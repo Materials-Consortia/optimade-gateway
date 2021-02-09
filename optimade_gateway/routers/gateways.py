@@ -39,8 +39,8 @@ GATEWAYS_COLLECTION = AsyncMongoCollection(
     "/gateways",
     response_model=Union[GatewaysResponse, ErrorResponse],
     response_model_exclude_defaults=False,
-    response_model_exclude_none=True,
-    response_model_exclude_unset=False,
+    response_model_exclude_none=False,
+    response_model_exclude_unset=True,
     tags=["Gateways"],
 )
 async def get_gateways(
@@ -85,8 +85,8 @@ async def get_gateways(
     "/gateways",
     response_model=Union[GatewaysResponseSingle, ErrorResponse],
     response_model_exclude_defaults=False,
-    response_model_exclude_none=True,
-    response_model_exclude_unset=False,
+    response_model_exclude_none=False,
+    response_model_exclude_unset=True,
     tags=["Gateways"],
 )
 async def post_gateways(
@@ -139,8 +139,8 @@ async def post_gateways(
     "/gateways/{gateway_id}",
     response_model=Union[GatewaysResponseSingle, ErrorResponse],
     response_model_exclude_defaults=False,
-    response_model_exclude_none=True,
-    response_model_exclude_unset=False,
+    response_model_exclude_none=False,
+    response_model_exclude_unset=True,
     tags=["Gateways"],
 )
 async def get_gateway(
@@ -151,6 +151,15 @@ async def get_gateway(
     Represent an OPTIMADE server.
     NOTE: For now, redirect to the gateway's /structures entry listing endpoint
     """
+    from optimade.server.exceptions import BadRequest
+
+    if not await GATEWAYS_COLLECTION.exists(gateway_id):
+        raise BadRequest(
+            title="Not Found",
+            status_code=404,
+            detail=f"gateway <id={gateway_id}> not found.",
+        )
+
     return RedirectResponse(
         request.url.replace(path=f"{request.url.path.rstrip('/')}/structures")
     )

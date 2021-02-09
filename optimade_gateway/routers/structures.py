@@ -14,12 +14,14 @@ except ImportError:
 from fastapi import APIRouter, Depends, Request
 from optimade.models import (
     EntryResponseMany,
+    EntryResponseOne,
     ErrorResponse,
     LinksResource,
     StructureResponseMany,
     StructureResponseOne,
     ToplevelLinks,
 )
+from optimade.server.exceptions import BadRequest
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.server.routers.utils import meta_values, BASE_URL_PREFIXES
 
@@ -32,8 +34,8 @@ ROUTER = APIRouter(redirect_slashes=True)
     "/gateways/{gateway_id}/structures",
     response_model=Union[StructureResponseMany, ErrorResponse],
     response_model_exclude_defaults=False,
-    response_model_exclude_none=True,
-    response_model_exclude_unset=False,
+    response_model_exclude_none=False,
+    response_model_exclude_unset=True,
     tags=["Structures"],
 )
 async def get_structures(
@@ -49,6 +51,13 @@ async def get_structures(
     from optimade.models import Meta
     from optimade.server.routers.utils import get_base_url
     from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
+
+    if not await GATEWAYS_COLLECTION.exists(gateway_id):
+        raise BadRequest(
+            title="Not Found",
+            status_code=404,
+            detail=f"gateway <id={gateway_id}> not found.",
+        )
 
     gateway: GatewayResource = await GATEWAYS_COLLECTION.get_one(
         filter={"id": gateway_id}
@@ -70,7 +79,7 @@ async def get_structures(
     with concurrent.futures.ThreadPoolExecutor(max_workers=PY38_DEFAULT) as executor:
         future_to_db_id = {
             executor.submit(
-                db_find_many,
+                db_find,
                 db,
                 "structures",
                 StructureResponseMany,
@@ -88,7 +97,9 @@ async def get_structures(
                     ):
                         warnings.warn(error.detail)
                     else:
-                        meta = error.meta.dict()
+                        meta = {}
+                        if error.meta:
+                            meta = error.meta.dict()
                         meta.update(
                             {
                                 "optimade_gateway": {
@@ -114,7 +125,7 @@ async def get_structures(
                     # Keep it True, if set to True once.
                     more_data_available = response.meta.more_data_available
 
-    if not results and errors:
+    if errors:
         return ErrorResponse(
             errors=errors,
             meta=meta_values(
@@ -160,32 +171,116 @@ async def get_structures(
 
 
 @ROUTER.get(
-    "/gateways/{gateway_id}/structures/{entry_id:path}",
+    "/gateways/{gateway_id}/structures/{structure_id:path}",
     response_model=Union[StructureResponseOne, ErrorResponse],
     response_model_exclude_defaults=False,
-    response_model_exclude_none=True,
-    response_model_exclude_unset=False,
+    response_model_exclude_none=False,
+    response_model_exclude_unset=True,
     tags=["Structures"],
 )
 async def get_single_structure(
-    request: Request, entry_id: str, params: SingleEntryQueryParams = Depends()
-):
-    return StructureResponseOne(data={})
+    request: Request,
+    gateway_id: str,
+    structure_id: str,
+    params: SingleEntryQueryParams = Depends(),
+) -> Union[StructureResponseOne, ErrorResponse]:
+    from optimade.models import Meta
+    from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
+
+    if not await GATEWAYS_COLLECTION.exists(gateway_id):
+        raise BadRequest(
+            title="Not Found",
+            status_code=404,
+            detail=f"gateway <id={gateway_id}> not found.",
+        )
+
+    gateway: GatewayResource = await GATEWAYS_COLLECTION.get_one(
+        filter={"id": gateway_id}
+    )
+
+    local_structure_id = None
+    for database in gateway.attributes.databases:
+        if structure_id.startswith(f"{database.id}/"):
+            # Database found
+            local_structure_id = structure_id[len(f"{database.id}/") :]
+            break
+    else:
+        raise BadRequest(
+            detail=(
+                f"Structures entry <id={structure_id}> not found. To get a specific structures entry "
+                "one needs to prepend the ID with a database ID belonging to the gateway, e.g., "
+                f"'{gateway.attributes.databases[0].id}/<local_database_ID>'. Available databases for "
+                f"gateway {gateway_id!r}: {[_.id for _ in gateway.attributes.databases]}"
+            )
+        )
+
+    errors = []
+    result = None
+    parsed_params = urllib.parse.urlencode(
+        {param: value for param, value in params.__dict__.items() if value}
+    )
+
+    response: Union[ErrorResponse, StructureResponseOne] = await adb_find(
+        database=database,
+        endpoint=f"structures/{local_structure_id}",
+        response_model=StructureResponseOne,
+        query_params=parsed_params,
+    )
+
+    if isinstance(response, ErrorResponse):
+        for error in response.errors:
+            if isinstance(error.id, str) and error.id.startswith("OPTIMADE_GATEWAY"):
+                warnings.warn(error.detail)
+            else:
+                meta = {}
+                if error.meta:
+                    meta = error.meta.dict()
+                meta.update(
+                    {
+                        "optimade_gateway": {
+                            "gateway": gateway,
+                            "source_database_id": database.id,
+                        }
+                    }
+                )
+                error.meta = Meta(**meta)
+                errors.append(error)
+    else:
+        result = response.data
+        if isinstance(result, dict) and result.get("id") is not None:
+            result["id"] = f"{database.id}/{result['id']}"
+        elif result is None:
+            pass
+        else:
+            result.id = f"{database.id}/{result.id}"
+
+    meta = meta_values(
+        url=request.url,
+        data_returned=response.meta.data_returned,
+        data_available=None,  # Don't set this, as we'd have to request ALL gateway databases
+        more_data_available=response.meta.more_data_available,
+    )
+    del meta.data_available
+
+    if errors:
+        return ErrorResponse(errors=errors, meta=meta)
+
+    return StructureResponseOne(links=ToplevelLinks(next=None), data=result, meta=meta)
 
 
-def db_find_many(
+def db_find(
     database: LinksResource,
     endpoint: str,
-    response_model: EntryResponseMany,
+    response_model: Union[EntryResponseMany, EntryResponseOne],
     query_params: str = "",
-) -> Union[ErrorResponse, EntryResponseMany]:
+) -> Union[ErrorResponse, EntryResponseMany, EntryResponseOne]:
     """Imitate Collection.find for any given database for entry-resource endpoints
 
     Parameters:
         database: The OPTIMADE implementation to be queried.
-        endpoint: The entry-listing endpoint, e.g., "structures".
-        response_model: The expected OPTIMADE pydantic response model, e.g., optimade.models.StructureResponseMany.
-        query_params: URL Query parameters to pass to the database.
+        endpoint: The entry-listing endpoint, e.g., `"structures"`.
+        response_model: The expected OPTIMADE pydantic response model, e.g., `optimade.models.StructureResponseMany`.
+        query_params: URL query parameters to pass to the database.
 
     Results:
         Response as an OPTIMADE pydantic model, depending on whether it was a successful or unsuccessful response.
@@ -239,6 +334,27 @@ def db_find_many(
     return response
 
 
+async def adb_find(
+    database: LinksResource,
+    endpoint: str,
+    response_model: Union[EntryResponseMany, EntryResponseOne],
+    query_params: str = "",
+) -> Union[ErrorResponse, EntryResponseMany, EntryResponseOne]:
+    """The asynchronous version of `optimade_gateway.routers.structures:db_find()`.
+
+    Parameters:
+        database: The OPTIMADE implementation to be queried.
+        endpoint: The entry-listing endpoint, e.g., `"structures"`.
+        response_model: The expected OPTIMADE pydantic response model, e.g., `optimade.models.StructureResponseMany`.
+        query_params: URL query parameters to pass to the database.
+
+    Results:
+        Response as an OPTIMADE pydantic model, depending on whether it was a successful or unsuccessful response.
+
+    """
+    return db_find(database, endpoint, response_model, query_params)
+
+
 @ROUTER.get(
     "/gateways/{gateway_id}/{version}/structures",
     response_model=Union[StructureResponseMany, ErrorResponse],
@@ -246,6 +362,7 @@ def db_find_many(
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Structures"],
+    include_in_schema=False,
 )
 async def get_versioned_structures(
     request: Request,
@@ -253,7 +370,7 @@ async def get_versioned_structures(
     version: str,
     params: EntryListingQueryParams = Depends(),
 ) -> Union[StructureResponseMany, ErrorResponse]:
-    from optimade.server.exceptions import BadRequest, VersionNotSupported
+    from optimade.server.exceptions import VersionNotSupported
 
     valid_versions = [_[1:] for _ in BASE_URL_PREFIXES.values()]
 
@@ -270,3 +387,38 @@ async def get_versioned_structures(
             )
 
     return await get_structures(request, gateway_id, params)
+
+
+@ROUTER.get(
+    "/gateways/{gateway_id}/{version}/structures/{structure_id:path}",
+    response_model=Union[StructureResponseMany, ErrorResponse],
+    response_model_exclude_defaults=False,
+    response_model_exclude_none=False,
+    response_model_exclude_unset=True,
+    tags=["Structures"],
+    include_in_schema=False,
+)
+async def get_versioned_single_structure(
+    request: Request,
+    gateway_id: str,
+    version: str,
+    structure_id: str,
+    params: SingleEntryQueryParams = Depends(),
+) -> Union[StructureResponseOne, ErrorResponse]:
+    from optimade.server.exceptions import VersionNotSupported
+
+    valid_versions = [_[1:] for _ in BASE_URL_PREFIXES.values()]
+
+    if version not in valid_versions:
+        if version.startswith("v"):
+            raise VersionNotSupported(
+                detail=f"version {version} is not supported. Supported versions: {valid_versions}"
+            )
+        else:
+            raise BadRequest(
+                title="Not Found",
+                status_code=404,
+                detail=f"version MUST be one of {valid_versions}",
+            )
+
+    return await get_single_structure(request, gateway_id, structure_id, params)

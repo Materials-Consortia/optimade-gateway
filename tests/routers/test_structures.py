@@ -6,7 +6,7 @@ import pytest
 pytestmark = pytest.mark.asyncio
 
 
-async def test_get_gateways(client, get_gateway):
+async def test_get_structures(client, get_gateway):
     """Test GET /gateways/{gateway_id}/structures"""
     from optimade.models import StructureResponseMany, StructureResource
     from optimade_gateway.common.config import CONFIG
@@ -60,3 +60,43 @@ async def test_get_gateways(client, get_gateway):
         f"IDs in test not in response: {set([_['id'] for _ in data]) - set([_.id for _ in response.data])}\n\n"
         f"IDs in response not in test: {set([_.id for _ in response.data]) - set([_['id'] for _ in data])}\n\n"
     )
+
+
+async def test_get_single_structure(client, get_gateway):
+    """TEST GET /gateways/{gateway_id}/structures/{structure_id}"""
+    from optimade.models import StructureResponseOne, StructureResource
+    import requests
+
+    gateway_id = "singledb"
+    structure_id = "optimade-sample/1"
+
+    response = await client(f"/gateways/{gateway_id}/structures/{structure_id}")
+
+    assert response.status_code == 200, f"Request failed: {response.json()}"
+    response = StructureResponseOne(**response.json())
+    assert response
+
+    assert not response.meta.more_data_available
+
+    gateway = await get_gateway(gateway_id)
+    database = gateway["databases"][0]
+
+    assert response.data is not None
+
+    url = f"{database['attributes']['base_url']}/structures/{structure_id[len(database['id']) + 1:]}"
+    db_response = requests.get(url)
+    assert (
+        db_response.status_code == 200
+    ), f"Request to {url} failed: {db_response.json()}"
+    db_response = db_response.json()
+
+    assert db_response["data"] is not None
+    db_response["data"]["id"] = f"{database['id']}/{db_response['data']['id']}"
+
+    assert db_response["meta"]["data_returned"] == response.meta.data_returned
+    assert response.meta.data_available is None
+    assert (
+        db_response["meta"]["more_data_available"] == response.meta.more_data_available
+    )
+
+    assert StructureResource(**db_response["data"]).dict() == response.data.dict()
