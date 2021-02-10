@@ -120,4 +120,3 @@ jobs:
         path: /gateways/twodbs/structures
         as type: structures
         validator version: try-as_type-fix-validator
-        verbosity: 2
