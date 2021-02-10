@@ -117,7 +117,7 @@ jobs:
       uses: CasperWA/optimade-validator-action@close_56_as-type-fix
       with:
         port: 5000
-        path: /gateways/twodb/structures
+        path: /gateways/twodbs/structures
         as type: structures
         validator version: try-as_type-fix-validator
         verbosity: 2
