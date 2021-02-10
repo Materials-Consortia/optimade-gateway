@@ -114,10 +114,10 @@ jobs:
         sleep 5
 
     - name: OPTIMADE Validator for /structures
-      uses: Materials-Consortia/optimade-validator-action@v2
+      uses: CasperWA/optimade-validator-action@close_56_as-type-fix
       with:
         port: 5000
         path: /gateways/twodb/structures
         as type: structures
-        validator version: latest
+        validator version: try-as_type-fix-validator
         verbosity: 2
