@@ -119,4 +119,4 @@ jobs:
         port: 5000
         path: /gateways/twodbs/structures
         as type: structures
-        validator version: try-as_type-fix-validator
+        validator version: master
