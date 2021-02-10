@@ -17,7 +17,7 @@ services:
         CONFIG_FILE: "optimade_gateway/config.json"
     restart: on-failure
     environment:
-      CI: 0
+      CI: ${CI:-0}
       OPTIMADE_CI_FORCE_MONGO: 1
       OPTIMADE_GATEWAY_MONGO_URI: "mongodb://db:27017"
     ports:
