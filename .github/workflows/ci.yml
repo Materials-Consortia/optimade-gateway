@@ -116,6 +116,7 @@ jobs:
     - name: OPTIMADE Validator for /structures
       uses: CasperWA/optimade-validator-action@close_56_as-type-fix
       with:
+        domain: localhost
         port: 5000
         path: /gateways/twodb/structures
         as type: structures
