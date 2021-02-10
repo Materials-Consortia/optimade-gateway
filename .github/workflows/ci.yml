@@ -111,12 +111,11 @@ jobs:
       run: |
         docker-compose --env-file .github/docker/.env.ci up &
         .github/workflows/wait_for_it.sh localhost:5000 -t 120
-        sleep 5
+        sleep 15
 
     - name: OPTIMADE Validator for /structures
       uses: CasperWA/optimade-validator-action@close_56_as-type-fix
       with:
-        domain: localhost
         port: 5000
         path: /gateways/twodb/structures
         as type: structures
