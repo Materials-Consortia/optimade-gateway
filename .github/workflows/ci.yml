@@ -105,7 +105,7 @@ jobs:
         fetch-depth: 2
 
     - name: Build the Docker app
-      run: docker-compose --env-file .github/docker/.env.ci build --build-arg CONFIG_FILE=".github/docker/docker_config.json"
+      run: docker-compose build --build-arg CONFIG_FILE=".github/docker/docker_config.json"
 
     - name: Start the Docker app
       run: |
