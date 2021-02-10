@@ -68,9 +68,6 @@ jobs:
         pip install -U setuptools
         pip install -e .[dev]
 
-        # Until a newer version than 0.12.8 of `optimade` is released, we need to install from GitHub
-        pip install --force-reinstall git+https://github.com/Materials-Consortia/optimade-python-tools.git@master#egg=optimade
-
     - name: Test with pytest
       env:
         OPTIMADE_CI_FORCE_MONGO: 1
