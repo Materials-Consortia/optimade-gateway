@@ -50,7 +50,7 @@ FILE_HANDLER = logging.handlers.RotatingFileHandler(
 FILE_HANDLER.setLevel(logging.DEBUG)
 
 CONSOLE_HANDLER = logging.StreamHandler(sys.stdout)
-CONSOLE_HANDLER.setLevel(os.getenv("OPTIMADE_GATEWAY_LOG_LEVEL", "INFO"))
+CONSOLE_HANDLER.setLevel(os.getenv("OPTIMADE_GATEWAY_LOG_LEVEL", "INFO").upper())
 
 # Set formatters
 FILE_FORMATTER = logging.Formatter(
