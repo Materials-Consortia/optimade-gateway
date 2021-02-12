@@ -149,7 +149,7 @@ async def get_gateway(
     """GET /gateways/{gateway ID}
 
     Represent an OPTIMADE server.
-    For now, redirect to the gateway's /structures entry listing endpoint
+    NOTE: For now, redirect to the gateway's /structures entry listing endpoint
     """
     return RedirectResponse(
         request.url.replace(path=f"{request.url.path.rstrip('/')}/structures")

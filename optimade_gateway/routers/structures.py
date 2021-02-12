@@ -237,3 +237,36 @@ def db_find_many(
             )
 
     return response
+
+
+@ROUTER.get(
+    "/gateways/{gateway_id}/{version}/structures",
+    response_model=Union[StructureResponseMany, ErrorResponse],
+    response_model_exclude_defaults=False,
+    response_model_exclude_none=False,
+    response_model_exclude_unset=True,
+    tags=["Structures"],
+)
+async def get_versioned_structures(
+    request: Request,
+    gateway_id: str,
+    version: str,
+    params: EntryListingQueryParams = Depends(),
+) -> Union[StructureResponseMany, ErrorResponse]:
+    from optimade.server.exceptions import BadRequest, VersionNotSupported
+
+    valid_versions = [_[1:] for _ in BASE_URL_PREFIXES.values()]
+
+    if version not in valid_versions:
+        if version.startswith("v"):
+            raise VersionNotSupported(
+                detail=f"version {version} is not supported. Supported versions: {valid_versions}"
+            )
+        else:
+            raise BadRequest(
+                title="Not Found",
+                status_code=404,
+                detail=f"version MUST be one of {valid_versions}",
+            )
+
+    return await get_structures(request, gateway_id, params)
