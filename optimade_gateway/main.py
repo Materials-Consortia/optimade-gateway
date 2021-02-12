@@ -45,23 +45,27 @@ for prefix in list(BASE_URL_PREFIXES.values()) + [""]:
 
 
 @APP.on_event("startup")
-async def ci_startup():
-    """Function to run at app startup - only relevant for CI to add test data"""
+async def ci_dev_startup():
+    """Function to run at app startup - only relevant for CI or development to add test data"""
     import os
     from optimade_gateway.common.logger import LOGGER
 
-    if not bool(os.getenv("CI", False)):
-        LOGGER.debug("Not in CI - will start normally.")
+    if bool(os.getenv("CI", False)):
+        LOGGER.info(
+            "CI detected - Will load test gateways (after dropping the collection)!"
+        )
+    elif os.getenv("OPTIMADE_GATEWAY_MONGO_DATABASE", "") == "optimade_gateway_dev":
+        LOGGER.info(
+            "Running in development mode - Will load test gateways (after dropping the collection)!"
+        )
+    else:
+        LOGGER.debug("Not in CI or development mode - will start normally.")
         return
 
     # Add test gateways
     import json
     from optimade_gateway.mongo.database import MONGO_DB
     from pathlib import Path
-
-    LOGGER.info(
-        "CI detected - Will load test gateways (after dropping the collection)!"
-    )
 
     collection = "gateways"
     test_data = (

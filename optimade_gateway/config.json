@@ -5,7 +5,7 @@
     "mongo_database": "optimade_gateway",
     "page_limit": 20,
     "page_limit_max": 500,
-    "base_url": null,
+    "base_url": "http://localhost:8000",
     "implementation": {
         "name": "OPTIMADE Gateway",
         "version": "0.1.0",
