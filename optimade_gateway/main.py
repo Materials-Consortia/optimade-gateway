@@ -15,7 +15,7 @@ APP = FastAPI(
 )
 
 
-@APP.get("/")
+@APP.get("/", include_in_schema=False)
 async def get_root(request: Request) -> RedirectResponse:
     """Get /
 
@@ -37,9 +37,11 @@ for exception, handler in OPTIMADE_EXCEPTIONS:
     APP.add_exception_handler(exception, handler)
 
 # Add endpoints to / and /vMAJOR
-for prefix in ("", BASE_URL_PREFIXES["major"]):
+for prefix in list(BASE_URL_PREFIXES.values()) + [""]:
     for endpoint in (gateways, structures):
-        APP.include_router(endpoint.ROUTER, prefix=prefix)
+        APP.include_router(
+            endpoint.ROUTER, prefix=prefix, include_in_schema=prefix == ""
+        )
 
 
 @APP.on_event("startup")
