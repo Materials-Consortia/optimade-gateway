@@ -6,7 +6,11 @@ from optimade.server.middleware import OPTIMADE_MIDDLEWARE
 from optimade.server.routers.utils import BASE_URL_PREFIXES
 
 from optimade_gateway import __version__
-from optimade_gateway.routers import gateways, structures
+from optimade_gateway.routers import (
+    gateways,
+    info,
+    structures,
+)
 
 APP = FastAPI(
     title="OPTIMADE Gateway",
@@ -38,10 +42,8 @@ for exception, handler in OPTIMADE_EXCEPTIONS:
 
 # Add endpoints to / and /vMAJOR
 for prefix in list(BASE_URL_PREFIXES.values()) + [""]:
-    for endpoint in (gateways, structures):
-        APP.include_router(
-            endpoint.ROUTER, prefix=prefix, include_in_schema=prefix == ""
-        )
+    for router in (gateways, info, structures):
+        APP.include_router(router.ROUTER, prefix=prefix, include_in_schema=prefix == "")
 
 
 @APP.on_event("startup")
