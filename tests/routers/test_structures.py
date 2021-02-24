@@ -1,5 +1,6 @@
 """Tests for /gateways/{gateway_id}/structures endpoints"""
 # pylint: disable=import-error,no-name-in-module
+import json
 import pytest
 
 
@@ -8,7 +9,7 @@ pytestmark = pytest.mark.asyncio
 
 async def test_get_structures(client, get_gateway):
     """Test GET /gateways/{gateway_id}/structures"""
-    from optimade.models import StructureResponseMany, StructureResource
+    from optimade.models import StructureResponseMany
     from optimade_gateway.common.config import CONFIG
     import requests
 
@@ -54,17 +55,15 @@ async def test_get_structures(client, get_gateway):
 
     data.sort(key=lambda datum: datum["id"])
     data.sort(key=lambda datum: "/".join(datum["id"].split("/")[1:]))
-    assert data == [
-        _.dict() if isinstance(_, StructureResource) else _ for _ in response.data
-    ], (
-        f"IDs in test not in response: {set([_['id'] for _ in data]) - set([_.id if isinstance(_, StructureResource) else _['id'] for _ in response.data])}\n\n"
-        f"IDs in response not in test: {set([_.id if isinstance(_, StructureResource) else _['id'] for _ in response.data]) - set([_['id'] for _ in data])}\n\n"
+    assert data == json.loads(response.json(exclude_unset=True))["data"], (
+        f"IDs in test not in response: {set([_['id'] for _ in data]) - set([_['id'] for _ in json.loads(response.json(exclude_unset=True))['data']])}\n\n"
+        f"IDs in response not in test: {set([_['id'] for _ in json.loads(response.json(exclude_unset=True))['data']]) - set([_['id'] for _ in data])}\n\n"
     )
 
 
 async def test_get_single_structure(client, get_gateway):
     """TEST GET /gateways/{gateway_id}/structures/{structure_id}"""
-    from optimade.models import StructureResponseOne, StructureResource
+    from optimade.models import StructureResponseOne
     import requests
 
     gateway_id = "singledb"
@@ -99,8 +98,4 @@ async def test_get_single_structure(client, get_gateway):
         db_response["meta"]["more_data_available"] == response.meta.more_data_available
     )
 
-    assert (
-        db_response["data"] == response.data.dict()
-        if isinstance(response.data, StructureResource)
-        else response.data
-    )
+    assert db_response["data"] == json.loads(response.json(exclude_unset=True))["data"]
