@@ -1,27 +1,19 @@
 import concurrent.futures
 import os
-import requests
 import sys
 from typing import Union
 import urllib
 import warnings
 
-try:
-    import simplejson as json
-except ImportError:
-    import json
-
 from fastapi import APIRouter, Depends, Request
 from optimade.models import (
-    EntryResponseMany,
-    EntryResponseOne,
     ErrorResponse,
-    LinksResource,
+    Meta,
     StructureResponseMany,
     StructureResponseOne,
     ToplevelLinks,
 )
-from optimade.server.exceptions import BadRequest
+from optimade.server.exceptions import BadRequest, VersionNotSupported
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.server.routers.utils import meta_values, BASE_URL_PREFIXES
 
@@ -48,9 +40,9 @@ async def get_structures(
     Return a regular /structures response for an OPTIMADE implementation,
     including responses from all the gateway's databases.
     """
-    from optimade.models import Meta
     from optimade.server.routers.utils import get_base_url
     from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
+    from optimade_gateway.routers.utils import db_find
 
     if not await GATEWAYS_COLLECTION.exists(gateway_id):
         raise BadRequest(
@@ -184,8 +176,13 @@ async def get_single_structure(
     structure_id: str,
     params: SingleEntryQueryParams = Depends(),
 ) -> Union[StructureResponseOne, ErrorResponse]:
-    from optimade.models import Meta
+    """GET /gateways/{gateway_id}/structures/{structure_id}
+
+    Return a regular /structures/{id} response for an OPTIMADE implementation.
+    The structure_id must be of the type {database}/{id}.
+    """
     from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
+    from optimade_gateway.routers.utils import adb_find
 
     if not await GATEWAYS_COLLECTION.exists(gateway_id):
         raise BadRequest(
@@ -268,93 +265,6 @@ async def get_single_structure(
     return StructureResponseOne(links=ToplevelLinks(next=None), data=result, meta=meta)
 
 
-def db_find(
-    database: LinksResource,
-    endpoint: str,
-    response_model: Union[EntryResponseMany, EntryResponseOne],
-    query_params: str = "",
-) -> Union[ErrorResponse, EntryResponseMany, EntryResponseOne]:
-    """Imitate Collection.find for any given database for entry-resource endpoints
-
-    Parameters:
-        database: The OPTIMADE implementation to be queried.
-        endpoint: The entry-listing endpoint, e.g., `"structures"`.
-        response_model: The expected OPTIMADE pydantic response model, e.g., `optimade.models.StructureResponseMany`.
-        query_params: URL query parameters to pass to the database.
-
-    Results:
-        Response as an OPTIMADE pydantic model, depending on whether it was a successful or unsuccessful response.
-
-    """
-    from optimade import __api_version__
-    from pydantic import ValidationError
-
-    url = f"{str(database.attributes.base_url).strip('/')}{BASE_URL_PREFIXES['major']}/{endpoint.strip('/')}?{query_params}"
-    response = requests.get(url, timeout=60)
-
-    try:
-        response = response.json()
-    except json.JSONDecodeError:
-        return ErrorResponse(
-            errors=[
-                {
-                    "detail": f"Could not JSONify response from {url}",
-                    "id": "OPTIMADE_GATEWAY_DB_FIND_MANY_JSONDECODEERROR",
-                }
-            ],
-            meta={
-                "query": {"representation": f"/{endpoint.strip('/')}?{query_params}"},
-                "api_version": __api_version__,
-                "more_data_available": False,
-            },
-        )
-
-    try:
-        response = response_model(**response)
-    except ValidationError:
-        try:
-            response = ErrorResponse(**response)
-        except ValidationError as exc:
-            return ErrorResponse(
-                errors=[
-                    {
-                        "detail": f"Could not pass response from {url} as either a {response_model.__name__!r} or 'ErrorResponse'. ValidationError: {exc}",
-                        "id": "OPTIMADE_GATEWAY_DB_FIND_MANY_VALIDATIONERROR",
-                    }
-                ],
-                meta={
-                    "query": {
-                        "representation": f"/{endpoint.strip('/')}?{query_params}"
-                    },
-                    "api_version": __api_version__,
-                    "more_data_available": False,
-                },
-            )
-
-    return response
-
-
-async def adb_find(
-    database: LinksResource,
-    endpoint: str,
-    response_model: Union[EntryResponseMany, EntryResponseOne],
-    query_params: str = "",
-) -> Union[ErrorResponse, EntryResponseMany, EntryResponseOne]:
-    """The asynchronous version of `optimade_gateway.routers.structures:db_find()`.
-
-    Parameters:
-        database: The OPTIMADE implementation to be queried.
-        endpoint: The entry-listing endpoint, e.g., `"structures"`.
-        response_model: The expected OPTIMADE pydantic response model, e.g., `optimade.models.StructureResponseMany`.
-        query_params: URL query parameters to pass to the database.
-
-    Results:
-        Response as an OPTIMADE pydantic model, depending on whether it was a successful or unsuccessful response.
-
-    """
-    return db_find(database, endpoint, response_model, query_params)
-
-
 @ROUTER.get(
     "/gateways/{gateway_id}/{version}/structures",
     response_model=Union[StructureResponseMany, ErrorResponse],
@@ -370,8 +280,10 @@ async def get_versioned_structures(
     version: str,
     params: EntryListingQueryParams = Depends(),
 ) -> Union[StructureResponseMany, ErrorResponse]:
-    from optimade.server.exceptions import VersionNotSupported
+    """GET /gateways/{gateway_id}/{version}/structures
 
+    Same as GET /gateways/{gateway_id}/structures.
+    """
     valid_versions = [_[1:] for _ in BASE_URL_PREFIXES.values()]
 
     if version not in valid_versions:
@@ -405,8 +317,10 @@ async def get_versioned_single_structure(
     structure_id: str,
     params: SingleEntryQueryParams = Depends(),
 ) -> Union[StructureResponseOne, ErrorResponse]:
-    from optimade.server.exceptions import VersionNotSupported
+    """GET /gateways/{gateway_id}/{version}/structures/{structure_id}
 
+    Same as GET /gateways/{gateway_id}/structures/{structure_id}.
+    """
     valid_versions = [_[1:] for _ in BASE_URL_PREFIXES.values()]
 
     if version not in valid_versions:
