@@ -138,12 +138,12 @@ async def get_structures(
 
     # Sort results over two steps, first by database id,
     # and then by (original) "id", since "id" MUST always be present.
-    if getattr(params, "response_fields", False):
-        results.sort(key=lambda data: data["id"])
-        results.sort(key=lambda data: "/".join(data["id"].split("/")[1:]))
-    else:
-        results.sort(key=lambda data: data.id)
-        results.sort(key=lambda data: "/".join(data.id.split("/")[1:]))
+    results.sort(key=lambda data: data["id"] if "id" in data else data.id)
+    results.sort(
+        key=lambda data: "/".join(data["id"].split("/")[1:])
+        if "id" in data
+        else "/".join(data.id.split("/")[1:])
+    )
 
     if more_data_available:
         # Deduce the `next` link from the current request
