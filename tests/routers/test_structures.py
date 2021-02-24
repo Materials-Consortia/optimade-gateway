@@ -54,11 +54,11 @@ async def test_get_structures(client, get_gateway):
 
     data.sort(key=lambda datum: datum["id"])
     data.sort(key=lambda datum: "/".join(datum["id"].split("/")[1:]))
-    assert [StructureResource(**_).dict() for _ in data] == [
-        _.dict() for _ in response.data
+    assert data == [
+        _.dict() if isinstance(_, StructureResource) else _ for _ in response.data
     ], (
-        f"IDs in test not in response: {set([_['id'] for _ in data]) - set([_.id for _ in response.data])}\n\n"
-        f"IDs in response not in test: {set([_.id for _ in response.data]) - set([_['id'] for _ in data])}\n\n"
+        f"IDs in test not in response: {set([_['id'] for _ in data]) - set([_.id if isinstance(_, StructureResource) else _['id'] for _ in response.data])}\n\n"
+        f"IDs in response not in test: {set([_.id if isinstance(_, StructureResource) else _['id'] for _ in response.data]) - set([_['id'] for _ in data])}\n\n"
     )
 
 
@@ -99,4 +99,8 @@ async def test_get_single_structure(client, get_gateway):
         db_response["meta"]["more_data_available"] == response.meta.more_data_available
     )
 
-    assert StructureResource(**db_response["data"]).dict() == response.data.dict()
+    assert (
+        db_response["data"] == response.data.dict()
+        if isinstance(response.data, StructureResource)
+        else response.data
+    )
