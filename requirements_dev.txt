@@ -1,4 +1,4 @@
-httpx~=0.16.1
+httpx~=0.17.0
 pre-commit~=2.10
 pylint~=2.7
 pytest~=6.2
