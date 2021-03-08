@@ -5,72 +5,72 @@ from optimade.server.query_params import EntryListingQueryParams
 from pydantic import BaseModel, EmailStr, Field
 
 
-query_parameters = EntryListingQueryParams()
+QUERY_PARAMETERS = EntryListingQueryParams()
 
 
 class OptimadeQueryParameters(BaseModel):
     """Common OPTIMADE entry listing endpoint query parameters."""
 
     filter: Optional[str] = Field(
-        query_parameters.filter.default,
-        description=query_parameters.filter.description,
+        QUERY_PARAMETERS.filter.default,
+        description=QUERY_PARAMETERS.filter.description,
     )
     response_format: Optional[str] = Field(
-        query_parameters.response_format.default,
-        description=query_parameters.response_format.description,
+        QUERY_PARAMETERS.response_format.default,
+        description=QUERY_PARAMETERS.response_format.description,
     )
     email_address: Optional[EmailStr] = Field(
-        query_parameters.email_address.default,
-        description=query_parameters.email_address.description,
+        QUERY_PARAMETERS.email_address.default,
+        description=QUERY_PARAMETERS.email_address.description,
     )
     response_fields: Optional[str] = Field(
-        query_parameters.response_fields.default,
-        description=query_parameters.response_fields.description,
-        regex=query_parameters.response_fields.regex,
+        QUERY_PARAMETERS.response_fields.default,
+        description=QUERY_PARAMETERS.response_fields.description,
+        regex=QUERY_PARAMETERS.response_fields.regex,
     )
     sort: Optional[str] = Field(
-        query_parameters.sort.default,
-        description=query_parameters.sort.description,
-        regex=query_parameters.sort.regex,
+        QUERY_PARAMETERS.sort.default,
+        description=QUERY_PARAMETERS.sort.description,
+        regex=QUERY_PARAMETERS.sort.regex,
     )
     page_limit: Optional[int] = Field(
-        query_parameters.page_limit.default,
-        description=query_parameters.page_limit.description,
-        ge=query_parameters.page_limit.ge,
+        QUERY_PARAMETERS.page_limit.default,
+        description=QUERY_PARAMETERS.page_limit.description,
+        ge=QUERY_PARAMETERS.page_limit.ge,
     )
     page_offset: Optional[int] = Field(
-        query_parameters.page_offset.default,
-        description=query_parameters.page_offset.description,
-        ge=query_parameters.page_offset.ge,
+        QUERY_PARAMETERS.page_offset.default,
+        description=QUERY_PARAMETERS.page_offset.description,
+        ge=QUERY_PARAMETERS.page_offset.ge,
     )
     page_number: Optional[int] = Field(
-        query_parameters.page_number.default,
-        description=query_parameters.page_number.description,
-        ge=query_parameters.page_number.ge,
+        QUERY_PARAMETERS.page_number.default,
+        description=QUERY_PARAMETERS.page_number.description,
+        ge=QUERY_PARAMETERS.page_number.ge,
     )
     page_cursor: Optional[int] = Field(
-        query_parameters.page_cursor.default,
-        description=query_parameters.page_cursor.description,
-        ge=query_parameters.page_cursor.ge,
+        QUERY_PARAMETERS.page_cursor.default,
+        description=QUERY_PARAMETERS.page_cursor.description,
+        ge=QUERY_PARAMETERS.page_cursor.ge,
     )
     page_above: Optional[int] = Field(
-        query_parameters.page_above.default,
-        description=query_parameters.page_above.description,
-        ge=query_parameters.page_above.ge,
+        QUERY_PARAMETERS.page_above.default,
+        description=QUERY_PARAMETERS.page_above.description,
+        ge=QUERY_PARAMETERS.page_above.ge,
     )
     page_below: Optional[int] = Field(
-        query_parameters.page_below.default,
-        description=query_parameters.page_below.description,
-        ge=query_parameters.page_below.ge,
+        QUERY_PARAMETERS.page_below.default,
+        description=QUERY_PARAMETERS.page_below.description,
+        ge=QUERY_PARAMETERS.page_below.ge,
     )
     include: Optional[str] = Field(
-        query_parameters.include.default,
-        description=query_parameters.include.description,
+        QUERY_PARAMETERS.include.default,
+        description=QUERY_PARAMETERS.include.description,
     )
     # api_hint: Optional[str] = Field(
-    #     query_parameters.api_hint.default,
-    #     description=query_parameters.api_hint.description,
-    #     regex=query_parameters.api_hint.regex,
+    #     QUERY_PARAMETERS.api_hint.default,
+    #     description=QUERY_PARAMETERS.api_hint.description,
+    #     regex=QUERY_PARAMETERS.api_hint.regex,
     # )
 
 

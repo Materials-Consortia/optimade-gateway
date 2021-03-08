@@ -27,8 +27,8 @@ The OPTIMADE gateway resource object has just been created or found according to
     )
 
 
-class GatewayStructuresResponse(EntryResponseOne):
-    """Successful response for GET /gateways/{gateway_ID}/structures"""
+class GatewaysQueriesResponse(EntryResponseOne):
+    """Successful response for GET /gateways/{gateway_ID}/queries"""
 
     data: Union[GatewayQueryResource, Dict[str, Any], None] = Field(
         ..., description="A unique OPTIMADE gateway query resource object."

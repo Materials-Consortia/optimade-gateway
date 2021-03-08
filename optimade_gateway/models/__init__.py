@@ -9,7 +9,7 @@ from .queries import GatewayQueryResource
 from .responses import (
     GatewaysResponse,
     GatewaysResponseSingle,
-    GatewayStructuresResponse,
+    GatewaysQueriesResponse,
 )
 
 
@@ -18,7 +18,7 @@ __all__ = (
     "GatewayResource",
     "GatewayResourceAttributes",
     "GatewayQueryResource",
+    "GatewaysQueriesResponse",
     "GatewaysResponse",
     "GatewaysResponseSingle",
-    "GatewayStructuresResponse",
 )

@@ -37,42 +37,44 @@ class GatewayResourceAttributes(EntryResourceAttributes):
     )
 
     @validator("databases", each_item=True)
-    def no_index_databases(cls, v):
+    def no_index_databases(cls, value: LinksResource) -> LinksResource:
         """Ensure databases are not of type "root" and "providers"
 
         NOTE: Both "external" and "child" can still represent index meta-dbs,
         but "root" and "providers" can not represent "regular" dbs.
         """
-        if v.attributes.link_type in (LinkType.ROOT, LinkType.PROVIDERS):
+        if value.attributes.link_type in (LinkType.ROOT, LinkType.PROVIDERS):
             raise ValueError(
                 "Databases with 'root' or 'providers' link_type is not allowed for gateway resources. "
-                f"Given database: {v}"
+                f"Given database: {value}"
             )
-        return v
+        return value
 
     @validator("databases")
-    def unique_base_urls(cls, v):
+    def unique_base_urls(cls, value: List[LinksResource]) -> List[LinksResource]:
         """Remove extra entries with repeated base_urls"""
-        db_base_urls = [_.attributes.base_url for _ in v]
+        db_base_urls = [_.attributes.base_url for _ in value]
         unique_base_urls = set(db_base_urls)
         if len(db_base_urls) == len(unique_base_urls):
-            return v
+            return value
 
         if len(db_base_urls) < len(unique_base_urls):
             raise OptimadeGatewayError(
-                f"The number of DBs with unique base_urls should never be less than the total number of DBs. List of DBs: {v}"
+                f"The number of DBs with unique base_urls should never be less than the total number of DBs. List of DBs: {value}"
             )
 
         repeated_base_urls = [_ for _ in unique_base_urls if db_base_urls.count(_) > 1]
         new_databases = [
-            _ for _ in v if _.attributes.base_url not in repeated_base_urls
+            _ for _ in value if _.attributes.base_url not in repeated_base_urls
         ]
         for base_url in repeated_base_urls:
-            new_databases.append([_ for _ in v if _.attributes.base_url == base_url][0])
+            new_databases.append(
+                [_ for _ in value if _.attributes.base_url == base_url][0]
+            )
         warnings.warn(
             "Removed extra database entries for a gateway, because the base_url was repeated. "
             "The first found database entry was kept, while the others were removed. "
-            f"Original number of databases: {len(v)}. New number of databases: {len(new_databases)}"
+            f"Original number of databases: {len(value)}. New number of databases: {len(new_databases)}"
             "Repeated base_urls (number of repeats): {}".format(
                 [
                     f"{base_url} ({db_base_urls.count(base_url)})"
