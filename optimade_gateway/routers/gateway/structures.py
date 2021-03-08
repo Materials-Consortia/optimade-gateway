@@ -13,11 +13,11 @@ from optimade.models import (
     StructureResponseOne,
     ToplevelLinks,
 )
-from optimade.server.exceptions import BadRequest, VersionNotSupported
+from optimade.server.exceptions import BadRequest
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
-from optimade.server.routers.utils import meta_values, BASE_URL_PREFIXES
+from optimade.server.routers.utils import meta_values
 
-from optimade_gateway.models import GatewayResource
+from optimade_gateway.routers.gateway.utils import get_valid_gateway, validate_version
 
 ROUTER = APIRouter(redirect_slashes=True)
 
@@ -41,19 +41,9 @@ async def get_structures(
     including responses from all the gateway's databases.
     """
     from optimade.server.routers.utils import get_base_url
-    from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
-    from optimade_gateway.routers.utils import db_find
+    from optimade_gateway.routers.gateway.utils import db_find
 
-    if not await GATEWAYS_COLLECTION.exists(gateway_id):
-        raise BadRequest(
-            title="Not Found",
-            status_code=404,
-            detail=f"gateway <id={gateway_id}> not found.",
-        )
-
-    gateway: GatewayResource = await GATEWAYS_COLLECTION.get_one(
-        filter={"id": gateway_id}
-    )
+    gateway = await get_valid_gateway(gateway_id)
 
     more_data_available = False
     data_available = 0
@@ -181,19 +171,9 @@ async def get_single_structure(
     Return a regular /structures/{id} response for an OPTIMADE implementation.
     The structure_id must be of the type {database}/{id}.
     """
-    from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
-    from optimade_gateway.routers.utils import adb_find
+    from optimade_gateway.routers.gateway.utils import adb_find
 
-    if not await GATEWAYS_COLLECTION.exists(gateway_id):
-        raise BadRequest(
-            title="Not Found",
-            status_code=404,
-            detail=f"gateway <id={gateway_id}> not found.",
-        )
-
-    gateway: GatewayResource = await GATEWAYS_COLLECTION.get_one(
-        filter={"id": gateway_id}
-    )
+    gateway = await get_valid_gateway(gateway_id)
 
     local_structure_id = None
     for database in gateway.attributes.databases:
@@ -284,20 +264,7 @@ async def get_versioned_structures(
 
     Same as GET /gateways/{gateway_id}/structures.
     """
-    valid_versions = [_[1:] for _ in BASE_URL_PREFIXES.values()]
-
-    if version not in valid_versions:
-        if version.startswith("v"):
-            raise VersionNotSupported(
-                detail=f"version {version} is not supported. Supported versions: {valid_versions}"
-            )
-        else:
-            raise BadRequest(
-                title="Not Found",
-                status_code=404,
-                detail=f"version MUST be one of {valid_versions}",
-            )
-
+    await validate_version(version)
     return await get_structures(request, gateway_id, params)
 
 
@@ -321,18 +288,5 @@ async def get_versioned_single_structure(
 
     Same as GET /gateways/{gateway_id}/structures/{structure_id}.
     """
-    valid_versions = [_[1:] for _ in BASE_URL_PREFIXES.values()]
-
-    if version not in valid_versions:
-        if version.startswith("v"):
-            raise VersionNotSupported(
-                detail=f"version {version} is not supported. Supported versions: {valid_versions}"
-            )
-        else:
-            raise BadRequest(
-                title="Not Found",
-                status_code=404,
-                detail=f"version MUST be one of {valid_versions}",
-            )
-
+    await validate_version(version)
     return await get_single_structure(request, gateway_id, structure_id, params)

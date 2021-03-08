@@ -12,9 +12,12 @@ from optimade.models import (
     ErrorResponse,
     LinksResource,
 )
+from optimade.server.exceptions import BadRequest, VersionNotSupported
 from optimade.server.routers.utils import BASE_URL_PREFIXES
 from pydantic import ValidationError
 import requests
+
+from optimade_gateway.models.gateways import GatewayResource
 
 
 def db_find(
@@ -99,3 +102,34 @@ async def adb_find(
 
     """
     return db_find(database, endpoint, response_model, query_params)
+
+
+async def validate_version(version: str) -> None:
+    """Validate version according to `optimade` package"""
+    valid_versions = [_[1:] for _ in BASE_URL_PREFIXES.values()]
+
+    if version not in valid_versions:
+        if version.startswith("v"):
+            raise VersionNotSupported(
+                detail=f"version {version} is not supported. Supported versions: {valid_versions}"
+            )
+        else:
+            raise BadRequest(
+                title="Not Found",
+                status_code=404,
+                detail=f"version MUST be one of {valid_versions}",
+            )
+
+
+async def get_valid_gateway(gateway_id: str) -> GatewayResource:
+    """Validate and retrieve a gateway"""
+    from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
+
+    if not await GATEWAYS_COLLECTION.exists(gateway_id):
+        raise BadRequest(
+            title="Not Found",
+            status_code=404,
+            detail=f"gateway <id={gateway_id}> not found.",
+        )
+
+    return await GATEWAYS_COLLECTION.get_one(filter={"id": gateway_id})
