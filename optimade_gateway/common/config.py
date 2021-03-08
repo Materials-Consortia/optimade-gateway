@@ -15,7 +15,12 @@ class ServerConfig(OptimadeServerConfig):
     """
 
     gateways_collection: str = Field(
-        "gateways", description="Mongo collection name for /gateways endpoint resources"
+        "gateways",
+        description="Mongo collection name for /gateways endpoint resources.",
+    )
+    queries_collection: str = Field(
+        "queries",
+        description="Mongo collection name for /gateways/{gateway_id}/queries endpoint resources.",
     )
 
     @validator("mongo_uri")
