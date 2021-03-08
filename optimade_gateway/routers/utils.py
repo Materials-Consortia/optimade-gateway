@@ -44,8 +44,8 @@ async def get_entries(
         data=results,
         meta=meta_values(
             url=request.url,
-            data_returned=collection.data_returned,
-            data_available=collection.data_available,
+            data_returned=await collection.count(params=params),
+            data_available=await collection.count(),
             more_data_available=more_data_available,
         ),
     )

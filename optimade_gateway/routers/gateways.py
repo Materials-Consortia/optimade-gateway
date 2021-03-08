@@ -28,7 +28,6 @@ GATEWAYS_COLLECTION = AsyncMongoCollection(
     collection=MONGO_DB[CONFIG.gateways_collection],
     resource_cls=GatewayResource,
     resource_mapper=GatewaysMapper,
-    cached_properties=[],  # Don't use in-memory caching
 )
 
 
@@ -100,9 +99,9 @@ async def post_gateways(
             url=request.url,
             data_returned=1,
             data_available=(
-                GATEWAYS_COLLECTION.data_available + 1
+                await GATEWAYS_COLLECTION.count() + 1
                 if created
-                else GATEWAYS_COLLECTION.data_available
+                else await GATEWAYS_COLLECTION.count()
             ),
             more_data_available=more_data_available,
             _optimade_gateway_created=created,
