@@ -4,6 +4,7 @@ import urllib
 
 from fastapi import Request
 from optimade.models import EntryResponseMany, ToplevelLinks
+from optimade.server.exceptions import BadRequest
 from optimade.server.schemas import retrieve_queryable_properties
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import (
@@ -71,3 +72,13 @@ async def aretrieve_queryable_properties(
         schema=schema,
         queryable_properties=queryable_properties,
     )
+
+
+async def validate_resource(collection: AsyncMongoCollection, entry_id: str) -> None:
+    """Validate whether a resource exists in a collection"""
+    if not await collection.exists(entry_id):
+        raise BadRequest(
+            title="Not Found",
+            status_code=404,
+            detail=f"Resource <id={entry_id}> not found in {collection}.",
+        )

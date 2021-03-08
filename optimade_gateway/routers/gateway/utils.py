@@ -7,6 +7,7 @@ except ImportError:
 
 from optimade import __api_version__
 from optimade.models import (
+    EntryResource,
     EntryResponseMany,
     EntryResponseOne,
     ErrorResponse,
@@ -17,7 +18,8 @@ from optimade.server.routers.utils import BASE_URL_PREFIXES
 from pydantic import ValidationError
 import requests
 
-from optimade_gateway.models.gateways import GatewayResource
+from optimade_gateway.mongo.collection import AsyncMongoCollection
+from optimade_gateway.routers.utils import validate_resource
 
 
 def db_find(
@@ -121,15 +123,9 @@ async def validate_version(version: str) -> None:
             )
 
 
-async def get_valid_gateway(gateway_id: str) -> GatewayResource:
-    """Validate and retrieve a gateway"""
-    from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
-
-    if not await GATEWAYS_COLLECTION.exists(gateway_id):
-        raise BadRequest(
-            title="Not Found",
-            status_code=404,
-            detail=f"gateway <id={gateway_id}> not found.",
-        )
-
-    return await GATEWAYS_COLLECTION.get_one(filter={"id": gateway_id})
+async def get_valid_resource(
+    collection: AsyncMongoCollection, entry_id: str
+) -> EntryResource:
+    """Validate and retrieve a resource"""
+    await validate_resource(collection, entry_id)
+    return await collection.get_one(filter={"id": entry_id})

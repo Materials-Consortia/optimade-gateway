@@ -124,15 +124,9 @@ async def get_gateway(request: Request, gateway_id: str) -> GatewaysResponseSing
     Represent an OPTIMADE server.
     NOTE: For now, redirect to the gateway's /structures entry listing endpoint
     """
-    from optimade.server.exceptions import BadRequest
+    from optimade_gateway.routers.utils import validate_resource
 
-    if not await GATEWAYS_COLLECTION.exists(gateway_id):
-        raise BadRequest(
-            title="Not Found",
-            status_code=404,
-            detail=f"gateway <id={gateway_id}> not found.",
-        )
-
+    await validate_resource(GATEWAYS_COLLECTION, gateway_id)
     return RedirectResponse(
         request.url.replace(path=f"{request.url.path.rstrip('/')}/structures")
     )

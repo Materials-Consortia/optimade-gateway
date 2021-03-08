@@ -17,7 +17,8 @@ from optimade.server.exceptions import BadRequest
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.server.routers.utils import meta_values
 
-from optimade_gateway.routers.gateway.utils import get_valid_gateway, validate_version
+from optimade_gateway.routers.gateway.utils import get_valid_resource, validate_version
+from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
 
 ROUTER = APIRouter(redirect_slashes=True)
 
@@ -43,7 +44,7 @@ async def get_structures(
     from optimade.server.routers.utils import get_base_url
     from optimade_gateway.routers.gateway.utils import db_find
 
-    gateway = await get_valid_gateway(gateway_id)
+    gateway = await get_valid_resource(GATEWAYS_COLLECTION, gateway_id)
 
     more_data_available = False
     data_available = 0
@@ -173,7 +174,7 @@ async def get_single_structure(
     """
     from optimade_gateway.routers.gateway.utils import adb_find
 
-    gateway = await get_valid_gateway(gateway_id)
+    gateway = await get_valid_resource(GATEWAYS_COLLECTION, gateway_id)
 
     local_structure_id = None
     for database in gateway.attributes.databases:
