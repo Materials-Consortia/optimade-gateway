@@ -19,7 +19,6 @@ from pydantic import ValidationError
 import requests
 
 from optimade_gateway.mongo.collection import AsyncMongoCollection
-from optimade_gateway.routers.utils import validate_resource
 
 
 def db_find(
@@ -127,5 +126,7 @@ async def get_valid_resource(
     collection: AsyncMongoCollection, entry_id: str
 ) -> EntryResource:
     """Validate and retrieve a resource"""
+    from optimade_gateway.routers.utils import validate_resource
+
     await validate_resource(collection, entry_id)
     return await collection.get_one(filter={"id": entry_id})
