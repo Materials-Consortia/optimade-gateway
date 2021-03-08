@@ -82,7 +82,7 @@ class GatewayQueryResourceAttributes(EntryResourceAttributes):
         description="""List of OPTIMADE entry resource types.
 These are the OPTIMADE entry resource types that are queried for.""",
     )
-    gateway: int = Field(
+    gateway: str = Field(
         ...,
         description="The OPTIMADE gateway ID for this query.",
     )
