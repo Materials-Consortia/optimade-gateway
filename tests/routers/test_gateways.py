@@ -21,12 +21,15 @@ async def test_get_gateways(client):
     assert not response.meta.more_data_available
 
 
+@pytest.mark.usefixtures("reset_db_after")
 async def test_post_gateways(client):
     """Test POST /gateways"""
     from bson.objectid import ObjectId
     from optimade.models import LinksResource
     from optimade.server.routers.utils import BASE_URL_PREFIXES
     from pydantic import AnyUrl
+
+    from optimade_gateway.common.config import CONFIG
     from optimade_gateway.models.responses import GatewaysResponseSingle
     from optimade_gateway.mongo.database import MONGO_DB
 
@@ -54,7 +57,9 @@ async def test_post_gateways(client):
     response = GatewaysResponseSingle(**response.json())
     assert response
 
-    assert response.meta._optimade_gateway_created, response.meta.dict()
+    assert getattr(
+        response.meta, f"_{CONFIG.provider.prefix}_created"
+    ), response.meta.dict()
 
     datum = response.data
     assert datum, response

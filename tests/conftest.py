@@ -4,7 +4,7 @@ import asyncio
 import json
 import os
 from pathlib import Path
-from typing import Callable
+from typing import Callable, Union
 
 try:
     from typing import Literal
@@ -12,6 +12,44 @@ except ImportError:
     from typing_extensions import Literal
 
 import pytest
+
+
+# UTILITY FUNCTIONS
+
+
+async def setup_db_utility(top_dir: Union[Path, str]) -> None:
+    """Utility function for setting up/resetting the MongoDB
+
+    Parameters:
+        top_dir: Path to the repository's directory.
+
+    """
+    from optimade_gateway.mongo.database import MONGO_DB
+
+    top_dir = Path(top_dir).resolve()
+
+    with open(top_dir.joinpath("tests/static/test_config.json")) as handle:
+        test_config = json.load(handle)
+    assert (
+        MONGO_DB.name == test_config["mongo_database"]
+    ), "Test DB has not been loaded!"
+
+    for resource in ("gateways", "links", "queries"):
+        collection = test_config[f"{resource}_collection"]
+        await MONGO_DB[collection].drop()
+
+        data_file = top_dir.joinpath(f"tests/static/test_{resource}.json")
+        assert (
+            data_file.exists()
+        ), f"Test data file at {data_file} does not seem to exist!"
+
+        with open(data_file) as handle:
+            data = json.load(handle)
+
+        await MONGO_DB[collection].insert_many(data)
+
+
+# PYTEST FIXTURES AND CONFIGURATION
 
 
 def pytest_configure(config):
@@ -39,19 +77,7 @@ def top_dir() -> Path:
 @pytest.fixture(scope="session", autouse=True)
 async def setup_db(top_dir: Path) -> None:
     """Setup test DB"""
-    from optimade_gateway.mongo.database import MONGO_DB
-
-    with open(top_dir.joinpath("tests/static/test_config.json")) as handle:
-        test_db_name = json.load(handle)["mongo_database"]
-    assert MONGO_DB.name == test_db_name, "Test DB has not been loaded!"
-
-    for collection in ("gateways", "links"):
-        await MONGO_DB[collection].drop()
-
-        with open(top_dir.joinpath(f"tests/static/test_{collection}.json")) as handle:
-            data = json.load(handle)
-
-        await MONGO_DB[collection].insert_many(data)
+    await setup_db_utility(top_dir)
 
 
 @pytest.fixture
@@ -99,3 +125,13 @@ def get_gateway() -> Callable:
         return await MONGO_DB["gateways"].find_one({"id": id})
 
     return _get_gateway
+
+
+@pytest.fixture
+async def reset_db_after(top_dir: Path) -> None:
+    """Reset MongoDB with original test data after the test has run"""
+    try:
+        pass
+    finally:
+        # Reset MongoDB
+        await setup_db_utility(top_dir)

@@ -2,6 +2,8 @@
     "debug": false,
     "mongo_uri": "mongodb://{host_ip}:27017",
     "mongo_database": "test_optimade_gateway",
+    "gateways_collection": "gateways",
+    "queries_collection": "queries",
     "page_limit": 20,
     "page_limit_max": 500,
     "base_url": "http://example.org",
