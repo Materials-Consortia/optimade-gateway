@@ -119,13 +119,13 @@ These are the OPTIMADE entry resource types that are queried for.""",
 
 
 class QueryResource(EntryResource):
-    """OPTIMADE gateway query"""
+    """OPTIMADE query resource for a gateway"""
 
     type: str = Field(
-        "gateway_queries",
-        const="gateway_queries",
+        "queries",
+        const="queries",
         description="The name of the type of an entry.",
-        regex="^gateway_queries$",
+        regex="^queries$",
     )
     attributes: QueryResourceAttributes
 

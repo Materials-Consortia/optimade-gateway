@@ -11,10 +11,12 @@ from optimade_gateway.routers import (
     gateways,
     info,
     links,
+    queries,
 )
 from optimade_gateway.routers.gateway import (
     info as gateway_info,
     links as gateway_links,
+    queries as gateway_queries,
     structures,
     versions,
 )
@@ -53,7 +55,12 @@ APP.include_router(versions.ROUTER)
 
 # Add endpoints to / and /vMAJOR
 for prefix in list(BASE_URL_PREFIXES.values()) + [""]:
-    for router in (gateways, info, links) + (gateway_info, gateway_links, structures):
+    for router in (gateways, info, links, queries) + (
+        gateway_info,
+        gateway_links,
+        gateway_queries,
+        structures,
+    ):
         APP.include_router(router.ROUTER, prefix=prefix, include_in_schema=prefix == "")
 
 

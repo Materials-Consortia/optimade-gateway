@@ -33,7 +33,6 @@ QUERIES_COLLECTION = AsyncMongoCollection(
     collection=MONGO_DB[CONFIG.queries_collection],
     resource_cls=QueryResource,
     resource_mapper=QueryMapper,
-    cached_properties=[],  # Don't use in-memory caching
 )
 
 
@@ -135,7 +134,7 @@ async def post_queries(
             data_returned=1,
             data_available=await QUERIES_COLLECTION.count(),
             more_data_available=more_data_available,
-            _optimade_query_created=created,
+            **{f"_{CONFIG.provider.prefix}_created": created},
         ),
     )
 

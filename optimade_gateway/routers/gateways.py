@@ -104,7 +104,7 @@ async def post_gateways(
                 else await GATEWAYS_COLLECTION.count()
             ),
             more_data_available=more_data_available,
-            _optimade_gateway_created=created,
+            **{f"_{CONFIG.provider.prefix}_created": created},
         ),
     )
 
