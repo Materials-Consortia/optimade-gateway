@@ -192,7 +192,7 @@ class AsyncMongoCollection(EntryCollection):
             criteria: Already handled/parsed URL query parameters.
 
         Returns:
-            A list of entry resource objects, the number of returned entries, whether more are available with pagination, fields.
+            A list of entry resource objects, whether more data is available with pagination, and fields.
 
         """
         if (params is None and criteria is None) or (
