@@ -35,7 +35,7 @@ async def setup_db_utility(top_dir: Union[Path, str]) -> None:
     ), "Test DB has not been loaded!"
 
     for resource in ("gateways", "links", "queries"):
-        collection = test_config[f"{resource}_collection"]
+        collection = test_config.get(f"{resource}_collection", resource)
         await MONGO_DB[collection].drop()
 
         data_file = top_dir.joinpath(f"tests/static/test_{resource}.json")
