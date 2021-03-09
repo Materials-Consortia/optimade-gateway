@@ -5,12 +5,12 @@ All pydantic data and response models used to define the API can be found in thi
 """
 
 from .gateways import GatewayCreate, GatewayResource, GatewayResourceAttributes
-from .queries import GatewayQueryCreate, GatewayQueryResource
+from .queries import QueryCreate, QueryResource
 from .responses import (
     GatewaysResponse,
     GatewaysResponseSingle,
-    GatewaysQueriesResponse,
-    GatewaysQueriesResponseSingle,
+    QueriesResponse,
+    QueriesResponseSingle,
 )
 
 
@@ -18,10 +18,10 @@ __all__ = (
     "GatewayCreate",
     "GatewayResource",
     "GatewayResourceAttributes",
-    "GatewayQueryCreate",
-    "GatewayQueryResource",
-    "GatewaysQueriesResponse",
-    "GatewaysQueriesResponseSingle",
     "GatewaysResponse",
     "GatewaysResponseSingle",
+    "QueryCreate",
+    "QueryResource",
+    "QueriesResponse",
+    "QueriesResponseSingle",
 )

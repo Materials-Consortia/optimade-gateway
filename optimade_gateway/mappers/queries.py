@@ -3,10 +3,10 @@ from pydantic import AnyUrl  # pylint: disable=no-name-in-module
 
 from optimade_gateway.common.config import CONFIG
 
-__all__ = ("GatewayQueryMapper",)
+__all__ = ("QueryMapper",)
 
 
-class GatewayQueryMapper(BaseResourceMapper):
+class QueryMapper(BaseResourceMapper):
 
     ENDPOINT = "queries"
 

@@ -85,7 +85,7 @@ class QueryState(Enum):
     FINISHED = "finished"
 
 
-class GatewayQueryResourceAttributes(EntryResourceAttributes):
+class QueryResourceAttributes(EntryResourceAttributes):
     """Attributes for an OPTIMADE gateway query"""
 
     types: List[str] = Field(
@@ -93,7 +93,7 @@ class GatewayQueryResourceAttributes(EntryResourceAttributes):
         description="""List of OPTIMADE entry resource types.
 These are the OPTIMADE entry resource types that are queried for.""",
     )
-    gateway: str = Field(
+    gateway_id: str = Field(
         ...,
         description="The OPTIMADE gateway ID for this query.",
     )
@@ -118,7 +118,7 @@ These are the OPTIMADE entry resource types that are queried for.""",
         return value
 
 
-class GatewayQueryResource(EntryResource):
+class QueryResource(EntryResource):
     """OPTIMADE gateway query"""
 
     type: str = Field(
@@ -127,14 +127,13 @@ class GatewayQueryResource(EntryResource):
         description="The name of the type of an entry.",
         regex="^gateway_queries$",
     )
-    attributes: GatewayQueryResourceAttributes
+    attributes: QueryResourceAttributes
 
 
-class GatewayQueryCreate(GatewayQueryResourceAttributes):
+class QueryCreate(QueryResourceAttributes):
     """Model for creating new Gateway resources in the MongoDB"""
 
     last_modified: Optional[datetime]
-    gateway: Optional[str]
 
     class Config:
         extra = "ignore"
