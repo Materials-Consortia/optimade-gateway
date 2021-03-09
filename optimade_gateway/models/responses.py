@@ -27,9 +27,21 @@ The OPTIMADE gateway resource object has just been created or found according to
     )
 
 
-class GatewaysQueriesResponse(EntryResponseOne):
+class GatewaysQueriesResponse(EntryResponseMany):
     """Successful response for GET /gateways/{gateway_ID}/queries"""
 
+    data: Union[List[GatewayQueryResource], List[Dict[str, Any]]] = Field(
+        ...,
+        description="List of unique OPTIMADE gateway query resource objects.",
+        uniqueItems=True,
+    )
+
+
+class GatewaysQueriesResponseSingle(EntryResponseOne):
+    """Successful response for POST /gateways/{gateway_ID}/queries and GET /gateways/{gateway_ID}/queries/{query_id}"""
+
     data: Union[GatewayQueryResource, Dict[str, Any], None] = Field(
-        ..., description="A unique OPTIMADE gateway query resource object."
+        ...,
+        description="""A unique OPTIMADE gateway query resource object.
+The OPTIMADE gateway query resource object has just been created or found according to the specific query parameter(s) or URL id.""",
     )

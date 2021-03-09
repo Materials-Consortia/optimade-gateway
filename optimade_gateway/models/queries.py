@@ -1,8 +1,10 @@
+from datetime import datetime
+from enum import Enum
 from typing import List, Optional
 
-from optimade.models import EntryResource, EntryResourceAttributes
+from optimade.models import EntryResource, EntryResourceAttributes, EntryResponseMany
 from optimade.server.query_params import EntryListingQueryParams
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, validator
 
 
 QUERY_PARAMETERS = EntryListingQueryParams()
@@ -74,6 +76,15 @@ class OptimadeQueryParameters(BaseModel):
     # )
 
 
+class QueryState(Enum):
+    """Enumeration of possible states for a Gateway Query"""
+
+    CREATED = "created"
+    STARTED = "started"
+    IN_PROGRESS = "in progress"
+    FINISHED = "finished"
+
+
 class GatewayQueryResourceAttributes(EntryResourceAttributes):
     """Attributes for an OPTIMADE gateway query"""
 
@@ -90,6 +101,21 @@ These are the OPTIMADE entry resource types that are queried for.""",
         ...,
         description="OPTIMADE query parameters for entry listing endpoints used for this query.",
     )
+    state: QueryState = Field(
+        QueryState.CREATED, description="Current state of Gateway Query.", title="State"
+    )
+    response: Optional[EntryResponseMany] = Field(
+        None, description="Response from gateway query."
+    )
+
+    @validator("types")
+    def only_allow_structures(cls, value: List[str]) -> List[str]:
+        """Temporarily only allow "structures" as type."""
+        if value != ["structures"]:
+            raise NotImplementedError(
+                'OPTIMADE Gateway temporarily only supports "structures" type, i.e.: types=["structures"]'
+            )
+        return value
 
 
 class GatewayQueryResource(EntryResource):
@@ -102,3 +128,13 @@ class GatewayQueryResource(EntryResource):
         regex="^gateway_queries$",
     )
     attributes: GatewayQueryResourceAttributes
+
+
+class GatewayQueryCreate(GatewayQueryResourceAttributes):
+    """Model for creating new Gateway resources in the MongoDB"""
+
+    last_modified: Optional[datetime]
+    gateway: Optional[str]
+
+    class Config:
+        extra = "ignore"

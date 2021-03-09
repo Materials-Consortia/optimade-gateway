@@ -6,7 +6,6 @@ import warnings
 
 from optimade.models import EntryResource, EntryResourceAttributes, LinksResource
 from optimade.models.links import LinkType
-from optimade.models.utils import OptimadeField, SupportLevel
 from pydantic import Field, validator
 
 from optimade_gateway.common.exceptions import OptimadeGatewayError
@@ -15,22 +14,6 @@ from optimade_gateway.common.exceptions import OptimadeGatewayError
 class GatewayResourceAttributes(EntryResourceAttributes):
     """Attributes for an OPTIMADE gateway"""
 
-    last_modified: Optional[datetime] = OptimadeField(
-        None,
-        description="""Date and time representing when the entry was last modified.
-
-- **Type**: timestamp.
-
-- **Requirements/Conventions**:
-    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
-    - **Query**: MUST be a queryable property with support for all mandatory filter features.
-    - **Response**: REQUIRED in the response unless the query parameter `response_fields` is present and does not include this property.
-
-- **Example**:
-    - As part of JSON response format: `"2007-04-05T14:30:20Z"` (i.e., encoded as an [RFC 3339 Internet Date/Time Format](https://tools.ietf.org/html/rfc3339#section-5.6) string.)""",
-        support=SupportLevel.SHOULD,
-        queryable=SupportLevel.MUST,
-    )
     databases: List[LinksResource] = Field(
         ...,
         description="List of databases (OPTIMADE 'links') to be queried in this gateway.",
@@ -104,6 +87,8 @@ class GatewayResource(EntryResource):
 
 class GatewayCreate(GatewayResourceAttributes):
     """Model for creating new Gateway resources in the MongoDB"""
+
+    last_modified: Optional[datetime]
 
     class Config:
         extra = "ignore"
