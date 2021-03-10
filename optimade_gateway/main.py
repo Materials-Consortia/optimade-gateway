@@ -4,6 +4,7 @@ from fastapi.responses import RedirectResponse
 from optimade.server.exception_handlers import OPTIMADE_EXCEPTIONS
 from optimade.server.middleware import OPTIMADE_MIDDLEWARE
 from optimade.server.routers.utils import BASE_URL_PREFIXES
+from optimade.server.routers.versions import router as versions_router
 
 from optimade_gateway import __version__
 from optimade_gateway.routers import (
@@ -44,6 +45,9 @@ for middleware in OPTIMADE_MIDDLEWARE:
 # Add exception handlers
 for exception, handler in OPTIMADE_EXCEPTIONS:
     APP.add_exception_handler(exception, handler)
+
+# Add special /versions endpoint
+APP.include_router(versions_router)
 
 # Add endpoints to / and /vMAJOR
 for prefix in list(BASE_URL_PREFIXES.values()) + [""]:
