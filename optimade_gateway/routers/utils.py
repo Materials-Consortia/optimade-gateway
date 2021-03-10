@@ -1,8 +1,10 @@
 """Utility functions for all routers"""
+from typing import Tuple
 import urllib
 
 from fastapi import Request
 from optimade.models import EntryResponseMany, ToplevelLinks
+from optimade.server.schemas import retrieve_queryable_properties
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import (
     get_base_url,
@@ -45,4 +47,27 @@ async def get_entries(
             data_available=collection.data_available,
             more_data_available=more_data_available,
         ),
+    )
+
+
+async def aretrieve_queryable_properties(
+    schema: dict, queryable_properties: list
+) -> Tuple[dict, dict]:
+    """Asynchronous implementation of `optimade.server.schemas.retrieve_queryable_properties()`
+
+    Recurisvely loops through the schema of a pydantic model and resolves all references, returning
+    a dictionary of all the OPTIMADE-queryable properties of that model.
+
+    Parameters:
+        schema: The schema of the pydantic model.
+        queryable_properties: The list of properties to find in the schema.
+
+    Returns:
+        A flat dictionary with properties as keys, containing the field description, unit,
+        sortability, support level, queryability and type, where provided.
+
+    """
+    return retrieve_queryable_properties(
+        schema=schema,
+        queryable_properties=queryable_properties,
     )
