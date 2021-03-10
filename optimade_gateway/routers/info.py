@@ -21,7 +21,7 @@ ROUTER = APIRouter(redirect_slashes=True)
     response_model_exclude_unset=True,
     tags=["Info"],
 )
-async def get_info(request: Request) -> Union[InfoResponse, ErrorResponse]:
+async def get_info(request: Request) -> InfoResponse:
     """GET /info
 
     An introspective endpoint for the gateway service.

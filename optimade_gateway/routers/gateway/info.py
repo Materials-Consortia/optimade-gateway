@@ -24,7 +24,7 @@ ROUTER = APIRouter(redirect_slashes=True)
 async def get_gateways_info(
     request: Request,
     gateway_id: str,
-) -> Union[InfoResponse, ErrorResponse]:
+) -> InfoResponse:
     """GET /gateways/{gateway_id}/info
 
     Return a regular /info response for an OPTIMADE implementation,
@@ -83,7 +83,7 @@ async def get_versioned_gateways_info(
     request: Request,
     gateway_id: str,
     version: str,
-) -> Union[InfoResponse, ErrorResponse]:
+) -> InfoResponse:
     """GET /gateways/{gateway_id}/{version}/info
 
     Same as GET /gateways/{gateway_id}/info.

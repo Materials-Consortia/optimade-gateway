@@ -34,7 +34,7 @@ async def get_structures(
     request: Request,
     gateway_id: str,
     params: EntryListingQueryParams = Depends(),
-) -> Union[StructureResponseMany, ErrorResponse]:
+) -> StructureResponseMany:
     """GET /gateways/{gateway_id}/structures
 
     Return a regular /structures response for an OPTIMADE implementation,
@@ -165,7 +165,7 @@ async def get_single_structure(
     gateway_id: str,
     structure_id: str,
     params: SingleEntryQueryParams = Depends(),
-) -> Union[StructureResponseOne, ErrorResponse]:
+) -> StructureResponseOne:
     """GET /gateways/{gateway_id}/structures/{structure_id}
 
     Return a regular /structures/{id} response for an OPTIMADE implementation.
@@ -259,7 +259,7 @@ async def get_versioned_structures(
     gateway_id: str,
     version: str,
     params: EntryListingQueryParams = Depends(),
-) -> Union[StructureResponseMany, ErrorResponse]:
+) -> StructureResponseMany:
     """GET /gateways/{gateway_id}/{version}/structures
 
     Same as GET /gateways/{gateway_id}/structures.
@@ -283,7 +283,7 @@ async def get_versioned_single_structure(
     version: str,
     structure_id: str,
     params: SingleEntryQueryParams = Depends(),
-) -> Union[StructureResponseOne, ErrorResponse]:
+) -> StructureResponseOne:
     """GET /gateways/{gateway_id}/{version}/structures/{structure_id}
 
     Same as GET /gateways/{gateway_id}/structures/{structure_id}.
