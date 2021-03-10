@@ -45,7 +45,7 @@ async def setup_db(top_dir: Path) -> None:
         test_db_name = json.load(handle)["mongo_database"]
     assert MONGO_DB.name == test_db_name, "Test DB has not been loaded!"
 
-    for collection in ("gateways",):
+    for collection in ("gateways", "links"):
         await MONGO_DB[collection].drop()
 
         with open(top_dir.joinpath(f"tests/static/test_{collection}.json")) as handle:

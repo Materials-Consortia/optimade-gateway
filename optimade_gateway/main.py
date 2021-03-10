@@ -4,9 +4,20 @@ from fastapi.responses import RedirectResponse
 from optimade.server.exception_handlers import OPTIMADE_EXCEPTIONS
 from optimade.server.middleware import OPTIMADE_MIDDLEWARE
 from optimade.server.routers.utils import BASE_URL_PREFIXES
+from optimade.server.routers.versions import router as versions_router
 
 from optimade_gateway import __version__
-from optimade_gateway.routers import gateways, structures
+from optimade_gateway.routers import (
+    gateways,
+    info,
+    links,
+)
+from optimade_gateway.routers.gateway import (
+    info as gateway_info,
+    links as gateway_links,
+    structures,
+    versions,
+)
 
 APP = FastAPI(
     title="OPTIMADE Gateway",
@@ -36,12 +47,14 @@ for middleware in OPTIMADE_MIDDLEWARE:
 for exception, handler in OPTIMADE_EXCEPTIONS:
     APP.add_exception_handler(exception, handler)
 
+# Add the special /versions endpoint(s)
+APP.include_router(versions_router)
+APP.include_router(versions.ROUTER)
+
 # Add endpoints to / and /vMAJOR
 for prefix in list(BASE_URL_PREFIXES.values()) + [""]:
-    for endpoint in (gateways, structures):
-        APP.include_router(
-            endpoint.ROUTER, prefix=prefix, include_in_schema=prefix == ""
-        )
+    for router in (gateways, info, links) + (gateway_info, gateway_links, structures):
+        APP.include_router(router.ROUTER, prefix=prefix, include_in_schema=prefix == "")
 
 
 @APP.on_event("startup")

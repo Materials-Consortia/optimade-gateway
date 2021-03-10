@@ -1,15 +1,10 @@
 from typing import Union
-import urllib
 
 from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import RedirectResponse
 from optimade.models import ErrorResponse, ToplevelLinks
 from optimade.server.query_params import EntryListingQueryParams
-from optimade.server.routers.utils import (
-    get_base_url,
-    handle_response_fields,
-    meta_values,
-)
+from optimade.server.routers.utils import meta_values
 
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.common.logger import LOGGER
@@ -23,6 +18,8 @@ from optimade_gateway.models import (
 )
 from optimade_gateway.mongo.collection import AsyncMongoCollection
 from optimade_gateway.mongo.database import MONGO_DB
+
+from optimade_gateway.routers.utils import get_entries
 
 
 ROUTER = APIRouter(redirect_slashes=True)
@@ -46,38 +43,16 @@ GATEWAYS_COLLECTION = AsyncMongoCollection(
 async def get_gateways(
     request: Request,
     params: EntryListingQueryParams = Depends(),
-) -> Union[GatewaysResponse, ErrorResponse]:
+) -> GatewaysResponse:
     """GET /gateways
 
     Return overview of all (active) gateways.
     """
-    gateways, more_data_available, fields = await GATEWAYS_COLLECTION.find(
-        params=params
-    )
-
-    if more_data_available:
-        # Deduce the `next` link from the current request
-        query = urllib.parse.parse_qs(request.url.query)
-        query["page_offset"] = int(query.get("page_offset", [0])[0]) + len(gateways)
-        urlencoded = urllib.parse.urlencode(query, doseq=True)
-        base_url = get_base_url(request.url)
-
-        links = ToplevelLinks(next=f"{base_url}{request.url.path}?{urlencoded}")
-    else:
-        links = ToplevelLinks(next=None)
-
-    if fields:
-        gateways = handle_response_fields(gateways, fields)
-
-    return GatewaysResponse(
-        links=links,
-        data=gateways,
-        meta=meta_values(
-            url=request.url,
-            data_returned=GATEWAYS_COLLECTION.data_returned,
-            data_available=GATEWAYS_COLLECTION.data_available,
-            more_data_available=more_data_available,
-        ),
+    return await get_entries(
+        collection=GATEWAYS_COLLECTION,
+        response_cls=GatewaysResponse,
+        request=request,
+        params=params,
     )
 
 
@@ -91,7 +66,7 @@ async def get_gateways(
 )
 async def post_gateways(
     request: Request, gateway: GatewayCreate
-) -> Union[GatewaysResponseSingle, ErrorResponse]:
+) -> GatewaysResponseSingle:
     """POST /gateways
 
     Create or return existing gateway according to `gateway`.
@@ -143,9 +118,7 @@ async def post_gateways(
     response_model_exclude_unset=True,
     tags=["Gateways"],
 )
-async def get_gateway(
-    request: Request, gateway_id: str
-) -> Union[GatewaysResponseSingle, ErrorResponse]:
+async def get_gateway(request: Request, gateway_id: str) -> GatewaysResponseSingle:
     """GET /gateways/{gateway ID}
 
     Represent an OPTIMADE server.
