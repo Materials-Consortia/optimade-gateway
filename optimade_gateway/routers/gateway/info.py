@@ -96,9 +96,11 @@ async def get_gateways_entry_info(
     from optimade.models import EntryInfoResource
     from optimade.server.exceptions import BadRequest
 
-    from optimade_gateway.routers.gateway.utils import validate_resource
     from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
-    from optimade_gateway.routers.utils import aretrieve_queryable_properties
+    from optimade_gateway.routers.utils import (
+        aretrieve_queryable_properties,
+        validate_resource,
+    )
 
     await validate_resource(GATEWAYS_COLLECTION, gateway_id)
 
