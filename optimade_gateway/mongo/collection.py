@@ -254,7 +254,7 @@ class AsyncMongoCollection(EntryCollection):
             The newly created document as a pydantic model entry resource.
 
         """
-        resource.last_modified = datetime.now()
+        resource.last_modified = datetime.utcnow()
         result = await self.collection.insert_one(
             await clean_python_types(resource.dict(exclude_unset=True))
         )
