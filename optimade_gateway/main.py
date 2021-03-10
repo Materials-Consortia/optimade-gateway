@@ -16,6 +16,7 @@ from optimade_gateway.routers.gateway import (
     info as gateway_info,
     links as gateway_links,
     structures,
+    versions,
 )
 
 APP = FastAPI(
@@ -46,8 +47,9 @@ for middleware in OPTIMADE_MIDDLEWARE:
 for exception, handler in OPTIMADE_EXCEPTIONS:
     APP.add_exception_handler(exception, handler)
 
-# Add special /versions endpoint
+# Add the special /versions endpoint(s)
 APP.include_router(versions_router)
+APP.include_router(versions.ROUTER)
 
 # Add endpoints to / and /vMAJOR
 for prefix in list(BASE_URL_PREFIXES.values()) + [""]:

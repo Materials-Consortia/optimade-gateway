@@ -1,8 +1,4 @@
-"""Tests for /versions endpoint
-
-As this is not implemented in the current package, but rather used directly from the `optimade`
-package, we just check it exists and returns the response we would expect.
-"""
+"""Tests for /gateways/{gateway_id}/versions endpoint"""
 import pytest
 
 
@@ -13,9 +9,7 @@ async def test_get_versions(client):
     """Test GET /versions"""
     from optimade import __api_version__
 
-    gateway_id = "singledb"
-
-    response = await client(f"/gateways/{gateway_id}/versions")
+    response = await client("/versions")
 
     assert response.status_code == 200, f"Request failed: {response.text}"
 
