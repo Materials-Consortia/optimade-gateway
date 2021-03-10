@@ -31,6 +31,7 @@ async def get_gateways_info(
     including extra information from all the gateway's databases.
     The general information will be a minimum set from the gateway's databases.
     """
+    from optimade_gateway.common.config import CONFIG
     from optimade_gateway.routers.gateway.utils import get_valid_gateway
 
     gateway = await get_valid_gateway(gateway_id)
@@ -43,7 +44,7 @@ async def get_gateways_info(
                 api_version=__api_version__,
                 available_api_versions=[
                     {
-                        "url": f"{get_base_url(request.url)}/v{__api_version__.split('.')[0]}/gateways/{gateway_id}",
+                        "url": f"{get_base_url(request.url)}/v{__api_version__.split('.')[0]}/gateways/{gateway_id}/v{__api_version__.split('.')[0]}",
                         "version": __api_version__,
                     }
                 ],
@@ -58,10 +59,13 @@ async def get_gateways_info(
             data_returned=1,
             data_available=1,
             more_data_available=False,
-            optimade_gateway={
-                "databases": [
-                    {"id": _.id, "type": _.type} for _ in gateway.attributes.databases
-                ],
+            **{
+                f"_{CONFIG.provider.prefix}_gateway": {
+                    "databases": [
+                        {"id": _.id, "type": _.type}
+                        for _ in gateway.attributes.databases
+                    ],
+                }
             },
         ),
     )
