@@ -97,8 +97,8 @@ async def post_queries(
 
     Create or return existing gateway query according to `query`.
     """
+    from optimade_gateway.queries.perform_query import perform_query
     from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
-    from optimade_gateway.routers.utils import perform_query
 
     await validate_resource(GATEWAYS_COLLECTION, query.gateway_id)
 
@@ -156,16 +156,21 @@ async def get_query(
     Return the response from a query
     [`QueryResource.attributes.response`][optimade_gateway.models.queries.QueryResourceAttributes.response].
     """
+    from optimade_gateway.models import QueryState
     from optimade_gateway.routers.gateway.utils import get_valid_resource
 
     query: QueryResource = await get_valid_resource(QUERIES_COLLECTION, query_id)
 
-    if not query.attributes.response or not query.attributes.response.data:
-        query.attributes.response = meta_values(
-            url=request.url,
-            data_returned=0,
-            data_available=None,  # It is at this point unknown
-            more_data_available=False,
+    if query.attributes.state != QueryState.FINISHED:
+        return EntryResponseMany(
+            data=[],
+            meta=meta_values(
+                url=request.url,
+                data_returned=0,
+                data_available=None,  # It is at this point unknown
+                more_data_available=False,
+                **{f"_{CONFIG.provider.prefix}_query": query},
+            ),
         )
 
     return query.attributes.response
