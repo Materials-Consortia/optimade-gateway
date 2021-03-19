@@ -244,11 +244,15 @@ class AsyncMongoCollection(EntryCollection):
 
         return cursor_kwargs
 
-    async def create_one(self, resource: EntryResourceAttributes) -> EntryResource:
+    async def create_one(
+        self, resource: EntryResourceAttributes, set_id: bool = False
+    ) -> EntryResource:
         """Create a new document in the MongoDB collection based on query parameters.
 
         Parameters:
             resource: The resource to be created.
+            set_id: Update the newly created document with an "id" field.
+                The value will be the string representation of the "_id" field.
 
         Returns:
             The newly created document as a pydantic model entry resource.
@@ -264,6 +268,12 @@ class AsyncMongoCollection(EntryCollection):
             self.collection.name,
             result.inserted_id,
         )
+
+        if set_id:
+            LOGGER.debug("Updating resource with an 'id' field.")
+            await self.collection.update_one(
+                {"_id": result.inserted_id}, {"$set": {"id": str(result.inserted_id)}}
+            )
 
         return self.resource_cls(
             **self.resource_mapper.map_back(

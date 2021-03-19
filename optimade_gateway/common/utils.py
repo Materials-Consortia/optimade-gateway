@@ -23,7 +23,9 @@ async def clean_python_types(data: Any) -> Any:
         res = await clean_python_types(data.dict())
     elif isinstance(data, Enum):
         res = await clean_python_types(data.value)
+    elif isinstance(data, type):
+        res = await clean_python_types(f"{data.__module__}.{data.__name__}")
     else:
-        # Unknown or basic type, e.g., str, int, etc.
+        # Unknown or other basic type, e.g., str, int, etc.
         res = data
     return res

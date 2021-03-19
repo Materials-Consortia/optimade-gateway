@@ -34,9 +34,10 @@ async def test_post_queries(client):
     from optimade_gateway.mongo.database import MONGO_DB
 
     data = {
-        "types": ["structures"],
         "gateway_id": "singledb",
         "query_parameters": {"filter": 'elements HAS "Cu"', "page_limit": 5},
+        "endpoint": "structures",
+        "endpoint_model": ["optimade.models.responses", "StructureResponseMany"],
     }
 
     response = await client("/queries", method="post", json=data)
@@ -89,9 +90,10 @@ async def test_post_queries_bad_data(client):
     from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
 
     data = {
-        "types": ["structures"],
         "gateway_id": "non-existent",
         "query_parameters": {"filter": 'elements HAS "Cu"', "page_limit": 5},
+        "endpoint": "structures",
+        "endpoint_model": ("optimade.models.responses", "StructureResponseMany"),
     }
 
     response = await client("/queries", method="post", json=data)

@@ -2,7 +2,7 @@
 from typing import Union
 import urllib
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request
 from optimade.models import ErrorResponse, ToplevelLinks
 from optimade.models.responses import EntryResponseMany
 from optimade.server.query_params import EntryListingQueryParams
@@ -91,20 +91,19 @@ async def get_queries(
 async def post_queries(
     request: Request,
     query: QueryCreate,
+    running_queries: BackgroundTasks,
 ) -> Union[QueriesResponseSingle, ErrorResponse]:
     """POST /queries
 
     Create or return existing gateway query according to `query`.
     """
     from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
+    from optimade_gateway.routers.utils import perform_query
 
     await validate_resource(GATEWAYS_COLLECTION, query.gateway_id)
 
     mongo_query = {
-        "types": {
-            "$all": await clean_python_types(query.types),
-            "$size": len(query.types),
-        },
+        "gateway_id": {"$eq": query.gateway_id},
         "query_parameters": {
             "$eq": await clean_python_types(query.query_parameters),
         },
@@ -121,9 +120,11 @@ async def post_queries(
 
     created = False
     if not result:
-        result = await QUERIES_COLLECTION.create_one(query)
+        result = await QUERIES_COLLECTION.create_one(query, set_id=True)
         LOGGER.debug("Created new query in DB: %r", result)
-        # TODO: Queue query !
+        running_queries.add_task(
+            perform_query, url=request.url, query=result, update_query_resource=True
+        )
         created = True
 
     return QueriesResponseSingle(

@@ -2,32 +2,35 @@
   {
     "id": "twodbs_query_1",
     "last_modified": "2021-03-09T12:30:00Z",
-    "types": ["structures"],
     "gateway_id": "twodbs",
     "state": "in progress",
     "query_parameters": {
       "filter": "elements HAS \"Si\""
-    }
+    },
+    "endpoint": "structures",
+    "endpoint_model": ["optimade.models.responses", "StructureResponseMany"]
   },
   {
     "id": "twodbs_query_2",
     "last_modified": "2021-03-09T12:30:00Z",
-    "types": ["structures"],
     "gateway_id": "twodbs",
     "state": "finished",
     "query_parameters": {
       "filter": "elements HAS \"Si\""
-    }
+    },
+    "endpoint": "structures",
+    "endpoint_model": ["optimade.models.responses", "StructureResponseMany"]
   },
   {
     "id": "singledb_query_1",
     "last_modified": "2021-03-09T12:30:00Z",
-    "types": ["structures"],
     "gateway_id": "singledb",
     "state": "created",
     "query_parameters": {
       "filter": "elements HAS \"Si\"",
       "page_limit": 5
-    }
+    },
+    "endpoint": "structures",
+    "endpoint_model": ["optimade.models.responses", "StructureResponseMany"]
   }
 ]
