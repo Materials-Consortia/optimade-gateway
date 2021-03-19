@@ -44,6 +44,7 @@ async def test_get_versioned_gateway_links(client):
 async def test_bad_versioned_gateway_links(client):
     """Test GET /gateways/{gateway_id}/{version}/links with wrong version"""
     from optimade.models import ErrorResponse, OptimadeError
+    from optimade.server.exceptions import VersionNotSupported
     from optimade.server.routers.utils import BASE_URL_PREFIXES
 
     gateway_id = "singledb"
@@ -75,7 +76,15 @@ async def test_bad_versioned_gateway_links(client):
     for version, error_data in wrong_versions:
         error_resource = OptimadeError(**error_data)
 
-        response = await client(f"/gateways/{gateway_id}/{version}/links")
+        if version == "v0.1.0":
+            with pytest.raises(
+                VersionNotSupported,
+                match=fr"The parsed versioned base URL '/{version}.*",
+            ):
+                response = await client(f"/gateways/{gateway_id}/{version}/links")
+            return
+        else:
+            response = await client(f"/gateways/{gateway_id}/{version}/links")
 
         assert response.status_code == int(
             error_resource.status

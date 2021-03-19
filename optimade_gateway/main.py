@@ -7,6 +7,7 @@ from optimade.server.routers.utils import BASE_URL_PREFIXES
 from optimade.server.routers.versions import router as versions_router
 
 from optimade_gateway import __version__
+from optimade_gateway.middleware import CheckWronglyVersionedBaseUrlsGateways
 from optimade_gateway.routers import (
     gateways,
     info,
@@ -41,7 +42,8 @@ async def get_root(request: Request) -> RedirectResponse:
     )
 
 
-# Add OPTIMADE middleware
+# Add middleware
+APP.add_middleware(CheckWronglyVersionedBaseUrlsGateways)
 for middleware in OPTIMADE_MIDDLEWARE:
     APP.add_middleware(middleware)
 
