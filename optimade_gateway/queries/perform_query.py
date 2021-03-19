@@ -1,4 +1,5 @@
 from asyncio import as_completed
+import re
 import sys
 import importlib
 from typing import Tuple, Union
@@ -26,11 +27,12 @@ from optimade.models import (
     Meta,
     ToplevelLinks,
 )
+from optimade.server.exceptions import BadRequest
 from optimade.server.routers.utils import BASE_URL_PREFIXES, get_base_url, meta_values
 from pydantic import ValidationError
 from starlette.datastructures import URL
 
-from optimade_gateway.models import QueryResource, QueryState
+from optimade_gateway.models import GatewayResource, QueryResource, QueryState
 from optimade_gateway.queries.utils import update_query_state
 
 
@@ -55,6 +57,17 @@ async def perform_query(
     from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
     from optimade_gateway.routers.gateway.utils import get_valid_resource
 
+    def _get_query_params(database_id: str) -> str:
+        """Construct the parsed URL query parameters"""
+        query_params = {
+            param: value
+            for param, value in query.attributes.query_parameters.dict().items()
+            if value
+        }
+        if updated_filter[database_id]:
+            query_params.update({"filter": updated_filter[database_id]})
+        return urllib.parse.urlencode(query_params)
+
     data_available = data_returned = 0
     errors = []
     more_data_available = False
@@ -63,15 +76,40 @@ async def perform_query(
     response_model_module = importlib.import_module(query.attributes.endpoint_model[0])
     response_model = getattr(response_model_module, query.attributes.endpoint_model[1])
 
-    query_params = urllib.parse.urlencode(
-        {
-            param: value
-            for param, value in query.attributes.query_parameters.dict().items()
-            if value
-        }
+    gateway: GatewayResource = await get_valid_resource(
+        GATEWAYS_COLLECTION, query.attributes.gateway_id
     )
 
-    gateway = await get_valid_resource(GATEWAYS_COLLECTION, query.attributes.gateway_id)
+    updated_filter = {}.fromkeys(
+        [_.id for _ in gateway.attributes.databases],
+        query.attributes.query_parameters.filter,
+    )
+    for id_match in re.finditer(
+        r'"(?P<id_value_l>[^\s]*)"[\s]*(<|>|<=|>=|=|!=|CONTAINS|STARTS WITH|ENDS WITH|STARTS|ENDS)'
+        r'[\s]*id|[^_]+id[\s]*(<|>|<=|>=|=|!=|CONTAINS|STARTS WITH|ENDS WITH|STARTS|ENDS)[\s]*"'
+        r'(?P<id_value_r>[^\s]*)"',
+        f"={query.attributes.query_parameters.filter}"
+        if query.attributes.query_parameters.filter
+        else "",
+    ):
+        matched_id = id_match.group("id_value_l") or id_match.group("id_value_r")
+        for database in gateway.attributes.databases:
+            if matched_id.startswith(f"{database.id}/"):
+                # Database found
+                updated_filter[database.id] = updated_filter[database.id].replace(
+                    f"{database.id}/", "", 1
+                )
+                break
+        else:
+            raise BadRequest(
+                detail=(
+                    f"Structures entry <id={matched_id}> not found. To get a specific structures "
+                    "entry one needs to prepend the ID with a database ID belonging to the gateway,"
+                    f" e.g., '{gateway.attributes.databases[0].id}/<local_database_ID>'. Available"
+                    f"databases for gateway {gateway.id!r}: "
+                    f"{[_.id for _ in gateway.attributes.databases]}"
+                )
+            )
 
     query_tasks = [
         create_task(
@@ -79,7 +117,7 @@ async def perform_query(
                 database=database,
                 endpoint=query.attributes.endpoint,
                 response_model=response_model,
-                query_params=query_params,
+                query_params=_get_query_params(database.id),
             )
         )
         for database in gateway.attributes.databases

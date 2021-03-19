@@ -15,7 +15,9 @@ class GatewaysMapper(BaseResourceMapper):
         from optimade.server.routers.utils import BASE_URL_PREFIXES
 
         if "_id" in doc:
-            doc["id"] = str(doc.pop("_id"))
+            _id = str(doc.pop("_id"))
+            if "id" not in doc:
+                doc["id"] = _id
 
         doc["links"] = {
             "self": AnyUrl(

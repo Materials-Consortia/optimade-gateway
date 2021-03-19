@@ -89,9 +89,10 @@ async def get_single_structure(
     Return a regular /structures/{id} response for an OPTIMADE implementation.
     The structure_id must be of the type {database}/{id}.
     """
+    from optimade_gateway.models import GatewayResource
     from optimade_gateway.queries.perform_query import db_find
 
-    gateway = await get_valid_resource(GATEWAYS_COLLECTION, gateway_id)
+    gateway: GatewayResource = await get_valid_resource(GATEWAYS_COLLECTION, gateway_id)
 
     local_structure_id = None
     for database in gateway.attributes.databases:
