@@ -97,7 +97,7 @@ async def post_queries(
 
     Create or return existing gateway query according to `query`.
     """
-    from optimade_gateway.queries.perform_query import perform_query
+    from optimade_gateway.queries import perform_query
     from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
 
     await validate_resource(GATEWAYS_COLLECTION, query.gateway_id)

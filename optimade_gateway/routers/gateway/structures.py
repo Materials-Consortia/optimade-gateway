@@ -40,7 +40,7 @@ async def get_structures(
     Return a regular /structures response for an OPTIMADE implementation,
     including responses from all the gateway's databases.
     """
-    from optimade_gateway.queries.perform_query import perform_query
+    from optimade_gateway.queries import perform_query
     from optimade_gateway.routers.utils import validate_resource
 
     await validate_resource(GATEWAYS_COLLECTION, gateway_id)
@@ -90,7 +90,7 @@ async def get_single_structure(
     The structure_id must be of the type {database}/{id}.
     """
     from optimade_gateway.models import GatewayResource
-    from optimade_gateway.queries.perform_query import db_find
+    from optimade_gateway.queries import db_find
 
     gateway: GatewayResource = await get_valid_resource(GATEWAYS_COLLECTION, gateway_id)
 
