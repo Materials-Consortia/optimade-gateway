@@ -189,7 +189,7 @@ async def get_versioned_structures(
 
 @ROUTER.get(
     "/gateways/{gateway_id}/{version}/structures/{structure_id:path}",
-    response_model=Union[StructureResponseMany, ErrorResponse],
+    response_model=Union[StructureResponseOne, ErrorResponse],
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
