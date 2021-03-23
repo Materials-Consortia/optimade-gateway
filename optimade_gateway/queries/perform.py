@@ -1,4 +1,5 @@
 from asyncio import as_completed
+import json
 import sys
 from typing import Tuple, Union
 import urllib.parse
@@ -9,11 +10,6 @@ if sys.version_info >= (3, 7):
 else:
     # See https://docs.python.org/3/library/asyncio-task.html#asyncio.create_task
     from asyncio import ensure_future as create_task
-
-try:
-    import simplejson as json
-except ImportError:
-    import json
 
 import httpx
 from optimade import __api_version__
