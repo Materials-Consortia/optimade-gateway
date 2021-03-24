@@ -1,3 +1,10 @@
+"""/gateways/{id}/versions
+
+This file describes the router for:
+
+    /gateways/{id}/versions
+
+"""
 from fastapi import APIRouter, Request
 from optimade.server.routers.versions import CsvResponse
 

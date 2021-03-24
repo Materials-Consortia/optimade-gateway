@@ -1,3 +1,11 @@
+"""/gateways/{id}/info/*
+
+This file describes the router for:
+
+    /gateways/{id}/{version}/info/{entry}
+
+where `version` and `entry` may be left out.
+"""
 from typing import Union
 
 from fastapi import APIRouter, Request

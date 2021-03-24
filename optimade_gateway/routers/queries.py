@@ -1,4 +1,11 @@
-"""General /queries endpoint to handle gateway queries"""
+"""General /queries endpoint to handle gateway queries
+
+This file describes the router for:
+
+    /queries/{id}
+
+where, `id` may be left out.
+"""
 from typing import Union
 import urllib
 

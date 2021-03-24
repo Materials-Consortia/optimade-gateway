@@ -1,4 +1,11 @@
-"""Special /queries endpoint for a gateway to perform and list queries"""
+"""Special /queries endpoint for a gateway to perform and list queries
+
+This file describes the router for:
+
+    /gateways/{id}/{version}/queries/{id}
+
+where `version` and the last `id` may be left out.
+"""
 from typing import Union
 
 from fastapi import APIRouter, Depends, Request

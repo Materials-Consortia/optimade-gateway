@@ -1,3 +1,11 @@
+"""/gateways/*
+
+This file describes the router for:
+
+    /gateways/{id}
+
+where, `id` may be left out.
+"""
 from typing import Union
 
 from fastapi import APIRouter, Depends, HTTPException, Request

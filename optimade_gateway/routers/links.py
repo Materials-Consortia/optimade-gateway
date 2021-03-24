@@ -1,3 +1,10 @@
+"""/links/*
+
+This file describes the router for:
+
+    /links
+
+"""
 from typing import Union
 
 from fastapi import APIRouter, Depends, Request

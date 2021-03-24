@@ -1,3 +1,11 @@
+"""/gateways/{id}/structures/*
+
+This file describes the router for:
+
+    /gateways/{id}/{version}/structures/{id}
+
+where `version` and the last `id` may be left out.
+"""
 from datetime import datetime
 from typing import Union
 import urllib.parse
