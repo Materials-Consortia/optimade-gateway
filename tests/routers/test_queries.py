@@ -43,8 +43,6 @@ async def test_post_queries(client):
     data = {
         "gateway_id": "singledb",
         "query_parameters": {"filter": 'elements HAS "Cu"', "page_limit": 15},
-        "endpoint": "structures",
-        "endpoint_model": ["optimade.models.responses", "StructureResponseMany"],
     }
 
     response = await client("/queries", method="post", json=data)
@@ -94,8 +92,6 @@ async def test_post_queries_bad_data(client):
     data = {
         "gateway_id": "non-existent",
         "query_parameters": {"filter": 'elements HAS "Cu"', "page_limit": 5},
-        "endpoint": "structures",
-        "endpoint_model": ("optimade.models.responses", "StructureResponseMany"),
     }
 
     response = await client("/queries", method="post", json=data)

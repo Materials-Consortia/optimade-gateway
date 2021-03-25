@@ -108,11 +108,20 @@ async def post_queries(
 
     await validate_resource(GATEWAYS_COLLECTION, query.gateway_id)
 
+    # Currently only /structures entry endpoints can be queried with multiple expected responses.
+    query.endpoint = query.endpoint if query.endpoint else "structures"
+    query.endpoint_model = (
+        query.endpoint_model
+        if query.endpoint_model
+        else ("optimade.models.responses", "StructureResponseMany")
+    )
+
     mongo_query = {
         "gateway_id": {"$eq": query.gateway_id},
         "query_parameters": {
             "$eq": await clean_python_types(query.query_parameters),
         },
+        "endpoint": {"$eq": query.endpoint},
     }
     result, more_data_available, _ = await QUERIES_COLLECTION.find(
         criteria={"filter": mongo_query}

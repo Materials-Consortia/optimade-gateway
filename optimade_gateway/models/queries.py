@@ -161,6 +161,8 @@ class QueryCreate(QueryResourceAttributes):
 
     last_modified: Optional[datetime]
     state: Optional[QueryState]
+    endpoint: Optional[str]
+    endpoint_model: Optional[Tuple[str, str]]
 
     class Config:
         extra = "ignore"
