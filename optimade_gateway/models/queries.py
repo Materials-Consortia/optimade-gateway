@@ -1,88 +1,99 @@
-from typing import List, Optional
+from datetime import datetime
+from enum import Enum
+from typing import Optional, Tuple, Union
 
-from optimade.models import EntryResource, EntryResourceAttributes
+from optimade.models import (
+    EntryResource,
+    EntryResourceAttributes,
+    EntryResponseMany,
+    ErrorResponse,
+)
 from optimade.server.query_params import EntryListingQueryParams
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, validator
 
 
-query_parameters = EntryListingQueryParams()
+QUERY_PARAMETERS = EntryListingQueryParams()
 
 
 class OptimadeQueryParameters(BaseModel):
     """Common OPTIMADE entry listing endpoint query parameters."""
 
     filter: Optional[str] = Field(
-        query_parameters.filter.default,
-        description=query_parameters.filter.description,
+        QUERY_PARAMETERS.filter.default,
+        description=QUERY_PARAMETERS.filter.description,
     )
     response_format: Optional[str] = Field(
-        query_parameters.response_format.default,
-        description=query_parameters.response_format.description,
+        QUERY_PARAMETERS.response_format.default,
+        description=QUERY_PARAMETERS.response_format.description,
     )
     email_address: Optional[EmailStr] = Field(
-        query_parameters.email_address.default,
-        description=query_parameters.email_address.description,
+        QUERY_PARAMETERS.email_address.default,
+        description=QUERY_PARAMETERS.email_address.description,
     )
     response_fields: Optional[str] = Field(
-        query_parameters.response_fields.default,
-        description=query_parameters.response_fields.description,
-        regex=query_parameters.response_fields.regex,
+        QUERY_PARAMETERS.response_fields.default,
+        description=QUERY_PARAMETERS.response_fields.description,
+        regex=QUERY_PARAMETERS.response_fields.regex,
     )
     sort: Optional[str] = Field(
-        query_parameters.sort.default,
-        description=query_parameters.sort.description,
-        regex=query_parameters.sort.regex,
+        QUERY_PARAMETERS.sort.default,
+        description=QUERY_PARAMETERS.sort.description,
+        regex=QUERY_PARAMETERS.sort.regex,
     )
     page_limit: Optional[int] = Field(
-        query_parameters.page_limit.default,
-        description=query_parameters.page_limit.description,
-        ge=query_parameters.page_limit.ge,
+        QUERY_PARAMETERS.page_limit.default,
+        description=QUERY_PARAMETERS.page_limit.description,
+        ge=QUERY_PARAMETERS.page_limit.ge,
     )
     page_offset: Optional[int] = Field(
-        query_parameters.page_offset.default,
-        description=query_parameters.page_offset.description,
-        ge=query_parameters.page_offset.ge,
+        QUERY_PARAMETERS.page_offset.default,
+        description=QUERY_PARAMETERS.page_offset.description,
+        ge=QUERY_PARAMETERS.page_offset.ge,
     )
     page_number: Optional[int] = Field(
-        query_parameters.page_number.default,
-        description=query_parameters.page_number.description,
-        ge=query_parameters.page_number.ge,
+        QUERY_PARAMETERS.page_number.default,
+        description=QUERY_PARAMETERS.page_number.description,
+        ge=QUERY_PARAMETERS.page_number.ge,
     )
     page_cursor: Optional[int] = Field(
-        query_parameters.page_cursor.default,
-        description=query_parameters.page_cursor.description,
-        ge=query_parameters.page_cursor.ge,
+        QUERY_PARAMETERS.page_cursor.default,
+        description=QUERY_PARAMETERS.page_cursor.description,
+        ge=QUERY_PARAMETERS.page_cursor.ge,
     )
     page_above: Optional[int] = Field(
-        query_parameters.page_above.default,
-        description=query_parameters.page_above.description,
-        ge=query_parameters.page_above.ge,
+        QUERY_PARAMETERS.page_above.default,
+        description=QUERY_PARAMETERS.page_above.description,
+        ge=QUERY_PARAMETERS.page_above.ge,
     )
     page_below: Optional[int] = Field(
-        query_parameters.page_below.default,
-        description=query_parameters.page_below.description,
-        ge=query_parameters.page_below.ge,
+        QUERY_PARAMETERS.page_below.default,
+        description=QUERY_PARAMETERS.page_below.description,
+        ge=QUERY_PARAMETERS.page_below.ge,
     )
     include: Optional[str] = Field(
-        query_parameters.include.default,
-        description=query_parameters.include.description,
+        QUERY_PARAMETERS.include.default,
+        description=QUERY_PARAMETERS.include.description,
     )
     # api_hint: Optional[str] = Field(
-    #     query_parameters.api_hint.default,
-    #     description=query_parameters.api_hint.description,
-    #     regex=query_parameters.api_hint.regex,
+    #     QUERY_PARAMETERS.api_hint.default,
+    #     description=QUERY_PARAMETERS.api_hint.description,
+    #     regex=QUERY_PARAMETERS.api_hint.regex,
     # )
 
 
-class GatewayQueryResourceAttributes(EntryResourceAttributes):
+class QueryState(Enum):
+    """Enumeration of possible states for a Gateway Query"""
+
+    CREATED = "created"
+    STARTED = "started"
+    IN_PROGRESS = "in progress"
+    FINISHED = "finished"
+
+
+class QueryResourceAttributes(EntryResourceAttributes):
     """Attributes for an OPTIMADE gateway query"""
 
-    types: List[str] = Field(
-        ...,
-        description="""List of OPTIMADE entry resource types.
-These are the OPTIMADE entry resource types that are queried for.""",
-    )
-    gateway: int = Field(
+    gateway_id: str = Field(
         ...,
         description="The OPTIMADE gateway ID for this query.",
     )
@@ -90,15 +101,66 @@ These are the OPTIMADE entry resource types that are queried for.""",
         ...,
         description="OPTIMADE query parameters for entry listing endpoints used for this query.",
     )
+    state: QueryState = Field(
+        QueryState.CREATED, description="Current state of Gateway Query.", title="State"
+    )
+    response: Optional[Union[EntryResponseMany, ErrorResponse]] = Field(
+        None, description="Response from gateway query."
+    )
+    endpoint: str = Field(
+        ..., description="The entry endpoint queried, e.g., 'structures'."
+    )
+    endpoint_model: Tuple[str, str] = Field(
+        ...,
+        description=(
+            "The full importable path to the pydantic response model class (not an instance of "
+            "the class). It should be a tuple of the Python module and the Class name."
+        ),
+    )
+
+    @validator("endpoint")
+    def remove_endpoints_slashes(cls, value: str) -> str:
+        """Remove prep-/appended slashes (`/`)"""
+        org_value = value
+        value = value.strip()
+        while value.startswith("/"):
+            value = value[1:]
+        while value.endswith("/"):
+            value = value[:-1]
+        if not value:
+            raise ValueError(
+                "endpoint must not be an empty string or be prep-/appended with slashes (`/`). "
+                f"Original value: {org_value!r}. Final value (after removing prep-/appended "
+                f"slashes): {value!r}"
+            )
+
+        # Temporarily only allow queries to "structures" endpoints.
+        if value != "structures":
+            raise NotImplementedError(
+                'OPTIMADE Gateway temporarily only supports queries to "structures" endpoints, '
+                'i.e.: endpoint="structures"'
+            )
+
+        return value
 
 
-class GatewayQueryResource(EntryResource):
-    """OPTIMADE gateway query"""
+class QueryResource(EntryResource):
+    """OPTIMADE query resource for a gateway"""
 
     type: str = Field(
-        "gateway_queries",
-        const="gateway_queries",
+        "queries",
+        const="queries",
         description="The name of the type of an entry.",
-        regex="^gateway_queries$",
+        regex="^queries$",
     )
-    attributes: GatewayQueryResourceAttributes
+    attributes: QueryResourceAttributes
+
+
+class QueryCreate(QueryResourceAttributes):
+    """Model for creating new Gateway resources in the MongoDB"""
+
+    last_modified: Optional[datetime]
+    state: Optional[QueryState]
+
+    class Config:
+        extra = "ignore"

@@ -1,3 +1,10 @@
+"""/gateways/{id}/versions
+
+This file describes the router for:
+
+    /gateways/{id}/versions
+
+"""
 from fastapi import APIRouter, Request
 from optimade.server.routers.versions import CsvResponse
 
@@ -16,7 +23,8 @@ async def get_gateway_versions(request: Request, gateway_id: str) -> CsvResponse
     """
     from optimade.server.routers.versions import get_versions
 
-    from optimade_gateway.routers.gateway.utils import get_valid_gateway
+    from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
+    from optimade_gateway.routers.utils import validate_resource
 
-    await get_valid_gateway(gateway_id)
+    await validate_resource(GATEWAYS_COLLECTION, gateway_id)
     return get_versions(request)

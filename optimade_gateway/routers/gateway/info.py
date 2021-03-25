@@ -1,3 +1,11 @@
+"""/gateways/{id}/info/*
+
+This file describes the router for:
+
+    /gateways/{id}/{version}/info/{entry}
+
+where `version` and `entry` may be left out.
+"""
 from typing import Union
 
 from fastapi import APIRouter, Request
@@ -36,9 +44,10 @@ async def get_gateways_info(
     The general information will be a minimum set from the gateway's databases.
     """
     from optimade_gateway.common.config import CONFIG
-    from optimade_gateway.routers.gateway.utils import get_valid_gateway
+    from optimade_gateway.routers.gateway.utils import get_valid_resource
+    from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
 
-    gateway = await get_valid_gateway(gateway_id)
+    gateway = await get_valid_resource(GATEWAYS_COLLECTION, gateway_id)
 
     return InfoResponse(
         data=BaseInfoResource(
@@ -95,10 +104,13 @@ async def get_gateways_entry_info(
     from optimade.models import EntryInfoResource
     from optimade.server.exceptions import BadRequest
 
-    from optimade_gateway.routers.gateway.utils import get_valid_gateway
-    from optimade_gateway.routers.utils import aretrieve_queryable_properties
+    from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
+    from optimade_gateway.routers.utils import (
+        aretrieve_queryable_properties,
+        validate_resource,
+    )
 
-    await get_valid_gateway(gateway_id)
+    await validate_resource(GATEWAYS_COLLECTION, gateway_id)
 
     valid_entry_info_endpoints = ENTRY_INFO_SCHEMAS.keys()
     if entry not in valid_entry_info_endpoints:

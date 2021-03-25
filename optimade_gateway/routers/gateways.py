@@ -1,3 +1,11 @@
+"""/gateways/*
+
+This file describes the router for:
+
+    /gateways/{id}
+
+where, `id` may be left out.
+"""
 from typing import Union
 
 from fastapi import APIRouter, Depends, HTTPException, Request
@@ -28,7 +36,6 @@ GATEWAYS_COLLECTION = AsyncMongoCollection(
     collection=MONGO_DB[CONFIG.gateways_collection],
     resource_cls=GatewayResource,
     resource_mapper=GatewaysMapper,
-    cached_properties=[],  # Don't use in-memory caching
 )
 
 
@@ -100,12 +107,12 @@ async def post_gateways(
             url=request.url,
             data_returned=1,
             data_available=(
-                GATEWAYS_COLLECTION.data_available + 1
+                await GATEWAYS_COLLECTION.count() + 1
                 if created
-                else GATEWAYS_COLLECTION.data_available
+                else await GATEWAYS_COLLECTION.count()
             ),
             more_data_available=more_data_available,
-            _optimade_gateway_created=created,
+            **{f"_{CONFIG.provider.prefix}_created": created},
         ),
     )
 
@@ -124,15 +131,9 @@ async def get_gateway(request: Request, gateway_id: str) -> GatewaysResponseSing
     Represent an OPTIMADE server.
     NOTE: For now, redirect to the gateway's /structures entry listing endpoint
     """
-    from optimade.server.exceptions import BadRequest
+    from optimade_gateway.routers.utils import validate_resource
 
-    if not await GATEWAYS_COLLECTION.exists(gateway_id):
-        raise BadRequest(
-            title="Not Found",
-            status_code=404,
-            detail=f"gateway <id={gateway_id}> not found.",
-        )
-
+    await validate_resource(GATEWAYS_COLLECTION, gateway_id)
     return RedirectResponse(
         request.url.replace(path=f"{request.url.path.rstrip('/')}/structures")
     )

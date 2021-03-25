@@ -10,8 +10,9 @@ pytestmark = pytest.mark.asyncio
 async def test_get_structures(client, get_gateway):
     """Test GET /gateways/{gateway_id}/structures"""
     from optimade.models import StructureResponseMany
-    from optimade_gateway.common.config import CONFIG
     import requests
+
+    from optimade_gateway.common.config import CONFIG
 
     gateway_id = "twodbs"
 

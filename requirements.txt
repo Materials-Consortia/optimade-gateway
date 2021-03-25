@@ -1,3 +1,4 @@
+httpx~=0.17.1
 motor~=2.3
 optimade~=0.13.3
 uvicorn~=0.13.4

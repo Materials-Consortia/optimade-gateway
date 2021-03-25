@@ -1,9 +1,10 @@
 """Utility functions for all routers"""
 from typing import Tuple
-import urllib
+import urllib.parse
 
 from fastapi import Request
 from optimade.models import EntryResponseMany, ToplevelLinks
+from optimade.server.exceptions import BadRequest
 from optimade.server.schemas import retrieve_queryable_properties
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import (
@@ -43,8 +44,8 @@ async def get_entries(
         data=results,
         meta=meta_values(
             url=request.url,
-            data_returned=collection.data_returned,
-            data_available=collection.data_available,
+            data_returned=await collection.count(params=params),
+            data_available=await collection.count(),
             more_data_available=more_data_available,
         ),
     )
@@ -71,3 +72,13 @@ async def aretrieve_queryable_properties(
         schema=schema,
         queryable_properties=queryable_properties,
     )
+
+
+async def validate_resource(collection: AsyncMongoCollection, entry_id: str) -> None:
+    """Validate whether a resource exists in a collection"""
+    if not await collection.exists(entry_id):
+        raise BadRequest(
+            title="Not Found",
+            status_code=404,
+            detail=f"Resource <id={entry_id}> not found in {collection}.",
+        )

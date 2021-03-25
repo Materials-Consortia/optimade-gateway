@@ -28,7 +28,6 @@ class AsyncMongoCollection(EntryCollection):
         collection: AsyncIOMotorCollection,
         resource_cls: EntryResource,
         resource_mapper: BaseResourceMapper,
-        cached_properties: List[str] = None,
     ):
         """Initialize the AsyncMongoCollection for the given parameters.
 
@@ -36,7 +35,6 @@ class AsyncMongoCollection(EntryCollection):
             collection: The backend-specific collection.
             resource_cls: The `EntryResource` model that is stored by the collection.
             resource_mapper: A resource mapper object that handles aliases and format changes between deserialization and response.
-            cached_properties: List of the properties to be cached.
 
         """
         super().__init__(
@@ -52,37 +50,13 @@ class AsyncMongoCollection(EntryCollection):
         self._check_aliases(self.resource_mapper.all_aliases())
         self._check_aliases(self.resource_mapper.all_length_aliases())
 
-        # "Cache"
-        self._caching: List[str] = (
-            cached_properties
-            if cached_properties is not None
-            else [
-                "data_available",
-                "data_returned",
-            ]
-        )
-
-        self._data_available: int = None
-        self._data_returned: int = None
-        self._latest_filter: dict = None
-
-        LOGGER.debug("Caching properties %s for %r", self._caching, self)
-
-        for cache_property in self._caching:
-            if cache_property not in dir(self):
-                import warnings
-
-                warnings.warn(
-                    f"A property ({cache_property}) passed for caching does not exist for {self}."
-                )
-
     def __str__(self) -> str:
         """Standard printing result for an instance"""
-        return f"<{self.__class__.__name__}: resource={self.resource_cls.__name__} endpoint(mapper)={self.resource_mapper.ENDPOINT} DB_collection={self.collection.name} caching={[','.join(self._caching)]}>"
+        return f"<{self.__class__.__name__}: resource={self.resource_cls.__name__} endpoint(mapper)={self.resource_mapper.ENDPOINT} DB_collection={self.collection.name}>"
 
     def __repr__(self) -> str:
         """Representation of instance"""
-        return f"{self.__class__.__name__}(collection={self.collection!r}, resource_cls={self.resource_cls!r}, resource_mapper={self.resource_mapper!r}, cached_properties={self._caching!r})"
+        return f"{self.__class__.__name__}(collection={self.collection!r}, resource_cls={self.resource_cls!r}, resource_mapper={self.resource_mapper!r}"
 
     def __len__(self) -> int:
         """Length of collection"""
@@ -142,10 +116,15 @@ class AsyncMongoCollection(EntryCollection):
 
         return criteria
 
-    async def count(self, **kwargs) -> int:
+    async def count(
+        self,
+        params: Union[EntryListingQueryParams, SingleEntryQueryParams] = None,
+        **kwargs,
+    ) -> int:
         """Count documents in Collection
 
         Parameters:
+            params: URL query parameters, either from a general entry endpoint or a single-entry endpoint.
             kwargs (dict): Query parameters as keyword arguments. Valid keys will be passed
                 to the `motor.motor_asyncio.AsyncIOMotorCollection.count_documents` method.
 
@@ -153,6 +132,14 @@ class AsyncMongoCollection(EntryCollection):
             int: The number of entries matching the query specified by the keyword arguments.
 
         """
+        if params is not None and kwargs:
+            raise ValueError(
+                "When 'params' is supplied, no other parameters can be supplied."
+            )
+
+        if params is not None:
+            kwargs = await self.handle_query_params(params)
+
         valid_method_keys = (
             "filter",
             "skip",
@@ -205,7 +192,7 @@ class AsyncMongoCollection(EntryCollection):
             criteria: Already handled/parsed URL query parameters.
 
         Returns:
-            A list of entry resource objects, the number of returned entries, whether more are available with pagination, fields.
+            A list of entry resource objects, whether more data is available with pagination, and fields.
 
         """
         if (params is None and criteria is None) or (
@@ -215,14 +202,10 @@ class AsyncMongoCollection(EntryCollection):
                 "Exacly one of either `params` and `criteria` must be specified."
             )
 
-        await self.set_data_available()
-
         if criteria is None:
             criteria = await self.handle_query_params(params)
 
         fields = criteria.get("fields", self.all_fields)
-
-        await self.set_data_returned(**criteria)
 
         results = []
         async for doc in self.collection.find(**self._valid_find_keys(**criteria)):
@@ -261,62 +244,21 @@ class AsyncMongoCollection(EntryCollection):
 
         return cursor_kwargs
 
-    @property
-    def data_available(self) -> int:
-        """Get amount of data available under endpoint"""
-        if self._data_available is None:
-            raise ValueError("data_available MUST be set before it can be retrieved.")
-        return self._data_available
-
-    async def set_data_available(self) -> None:
-        """Set _data_available if it has not yet been set"""
-        if "data_available" in self._caching:
-            if not self._data_available:
-                self._data_available = await self.count()
-        else:
-            self._data_available = await self.count()
-
-    @property
-    def data_returned(self) -> int:
-        """Get amount of data returned for query"""
-        if self._data_returned is None:
-            raise ValueError("data_returned MUST be set before it can be retrieved.")
-        return self._data_returned
-
-    async def set_data_returned(self, **criteria) -> None:
-        """Set _data_returned if it has not yet been set or new filter does not equal
-        latest filter.
-
-        NB! Nested lists in filters are not accounted for.
-        """
-        if "data_returned" in self._caching:
-            if self._data_returned is None or (
-                self._latest_filter is not None
-                and criteria.get("filters", {}) != self._latest_filter
-            ):
-                for key in ["limit", "offset"]:
-                    if key in list(criteria.keys()):
-                        del criteria[key]
-
-                self._latest_filter = criteria.get("filters", {}).copy()
-                LOGGER.debug(
-                    "Setting data_returned using filter: %s", self._latest_filter
-                )
-                self._data_returned = await self.count(**criteria)
-        else:
-            self._data_returned = await self.count(**criteria)
-
-    async def create_one(self, resource: EntryResourceAttributes) -> EntryResource:
+    async def create_one(
+        self, resource: EntryResourceAttributes, set_id: bool = False
+    ) -> EntryResource:
         """Create a new document in the MongoDB collection based on query parameters.
 
         Parameters:
             resource: The resource to be created.
+            set_id: Update the newly created document with an "id" field.
+                The value will be the string representation of the "_id" field.
 
         Returns:
             The newly created document as a pydantic model entry resource.
 
         """
-        resource.last_modified = datetime.now()
+        resource.last_modified = datetime.utcnow()
         result = await self.collection.insert_one(
             await clean_python_types(resource.dict(exclude_unset=True))
         )
@@ -326,6 +268,12 @@ class AsyncMongoCollection(EntryCollection):
             self.collection.name,
             result.inserted_id,
         )
+
+        if set_id:
+            LOGGER.debug("Updating resource with an 'id' field.")
+            await self.collection.update_one(
+                {"_id": result.inserted_id}, {"$set": {"id": str(result.inserted_id)}}
+            )
 
         return self.resource_cls(
             **self.resource_mapper.map_back(

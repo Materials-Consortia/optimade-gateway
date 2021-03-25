@@ -7,14 +7,17 @@ from optimade.server.routers.utils import BASE_URL_PREFIXES
 from optimade.server.routers.versions import router as versions_router
 
 from optimade_gateway import __version__
+from optimade_gateway.middleware import CheckWronglyVersionedBaseUrlsGateways
 from optimade_gateway.routers import (
     gateways,
     info,
     links,
+    queries,
 )
 from optimade_gateway.routers.gateway import (
     info as gateway_info,
     links as gateway_links,
+    queries as gateway_queries,
     structures,
     versions,
 )
@@ -39,7 +42,8 @@ async def get_root(request: Request) -> RedirectResponse:
     )
 
 
-# Add OPTIMADE middleware
+# Add middleware
+APP.add_middleware(CheckWronglyVersionedBaseUrlsGateways)
 for middleware in OPTIMADE_MIDDLEWARE:
     APP.add_middleware(middleware)
 
@@ -53,7 +57,12 @@ APP.include_router(versions.ROUTER)
 
 # Add endpoints to / and /vMAJOR
 for prefix in list(BASE_URL_PREFIXES.values()) + [""]:
-    for router in (gateways, info, links) + (gateway_info, gateway_links, structures):
+    for router in (gateways, info, links, queries) + (
+        gateway_info,
+        gateway_links,
+        gateway_queries,
+        structures,
+    ):
         APP.include_router(router.ROUTER, prefix=prefix, include_in_schema=prefix == "")
 
 

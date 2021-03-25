@@ -84,6 +84,7 @@ async def test_get_versioned_gateway_info(client, get_gateway):
 async def test_bad_versioned_gateway_info(client):
     """Test GET /gateways/{gateway_id}/{version}/info with wrong version"""
     from optimade.models import ErrorResponse, OptimadeError
+    from optimade.server.exceptions import VersionNotSupported
     from optimade.server.routers.utils import BASE_URL_PREFIXES
 
     gateway_id = "twodbs"
@@ -115,7 +116,15 @@ async def test_bad_versioned_gateway_info(client):
     for version, error_data in wrong_versions:
         error_resource = OptimadeError(**error_data)
 
-        response = await client(f"/gateways/{gateway_id}/{version}/info")
+        if version == "v0.1.0":
+            with pytest.raises(
+                VersionNotSupported,
+                match=fr"The parsed versioned base URL '/{version}.*",
+            ):
+                response = await client(f"/gateways/{gateway_id}/{version}/info")
+            return
+        else:
+            response = await client(f"/gateways/{gateway_id}/{version}/info")
 
         assert response.status_code == int(
             error_resource.status
@@ -178,6 +187,7 @@ async def test_get_versioned_gateway_info_entry(client, get_gateway):
 async def test_bad_versioned_gateway_info_entry(client):
     """Test GET /gateways/{gateway_id}/{version}/info/{entry} with wrong version"""
     from optimade.models import ErrorResponse, OptimadeError
+    from optimade.server.exceptions import VersionNotSupported
     from optimade.server.routers.utils import BASE_URL_PREFIXES
 
     from optimade_gateway.routers.gateway.info import ENTRY_INFO_SCHEMAS
@@ -212,9 +222,19 @@ async def test_bad_versioned_gateway_info_entry(client):
         error_resource = OptimadeError(**error_data)
 
         for entry_endpoint in ENTRY_INFO_SCHEMAS:
-            response = await client(
-                f"/gateways/{gateway_id}/{version}/info/{entry_endpoint}"
-            )
+            if version == "v0.1.0":
+                with pytest.raises(
+                    VersionNotSupported,
+                    match=fr"The parsed versioned base URL '/{version}.*",
+                ):
+                    response = await client(
+                        f"/gateways/{gateway_id}/{version}/info/{entry_endpoint}"
+                    )
+                return
+            else:
+                response = await client(
+                    f"/gateways/{gateway_id}/{version}/info/{entry_endpoint}"
+                )
 
             assert response.status_code == int(
                 error_resource.status

@@ -1,3 +1,11 @@
+"""/gateways/{id}/links
+
+This file describes the router for:
+
+    /gateways/{id}/{version}/links
+
+where, `version` may be left out.
+"""
 from typing import Union
 
 from fastapi import APIRouter, Depends, Request
@@ -27,10 +35,11 @@ async def get_gateways_links(
 
     Return a regular /links response for an OPTIMADE implementation.
     """
+    from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
     from optimade_gateway.routers.links import get_links
-    from optimade_gateway.routers.gateway.utils import get_valid_gateway
+    from optimade_gateway.routers.utils import validate_resource
 
-    await get_valid_gateway(gateway_id)
+    await validate_resource(GATEWAYS_COLLECTION, gateway_id)
     return await get_links(request=request, params=params)
 
 
