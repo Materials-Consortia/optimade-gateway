@@ -25,15 +25,17 @@ from optimade_gateway.queries.utils import update_query_state
 async def perform_query(
     url: URL,
     query: QueryResource,
-    update_query_resource: bool = True,
+    use_query_resource: bool = True,
 ) -> Union[EntryResponseMany, ErrorResponse]:
     """Perform OPTIMADE query with gateway.
 
     Parameters:
+        url: Original request URL.
         query: The query to be performed.
-        gateway: The gateway for which the query will be performed.
-        update_query_resource: Whether or not to update the passed
+        use_query_resource: Whether or not to update the passed
             [`QueryResource`][optimade_gateway.models.queries.QueryResource] or not.
+            The URL will be changed if this is `True`, to allow for requesting the query back
+            through the `/queries` endpoint.
 
     Returns:
         This function returns the final response; either an `ErrorResponse` or a subclass of
@@ -74,13 +76,13 @@ async def perform_query(
         for database in gateway.attributes.databases
     ]
 
-    if update_query_resource:
+    if use_query_resource:
         await update_query_state(query, QueryState.CREATED)
 
     for query_task in asyncio.as_completed(query_tasks):
         (response, db_id) = await query_task
 
-        if update_query_resource and query.attributes.state != QueryState.IN_PROGRESS:
+        if use_query_resource and query.attributes.state != QueryState.IN_PROGRESS:
             await update_query_state(query, QueryState.IN_PROGRESS)
 
         if isinstance(response, ErrorResponse):
@@ -119,6 +121,9 @@ async def perform_query(
             if not more_data_available:
                 # Keep it True, if set to True once.
                 more_data_available = response.meta.more_data_available
+
+    if use_query_resource:
+        url = url.replace(path=f"{url.path.rstrip('/')}/{query.id}")
 
     meta = meta_values(
         url=url,
@@ -159,7 +164,7 @@ async def perform_query(
             meta=meta,
         )
 
-    if update_query_resource:
+    if use_query_resource:
         query.attributes.response = response
         await update_query_state(query, QueryState.FINISHED)
 

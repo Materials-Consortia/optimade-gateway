@@ -138,7 +138,7 @@ async def post_queries(
         result = await QUERIES_COLLECTION.create_one(query, set_id=True)
         LOGGER.debug("Created new query in DB: %r", result)
         running_queries.add_task(
-            perform_query, url=request.url, query=result, update_query_resource=True
+            perform_query, url=request.url, query=result, use_query_resource=True
         )
         created = True
 

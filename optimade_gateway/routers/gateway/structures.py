@@ -74,7 +74,7 @@ async def get_structures(
                 },
             }
         ),
-        update_query_resource=False,
+        use_query_resource=False,
     )
 
 
