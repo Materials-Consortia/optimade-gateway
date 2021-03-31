@@ -30,14 +30,13 @@ from optimade_gateway.models import (
     QueriesResponseSingle,
 )
 from optimade_gateway.mongo.collection import AsyncMongoCollection
-from optimade_gateway.mongo.database import MONGO_DB
 from optimade_gateway.routers.utils import validate_resource
 
 
 ROUTER = APIRouter(redirect_slashes=True)
 
 QUERIES_COLLECTION = AsyncMongoCollection(
-    collection=MONGO_DB[CONFIG.queries_collection],
+    name=CONFIG.queries_collection,
     resource_cls=QueryResource,
     resource_mapper=QueryMapper,
 )

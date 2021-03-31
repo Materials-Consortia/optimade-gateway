@@ -15,14 +15,13 @@ from optimade.server.query_params import EntryListingQueryParams
 
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.mongo.collection import AsyncMongoCollection
-from optimade_gateway.mongo.database import MONGO_DB
 
 from optimade_gateway.routers.utils import get_entries
 
 ROUTER = APIRouter(redirect_slashes=True)
 
 LINKS_COLLECTION = AsyncMongoCollection(
-    collection=MONGO_DB[CONFIG.links_collection],
+    name=CONFIG.links_collection,
     resource_cls=LinksResource,
     resource_mapper=LinksMapper,
 )

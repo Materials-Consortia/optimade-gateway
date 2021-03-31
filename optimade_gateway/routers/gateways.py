@@ -25,7 +25,6 @@ from optimade_gateway.models import (
     GatewaysResponseSingle,
 )
 from optimade_gateway.mongo.collection import AsyncMongoCollection
-from optimade_gateway.mongo.database import MONGO_DB
 
 from optimade_gateway.routers.utils import get_entries
 
@@ -33,7 +32,7 @@ from optimade_gateway.routers.utils import get_entries
 ROUTER = APIRouter(redirect_slashes=True)
 
 GATEWAYS_COLLECTION = AsyncMongoCollection(
-    collection=MONGO_DB[CONFIG.gateways_collection],
+    name=CONFIG.gateways_collection,
     resource_cls=GatewayResource,
     resource_mapper=GatewaysMapper,
 )

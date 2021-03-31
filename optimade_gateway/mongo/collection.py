@@ -9,6 +9,7 @@ from optimade.models import EntryResource, EntryResourceAttributes
 from optimade.server.entry_collections.entry_collections import EntryCollection
 from optimade.server.mappers.entries import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
+from pymongo.collection import Collection as MongoCollection
 
 from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.common.utils import clean_python_types
@@ -25,26 +26,28 @@ class AsyncMongoCollection(EntryCollection):
 
     def __init__(
         self,
-        collection: AsyncIOMotorCollection,
+        name: str,
         resource_cls: EntryResource,
         resource_mapper: BaseResourceMapper,
     ):
         """Initialize the AsyncMongoCollection for the given parameters.
 
         Parameters:
-            collection: The backend-specific collection.
+            name: The name of the collection.
             resource_cls: The `EntryResource` model that is stored by the collection.
             resource_mapper: A resource mapper object that handles aliases and format changes between deserialization and response.
 
         """
+        from optimade_gateway.mongo.database import MONGO_DB
+
         super().__init__(
-            collection=collection,
             resource_cls=resource_cls,
             resource_mapper=resource_mapper,
             transformer=MongoTransformer(mapper=resource_mapper),
         )
 
         self.parser = LarkParser(version=(1, 0, 0), variant="default")
+        self.collection: Union[AsyncIOMotorCollection, MongoCollection] = MONGO_DB[name]
 
         # Check aliases do not clash with mongo operators
         self._check_aliases(self.resource_mapper.all_aliases())
@@ -56,13 +59,15 @@ class AsyncMongoCollection(EntryCollection):
 
     def __repr__(self) -> str:
         """Representation of instance"""
-        return f"{self.__class__.__name__}(collection={self.collection!r}, resource_cls={self.resource_cls!r}, resource_mapper={self.resource_mapper!r}"
+        return f"{self.__class__.__name__}(name={self.collection.name!r}, resource_cls={self.resource_cls!r}, resource_mapper={self.resource_mapper!r}"
 
     def __len__(self) -> int:
         """Length of collection"""
         import warnings
 
-        warnings.warn("Cannot calculate length of collection using `len()`.")
+        warnings.warn(
+            "Cannot calculate length of collection using `len()`. Use `count()` instead."
+        )
         return 0
 
     def _check_aliases(self, aliases: Tuple[Tuple[str, str]]) -> None:
@@ -284,3 +289,21 @@ class AsyncMongoCollection(EntryCollection):
     async def exists(self, entry_id: str) -> bool:
         """Assert whether entry_id exists in the collection (value of `id`)"""
         return bool(await self.count(filter={"id": entry_id}))
+
+    async def insert(self, data: List[EntryResource]) -> None:
+        """Add the given entries to the underlying database.
+
+        Warning:
+            No validation is performed on the incoming data.
+
+        Arguments:
+            data: The entry resource objects to add to the database.
+
+        """
+        await self.collection.insert_many(await clean_python_types(data))
+
+    def _run_db_query(
+        self, criteria: Dict[str, Any], single_entry: bool
+    ) -> Tuple[List[Dict[str, Any]], int, bool]:
+        """Abstract class - not implemented"""
+        return super()._run_db_query(criteria, single_entry=single_entry)
