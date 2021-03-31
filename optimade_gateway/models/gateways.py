@@ -1,7 +1,6 @@
 """Pydantic models/schemas for the Gateway resource"""
 # pylint: disable=no-self-argument
-from datetime import datetime
-from typing import List, Optional
+from typing import List
 import warnings
 
 from optimade.models import EntryResource, EntryResourceAttributes, LinksResource
@@ -9,6 +8,7 @@ from optimade.models.links import LinkType
 from pydantic import Field, validator
 
 from optimade_gateway.common.exceptions import OptimadeGatewayError
+from optimade_gateway.models.resources import EntryResourceCreate
 
 
 class GatewayResourceAttributes(EntryResourceAttributes):
@@ -85,10 +85,5 @@ class GatewayResource(EntryResource):
     attributes: GatewayResourceAttributes
 
 
-class GatewayCreate(GatewayResourceAttributes):
+class GatewayCreate(EntryResourceCreate, GatewayResourceAttributes):
     """Model for creating new Gateway resources in the MongoDB"""
-
-    last_modified: Optional[datetime]
-
-    class Config:
-        extra = "ignore"

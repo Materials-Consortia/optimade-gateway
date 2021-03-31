@@ -5,7 +5,7 @@ from fastapi import HTTPException
 from motor.motor_asyncio import AsyncIOMotorCollection
 from optimade.filterparser import LarkParser
 from optimade.filtertransformers.mongo import MongoTransformer
-from optimade.models import EntryResource, EntryResourceAttributes
+from optimade.models import EntryResource
 from optimade.server.entry_collections.entry_collections import EntryCollection
 from optimade.server.mappers.entries import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
@@ -13,6 +13,7 @@ from pymongo.collection import Collection as MongoCollection
 
 from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.common.utils import clean_python_types
+from optimade_gateway.models import EntryResourceCreate
 
 
 __all__ = ("AsyncMongoCollection",)
@@ -250,7 +251,7 @@ class AsyncMongoCollection(EntryCollection):
         return cursor_kwargs
 
     async def create_one(
-        self, resource: EntryResourceAttributes, set_id: bool = False
+        self, resource: EntryResourceCreate, set_id: bool = False
     ) -> EntryResource:
         """Create a new document in the MongoDB collection based on query parameters.
 
@@ -258,6 +259,7 @@ class AsyncMongoCollection(EntryCollection):
             resource: The resource to be created.
             set_id: Update the newly created document with an "id" field.
                 The value will be the string representation of the "_id" field.
+                This will only be done if `id` is not already present in `resource`.
 
         Returns:
             The newly created document as a pydantic model entry resource.
@@ -274,8 +276,8 @@ class AsyncMongoCollection(EntryCollection):
             result.inserted_id,
         )
 
-        if set_id:
-            LOGGER.debug("Updating resource with an 'id' field.")
+        if set_id and not resource.id:
+            LOGGER.debug("Updating resource with an `id` field equal to str(id_).")
             await self.collection.update_one(
                 {"_id": result.inserted_id}, {"$set": {"id": str(result.inserted_id)}}
             )

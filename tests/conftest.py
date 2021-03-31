@@ -8,15 +8,14 @@ import re
 from typing import Callable, Union
 
 from fastapi import FastAPI
-from httpx import Response
-from pytest_httpx import HTTPXMock
+from httpx import Request, Response
+import pytest
+from pytest_httpx import HTTPXMock, to_response
 
 try:
     from typing import Literal
 except ImportError:
     from typing_extensions import Literal
-
-import pytest
 
 
 # UTILITY FUNCTIONS
@@ -142,7 +141,9 @@ async def reset_db_after(top_dir: Path) -> None:
 
 
 @pytest.fixture
-def mock_responses(httpx_mock: HTTPXMock, top_dir: Path) -> Callable[[dict], None]:
+def mock_responses(
+    httpx_mock: HTTPXMock, top_dir: Path, get_gateway
+) -> Callable[[dict], None]:
     """Add mock responses for gateway databases
 
     (Successful) mock responses are loaded from local JSON files and returned according to the
@@ -150,17 +151,51 @@ def mock_responses(httpx_mock: HTTPXMock, top_dir: Path) -> Callable[[dict], Non
 
     """
 
-    def _mock_response(gateway: dict) -> None:
+    special_databases = ("sleep",)
+
+    async def _mock_response(gateway: Union[dict, str]) -> None:
         """Add mock responses (`httpx_mock`) for `gateway`'s databases"""
+        if isinstance(gateway, str):
+            gateway: dict = await get_gateway(gateway)
         for database in gateway["databases"]:
-            with open(
-                top_dir / f"tests/static/db_responses/{database['id']}.json"
-            ) as handle:
-                data = json.load(handle)
-            httpx_mock.add_response(
-                url=re.compile(fr"{database['attributes']['base_url']}.*"),
-                json=data,
-            )
+            if any([database["id"].startswith(_) for _ in special_databases]):
+                task = database["id"].split("-")[0]
+                if task == "sleep":
+                    httpx_mock.add_callback(
+                        callback=sleep_response,
+                        url=re.compile(fr"{database['attributes']['base_url']}.*"),
+                    )
+                else:
+                    pytest.fail("Found special database, but no way to handle it!")
+            else:
+                with open(
+                    top_dir / f"tests/static/db_responses/{database['id']}.json"
+                ) as handle:
+                    data = json.load(handle)
+                httpx_mock.add_response(
+                    url=re.compile(fr"{database['attributes']['base_url']}.*"),
+                    json=data,
+                )
+
+    def sleep_response(request: Request, *args, **kwargs) -> Response:
+        """Sleep for X seconds
+
+        Where X is taken from the request's URL domain.
+        """
+        from time import sleep
+
+        sleep_args = request.url.host.split("-")
+        assert sleep_args.pop(0) == "sleep"
+        assert len(sleep_args) == 1
+        sleep_args = int(sleep_args[0])
+
+        sleep(sleep_args)
+
+        # Get some standard response data and return it
+        with open(top_dir / "tests/static/db_responses/optimade-sample.json") as handle:
+            data = json.load(handle)
+
+        return to_response(json=data)
 
     return _mock_response
 

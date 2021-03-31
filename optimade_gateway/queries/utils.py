@@ -1,17 +1,24 @@
+from typing import Any
+
 from optimade_gateway.common.logger import LOGGER
-from optimade_gateway.models import QueryResource, QueryState
+from optimade_gateway.models import QueryResource
 
 
-async def update_query_state(query: QueryResource, state: QueryState) -> None:
-    """Update a query's state in the MongoDB.
+async def update_query(query: QueryResource, field: str, value: Any) -> None:
+    """Update a query's `field` attribute with `value`.
+
+    Note: This can _only_ update a field for a query's `attributes`, i.e., this function cannot
+    update `id`, `type` or any other top-level resource field.
 
     Parameters:
         query: The query to be updated.
-        state: The (possibly) new state to be set.
+        field: The `attributes` field (key) to be set.
+        value: The (possibly) new value for `field`.
 
     """
     from datetime import datetime
 
+    from optimade_gateway.common.utils import clean_python_types
     from optimade_gateway.routers.queries import QUERIES_COLLECTION
 
     update_time = datetime.utcnow()
@@ -19,7 +26,12 @@ async def update_query_state(query: QueryResource, state: QueryState) -> None:
     # MongoDB
     result = await QUERIES_COLLECTION.collection.update_one(
         filter={"id": {"$eq": query.id}},
-        update={"$set": {"last_modified": update_time, "state": state.value}},
+        update={
+            "$set": {
+                "last_modified": update_time,
+                field: await clean_python_types(value),
+            }
+        },
     )
     if result.matched_count != 1:
         LOGGER.error(
@@ -30,4 +42,4 @@ async def update_query_state(query: QueryResource, state: QueryState) -> None:
 
     # Pydantic model instance
     query.attributes.last_modified = update_time
-    query.attributes.state = state
+    setattr(query.attributes, field, value)

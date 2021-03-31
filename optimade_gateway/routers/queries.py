@@ -9,7 +9,15 @@ where, `id` may be left out.
 from typing import Union
 import urllib
 
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request
+from fastapi import (
+    APIRouter,
+    BackgroundTasks,
+    Depends,
+    HTTPException,
+    Request,
+    Response,
+    status,
+)
 from optimade.models import ErrorResponse, ToplevelLinks
 from optimade.models.responses import EntryResponseMany
 from optimade.server.query_params import EntryListingQueryParams
@@ -26,6 +34,7 @@ from optimade_gateway.mappers import QueryMapper
 from optimade_gateway.models import (
     QueryCreate,
     QueryResource,
+    QueryState,
     QueriesResponse,
     QueriesResponseSingle,
 )
@@ -53,7 +62,7 @@ QUERIES_COLLECTION = AsyncMongoCollection(
 async def get_queries(
     request: Request,
     params: EntryListingQueryParams = Depends(),
-) -> Union[QueriesResponse, ErrorResponse]:
+) -> QueriesResponse:
     """GET /queries
 
     Return overview of all (active) queries.
@@ -93,12 +102,13 @@ async def get_queries(
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Queries"],
+    status_code=status.HTTP_202_ACCEPTED,
 )
 async def post_queries(
     request: Request,
     query: QueryCreate,
     running_queries: BackgroundTasks,
-) -> Union[QueriesResponseSingle, ErrorResponse]:
+) -> QueriesResponseSingle:
     """POST /queries
 
     Create or return existing gateway query according to `query`.
@@ -135,8 +145,8 @@ async def post_queries(
 
     created = False
     if not result:
+        query.state = QueryState.CREATED
         result = await QUERIES_COLLECTION.create_one(query, set_id=True)
-        LOGGER.debug("Created new query in DB: %r", result)
         running_queries.add_task(
             perform_query, url=request.url, query=result, use_query_resource=True
         )
@@ -164,17 +174,19 @@ async def post_queries(
     tags=["Queries"],
 )
 async def get_query(
-    request: Request, query_id: str
+    request: Request,
+    query_id: str,
+    response: Response,
 ) -> Union[EntryResponseMany, ErrorResponse]:
     """GET /queries/{query_id}
 
     Return the response from a query
     [`QueryResource.attributes.response`][optimade_gateway.models.queries.QueryResourceAttributes.response].
     """
-    from optimade_gateway.models import QueryState
     from optimade_gateway.routers.gateway.utils import get_valid_resource
 
     query: QueryResource = await get_valid_resource(QUERIES_COLLECTION, query_id)
+    LOGGER.debug("Getting query <id=%r>", query.id)
 
     if query.attributes.state != QueryState.FINISHED:
         return EntryResponseMany(
@@ -187,5 +199,13 @@ async def get_query(
                 **{f"_{CONFIG.provider.prefix}_query": query},
             ),
         )
+
+    if query.attributes.response.errors:
+        for error in query.attributes.response.errors:
+            if error.status:
+                response.status_code = int(error.status)
+                break
+        else:
+            response.status_code = 500
 
     return query.attributes.response

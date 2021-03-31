@@ -1,4 +1,3 @@
-from datetime import datetime
 from enum import Enum
 from typing import Optional, Tuple, Union
 
@@ -10,6 +9,8 @@ from optimade.models import (
 )
 from optimade.server.query_params import EntryListingQueryParams
 from pydantic import BaseModel, EmailStr, Field, validator
+
+from optimade_gateway.models.resources import EntryResourceCreate
 
 
 QUERY_PARAMETERS = EntryListingQueryParams()
@@ -82,7 +83,10 @@ class OptimadeQueryParameters(BaseModel):
 
 
 class QueryState(Enum):
-    """Enumeration of possible states for a Gateway Query"""
+    """Enumeration of possible states for a Gateway Query.
+
+    The states are enumerated here in the expected evolvement.
+    """
 
     CREATED = "created"
     STARTED = "started"
@@ -156,13 +160,9 @@ class QueryResource(EntryResource):
     attributes: QueryResourceAttributes
 
 
-class QueryCreate(QueryResourceAttributes):
-    """Model for creating new Gateway resources in the MongoDB"""
+class QueryCreate(EntryResourceCreate, QueryResourceAttributes):
+    """Model for creating new Query resources in the MongoDB"""
 
-    last_modified: Optional[datetime]
     state: Optional[QueryState]
     endpoint: Optional[str]
     endpoint_model: Optional[Tuple[str, str]]
-
-    class Config:
-        extra = "ignore"

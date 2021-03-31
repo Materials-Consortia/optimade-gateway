@@ -8,7 +8,7 @@ where `version` and the last `id` may be left out.
 """
 from typing import Union
 
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends, Request, status
 from optimade.models import ErrorResponse
 from optimade.models.responses import EntryResponseMany
 from optimade.server.exceptions import BadRequest
@@ -62,6 +62,7 @@ async def get_gateway_queries(
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Gateways", "Queries"],
+    status_code=status.HTTP_202_ACCEPTED,
 )
 async def post_gateway_queries(
     request: Request,

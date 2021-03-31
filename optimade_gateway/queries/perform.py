@@ -19,7 +19,7 @@ from starlette.datastructures import URL
 
 from optimade_gateway.models import GatewayResource, QueryResource, QueryState
 from optimade_gateway.queries.prepare import get_query_params, prepare_query
-from optimade_gateway.queries.utils import update_query_state
+from optimade_gateway.queries.utils import update_query
 
 
 async def perform_query(
@@ -77,13 +77,13 @@ async def perform_query(
     ]
 
     if use_query_resource:
-        await update_query_state(query, QueryState.CREATED)
+        await update_query(query, "state", QueryState.STARTED)
 
     for query_task in asyncio.as_completed(query_tasks):
         (response, db_id) = await query_task
 
         if use_query_resource and query.attributes.state != QueryState.IN_PROGRESS:
-            await update_query_state(query, QueryState.IN_PROGRESS)
+            await update_query(query, "state", QueryState.IN_PROGRESS)
 
         if isinstance(response, ErrorResponse):
             for error in response.errors:
@@ -165,8 +165,8 @@ async def perform_query(
         )
 
     if use_query_resource:
-        query.attributes.response = response
-        await update_query_state(query, QueryState.FINISHED)
+        await update_query(query, "response", response)
+        await update_query(query, "state", QueryState.FINISHED)
 
     return response
 
