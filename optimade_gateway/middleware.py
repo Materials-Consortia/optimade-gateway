@@ -26,7 +26,7 @@ class CheckWronglyVersionedBaseUrlsGateways(BaseHTTPMiddleware):
         base_url = get_base_url(url)
         optimade_path = f"{url.scheme}://{url.netloc}{url.path}"[len(base_url) :]
         match = re.match(
-            r"^/gateways/[\S]+(?P<version>/v[0-9]+(\.[0-9]+){0,2}).*", optimade_path
+            r"^/gateways/[^/\s]+(?P<version>/v[0-9]+(\.[0-9]+){0,2}).*", optimade_path
         )
         if match is not None:
             if match.group("version") not in BASE_URL_PREFIXES.values():
