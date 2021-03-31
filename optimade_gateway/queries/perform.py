@@ -1,15 +1,7 @@
-from asyncio import as_completed
+import asyncio
 import json
-import sys
 from typing import Tuple, Union
 import urllib.parse
-
-if sys.version_info >= (3, 7):
-    # Python 3.7+
-    from asyncio import create_task
-else:
-    # See https://docs.python.org/3/library/asyncio-task.html#asyncio.create_task
-    from asyncio import ensure_future as create_task
 
 import httpx
 from optimade import __api_version__
@@ -67,7 +59,7 @@ async def perform_query(
     )
 
     query_tasks = [
-        create_task(
+        asyncio.create_task(
             db_find(
                 database=database,
                 endpoint=query.attributes.endpoint,
@@ -85,7 +77,7 @@ async def perform_query(
     if update_query_resource:
         await update_query_state(query, QueryState.CREATED)
 
-    for query_task in as_completed(query_tasks):
+    for query_task in asyncio.as_completed(query_tasks):
         (response, db_id) = await query_task
 
         if update_query_resource and query.attributes.state != QueryState.IN_PROGRESS:
