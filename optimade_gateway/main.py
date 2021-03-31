@@ -76,7 +76,7 @@ async def ci_dev_startup():
         LOGGER.info(
             "CI detected - Will load test gateways (after dropping the collection)!"
         )
-    elif os.getenv("OPTIMADE_GATEWAY_MONGO_DATABASE", "") == "optimade_gateway_dev":
+    elif os.getenv("OPTIMADE_MONGO_DATABASE", "") == "optimade_gateway_dev":
         LOGGER.info(
             "Running in development mode - Will load test gateways (after dropping the collection)!"
         )

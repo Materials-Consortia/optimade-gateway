@@ -1,8 +1,8 @@
 {
     "debug": false,
-    "use_real_mongo": true,
     "mongo_uri": "mongodb://{host_ip}:27017",
     "mongo_database": "optimade_gateway",
+    "database_backend": "mongodb",
     "page_limit": 20,
     "page_limit_max": 500,
     "base_url": "http://localhost:8000",

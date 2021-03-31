@@ -40,16 +40,5 @@ class ServerConfig(OptimadeServerConfig):
                 )
         return res
 
-    class Config:
-        """
-        This is a pydantic model Config object that modifies the behaviour of
-        ServerConfig by adding a prefix to the environment variables that
-        override config file values. It has nothing to do with the OPTIMADE
-        config.
-
-        """
-
-        env_prefix = "optimade_gateway_"
-
 
 CONFIG = ServerConfig()

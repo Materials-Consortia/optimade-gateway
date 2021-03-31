@@ -70,8 +70,7 @@ jobs:
 
     - name: Test with pytest
       env:
-        OPTIMADE_CI_FORCE_MONGO: 1
-        OPTIMADE_GATEWAY_MONGO_URI: "mongodb://localhost:27017"
+        OPTIMADE_MONGO_URI: "mongodb://localhost:27017"
       run: pytest -rs -vvv --cov=./optimade_gateway/ --cov-report=xml --cov-report=term
 
     - name: Upload coverage to Codecov

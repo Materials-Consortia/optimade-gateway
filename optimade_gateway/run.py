@@ -35,16 +35,12 @@ def run(argv: Sequence[Text] = None) -> None:
         uvicorn_kwargs.update({"reload": False, "log_level": "info"})
     else:
         # Use test DB
-        os.environ["OPTIMADE_GATEWAY_MONGO_DATABASE"] = os.environ[
-            "OPTIMADE_MONGO_DATABASE"
-        ] = "optimade_gateway_dev"
-        os.environ["OPTIMADE_GATEWAY_DEBUG"] = os.environ["OPTIMADE_DEBUG"] = "True"
-        os.environ["OPTIMADE_GATEWAY_LOG_LEVEL"] = os.environ[
-            "OPTIMADE_LOG_LEVEL"
-        ] = "debug"
+        os.environ["OPTIMADE_MONGO_DATABASE"] = "optimade_gateway_dev"
+        os.environ["OPTIMADE_DEBUG"] = "True"
+        os.environ["OPTIMADE_LOG_LEVEL"] = "debug"
 
-    os.environ["OPTIMADE_GATEWAY_CONFIG_FILE"] = os.environ[
-        "OPTIMADE_CONFIG_FILE"
-    ] = str(Path(__file__).parent.joinpath("config.json").resolve())
+    os.environ["OPTIMADE_CONFIG_FILE"] = str(
+        Path(__file__).parent.joinpath("config.json").resolve()
+    )
 
     uvicorn.run("optimade_gateway.main:APP", **uvicorn_kwargs)
