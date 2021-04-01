@@ -1,13 +1,17 @@
 """Tests for /queries endpoints"""
 # pylint: disable=import-error,no-name-in-module
+from pathlib import Path
+
 import pytest
 
 
 pytestmark = pytest.mark.asyncio
 
 
-async def test_get_queries(client):
+async def test_get_queries(client, top_dir: Path):
     """Test GET /queries"""
+    import json
+
     from optimade_gateway.models.responses import QueriesResponse
 
     response = await client("/queries")
@@ -16,8 +20,11 @@ async def test_get_queries(client):
     response = QueriesResponse(**response.json())
     assert response
 
-    assert response.meta.data_returned == 3
-    assert response.meta.data_available == 3
+    with open(top_dir / "tests/static/test_queries.json") as handle:
+        test_data = json.load(handle)
+
+    assert response.meta.data_returned == len(test_data)
+    assert response.meta.data_available == len(test_data)
     assert not response.meta.more_data_available
 
 
@@ -75,11 +82,6 @@ async def test_post_queries(client):
     db_datum = await MONGO_DB["queries"].find_one(mongo_filter)
     for key in data:
         assert db_datum[key] == data[key]
-
-    # Remove it and assert it has been removed
-    await MONGO_DB["queries"].delete_one(mongo_filter)
-    assert await MONGO_DB["queries"].count_documents(mongo_filter) == 0
-    assert await MONGO_DB["queries"].count_documents({}) == 3
 
 
 @pytest.mark.usefixtures("reset_db_after")

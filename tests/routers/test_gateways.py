@@ -1,13 +1,17 @@
 """Tests for /gateways endpoints"""
 # pylint: disable=import-error,no-name-in-module
+from pathlib import Path
+
 import pytest
 
 
 pytestmark = pytest.mark.asyncio
 
 
-async def test_get_gateways(client):
+async def test_get_gateways(client, top_dir: Path):
     """Test GET /gateways"""
+    import json
+
     from optimade_gateway.models.responses import GatewaysResponse
 
     response = await client("/gateways")
@@ -16,8 +20,11 @@ async def test_get_gateways(client):
     response = GatewaysResponse(**response.json())
     assert response
 
-    assert response.meta.data_returned == 4
-    assert response.meta.data_available == 4
+    with open(top_dir / "tests/static/test_gateways.json") as handle:
+        test_data = json.load(handle)
+
+    assert response.meta.data_returned == len(test_data)
+    assert response.meta.data_available == len(test_data)
     assert not response.meta.more_data_available
 
 
@@ -80,8 +87,3 @@ async def test_post_gateways(client):
     assert await MONGO_DB["gateways"].count_documents(mongo_filter) == 1
     db_datum = await MONGO_DB["gateways"].find_one(mongo_filter)
     assert db_datum["databases"] == data["databases"]
-
-    # Remove it and assert it has been removed
-    await MONGO_DB["gateways"].delete_one(mongo_filter)
-    assert await MONGO_DB["gateways"].count_documents(mongo_filter) == 0
-    assert await MONGO_DB["gateways"].count_documents({}) == 4
