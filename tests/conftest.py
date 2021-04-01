@@ -4,7 +4,12 @@ import asyncio
 import json
 import os
 from pathlib import Path
+import re
 from typing import Callable, Union
+
+from fastapi import FastAPI
+from httpx import Response
+from pytest_httpx import HTTPXMock
 
 try:
     from typing import Literal
@@ -79,10 +84,11 @@ async def setup_db(top_dir: Path) -> None:
 
 
 @pytest.fixture
-def client() -> Callable:
+def client() -> Callable[
+    [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Response
+]:
     """Return function to make HTTP requests with async httpx client"""
-    from fastapi import FastAPI
-    from httpx import AsyncClient, Response
+    from httpx import AsyncClient
 
     async def _client(
         request: str,
@@ -113,7 +119,7 @@ def client() -> Callable:
 
 
 @pytest.fixture
-def get_gateway() -> Callable:
+def get_gateway() -> Callable[[str], dict]:
     """Return function to find a single gateway in the current MongoDB"""
 
     async def _get_gateway(id: str) -> dict:
@@ -133,3 +139,32 @@ async def reset_db_after(top_dir: Path) -> None:
     finally:
         # Reset MongoDB
         await setup_db_utility(top_dir)
+
+
+@pytest.fixture
+def mock_responses(httpx_mock: HTTPXMock, top_dir: Path) -> Callable[[dict], None]:
+    """Add mock responses for gateway databases
+
+    (Successful) mock responses are loaded from local JSON files and returned according to the
+    database id.
+
+    """
+
+    def _mock_response(gateway: dict) -> None:
+        """Add mock responses (`httpx_mock`) for `gateway`'s databases"""
+        for database in gateway["databases"]:
+            with open(
+                top_dir / f"tests/static/db_responses/{database['id']}.json"
+            ) as handle:
+                data = json.load(handle)
+            httpx_mock.add_response(
+                url=re.compile(fr"{database['attributes']['base_url']}.*"),
+                json=data,
+            )
+
+    return _mock_response
+
+
+@pytest.fixture
+def non_mocked_hosts() -> list:
+    return ["example.org"]

@@ -35,7 +35,7 @@ async def test_post_queries(client):
 
     data = {
         "gateway_id": "singledb",
-        "query_parameters": {"filter": 'elements HAS "Cu"', "page_limit": 5},
+        "query_parameters": {"filter": 'elements HAS "Cu"', "page_limit": 15},
         "endpoint": "structures",
         "endpoint_model": ["optimade.models.responses", "StructureResponseMany"],
     }

@@ -1,20 +1,24 @@
 """Tests for /gateways/{gateway_id}/structures endpoints"""
 # pylint: disable=import-error,no-name-in-module
 import json
+
+import httpx
 import pytest
 
 
 pytestmark = pytest.mark.asyncio
 
 
-async def test_get_structures(client, get_gateway):
+async def test_get_structures(client, get_gateway, mock_responses):
     """Test GET /gateways/{gateway_id}/structures"""
     from optimade.models import StructureResponseMany
-    import requests
 
     from optimade_gateway.common.config import CONFIG
 
     gateway_id = "twodbs"
+    gateway: dict = await get_gateway(gateway_id)
+
+    mock_responses(gateway)
 
     response = await client(f"/gateways/{gateway_id}/structures")
 
@@ -29,13 +33,11 @@ async def test_get_structures(client, get_gateway):
     data_available = 0
     data = []
 
-    gateway = await get_gateway(gateway_id)
-
     assert len(response.data) == CONFIG.page_limit * len(gateway["databases"])
 
     for database in gateway["databases"]:
         url = f"{database['attributes']['base_url']}/structures?page_limit={CONFIG.page_limit}"
-        db_response = requests.get(url)
+        db_response = httpx.get(url)
         assert (
             db_response.status_code == 200
         ), f"Request to {url} failed: {db_response.json()}"
@@ -65,7 +67,6 @@ async def test_get_structures(client, get_gateway):
 async def test_get_single_structure(client, get_gateway):
     """TEST GET /gateways/{gateway_id}/structures/{structure_id}"""
     from optimade.models import StructureResponseOne
-    import requests
 
     gateway_id = "singledb"
     structure_id = "optimade-sample/1"
@@ -84,7 +85,7 @@ async def test_get_single_structure(client, get_gateway):
     assert response.data is not None
 
     url = f"{database['attributes']['base_url']}/structures/{structure_id[len(database['id']) + 1:]}"
-    db_response = requests.get(url)
+    db_response = httpx.get(url)
     assert (
         db_response.status_code == 200
     ), f"Request to {url} failed: {db_response.json()}"
