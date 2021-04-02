@@ -25,7 +25,6 @@ def run(argv: Sequence[Text] = None) -> None:
         "reload": True,
         "reload_dirs": [str(Path(__file__).parent.resolve())],
         "log_level": "debug",
-        "loop": "asyncio",
     }
 
     if args.prod:
