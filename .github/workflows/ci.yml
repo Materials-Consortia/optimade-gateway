@@ -71,7 +71,7 @@ jobs:
     - name: Test with pytest
       env:
         OPTIMADE_MONGO_URI: "mongodb://localhost:27017"
-      run: pytest -rs -vvv --cov=./optimade_gateway/ --cov-report=xml --cov-report=term --durations=10 --no-success-flaky-report
+      run: pytest -vvv --cov-report=xml
 
     - name: Upload coverage to Codecov
       if: matrix.python-version == 3.8 && github.repository == 'epfl-theos/optimade-gateway'
