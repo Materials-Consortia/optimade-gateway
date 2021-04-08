@@ -1,5 +1,4 @@
 """Utility functions for all routers"""
-from typing import Tuple
 import urllib.parse
 
 from fastapi import Request
@@ -53,7 +52,7 @@ async def get_entries(
 
 async def aretrieve_queryable_properties(
     schema: dict, queryable_properties: list
-) -> Tuple[dict, dict]:
+) -> dict:
     """Asynchronous implementation of `optimade.server.schemas.retrieve_queryable_properties()`
 
     Recurisvely loops through the schema of a pydantic model and resolves all references, returning
