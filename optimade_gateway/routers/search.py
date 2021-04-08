@@ -72,12 +72,6 @@ async def post_search(
     from optimade_gateway.routers.gateways import post_gateways
     from optimade_gateway.routers.queries import post_queries
 
-    search.optimade_urls = (
-        search.optimade_urls
-        if isinstance(search.optimade_urls, list)
-        else [search.optimade_urls]
-    )
-
     gateways_response = await post_gateways(
         request,
         gateway=GatewayCreate(
