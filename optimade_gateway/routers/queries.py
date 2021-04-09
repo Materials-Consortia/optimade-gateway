@@ -6,7 +6,7 @@ This file describes the router for:
 
 where, `id` may be left out.
 """
-from typing import Union
+from typing import Tuple, Union
 import urllib
 
 from fastapi import (
@@ -29,7 +29,6 @@ from optimade.server.routers.utils import (
 
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.common.logger import LOGGER
-from optimade_gateway.common.utils import clean_python_types
 from optimade_gateway.mappers import QueryMapper
 from optimade_gateway.models import (
     QueryCreate,
@@ -39,7 +38,6 @@ from optimade_gateway.models import (
     QueriesResponseSingle,
 )
 from optimade_gateway.mongo.collection import AsyncMongoCollection
-from optimade_gateway.routers.utils import validate_resource
 
 
 ROUTER = APIRouter(redirect_slashes=True)
@@ -95,28 +93,25 @@ async def get_queries(
     )
 
 
-@ROUTER.post(
-    "/queries",
-    response_model=Union[QueriesResponseSingle, ErrorResponse],
-    response_model_exclude_defaults=False,
-    response_model_exclude_none=False,
-    response_model_exclude_unset=True,
-    tags=["Queries"],
-    status_code=status.HTTP_202_ACCEPTED,
-)
-async def post_queries(
-    request: Request,
-    query: QueryCreate,
-    running_queries: BackgroundTasks,
-) -> QueriesResponseSingle:
-    """POST /queries
+async def get_or_create_query(query: QueryCreate) -> Tuple[QueryResource, bool]:
+    """Utility function to get a query
 
-    Create or return existing gateway query according to `query`.
+    If a query is not found in the MongoDB collection a new one will be created.
+
+    Parameters:
+        query: A gateway as presented from a POST request, i.e., a
+            [`QueryCreate`][optimade_gateway.models.gateways.GatewayCreate].
+
+    Returns:
+        Two things in a tuple:
+
+        - The [`GatewayResource`][optimade_gateway.models.queries.QueryResource]; and
+        - whether or not the resource was newly created.
+
     """
-    from optimade_gateway.queries import perform_query
-    from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
+    from optimade_gateway.common.utils import clean_python_types
 
-    await validate_resource(GATEWAYS_COLLECTION, query.gateway_id)
+    created = False
 
     # Currently only /structures entry endpoints can be queried with multiple expected responses.
     query.endpoint = query.endpoint if query.endpoint else "structures"
@@ -140,17 +135,58 @@ async def post_queries(
     if more_data_available:
         raise HTTPException(
             status_code=500,
-            detail=f"more_data_available MUST be False for a single entry response, however it is {more_data_available}",
+            detail=(
+                "more_data_available MUST be False for a single entry response, however it is "
+                f"{more_data_available}"
+            ),
         )
 
-    created = False
-    if not result:
+    if result:
+        if isinstance(result, list) and len(result) != 1:
+            raise HTTPException(
+                status_code=500,
+                detail=f"More than one gateway was found. IDs of found gateways: {[_.id for _ in result]}",
+            )
+        result = result[0]
+    else:
         query.state = QueryState.CREATED
-        result = await QUERIES_COLLECTION.create_one(query, set_id=True)
+        result = await QUERIES_COLLECTION.create_one(query)
+        LOGGER.debug("Created new query: %r", result)
+        created = True
+
+    return result, created
+
+
+@ROUTER.post(
+    "/queries",
+    response_model=Union[QueriesResponseSingle, ErrorResponse],
+    response_model_exclude_defaults=False,
+    response_model_exclude_none=False,
+    response_model_exclude_unset=True,
+    tags=["Queries"],
+    status_code=status.HTTP_202_ACCEPTED,
+)
+async def post_queries(
+    request: Request,
+    query: QueryCreate,
+    running_queries: BackgroundTasks,
+) -> QueriesResponseSingle:
+    """POST /queries
+
+    Create or return existing gateway query according to `query`.
+    """
+    from optimade_gateway.queries import perform_query
+    from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
+    from optimade_gateway.routers.utils import validate_resource
+
+    await validate_resource(GATEWAYS_COLLECTION, query.gateway_id)
+
+    result, created = await get_or_create_query(query)
+
+    if created:
         running_queries.add_task(
             perform_query, url=request.url, query=result, use_query_resource=True
         )
-        created = True
 
     return QueriesResponseSingle(
         links=ToplevelLinks(next=None),
@@ -159,7 +195,7 @@ async def post_queries(
             url=request.url,
             data_returned=1,
             data_available=await QUERIES_COLLECTION.count(),
-            more_data_available=more_data_available,
+            more_data_available=False,
             **{f"_{CONFIG.provider.prefix}_created": created},
         ),
     )
@@ -186,7 +222,6 @@ async def get_query(
     from optimade_gateway.routers.gateway.utils import get_valid_resource
 
     query: QueryResource = await get_valid_resource(QUERIES_COLLECTION, query_id)
-    LOGGER.debug("Getting query <id=%r>", query.id)
 
     if query.attributes.state != QueryState.FINISHED:
         return EntryResponseMany(

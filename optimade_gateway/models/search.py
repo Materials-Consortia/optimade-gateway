@@ -11,7 +11,7 @@ class Search(BaseModel):
     """A general coordinated OPTIMADE search"""
 
     query_parameters: OptimadeQueryParameters = Field(
-        ...,
+        {},
         description="OPTIMADE query parameters for entry listing endpoints used for this query.",
     )
     optimade_urls: List[AnyUrl] = Field(
@@ -51,9 +51,7 @@ class Search(BaseModel):
             )
 
     @validator("optimade_urls")
-    def unique_urls(
-        cls, value: Union[AnyUrl, List[AnyUrl]]
-    ) -> Union[AnyUrl, List[AnyUrl]]:
+    def unique_urls(cls, value: List[AnyUrl]) -> List[AnyUrl]:
         """Remove non-unique entries"""
         if isinstance(value, AnyUrl):
             return value
@@ -73,4 +71,8 @@ class Search(BaseModel):
                 ]
             )
         )
+
+        # Assert length of optimade_urls is > 0
+        assert new_value, "At least a single URL must be supplied."
+
         return new_value

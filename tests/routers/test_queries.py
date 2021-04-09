@@ -123,8 +123,6 @@ async def test_query_results(client, mock_responses):
     from optimade.models import EntryResponseMany
     from optimade.models import StructureResponseMany
 
-    from pydantic import ValidationError
-
     from optimade_gateway.common.config import CONFIG
     from optimade_gateway.models.queries import QueryState, QueryResource
 
@@ -150,14 +148,9 @@ async def test_query_results(client, mock_responses):
     response = await client(f"/queries/{data['id']}")
     assert response.status_code == 200, f"Request failed: {response.json()}"
 
-    try:
-        response = EntryResponseMany(**response.json())
-    except ValidationError:
-        pytest.fail(
-            f"Could not turn response into EntryResponseMany: {response.json()}"
-        )
-
+    response = EntryResponseMany(**response.json())
     assert response.data == []
+
     query: QueryResource = QueryResource(
         **getattr(response.meta, f"_{CONFIG.provider.prefix}_query")
     )

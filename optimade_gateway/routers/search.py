@@ -21,10 +21,15 @@ from optimade.models import (
     ErrorResponse,
     LinksResource,
     LinksResourceAttributes,
+    ToplevelLinks,
 )
 from optimade.models.links import LinkType
+from optimade.server.query_params import EntryListingQueryParams
+from optimade.server.routers.utils import meta_values
 from starlette.background import BackgroundTasks
 
+from optimade_gateway.common.config import CONFIG
+from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.models import (
     GatewayCreate,
     QueriesResponseSingle,
@@ -33,7 +38,7 @@ from optimade_gateway.models import (
     Search,
 )
 from optimade_gateway.models.queries import OptimadeQueryParameters, QueryState
-from optimade_gateway.queries.params import SearchQueryParams
+from optimade_gateway.queries import perform_query, SearchQueryParams
 
 
 ROUTER = APIRouter(redirect_slashes=True)
@@ -61,56 +66,71 @@ async def post_search(
 
     Coordinate a new OPTIMADE query in multiple databases through a gateway:
 
-    1. ~Search for gateway in DB using `optimade_urls`~
+    1. ~~Search for gateway in DB using `optimade_urls`~~
     1. Create `GatewayCreate` model
-    1. GET a gateway ID - calling /gateways
+    1. GET a gateway ID - using functionality of POST /gateways
     1. Create new Query resource
-    1. POST Query resource - calling /queries
-    1. Return POST /queries response
+    1. POST Query resource - using functionality of POST /queries
+    1. Return POST /queries response -
+        [`QueriesResponseSingle`][optimade_gateway.models.responses.QueriesResponseSingle]
 
     """
-    from optimade_gateway.routers.gateways import post_gateways
-    from optimade_gateway.routers.queries import post_queries
+    from optimade_gateway.routers.gateways import get_or_create_gateway
+    from optimade_gateway.routers.queries import get_or_create_query, QUERIES_COLLECTION
 
-    gateways_response = await post_gateways(
-        request,
-        gateway=GatewayCreate(
-            databases=[
-                LinksResource(
-                    id=(
+    gateway = GatewayCreate(
+        databases=[
+            LinksResource(
+                id=(
+                    f"{url.user + '@' if url.user else ''}{url.host}"
+                    f"{':' + url.port if url.port else ''}"
+                    f"{url.path.rstrip('/') if url.path else ''}"
+                ),
+                type="links",
+                attributes=LinksResourceAttributes(
+                    name=(
                         f"{url.user + '@' if url.user else ''}{url.host}"
                         f"{':' + url.port if url.port else ''}"
                         f"{url.path.rstrip('/') if url.path else ''}"
                     ),
-                    type="links",
-                    attributes=LinksResourceAttributes(
-                        name=(
-                            f"{url.user + '@' if url.user else ''}{url.host}"
-                            f"{':' + url.port if url.port else ''}"
-                            f"{url.path.rstrip('/') if url.path else ''}"
-                        ),
-                        description="",
-                        base_url=url,
-                        link_type=LinkType.CHILD,
-                    ),
-                )
-                for url in search.optimade_urls
-            ]
-        ),
+                    description="",
+                    base_url=url,
+                    link_type=LinkType.CHILD,
+                    homepage=None,
+                ),
+            )
+            for url in search.optimade_urls
+        ]
     )
+    gateway, created = await get_or_create_gateway(gateway)
 
-    return await post_queries(
-        request,
-        running_queries=running_queries,
-        query=QueryCreate(
-            endpoint=search.endpoint,
-            endpoint_model=ENDPOINT_MODELS.get(search.endpoint),
-            gateway_id=(
-                gateways_response.data.get("id")
-                if isinstance(gateways_response.data, dict)
-                else gateways_response.data.id
-            ),
-            query_parameters=search.query_parameters,
+    if created:
+        LOGGER.debug("A new gateway was created for a query (id=%r)", gateway.id)
+    else:
+        LOGGER.debug("A gateway was found and reused for a query (id=%r)", gateway.id)
+
+    query = QueryCreate(
+        endpoint=search.endpoint,
+        endpoint_model=ENDPOINT_MODELS.get(search.endpoint),
+        gateway_id=gateway.id,
+        query_parameters=search.query_parameters,
+    )
+    query, created = await get_or_create_query(query)
+
+    if created:
+        running_queries.add_task(
+            perform_query, url=request.url, query=query, use_query_resource=True
+        )
+
+    return QueriesResponseSingle(
+        links=ToplevelLinks(next=None),
+        data=query,
+        meta=meta_values(
+            url=request.url,
+            data_returned=1,
+            data_available=await QUERIES_COLLECTION.count(),
+            more_data_available=False,
+            **{f"_{CONFIG.provider.prefix}_created": created},
         ),
     )
 
@@ -127,20 +147,20 @@ async def get_search(
     request: Request,
     response: Response,
     running_queries: BackgroundTasks,
-    params: SearchQueryParams = Depends(),
+    search_params: SearchQueryParams = Depends(),
+    entry_params: EntryListingQueryParams = Depends(),
 ) -> Union[EntryResponseMany, ErrorResponse, RedirectResponse]:
     """GET /search
 
     Coordinate a new OPTIMADE query in multiple databases through a gateway:
 
-    1. GET a gateway ID - calling /gateways
-    2. Create new Query resource
-    3. POST Query resource - calling /queries
-    4. Wait until query finishes - set a timeout period
-    5. Return successful response
+    1. Create a [`Search`][optimade_gateway.models.search.Search] POST data - calling POST /search
+    1. Wait [`timeout`][optimade_gateway.queries.params.SearchQueryParams.timeout] seconds until
+        the query has finished
+    1. Return successful response
 
-    Contingency: If the query has not succeeded within the set timeout period, the client will
-    be redirected to the query instead.
+    Contingency: If the query has not finished within the set timeout period, the client will be
+    redirected to the query's URL instead.
 
     """
     from time import time
@@ -149,31 +169,27 @@ async def get_search(
     search = Search(
         query_parameters=OptimadeQueryParameters(
             **{
-                field: getattr(params, field)
-                for field in OptimadeQueryParameters.__fields_set__
-                if getattr(params, field)
+                field: getattr(entry_params, field)
+                for field in OptimadeQueryParameters.__fields__
+                if getattr(entry_params, field)
             }
         ),
-        optimade_urls=params.optimade_urls,
-        endpoint=params.endpoint,
+        optimade_urls=search_params.optimade_urls,
+        endpoint=search_params.endpoint,
     )
 
     post_response = await post_search(
         request, search=search, running_queries=running_queries
     )
 
+    once = True
     start_time = time()
-    while time() < (start_time + params.timeout):
+    while time() < (start_time + search_params.timeout) or once:
+        # Make sure to run this at least once (e.g., if timeout=0)
+        once = False
+
         query: QueryResource = await QUERIES_COLLECTION.get_one(
-            {
-                "id": {
-                    "$eq": (
-                        post_response.data.get("id")
-                        if isinstance(post_response.data, dict)
-                        else post_response.data.id
-                    )
-                }
-            }
+            **{"filter": {"id": post_response.data.id}}
         )
 
         if query.attributes.state == QueryState.FINISHED:
@@ -187,7 +203,7 @@ async def get_search(
 
             return query.attributes.response
 
-        await asyncio.sleep(0.2)
+        await asyncio.sleep(0.1)
 
     # The query has not yet succeeded and we're past the timeout time -> Redirect to the query
     return RedirectResponse(query.links.self)

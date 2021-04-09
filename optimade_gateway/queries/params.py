@@ -1,11 +1,10 @@
 from typing import List
 
 from fastapi import Query
-from optimade.server.query_params import EntryListingQueryParams
 from pydantic import AnyUrl
 
 
-class SearchQueryParams(EntryListingQueryParams):
+class SearchQueryParams:
     """URL query parameters for GET /search
 
     This is an extension of the `EntryListingQueryParams` class in `optimade´, which defines the
@@ -72,9 +71,7 @@ class SearchQueryParams(EntryListingQueryParams):
                 "which can be refreshed to get the finished query (once it has finished)."
             ),
         ),
-        **kwargs,
     ) -> None:
-        super().__init__(**kwargs)
         self.databases = databases
         self.optimade_urls = optimade_urls
         self.endpoint = endpoint
