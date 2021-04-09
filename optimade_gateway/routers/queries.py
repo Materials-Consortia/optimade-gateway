@@ -6,14 +6,12 @@ This file describes the router for:
 
 where, `id` may be left out.
 """
-from typing import Tuple, Union
-import urllib
+from typing import Union
 
 from fastapi import (
     APIRouter,
     BackgroundTasks,
     Depends,
-    HTTPException,
     Request,
     Response,
     status,
@@ -21,14 +19,9 @@ from fastapi import (
 from optimade.models import ErrorResponse, ToplevelLinks
 from optimade.models.responses import EntryResponseMany
 from optimade.server.query_params import EntryListingQueryParams
-from optimade.server.routers.utils import (
-    get_base_url,
-    handle_response_fields,
-    meta_values,
-)
+from optimade.server.routers.utils import meta_values
 
 from optimade_gateway.common.config import CONFIG
-from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.mappers import QueryMapper
 from optimade_gateway.models import (
     QueryCreate,
@@ -65,96 +58,14 @@ async def get_queries(
 
     Return overview of all (active) queries.
     """
-    queries, more_data_available, fields = await QUERIES_COLLECTION.find(params=params)
+    from optimade_gateway.routers.utils import get_entries
 
-    if more_data_available:
-        # Deduce the `next` link from the current request
-        query = urllib.parse.parse_qs(request.url.query)
-        query["page_offset"] = int(query.get("page_offset", [0])[0]) + len(queries)
-        urlencoded = urllib.parse.urlencode(query, doseq=True)
-        base_url = get_base_url(request.url)
-
-        links = ToplevelLinks(next=f"{base_url}{request.url.path}?{urlencoded}")
-    else:
-        links = ToplevelLinks(next=None)
-
-    if fields:
-        queries = handle_response_fields(queries, fields)
-
-    return QueriesResponse(
-        links=links,
-        data=queries,
-        meta=meta_values(
-            url=request.url,
-            data_returned=await QUERIES_COLLECTION.count(params=params),
-            data_available=await QUERIES_COLLECTION.count(),
-            more_data_available=more_data_available,
-        ),
+    return await get_entries(
+        collection=QUERIES_COLLECTION,
+        response_cls=QueriesResponse,
+        request=request,
+        params=params,
     )
-
-
-async def get_or_create_query(query: QueryCreate) -> Tuple[QueryResource, bool]:
-    """Utility function to get a query
-
-    If a query is not found in the MongoDB collection a new one will be created.
-
-    Parameters:
-        query: A gateway as presented from a POST request, i.e., a
-            [`QueryCreate`][optimade_gateway.models.gateways.GatewayCreate].
-
-    Returns:
-        Two things in a tuple:
-
-        - The [`GatewayResource`][optimade_gateway.models.queries.QueryResource]; and
-        - whether or not the resource was newly created.
-
-    """
-    from optimade_gateway.common.utils import clean_python_types
-
-    created = False
-
-    # Currently only /structures entry endpoints can be queried with multiple expected responses.
-    query.endpoint = query.endpoint if query.endpoint else "structures"
-    query.endpoint_model = (
-        query.endpoint_model
-        if query.endpoint_model
-        else ("optimade.models.responses", "StructureResponseMany")
-    )
-
-    mongo_query = {
-        "gateway_id": {"$eq": query.gateway_id},
-        "query_parameters": {
-            "$eq": await clean_python_types(query.query_parameters),
-        },
-        "endpoint": {"$eq": query.endpoint},
-    }
-    result, more_data_available, _ = await QUERIES_COLLECTION.find(
-        criteria={"filter": mongo_query}
-    )
-
-    if more_data_available:
-        raise HTTPException(
-            status_code=500,
-            detail=(
-                "more_data_available MUST be False for a single entry response, however it is "
-                f"{more_data_available}"
-            ),
-        )
-
-    if result:
-        if isinstance(result, list) and len(result) != 1:
-            raise HTTPException(
-                status_code=500,
-                detail=f"More than one gateway was found. IDs of found gateways: {[_.id for _ in result]}",
-            )
-        result = result[0]
-    else:
-        query.state = QueryState.CREATED
-        result = await QUERIES_COLLECTION.create_one(query)
-        LOGGER.debug("Created new query: %r", result)
-        created = True
-
-    return result, created
 
 
 @ROUTER.post(
@@ -177,11 +88,11 @@ async def post_queries(
     """
     from optimade_gateway.queries import perform_query
     from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
-    from optimade_gateway.routers.utils import validate_resource
+    from optimade_gateway.routers.utils import resource_factory, validate_resource
 
     await validate_resource(GATEWAYS_COLLECTION, query.gateway_id)
 
-    result, created = await get_or_create_query(query)
+    result, created = await resource_factory(query)
 
     if created:
         running_queries.add_task(

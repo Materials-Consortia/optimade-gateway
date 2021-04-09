@@ -24,6 +24,7 @@ from optimade.models import (
     ToplevelLinks,
 )
 from optimade.models.links import LinkType
+from optimade.models import StructureResponseMany, ReferenceResponseMany, LinksResponse
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import meta_values
 from starlette.background import BackgroundTasks
@@ -44,9 +45,9 @@ from optimade_gateway.queries import perform_query, SearchQueryParams
 ROUTER = APIRouter(redirect_slashes=True)
 
 ENDPOINT_MODELS = {
-    "structures": ("optimade.models.responses", "StructureResponseMany"),
-    "references": ("optimade.models.responses", "ReferenceResponseMany"),
-    "links": ("optimade.models.responses", "LinksResponse"),
+    "structures": (StructureResponseMany.__module__, StructureResponseMany.__name__),
+    "references": (ReferenceResponseMany.__module__, ReferenceResponseMany.__name__),
+    "links": (LinksResponse.__module__, LinksResponse.__name__),
 }
 
 
@@ -75,8 +76,8 @@ async def post_search(
         [`QueriesResponseSingle`][optimade_gateway.models.responses.QueriesResponseSingle]
 
     """
-    from optimade_gateway.routers.gateways import get_or_create_gateway
-    from optimade_gateway.routers.queries import get_or_create_query, QUERIES_COLLECTION
+    from optimade_gateway.routers.queries import QUERIES_COLLECTION
+    from optimade_gateway.routers.utils import resource_factory
 
     gateway = GatewayCreate(
         databases=[
@@ -102,7 +103,7 @@ async def post_search(
             for url in search.optimade_urls
         ]
     )
-    gateway, created = await get_or_create_gateway(gateway)
+    gateway, created = await resource_factory(gateway)
 
     if created:
         LOGGER.debug("A new gateway was created for a query (id=%r)", gateway.id)
@@ -115,7 +116,7 @@ async def post_search(
         gateway_id=gateway.id,
         query_parameters=search.query_parameters,
     )
-    query, created = await get_or_create_query(query)
+    query, created = await resource_factory(query)
 
     if created:
         running_queries.add_task(

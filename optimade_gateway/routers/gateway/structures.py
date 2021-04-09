@@ -27,6 +27,7 @@ from optimade_gateway.models import QueryResource
 from optimade_gateway.routers.gateway.utils import get_valid_resource, validate_version
 from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
 
+
 ROUTER = APIRouter(redirect_slashes=True)
 
 
