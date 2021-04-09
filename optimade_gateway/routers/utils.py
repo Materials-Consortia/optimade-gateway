@@ -127,7 +127,9 @@ async def resource_factory(
         mongo_query = {
             "databases": {"$size": len(create_resource.databases)},
             "databases.attributes.base_url": {
-                "$all": [str(_.attributes.base_url) for _ in create_resource.databases]
+                "$all": await clean_python_types(
+                    [_.attributes.base_url for _ in create_resource.databases]
+                )
             },
         }
     elif isinstance(create_resource, QueryCreate):
@@ -172,7 +174,7 @@ async def resource_factory(
     if result:
         if len(result) > 1:
             raise OptimadeGatewayError(
-                f"More than one {result[0].type[-1]} was found. IDs of found {result[0].type}: "
+                f"More than one {result[0].type} was found. IDs of found {result[0].type}: "
                 f"{[_.id for _ in result]}"
             )
         result = result[0]
@@ -180,7 +182,7 @@ async def resource_factory(
         if isinstance(create_resource, QueryCreate):
             create_resource.state = QueryState.CREATED
         result = await RESOURCE_COLLECTION.create_one(create_resource)
-        LOGGER.debug("Created new %s: %r", result.type[-1], result)
+        LOGGER.debug("Created new %s: %r", result.type, result)
         created = True
 
     return result, created

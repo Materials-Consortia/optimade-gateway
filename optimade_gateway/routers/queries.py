@@ -6,11 +6,11 @@ This file describes the router for:
 
 where, `id` may be left out.
 """
+import asyncio
 from typing import Union
 
 from fastapi import (
     APIRouter,
-    BackgroundTasks,
     Depends,
     Request,
     Response,
@@ -21,6 +21,7 @@ from optimade.models.responses import EntryResponseMany
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import meta_values
 
+from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.mappers import QueryMapper
 from optimade_gateway.models import (
@@ -80,7 +81,6 @@ async def get_queries(
 async def post_queries(
     request: Request,
     query: QueryCreate,
-    running_queries: BackgroundTasks,
 ) -> QueriesResponseSingle:
     """POST /queries
 
@@ -95,8 +95,8 @@ async def post_queries(
     result, created = await resource_factory(query)
 
     if created:
-        running_queries.add_task(
-            perform_query, url=request.url, query=result, use_query_resource=True
+        asyncio.create_task(
+            perform_query(url=request.url, query=result, use_query_resource=True)
         )
 
     return QueriesResponseSingle(
@@ -132,7 +132,9 @@ async def get_query(
     """
     from optimade_gateway.routers.gateway.utils import get_valid_resource
 
+    LOGGER.debug("At /queries/<id> with id=%s", query_id)
     query: QueryResource = await get_valid_resource(QUERIES_COLLECTION, query_id)
+    LOGGER.debug("Found query (in /queries/<id>): %s", query)
 
     if query.attributes.state != QueryState.FINISHED:
         return EntryResponseMany(

@@ -1,5 +1,7 @@
 from typing import Any
 
+from pymongo.results import UpdateResult
+
 from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.models import QueryResource
 
@@ -24,7 +26,7 @@ async def update_query(query: QueryResource, field: str, value: Any) -> None:
     update_time = datetime.utcnow()
 
     # MongoDB
-    result = await QUERIES_COLLECTION.collection.update_one(
+    result: UpdateResult = await QUERIES_COLLECTION.collection.update_one(
         filter={"id": {"$eq": query.id}},
         update={
             "$set": {
@@ -37,7 +39,7 @@ async def update_query(query: QueryResource, field: str, value: Any) -> None:
         LOGGER.error(
             "matched_count should have been exactly 1, it was: %s. Returned update_one result: %s",
             result.matched_count,
-            result,
+            result.raw_result,
         )
 
     # Pydantic model instance

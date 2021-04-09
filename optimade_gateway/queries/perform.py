@@ -1,9 +1,11 @@
 import asyncio
+from concurrent.futures import ThreadPoolExecutor
+import functools
 import json
+import os
 from typing import Tuple, Union
 import urllib.parse
 
-import httpx
 from optimade import __api_version__
 from optimade.models import (
     EntryResponseMany,
@@ -60,67 +62,77 @@ async def perform_query(
         filter_query=query.attributes.query_parameters.filter,
     )
 
-    query_tasks = [
-        asyncio.create_task(
-            db_find(
-                database=database,
-                endpoint=query.attributes.endpoint,
-                response_model=response_model,
-                query_params=await get_query_params(
-                    query_parameters=query.attributes.query_parameters,
-                    database_id=database.id,
-                    filter_mapping=filter_queries,
-                ),
+    loop = asyncio.get_running_loop()
+    with ThreadPoolExecutor(
+        max_workers=min(32, os.cpu_count() + 4, len(gateway.attributes.databases))
+    ) as executor:
+        # Run OPTIMADE DB queries in a thread pool, i.e., not using the main OS thread, where the
+        # asyncio event loop is running.
+        query_tasks = []
+        for database in gateway.attributes.databases:
+            query_params = await get_query_params(
+                query_parameters=query.attributes.query_parameters,
+                database_id=database.id,
+                filter_mapping=filter_queries,
             )
-        )
-        for database in gateway.attributes.databases
-    ]
+            query_tasks.append(
+                loop.run_in_executor(
+                    executor=executor,
+                    func=functools.partial(
+                        db_find,
+                        database=database,
+                        endpoint=query.attributes.endpoint,
+                        response_model=response_model,
+                        query_params=query_params,
+                    ),
+                )
+            )
 
-    if use_query_resource:
-        await update_query(query, "state", QueryState.STARTED)
+        if use_query_resource:
+            await update_query(query, "state", QueryState.STARTED)
 
-    for query_task in asyncio.as_completed(query_tasks):
-        (response, db_id) = await query_task
+        for query_task in query_tasks:
+            (response, db_id) = await query_task
 
-        if use_query_resource and query.attributes.state != QueryState.IN_PROGRESS:
-            await update_query(query, "state", QueryState.IN_PROGRESS)
+            if use_query_resource and query.attributes.state != QueryState.IN_PROGRESS:
+                await update_query(query, "state", QueryState.IN_PROGRESS)
 
-        if isinstance(response, ErrorResponse):
-            for error in response.errors:
-                if isinstance(error.id, str) and error.id.startswith(
-                    "OPTIMADE_GATEWAY"
-                ):
-                    import warnings
+            if isinstance(response, ErrorResponse):
+                for error in response.errors:
+                    if isinstance(error.id, str) and error.id.startswith(
+                        "OPTIMADE_GATEWAY"
+                    ):
+                        import warnings
 
-                    warnings.warn(error.detail)
-                else:
-                    meta = {}
-                    if error.meta:
-                        meta = error.meta.dict()
-                    meta.update(
-                        {
-                            "optimade_gateway": {
-                                "gateway": gateway,
-                                "source_database_id": db_id,
+                        warnings.warn(error.detail)
+                    else:
+                        meta = {}
+                        if error.meta:
+                            meta = error.meta.dict()
+                        meta.update(
+                            {
+                                "optimade_gateway": {
+                                    "gateway": gateway,
+                                    "source_database_id": db_id,
+                                }
                             }
-                        }
-                    )
-                    error.meta = Meta(**meta)
-                    errors.append(error)
-        else:
-            for datum in response.data:
-                if isinstance(datum, dict) and datum.get("id") is not None:
-                    datum["id"] = f"{db_id}/{datum['id']}"
-                else:
-                    datum.id = f"{db_id}/{datum.id}"
-            results.extend(response.data)
+                        )
+                        error.meta = Meta(**meta)
+                        errors.append(error)
+            else:
+                for datum in response.data:
+                    if isinstance(datum, dict) and datum.get("id") is not None:
+                        datum["id"] = f"{db_id}/{datum['id']}"
+                    else:
+                        datum.id = f"{db_id}/{datum.id}"
+                results.extend(response.data)
 
-            data_available += response.meta.data_available or 0
-            data_returned += response.meta.data_returned or len(response.data)
+                data_available += response.meta.data_available or 0
+                data_returned += response.meta.data_returned or len(response.data)
 
-            if not more_data_available:
-                # Keep it True, if set to True once.
-                more_data_available = response.meta.more_data_available
+                if not more_data_available:
+                    # Keep it True, if set to True once.
+                    more_data_available = response.meta.more_data_available
 
     if use_query_resource:
         url = url.replace(path=f"{url.path.rstrip('/')}/{query.id}")
@@ -171,7 +183,7 @@ async def perform_query(
     return response
 
 
-async def db_find(
+def db_find(
     database: LinksResource,
     endpoint: str,
     response_model: Union[EntryResponseMany, EntryResponseOne],
@@ -189,38 +201,20 @@ async def db_find(
         Response as an OPTIMADE pydantic model, depending on whether it was a successful or unsuccessful response.
 
     """
+    import httpx
+
     url = f"{str(database.attributes.base_url).strip('/')}{BASE_URL_PREFIXES['major']}/{endpoint.strip('/')}?{query_params}"
-    async with httpx.AsyncClient() as client:
-        response: httpx.Response = await client.get(url, timeout=60)
+    response: httpx.Response = httpx.get(url, timeout=60)
 
     try:
         response = response.json()
     except json.JSONDecodeError:
-        return ErrorResponse(
-            errors=[
-                {
-                    "detail": f"Could not JSONify response from {url}",
-                    "id": "OPTIMADE_GATEWAY_DB_FIND_MANY_JSONDECODEERROR",
-                }
-            ],
-            meta={
-                "query": {"representation": f"/{endpoint.strip('/')}?{query_params}"},
-                "api_version": __api_version__,
-                "more_data_available": False,
-            },
-        )
-
-    try:
-        response = response_model(**response)
-    except ValidationError:
-        try:
-            response = ErrorResponse(**response)
-        except ValidationError as exc:
-            return ErrorResponse(
+        return (
+            ErrorResponse(
                 errors=[
                     {
-                        "detail": f"Could not pass response from {url} as either a {response_model.__name__!r} or 'ErrorResponse'. ValidationError: {exc}",
-                        "id": "OPTIMADE_GATEWAY_DB_FIND_MANY_VALIDATIONERROR",
+                        "detail": f"Could not JSONify response from {url}",
+                        "id": "OPTIMADE_GATEWAY_DB_FIND_MANY_JSONDECODEERROR",
                     }
                 ],
                 meta={
@@ -230,6 +224,33 @@ async def db_find(
                     "api_version": __api_version__,
                     "more_data_available": False,
                 },
+            ),
+            database.id,
+        )
+
+    try:
+        response = response_model(**response)
+    except ValidationError:
+        try:
+            response = ErrorResponse(**response)
+        except ValidationError as exc:
+            return (
+                ErrorResponse(
+                    errors=[
+                        {
+                            "detail": f"Could not pass response from {url} as either a {response_model.__name__!r} or 'ErrorResponse'. ValidationError: {exc}",
+                            "id": "OPTIMADE_GATEWAY_DB_FIND_MANY_VALIDATIONERROR",
+                        }
+                    ],
+                    meta={
+                        "query": {
+                            "representation": f"/{endpoint.strip('/')}?{query_params}"
+                        },
+                        "api_version": __api_version__,
+                        "more_data_available": False,
+                    },
+                ),
+                database.id,
             )
 
     return response, database.id

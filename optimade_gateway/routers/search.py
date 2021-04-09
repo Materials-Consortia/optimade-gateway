@@ -27,7 +27,6 @@ from optimade.models.links import LinkType
 from optimade.models import StructureResponseMany, ReferenceResponseMany, LinksResponse
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import meta_values
-from starlette.background import BackgroundTasks
 
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.common.logger import LOGGER
@@ -60,16 +59,14 @@ ENDPOINT_MODELS = {
     tags=["Search"],
     status_code=status.HTTP_202_ACCEPTED,
 )
-async def post_search(
-    request: Request, search: Search, running_queries: BackgroundTasks
-) -> QueriesResponseSingle:
+async def post_search(request: Request, search: Search) -> QueriesResponseSingle:
     """POST /search
 
     Coordinate a new OPTIMADE query in multiple databases through a gateway:
 
     1. ~~Search for gateway in DB using `optimade_urls`~~
     1. Create `GatewayCreate` model
-    1. GET a gateway ID - using functionality of POST /gateways
+    1. POST gateway resource to get ID - using functionality of POST /gateways
     1. Create new Query resource
     1. POST Query resource - using functionality of POST /queries
     1. Return POST /queries response -
@@ -119,8 +116,8 @@ async def post_search(
     query, created = await resource_factory(query)
 
     if created:
-        running_queries.add_task(
-            perform_query, url=request.url, query=query, use_query_resource=True
+        asyncio.create_task(
+            perform_query(url=request.url, query=query, use_query_resource=True)
         )
 
     return QueriesResponseSingle(
@@ -147,7 +144,6 @@ async def post_search(
 async def get_search(
     request: Request,
     response: Response,
-    running_queries: BackgroundTasks,
     search_params: SearchQueryParams = Depends(),
     entry_params: EntryListingQueryParams = Depends(),
 ) -> Union[EntryResponseMany, ErrorResponse, RedirectResponse]:
@@ -156,8 +152,8 @@ async def get_search(
     Coordinate a new OPTIMADE query in multiple databases through a gateway:
 
     1. Create a [`Search`][optimade_gateway.models.search.Search] POST data - calling POST /search
-    1. Wait [`timeout`][optimade_gateway.queries.params.SearchQueryParams.timeout] seconds until
-        the query has finished
+    1. Wait [`search_params.timeout`][optimade_gateway.queries.params.SearchQueryParams.timeout]
+        seconds until the query has finished
     1. Return successful response
 
     Contingency: If the query has not finished within the set timeout period, the client will be
@@ -179,9 +175,7 @@ async def get_search(
         endpoint=search_params.endpoint,
     )
 
-    post_response = await post_search(
-        request, search=search, running_queries=running_queries
-    )
+    queries_response = await post_search(request, search=search)
 
     once = True
     start_time = time()
@@ -190,7 +184,7 @@ async def get_search(
         once = False
 
         query: QueryResource = await QUERIES_COLLECTION.get_one(
-            **{"filter": {"id": post_response.data.id}}
+            **{"filter": {"id": queries_response.data.id}}
         )
 
         if query.attributes.state == QueryState.FINISHED:
@@ -206,5 +200,5 @@ async def get_search(
 
         await asyncio.sleep(0.1)
 
-    # The query has not yet succeeded and we're past the timeout time -> Redirect to the query
+    # The query has not yet succeeded and we're past the timeout time -> Redirect to /queries/<id>
     return RedirectResponse(query.links.self)

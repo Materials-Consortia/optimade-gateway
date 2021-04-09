@@ -194,12 +194,12 @@
     "last_modified": "2021-04-06T16:44:35Z",
     "databases": [
       {
-        "id": "sleep-12",
+        "id": "sleep-1",
         "type": "links",
         "attributes": {
-          "name": "Sleep database",
-          "description": "Not a real database, it will sleep for 12 s.",
-          "base_url": "https://sleep-12",
+          "name": "Sleepy database",
+          "description": "Not an OPTIMADE database, just a placeholder for instantiating a callback that sleeps before returning a mocked `optimade-sample` DB response.",
+          "base_url": "https://sleep-1",
           "homepage": "https://github.com/epfl-theos/optimade-gateway",
           "link_type": "child",
           "aggregate": "test"
