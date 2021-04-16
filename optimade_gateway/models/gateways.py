@@ -7,7 +7,6 @@ from optimade.models import EntryResource, EntryResourceAttributes, LinksResourc
 from optimade.models.links import LinkType
 from pydantic import Field, validator
 
-from optimade_gateway.common.exceptions import OptimadeGatewayError
 from optimade_gateway.models.resources import EntryResourceCreate
 
 
@@ -28,8 +27,8 @@ class GatewayResourceAttributes(EntryResourceAttributes):
         """
         if value.attributes.link_type in (LinkType.ROOT, LinkType.PROVIDERS):
             raise ValueError(
-                "Databases with 'root' or 'providers' link_type is not allowed for gateway resources. "
-                f"Given database: {value}"
+                "Databases with 'root' or 'providers' link_type is not allowed for gateway "
+                f"resources. Given database: {value}"
             )
         return value
 
@@ -41,11 +40,6 @@ class GatewayResourceAttributes(EntryResourceAttributes):
         if len(db_base_urls) == len(unique_base_urls):
             return value
 
-        if len(db_base_urls) < len(unique_base_urls):
-            raise OptimadeGatewayError(
-                f"The number of DBs with unique base_urls should never be less than the total number of DBs. List of DBs: {value}"
-            )
-
         repeated_base_urls = [_ for _ in unique_base_urls if db_base_urls.count(_) > 1]
         new_databases = [
             _ for _ in value if _.attributes.base_url not in repeated_base_urls
@@ -55,10 +49,10 @@ class GatewayResourceAttributes(EntryResourceAttributes):
                 [_ for _ in value if _.attributes.base_url == base_url][0]
             )
         warnings.warn(
-            "Removed extra database entries for a gateway, because the base_url was repeated. "
-            "The first found database entry was kept, while the others were removed. "
-            f"Original number of databases: {len(value)}. New number of databases: {len(new_databases)}"
-            "Repeated base_urls (number of repeats): {}".format(
+            "Removed extra database entries for a gateway, because the base_url was repeated. The "
+            "first found database entry was kept, while the others were removed. Original number "
+            f"of databases: {len(value)}. New number of databases: {len(new_databases)} Repeated "
+            "base_urls (number of repeats): {}".format(
                 [
                     f"{base_url} ({db_base_urls.count(base_url)})"
                     for base_url in repeated_base_urls
@@ -72,8 +66,8 @@ class GatewayResource(EntryResource):
     """OPTIMADE gateway
 
     A resource representing a dynamic collection of OPTIMADE databases.
-    The gateway can be treated as any other OPTIMADE gateway, but the entries are an aggregate of multiple databases.
-    The `id` of each aggregated resource will reflect the originating database.
+    The gateway can be treated as any other OPTIMADE gateway, but the entries are an aggregate of
+    multiple databases. The `id` of each aggregated resource will reflect the originating database.
     """
 
     type: str = Field(

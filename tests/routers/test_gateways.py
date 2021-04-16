@@ -58,7 +58,7 @@ async def test_post_gateways(client):
 
     response = await client("/gateways", method="post", json=data)
 
-    assert response.status_code == 202, f"Request failed: {response.json()}"
+    assert response.status_code == 200, f"Request failed: {response.json()}"
     url = response.url
 
     response = GatewaysResponseSingle(**response.json())

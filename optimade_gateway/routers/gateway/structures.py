@@ -6,7 +6,9 @@ This file describes the router for:
 
 where `version` and the last `id` may be left out.
 """
+import asyncio
 from datetime import datetime
+import functools
 from typing import Union
 import urllib.parse
 import warnings
@@ -26,6 +28,7 @@ from optimade.server.routers.utils import meta_values
 from optimade_gateway.models import QueryResource
 from optimade_gateway.routers.gateway.utils import get_valid_resource, validate_version
 from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
+
 
 ROUTER = APIRouter(redirect_slashes=True)
 
@@ -124,11 +127,15 @@ async def get_single_structure(
         {param: value for param, value in params.__dict__.items() if value}
     )
 
-    (response, _) = await db_find(
-        database=database,
-        endpoint=f"structures/{local_structure_id}",
-        response_model=StructureResponseOne,
-        query_params=parsed_params,
+    (response, _) = await asyncio.get_running_loop().run_in_executor(
+        executor=None,  # Run in thread with the event loop
+        func=functools.partial(
+            db_find,
+            database=database,
+            endpoint=f"structures/{local_structure_id}",
+            response_model=StructureResponseOne,
+            query_params=parsed_params,
+        ),
     )
 
     if isinstance(response, ErrorResponse):

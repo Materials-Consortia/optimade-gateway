@@ -2,7 +2,6 @@ from datetime import datetime
 from typing import Any, Dict, List, Tuple, Union
 
 from fastapi import HTTPException
-from motor.motor_asyncio import AsyncIOMotorCollection
 from optimade.filterparser import LarkParser
 from optimade.filtertransformers.mongo import MongoTransformer
 from optimade.models import EntryResource
@@ -48,7 +47,7 @@ class AsyncMongoCollection(EntryCollection):
         )
 
         self.parser = LarkParser(version=(1, 0, 0), variant="default")
-        self.collection: Union[AsyncIOMotorCollection, MongoCollection] = MONGO_DB[name]
+        self.collection: MongoCollection = MONGO_DB[name]
 
         # Check aliases do not clash with mongo operators
         self._check_aliases(self.resource_mapper.all_aliases())
@@ -163,7 +162,7 @@ class AsyncMongoCollection(EntryCollection):
         return await self.collection.count_documents(**criteria)
 
     async def get_one(self, **criteria: Dict[str, Any]) -> EntryResource:
-        """Get one resource based on criteria or id
+        """Get one resource based on criteria
 
         NOTE: This is not to be used for creating a REST API response,
         but is rather a utility function to easily retrieve a single resource.
@@ -250,16 +249,15 @@ class AsyncMongoCollection(EntryCollection):
 
         return cursor_kwargs
 
-    async def create_one(
-        self, resource: EntryResourceCreate, set_id: bool = False
-    ) -> EntryResource:
+    async def create_one(self, resource: EntryResourceCreate) -> EntryResource:
         """Create a new document in the MongoDB collection based on query parameters.
+
+        Update the newly created document with an "id" field.
+        The value will be the string representation of the "_id" field.
+        This will only be done if `id` is not already present in `resource`.
 
         Parameters:
             resource: The resource to be created.
-            set_id: Update the newly created document with an "id" field.
-                The value will be the string representation of the "_id" field.
-                This will only be done if `id` is not already present in `resource`.
 
         Returns:
             The newly created document as a pydantic model entry resource.
@@ -276,7 +274,7 @@ class AsyncMongoCollection(EntryCollection):
             result.inserted_id,
         )
 
-        if set_id and not resource.id:
+        if not resource.id:
             LOGGER.debug("Updating resource with an `id` field equal to str(id_).")
             await self.collection.update_one(
                 {"_id": result.inserted_id}, {"$set": {"id": str(result.inserted_id)}}
@@ -289,8 +287,13 @@ class AsyncMongoCollection(EntryCollection):
         )
 
     async def exists(self, entry_id: str) -> bool:
-        """Assert whether entry_id exists in the collection (value of `id`)"""
-        return bool(await self.count(filter={"id": entry_id}))
+        """Assert whether entry_id exists in the collection (value of `id`)
+
+        Parameters:
+            entry_id: The `id` value of the entry.
+
+        """
+        return bool(await self.collection.count_documents({"id": entry_id}))
 
     async def insert(self, data: List[EntryResource]) -> None:
         """Add the given entries to the underlying database.
@@ -298,7 +301,7 @@ class AsyncMongoCollection(EntryCollection):
         Warning:
             No validation is performed on the incoming data.
 
-        Arguments:
+        Parameters:
             data: The entry resource objects to add to the database.
 
         """

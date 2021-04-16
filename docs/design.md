@@ -197,3 +197,31 @@ When returning the results in this format, the whole response should be complian
 
 Utilizing the `optimade2cuds` Python package in the [SimOPTIMADE](https://gitlab.cc-asp.fraunhofer.de/MarketPlace/SimOPTIMADE) repository on the Fraunhofer GitLab for the MarketPlace project, the resulting OPTIMADE structure can be converted to Python CUDS objects.
 From there they can be serialized to JSON representations (using the [OSP-Core](https://github.com/simphony/osp-core) package) and returned as a search result response.
+
+## External API calls
+
+When making external API calls, i.e., requesting the various OPTIMADE databases, this is technically done in a [`concurrent.futures.ThreadPoolExecutor`](https://docs.python.org/3/library/concurrent.futures.html#threadpoolexecutor).
+This is mainly done to [not block the main OS thread, where the asyncio event loop is running](https://docs.python.org/3/library/asyncio-dev.html#running-blocking-code).
+This is the event loop that handles incoming gateway requests.
+While the number of databases may not be significant, the response times can still vary and by using a `ThreadPoolExecutor`, the gateway is ready for more heavy use out-of-the-box.
+
+Another key reason to use a `ThreadPoolExecutor` (instead of Starlette's - and therefore FastAPI's - [`BackgroundTask`](https://fastapi.tiangolo.com/tutorial/background-tasks/)) is for testing with the `pytest` framework.
+When using `BackgroundTask` the response cannot be properly mocked and instead blocks the main OS thread.
+Perhaps this could be solved by implementing the same solution as has been done for now, namely running a `time.sleep` function call in a `ThreadPoolExecutor`, in the mocked response callback, but the benefits of using a `ThreadPoolExecutor` also for the actual queries outweigh this in the long run.
+
+For further considerations a [`ProcessPoolExecutor`](https://docs.python.org/3/library/concurrent.futures.html#processpoolexecutor) might even be considered, but it shouldn't be necessary as the work done is IO blocking, not CPU blocking.
+The possible speed-up should not be significant.
+
+Further reading and considerations on this subject [Multithreading vs. Multiprocessing in Python](https://engineering.contentsquare.com/2018/multithreading-vs-multiprocessing-in-python/) by Amine Baatout is a good read.
+Another source of inspiration was found in [this StackOverflow post response](https://stackoverflow.com/a/62916237/12404091).
+
+### Other ideas - a queue
+
+Throughout the process of figuring this out, other ideas were on the table.
+One was to setup an [`asyncio.Queue`](https://docs.python.org/3/library/asyncio-queue.html#asyncio-queues) - either a single "unbuffered channel" queue for the whole lifetime of the server, or one each per request.
+This would effectively split up the `perform_query` in producer/worker functions.
+
+For some nice reading on this, check out [Latency in Asynchronous Python](https://nullprogram.com/blog/2020/05/24/) by Chris Wellons (*null program*).
+
+Since the `ThreadPoolExecutor` solution solves the issue of the analogous "heartbeat" function not losing its responsivenes, i.e., the asyncio event loop not being blocked, and it would work with the current code implementation, I opted for this solution instead.
+But I recon a queue solution would work similarly, but perhaps with slightly less gateway API responsiveness during heavy load, since it all still runs in the same event loop.

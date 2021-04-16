@@ -13,6 +13,7 @@ from optimade_gateway.routers import (
     info,
     links,
     queries,
+    search,
 )
 from optimade_gateway.routers.gateway import (
     info as gateway_info,
@@ -57,7 +58,7 @@ APP.include_router(versions.ROUTER)
 
 # Add endpoints to / and /vMAJOR
 for prefix in list(BASE_URL_PREFIXES.values()) + [""]:
-    for router in (gateways, info, links, queries) + (
+    for router in (gateways, info, links, queries, search) + (
         gateway_info,
         gateway_links,
         gateway_queries,

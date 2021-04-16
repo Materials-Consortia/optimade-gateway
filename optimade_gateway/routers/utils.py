@@ -1,5 +1,5 @@
 """Utility functions for all routers"""
-from typing import Tuple
+from typing import Tuple, Union
 import urllib.parse
 
 from fastapi import Request
@@ -13,6 +13,14 @@ from optimade.server.routers.utils import (
     meta_values,
 )
 
+from optimade_gateway.common.exceptions import OptimadeGatewayError
+from optimade_gateway.common.logger import LOGGER
+from optimade_gateway.models import (
+    GatewayCreate,
+    GatewayResource,
+    QueryCreate,
+    QueryResource,
+)
 from optimade_gateway.mongo.collection import AsyncMongoCollection
 
 
@@ -53,7 +61,7 @@ async def get_entries(
 
 async def aretrieve_queryable_properties(
     schema: dict, queryable_properties: list
-) -> Tuple[dict, dict]:
+) -> dict:
     """Asynchronous implementation of `optimade.server.schemas.retrieve_queryable_properties()`
 
     Recurisvely loops through the schema of a pydantic model and resolves all references, returning
@@ -82,3 +90,99 @@ async def validate_resource(collection: AsyncMongoCollection, entry_id: str) -> 
             status_code=404,
             detail=f"Resource <id={entry_id}> not found in {collection}.",
         )
+
+
+async def resource_factory(
+    create_resource: Union[GatewayCreate, QueryCreate]
+) -> Tuple[Union[GatewayResource, QueryResource], bool]:
+    """Get or create a resource
+
+    Currently supported resources:
+
+    - `"gateways"` ([`GatewayCreate`][optimade_gateway.models.gateways.GatewayCreate] ->
+        [`GatewayResource`][optimade_gateway.models.gateways.GatewayResource])
+    - `"queries"` ([`QueryyCreate`][optimade_gateway.models.queries.QueryCreate] ->
+        [`QueryResource`][optimade_gateway.models.queries.QueryResource])
+
+    Parameters:
+        create_resource: The resource to be retrieved or created anew.
+
+    Returns:
+        Two things in a tuple:
+
+        - Either a [`GatewayResource`][optimade_gateway.models.gateways.GatewayResource] or a
+            [`QueryResource`][optimade_gateway.models.queries.QueryResource]; and
+        - whether or not the resource was newly created.
+
+    """
+    from optimade_gateway.common.utils import clean_python_types
+
+    created = False
+
+    if isinstance(create_resource, GatewayCreate):
+        from optimade_gateway.routers.gateways import (
+            GATEWAYS_COLLECTION as RESOURCE_COLLECTION,
+        )
+
+        mongo_query = {
+            "databases": {"$size": len(create_resource.databases)},
+            "databases.attributes.base_url": {
+                "$all": await clean_python_types(
+                    [_.attributes.base_url for _ in create_resource.databases]
+                )
+            },
+        }
+    elif isinstance(create_resource, QueryCreate):
+        from optimade_gateway.models.queries import QueryState
+        from optimade_gateway.routers.queries import (
+            QUERIES_COLLECTION as RESOURCE_COLLECTION,
+        )
+
+        # Currently only /structures entry endpoints can be queried with multiple expected responses.
+        create_resource.endpoint = (
+            create_resource.endpoint if create_resource.endpoint else "structures"
+        )
+        create_resource.endpoint_model = (
+            create_resource.endpoint_model
+            if create_resource.endpoint_model
+            else ("optimade.models.responses", "StructureResponseMany")
+        )
+
+        mongo_query = {
+            "gateway_id": {"$eq": create_resource.gateway_id},
+            "query_parameters": {
+                "$eq": await clean_python_types(create_resource.query_parameters),
+            },
+            "endpoint": {"$eq": create_resource.endpoint},
+        }
+    else:
+        raise TypeError(
+            "create_resource must be either a GatewayCreate or QueryCreate object not "
+            f"{type(create_resource)!r}"
+        )
+
+    result, more_data_available, _ = await RESOURCE_COLLECTION.find(
+        criteria={"filter": mongo_query}
+    )
+
+    if more_data_available:
+        raise OptimadeGatewayError(
+            "more_data_available MUST be False for a single entry response, however it is "
+            f"{more_data_available}"
+        )
+
+    if result:
+        if len(result) > 1:
+            raise OptimadeGatewayError(
+                f"More than one {result[0].type} was found. IDs of found {result[0].type}: "
+                f"{[_.id for _ in result]}"
+            )
+        result = result[0]
+    else:
+        if isinstance(create_resource, QueryCreate):
+            create_resource.state = QueryState.CREATED
+        result = await RESOURCE_COLLECTION.create_one(create_resource)
+        LOGGER.debug("Created new %s: %r", result.type, result)
+        created = True
+
+    return result, created

@@ -104,12 +104,18 @@ class QueryResourceAttributes(EntryResourceAttributes):
     query_parameters: OptimadeQueryParameters = Field(
         ...,
         description="OPTIMADE query parameters for entry listing endpoints used for this query.",
+        type="object",
     )
     state: QueryState = Field(
-        QueryState.CREATED, description="Current state of Gateway Query.", title="State"
+        QueryState.CREATED,
+        description="Current state of Gateway Query.",
+        title="State",
+        type="enum",
     )
     response: Optional[Union[EntryResponseMany, ErrorResponse]] = Field(
-        None, description="Response from gateway query."
+        None,
+        description="Response from gateway query.",
+        type="object",
     )
     endpoint: str = Field(
         ..., description="The entry endpoint queried, e.g., 'structures'."

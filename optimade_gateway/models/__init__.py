@@ -13,6 +13,7 @@ from .responses import (
     QueriesResponse,
     QueriesResponseSingle,
 )
+from .search import Search
 
 
 __all__ = (
@@ -27,4 +28,5 @@ __all__ = (
     "QueryState",
     "QueriesResponse",
     "QueriesResponseSingle",
+    "Search",
 )

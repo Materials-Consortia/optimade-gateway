@@ -10,9 +10,18 @@ async def test_get_info(client):
     from optimade.models import InfoResponse
 
     available_endpoints = sorted(
-        ["docs", "gateways", "info", "links", "openapi.json", "redoc"]
+        [
+            "docs",
+            "gateways",
+            "info",
+            "links",
+            "openapi.json",
+            "redoc",
+            "search",
+            "queries",
+        ]
     )
-    entry_types_by_format = {"json": ["gateways"]}
+    entry_types_by_format = {"json": ["gateways", "queries"]}
 
     response = await client("/info")
 

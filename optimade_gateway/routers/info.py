@@ -19,11 +19,14 @@ from optimade.models import (
 )
 from optimade.server.routers.utils import get_base_url, meta_values
 
-from optimade_gateway.models import GatewayResource
+from optimade_gateway.models import GatewayResource, QueryResource
 
 ROUTER = APIRouter(redirect_slashes=True)
 
-ENTRY_INFO_SCHEMAS = {"gateways": GatewayResource.schema}
+ENTRY_INFO_SCHEMAS = {
+    "gateways": GatewayResource.schema,
+    "queries": QueryResource.schema,
+}
 
 
 @ROUTER.get(
@@ -60,6 +63,7 @@ async def get_info(request: Request) -> InfoResponse:
                         "links",
                         "openapi.json",
                         "redoc",
+                        "search",
                     ]
                     + list(ENTRY_INFO_SCHEMAS.keys())
                 ),

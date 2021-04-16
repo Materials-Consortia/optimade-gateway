@@ -28,8 +28,9 @@ async def test_get_queries(client, top_dir: Path):
 
 
 @pytest.mark.usefixtures("reset_db_after")
-async def test_post_queries(client, mock_responses):
+async def test_post_queries(client, mock_responses, get_gateway):
     """Test POST /queries"""
+    import asyncio
     from bson.objectid import ObjectId
     from optimade.server.routers.utils import BASE_URL_PREFIXES
     from pydantic import AnyUrl
@@ -44,7 +45,7 @@ async def test_post_queries(client, mock_responses):
         "query_parameters": {"filter": 'elements HAS "Cu"', "page_limit": 15},
     }
 
-    await mock_responses(data["gateway_id"])
+    mock_responses(await get_gateway(data["gateway_id"]))
 
     response = await client("/queries", method="post", json=data)
 
@@ -82,6 +83,8 @@ async def test_post_queries(client, mock_responses):
     for key in data:
         assert db_datum[key] == data[key]
 
+    await asyncio.sleep(1)  # Ensure mock URL is queried
+
 
 @pytest.mark.usefixtures("reset_db_after")
 async def test_post_queries_bad_data(client):
@@ -115,15 +118,12 @@ async def test_post_queries_bad_data(client):
     )
 
 
-@pytest.mark.flaky
 @pytest.mark.usefixtures("reset_db_after")
-async def test_query_results(client, mock_responses):
+async def test_query_results(client, mock_responses, get_gateway):
     """Test POST /queries and GET /queries/{id}"""
     import asyncio
     from optimade.models import EntryResponseMany
     from optimade.models import StructureResponseMany
-
-    from pydantic import ValidationError
 
     from optimade_gateway.common.config import CONFIG
     from optimade_gateway.models.queries import QueryState, QueryResource
@@ -134,38 +134,29 @@ async def test_query_results(client, mock_responses):
         "query_parameters": {"filter": 'elements HAS "Cu" AND nelements>=4'},
     }
 
-    await mock_responses(data["gateway_id"])
+    mock_responses(await get_gateway(data["gateway_id"]))
 
-    async def _check_response() -> None:
-        """Utility async function to start as a task"""
-        response = await client("/queries", method="post", json=data)
-        assert response.status_code == 202, f"Request failed: {response.json()}"
-
-    asyncio.create_task(_check_response())
+    response = await client("/queries", method="post", json=data)
+    assert response.status_code == 202, f"Request failed: {response.json()}"
 
     # Do not expect to have the query finish already
-    # (Sleep 10 s to make sure the query is created in the DB, but not long enough for the external
-    # queries to have finished)
-    await asyncio.sleep(10)
+    # (Sleep shortly to make sure the query is created in the DB, but not long enough for the
+    # external queries to have finished)
+    await asyncio.sleep(0.5)
     response = await client(f"/queries/{data['id']}")
     assert response.status_code == 200, f"Request failed: {response.json()}"
 
-    try:
-        response = EntryResponseMany(**response.json())
-    except ValidationError:
-        pytest.fail(
-            f"Could not turn response into EntryResponseMany: {response.json()}"
-        )
-
+    response = EntryResponseMany(**response.json())
     assert response.data == []
+
     query: QueryResource = QueryResource(
         **getattr(response.meta, f"_{CONFIG.provider.prefix}_query")
     )
     assert query
     assert query.attributes.state in (QueryState.STARTED, QueryState.IN_PROGRESS)
 
-    # Expect the query to have finished after sleeping 2 s more
-    await asyncio.sleep(2)
+    # Expect the query to have finished after sleeping 1 s more
+    await asyncio.sleep(1)
     response = await client(f"/queries/{data['id']}")
     assert response.status_code == 200, f"Request failed: {response.json()}"
 
@@ -178,8 +169,9 @@ async def test_query_results(client, mock_responses):
 
 
 @pytest.mark.usefixtures("reset_db_after")
-async def test_errored_query_results(client, mock_responses):
+async def test_errored_query_results(client, mock_responses, get_gateway):
     """Test POST /queries and GET /queries/{id} with an erroneous response"""
+    import asyncio
     from optimade.models import ErrorResponse
 
     from optimade_gateway.models.responses import QueriesResponseSingle
@@ -190,12 +182,14 @@ async def test_errored_query_results(client, mock_responses):
         "query_parameters": {"filter": 'elements HAS "Cu"', "page_limit": 15},
     }
 
-    await mock_responses(data["gateway_id"])
+    mock_responses(await get_gateway(data["gateway_id"]))
 
     response = await client("/queries", method="post", json=data)
     assert response.status_code == 202, f"Request failed: {response.json()}"
 
     query_id = QueriesResponseSingle(**response.json()).data.id
+
+    await asyncio.sleep(0.1)  # Ensure the query finishes
 
     response = await client(f"/queries/{query_id}")
     assert (

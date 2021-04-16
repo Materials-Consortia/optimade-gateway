@@ -18,7 +18,7 @@ async def test_get_structures(client, get_gateway, mock_responses):
     gateway_id = "twodbs"
     gateway: dict = await get_gateway(gateway_id)
 
-    await mock_responses(gateway)
+    mock_responses(gateway)
 
     response = await client(f"/gateways/{gateway_id}/structures")
 
