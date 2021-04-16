@@ -17,6 +17,4 @@ This work was funded by [THEOS](http://theossrv1.epfl.ch), [EPFL](https://epfl.c
 
 The MarketPlace project is funded by [Horizon 2020](https://ec.europa.eu/programmes/horizon2020/) under H2020-NMBP-25-2017 call with Grant agreement number: 760173.
 
-<img src="docs/images/THEOS_logo.png" alt="THEOS" height="35"/>
-<img src="docs/images/EPFL_Logo_184X53.svg" alt="EPFL" height="35"/>
-<img src="docs/images/MARKETPLACE_LOGO_300dpi.png" alt="The MarketPlace Project" height="35"/>
+<img src="docs/images/THEOS_logo.png" alt="THEOS" height="35"/>  <img src="docs/images/EPFL_Logo_184X53.svg" alt="EPFL" height="35"/>  <img src="docs/images/MARKETPLACE_LOGO_300dpi.png" alt="The MarketPlace Project" height="35"/>
