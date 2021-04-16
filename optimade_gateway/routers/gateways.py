@@ -8,7 +8,7 @@ where, `id` may be left out.
 """
 from typing import Union
 
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import RedirectResponse
 from optimade.models import ErrorResponse, ToplevelLinks
 from optimade.server.query_params import EntryListingQueryParams
@@ -69,7 +69,6 @@ async def get_gateways(
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Gateways"],
-    status_code=status.HTTP_202_ACCEPTED,
 )
 async def post_gateways(
     request: Request, gateway: GatewayCreate
@@ -91,7 +90,10 @@ async def post_gateways(
     if more_data_available:
         raise HTTPException(
             status_code=500,
-            detail=f"more_data_available MUST be False for a single entry response, however it is {more_data_available}",
+            detail=(
+                "more_data_available MUST be False for a single entry response, however it is "
+                f"{more_data_available}"
+            ),
         )
 
     created = False

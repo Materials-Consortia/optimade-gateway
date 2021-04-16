@@ -163,7 +163,7 @@ class AsyncMongoCollection(EntryCollection):
         return await self.collection.count_documents(**criteria)
 
     async def get_one(self, **criteria: Dict[str, Any]) -> EntryResource:
-        """Get one resource based on criteria or id
+        """Get one resource based on criteria
 
         NOTE: This is not to be used for creating a REST API response,
         but is rather a utility function to easily retrieve a single resource.
