@@ -9,7 +9,7 @@ A REST API server acting as a gateway for databases with an OPTIMADE API, handli
 All code in this repository was originally written by Casper Welzel Andersen ([@CasperWA](https://github.com/CasperWA)).
 The design for the gateway as outlined in [design.md](docs/design.md) was a joint effort between Casper Welzel Andersen & Carl Simon Adorf ([@csadorf](https://github.com/csadorf)).
 
-All files in this repository is [MIT licensed](LICENSE) with copyright (c) 2021 Casper Welzel Andersen & THEOS, EPFL.
+All files in this repository are licensed under the [MIT license](LICENSE) with copyright (c) 2021 Casper Welzel Andersen & THEOS, EPFL.
 
 ### Funding support
 
