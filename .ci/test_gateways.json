@@ -200,7 +200,7 @@
           "name": "Sleepy database",
           "description": "Not an OPTIMADE database, just a placeholder for instantiating a callback that sleeps before returning a mocked `optimade-sample` DB response.",
           "base_url": "https://sleep-1",
-          "homepage": "https://github.com/epfl-theos/optimade-gateway",
+          "homepage": "https://github.com/Materials-Consortia/optimade-gateway",
           "link_type": "child",
           "aggregate": "test"
         }
