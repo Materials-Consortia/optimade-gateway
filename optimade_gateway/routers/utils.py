@@ -5,7 +5,6 @@ import urllib.parse
 from fastapi import Request
 from optimade.models import EntryResponseMany, ToplevelLinks
 from optimade.server.exceptions import BadRequest
-from optimade.server.schemas import retrieve_queryable_properties
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import (
     get_base_url,
@@ -62,9 +61,12 @@ async def get_entries(
 async def aretrieve_queryable_properties(
     schema: dict, queryable_properties: list
 ) -> dict:
-    """Asynchronous implementation of `optimade.server.schemas.retrieve_queryable_properties()`
+    """Asynchronous implementation of `retrieve_queryable_properties()` from `optimade`
 
-    Recurisvely loops through the schema of a pydantic model and resolves all references, returning
+    Reference to the function in the `optimade` API documentation:
+    [`retrieve_queryable_properties()](https://www.optimade.org/optimade-python-tools/api_reference/server/schemas/#optimade.server.schemas.retrieve_queryable_properties).
+
+    Recursively loops through the schema of a pydantic model and resolves all references, returning
     a dictionary of all the OPTIMADE-queryable properties of that model.
 
     Parameters:
@@ -76,6 +78,8 @@ async def aretrieve_queryable_properties(
         sortability, support level, queryability and type, where provided.
 
     """
+    from optimade.server.schemas import retrieve_queryable_properties
+
     return retrieve_queryable_properties(
         schema=schema,
         queryable_properties=queryable_properties,
