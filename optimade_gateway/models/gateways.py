@@ -1,4 +1,4 @@
-"""Pydantic models/schemas for the Gateway resource"""
+"""Pydantic models/schemas for the Gateways resource"""
 # pylint: disable=no-self-argument
 from typing import List
 import warnings

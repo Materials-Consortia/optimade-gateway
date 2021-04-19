@@ -45,7 +45,7 @@ async def perform_query(
 
     """
     from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
-    from optimade_gateway.routers.gateway.utils import get_valid_resource
+    from optimade_gateway.routers.utils import get_valid_resource
 
     data_available = data_returned = 0
     errors = []

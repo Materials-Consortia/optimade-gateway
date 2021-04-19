@@ -9,6 +9,7 @@ from optimade.server.routers.versions import router as versions_router
 from optimade_gateway import __version__
 from optimade_gateway.middleware import CheckWronglyVersionedBaseUrlsGateways
 from optimade_gateway.routers import (
+    databases,
     gateways,
     info,
     links,
@@ -58,7 +59,7 @@ APP.include_router(versions.ROUTER)
 
 # Add endpoints to / and /vMAJOR
 for prefix in list(BASE_URL_PREFIXES.values()) + [""]:
-    for router in (gateways, info, links, queries, search) + (
+    for router in (databases, gateways, info, links, queries, search) + (
         gateway_info,
         gateway_links,
         gateway_queries,

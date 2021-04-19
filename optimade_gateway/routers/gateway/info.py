@@ -44,8 +44,8 @@ async def get_gateways_info(
     The general information will be a minimum set from the gateway's databases.
     """
     from optimade_gateway.common.config import CONFIG
-    from optimade_gateway.routers.gateway.utils import get_valid_resource
     from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
+    from optimade_gateway.routers.utils import get_valid_resource
 
     gateway = await get_valid_resource(GATEWAYS_COLLECTION, gateway_id)
 

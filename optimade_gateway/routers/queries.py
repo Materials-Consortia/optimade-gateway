@@ -113,7 +113,7 @@ async def post_queries(
 
 
 @ROUTER.get(
-    "/queries/{query_id}",
+    "/queries/{query_id:path}",
     response_model=Union[EntryResponseMany, ErrorResponse],
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
@@ -130,7 +130,7 @@ async def get_query(
     Return the response from a query
     [`QueryResource.attributes.response`][optimade_gateway.models.queries.QueryResourceAttributes.response].
     """
-    from optimade_gateway.routers.gateway.utils import get_valid_resource
+    from optimade_gateway.routers.utils import get_valid_resource
 
     LOGGER.debug("At /queries/<id> with id=%s", query_id)
     query: QueryResource = await get_valid_resource(QUERIES_COLLECTION, query_id)

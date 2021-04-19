@@ -39,7 +39,7 @@ async def setup_db_utility(top_dir: Union[Path, str]) -> None:
         MONGO_DB.name == test_config["mongo_database"]
     ), "Test DB has not been loaded!"
 
-    for resource in ("gateways", "links", "queries"):
+    for resource in ("databases", "gateways", "links", "queries"):
         collection = test_config.get(f"{resource}_collection", resource)
         await MONGO_DB[collection].drop()
 
@@ -136,7 +136,7 @@ def get_gateway() -> Callable[[str], dict]:
 async def reset_db_after(top_dir: Path) -> None:
     """Reset MongoDB with original test data after the test has run"""
     try:
-        pass
+        yield
     finally:
         # Reset MongoDB
         await setup_db_utility(top_dir)
