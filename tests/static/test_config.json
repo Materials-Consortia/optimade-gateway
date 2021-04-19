@@ -9,7 +9,7 @@
     "implementation": {
         "name": "OPTIMADE Gateway",
         "version": "0.1.0",
-        "source_url": "https://github.com/epfl-theos/optimade-gateway",
+        "source_url": "https://github.com/Materials-Consortia/optimade-gateway",
         "maintainer": {"email": "casper.andersen@epfl.ch"}
     },
     "index_base_url": null,
@@ -17,7 +17,7 @@
         "name": "OPTIMADE gateway",
         "description": "A gateway server to query multiple OPTIMADE databases.",
         "prefix": "gateway",
-        "homepage": "https://github.com/epfl-theos/optimade-gateway"
+        "homepage": "https://github.com/Materials-Consortia/optimade-gateway"
     },
     "provider_fields": {},
     "aliases": {},

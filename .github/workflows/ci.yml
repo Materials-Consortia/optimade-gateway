@@ -74,12 +74,12 @@ jobs:
       run: pytest -vvv --cov-report=xml
 
     - name: Upload coverage to Codecov
-      if: matrix.python-version == 3.8 && github.repository == 'epfl-theos/optimade-gateway'
+      if: matrix.python-version == 3.8 && github.repository == 'Materials-Consortia/optimade-gateway'
       uses: codecov/codecov-action@v1
       with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        flags: optimade-gateway
-        file: ./coverage.xml
+        name: optimade-gateway
+        files: ./coverage.xml
+        flags: pytest
 
   build-package:
     runs-on: ubuntu-latest

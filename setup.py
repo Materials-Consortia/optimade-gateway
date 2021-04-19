@@ -56,7 +56,7 @@ setup(
     version=VERSION,
     author=AUTHOR,
     author_email=AUTHOR_EMAIL,
-    url="https://github.com/epfl-theos/optimade-gateway",
+    url="https://github.com/Materials-Consortia/optimade-gateway",
     description="A gateway server to query multiple OPTIMADE databases.",
     long_description=(TOP_DIR / "README.md").read_text(),
     long_description_content_type="text/markdown",
