@@ -93,7 +93,7 @@ async def post_gateways(
 
 
 @ROUTER.get(
-    "/gateways/{gateway_id:path}",
+    "/gateways/{gateway_id}",
     response_model=Union[GatewaysResponseSingle, ErrorResponse],
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,

@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import RedirectResponse
 
 from optimade.server.exception_handlers import OPTIMADE_EXCEPTIONS
@@ -7,6 +8,7 @@ from optimade.server.routers.utils import BASE_URL_PREFIXES
 from optimade.server.routers.versions import router as versions_router
 
 from optimade_gateway import __version__
+from optimade_gateway.exception_handlers import request_validation_exception_handler
 from optimade_gateway.middleware import CheckWronglyVersionedBaseUrlsGateways
 from optimade_gateway.routers import (
     databases,
@@ -51,6 +53,9 @@ for middleware in OPTIMADE_MIDDLEWARE:
 
 # Add exception handlers
 for exception, handler in OPTIMADE_EXCEPTIONS:
+    if exception == RequestValidationError:
+        print("Adding special exception handler!")
+        handler = request_validation_exception_handler
     APP.add_exception_handler(exception, handler)
 
 # Add the special /versions endpoint(s)
