@@ -28,7 +28,7 @@ async def test_get_queries(client, top_dir: Path):
 
 
 @pytest.mark.usefixtures("reset_db_after")
-async def test_post_queries(client, mock_responses, get_gateway):
+async def test_post_queries(client, mock_gateway_responses, get_gateway):
     """Test POST /queries"""
     import asyncio
     from bson.objectid import ObjectId
@@ -45,7 +45,7 @@ async def test_post_queries(client, mock_responses, get_gateway):
         "query_parameters": {"filter": 'elements HAS "Cu"', "page_limit": 15},
     }
 
-    mock_responses(await get_gateway(data["gateway_id"]))
+    mock_gateway_responses(await get_gateway(data["gateway_id"]))
 
     response = await client("/queries", method="post", json=data)
 
@@ -119,7 +119,7 @@ async def test_post_queries_bad_data(client):
 
 
 @pytest.mark.usefixtures("reset_db_after")
-async def test_query_results(client, mock_responses, get_gateway):
+async def test_query_results(client, mock_gateway_responses, get_gateway):
     """Test POST /queries and GET /queries/{id}"""
     import asyncio
     from optimade.models import EntryResponseMany
@@ -134,7 +134,7 @@ async def test_query_results(client, mock_responses, get_gateway):
         "query_parameters": {"filter": 'elements HAS "Cu" AND nelements>=4'},
     }
 
-    mock_responses(await get_gateway(data["gateway_id"]))
+    mock_gateway_responses(await get_gateway(data["gateway_id"]))
 
     response = await client("/queries", method="post", json=data)
     assert response.status_code == 202, f"Request failed: {response.json()}"
@@ -169,7 +169,7 @@ async def test_query_results(client, mock_responses, get_gateway):
 
 
 @pytest.mark.usefixtures("reset_db_after")
-async def test_errored_query_results(client, mock_responses, get_gateway):
+async def test_errored_query_results(client, mock_gateway_responses, get_gateway):
     """Test POST /queries and GET /queries/{id} with an erroneous response"""
     import asyncio
     from optimade.models import ErrorResponse
@@ -182,7 +182,7 @@ async def test_errored_query_results(client, mock_responses, get_gateway):
         "query_parameters": {"filter": 'elements HAS "Cu"', "page_limit": 15},
     }
 
-    mock_responses(await get_gateway(data["gateway_id"]))
+    mock_gateway_responses(await get_gateway(data["gateway_id"]))
 
     response = await client("/queries", method="post", json=data)
     assert response.status_code == 202, f"Request failed: {response.json()}"

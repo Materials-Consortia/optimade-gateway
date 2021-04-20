@@ -1,0 +1,111 @@
+{
+  "meta" : {
+      "api_version" : "1.0.0",
+      "query" : {
+          "representation" : "/links"
+      },
+      "more_data_available" : false,
+      "schema" : "https://schemas.optimade.org/openapi/v1.0/optimade_index.json"
+  },
+  "data": [
+    {
+      "type": "links",
+      "id": "aiida",
+      "attributes": {
+        "name": "AiiDA",
+        "description": "Automated Interactive Infrastructure and Database for Computational Science (AiiDA)",
+        "base_url": null,
+        "homepage": "http://www.aiida.net",
+        "link_type": "external"
+      }
+    },
+    {
+      "type": "links",
+      "id": "exmpl",
+      "attributes": {
+        "name": "Example provider",
+        "description": "Provider used for examples, not to be assigned to a real database",
+        "base_url": "http://providers.optimade.org/index-metadbs/exmpl",
+        "homepage": "https://example.com",
+        "link_type": "external"
+      }
+    },
+    {
+      "type": "links",
+      "id": "httk",
+      "attributes": {
+        "name": "The High-Throughput Toolkit",
+        "description": "Prefix for implementation-specific identifiers used in the httk implementation at http://httk.org/",
+        "base_url": null,
+        "homepage": null,
+        "link_type": "external"
+      }
+    },
+    {
+      "type": "links",
+      "id": "mcloud",
+      "attributes": {
+        "name": "Materials Cloud",
+        "description": "A platform for Open Science built for seamless sharing of resources in computational materials science",
+        "base_url": "https://www.materialscloud.org/optimade",
+        "homepage": "https://www.materialscloud.org",
+        "link_type": "external"
+      }
+    },
+    {
+      "type": "links",
+      "id": "mpds",
+      "attributes": {
+        "name": "materials platform for data science",
+        "description": "",
+        "base_url": null,
+        "homepage": null,
+        "link_type": "external"
+      }
+    },
+    {
+      "type": "links",
+      "id": "odbx",
+      "attributes": {
+        "name": "open database of xtals",
+        "description": "A public database of crystal structures mostly derived from ab initio structure prediction from the group of Dr Andrew Morris at the University of Birmingham https://ajm143.github.io",
+        "base_url": "https://optimade-index.odbx.science",
+        "homepage": "https://odbx.science",
+        "link_type": "external"
+      }
+    },
+    {
+      "type": "links",
+      "id": "optimade",
+      "attributes": {
+        "name": "OPTIMADE implementations and libraries",
+        "description": "Prefix for implementation-specific identifiers used in API implementations and libraries provided at https://github.com/Materials-Consortia",
+        "base_url": null,
+        "homepage": "https://www.optimade.org",
+        "link_type": "external"
+      }
+    },
+    {
+      "type": "links",
+      "id": "jarvis",
+      "attributes": {
+        "name": "Joint Automated Repository for Various Integrated Simulations (JARVIS)",
+        "description": "JARVIS is a repository designed to automate materials discovery using classical force-field, density functional theory, machine learning calculations and experiments.",
+        "base_url": null,
+        "homepage": "https://jarvis.nist.gov",
+        "link_type": "external"
+      }
+    },
+    {
+      "type": "links",
+      "id": "pcod",
+      "attributes": {
+        "name": "Predicted Crystallography Open Database",
+        "description": "",
+        "base_url": null,
+        "homepage": null,
+        "link_type": "external"
+      }
+    }
+  ]
+}

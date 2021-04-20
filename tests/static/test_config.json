@@ -23,5 +23,6 @@
     "aliases": {},
     "length_aliases": {},
     "log_level": "info",
-    "log_dir": "./logs/"
+    "log_dir": "./logs/",
+    "load_optimade_providers_databases": false
 }

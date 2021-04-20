@@ -21,5 +21,6 @@
     "provider_fields": {},
     "aliases": {},
     "length_aliases": {},
-    "log_level": "debug"
+    "log_level": "debug",
+    "load_optimade_providers_databases": false
 }

@@ -5,7 +5,7 @@ import json
 import os
 from pathlib import Path
 import re
-from typing import Callable, Union
+from typing import Awaitable, Callable, Union
 
 from fastapi import FastAPI
 import httpx
@@ -120,7 +120,7 @@ def client() -> Callable[
 
 
 @pytest.fixture
-def get_gateway() -> Callable[[str], dict]:
+def get_gateway() -> Callable[[str], Awaitable[dict]]:
     """Return function to find a single gateway in the current MongoDB"""
 
     async def _get_gateway(id: str) -> dict:
@@ -143,7 +143,9 @@ async def reset_db_after(top_dir: Path) -> None:
 
 
 @pytest.fixture
-def mock_responses(httpx_mock: HTTPXMock, top_dir: Path) -> Callable[[dict], None]:
+def mock_gateway_responses(
+    httpx_mock: HTTPXMock, top_dir: Path
+) -> Callable[[dict], None]:
     """Add mock responses for gateway databases
 
     (Successful) mock responses are loaded from local JSON files and returned according to the

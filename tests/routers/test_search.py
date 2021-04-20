@@ -7,12 +7,12 @@ import pytest
 pytestmark = [pytest.mark.asyncio, pytest.mark.usefixtures("reset_db_after")]
 
 
-async def test_get_search(client, mock_responses, get_gateway, caplog):
+async def test_get_search(client, mock_gateway_responses, get_gateway, caplog):
     """Test GET /search
 
     By using the gateway "twodbs", but adding the versioned part to the base URL,
     this should ensure a new gateway is created, specifically for use with these versioned
-    base URLs, but we can reuse the mock_responses for the "twodbs" gateway.
+    base URLs, but we can reuse the mock_gateway_responses for the "twodbs" gateway.
     """
     from optimade.models import StructureResponseMany
 
@@ -30,7 +30,7 @@ async def test_get_search(client, mock_responses, get_gateway, caplog):
         ],
     }
 
-    mock_responses(gateway)
+    mock_gateway_responses(gateway)
 
     response = await client("/search", params=query_params)
 
@@ -46,7 +46,9 @@ async def test_get_search(client, mock_responses, get_gateway, caplog):
     assert "A new gateway was created for a query" in caplog.text, caplog.text
 
 
-async def test_get_search_existing_gateway(client, mock_responses, get_gateway, caplog):
+async def test_get_search_existing_gateway(
+    client, mock_gateway_responses, get_gateway, caplog
+):
     """Test GET /search for base URLs matching an existing gateway"""
     from optimade.models import StructureResponseMany
 
@@ -64,7 +66,7 @@ async def test_get_search_existing_gateway(client, mock_responses, get_gateway, 
         ],
     }
 
-    mock_responses(gateway)
+    mock_gateway_responses(gateway)
 
     response = await client("/search", params=query_params)
 
@@ -80,7 +82,9 @@ async def test_get_search_existing_gateway(client, mock_responses, get_gateway, 
     assert "A gateway was found and reused for a query" in caplog.text, caplog.text
 
 
-async def test_get_search_not_finishing(client, mock_responses, get_gateway, caplog):
+async def test_get_search_not_finishing(
+    client, mock_gateway_responses, get_gateway, caplog
+):
     """Test GET /search for unfinished query (redirect to query URL)"""
     from optimade.models import EntryResponseMany
 
@@ -100,7 +104,7 @@ async def test_get_search_not_finishing(client, mock_responses, get_gateway, cap
         "timeout": 0,
     }
 
-    mock_responses(gateway)
+    mock_gateway_responses(gateway)
 
     response = await client("/search", params=query_params)
     assert response.status_code == 200, f"Request failed: {response.json()}"
@@ -128,12 +132,14 @@ async def test_get_search_not_finishing(client, mock_responses, get_gateway, cap
     assert query.attributes.gateway_id == gateway_id, query
 
 
-async def test_post_search(client, mock_responses, get_gateway, top_dir: Path, caplog):
+async def test_post_search(
+    client, mock_gateway_responses, get_gateway, top_dir: Path, caplog
+):
     """Test POST /search
 
     By using the gateway "twodbs", but adding the versioned part to the base URL,
     this should ensure a new gateway is created, specifically for use with these versioned
-    base URLs, but we can reuse the mock_responses for the "twodbs" gateway.
+    base URLs, but we can reuse the mock_gateway_responses for the "twodbs" gateway.
     """
     import asyncio
     import json
@@ -154,7 +160,7 @@ async def test_post_search(client, mock_responses, get_gateway, top_dir: Path, c
         ],
     }
 
-    mock_responses(gateway)
+    mock_gateway_responses(gateway)
 
     response = await client("/search", method="post", json=data)
 
@@ -192,7 +198,7 @@ async def test_post_search(client, mock_responses, get_gateway, top_dir: Path, c
 
 
 async def test_post_search_existing_gateway(
-    client, mock_responses, get_gateway, caplog
+    client, mock_gateway_responses, get_gateway, caplog
 ):
     """Test POST /search for base URLs matching an existing gateway"""
     import asyncio
@@ -213,7 +219,7 @@ async def test_post_search_existing_gateway(
         ],
     }
 
-    mock_responses(gateway)
+    mock_gateway_responses(gateway)
 
     response = await client("/search", method="post", json=data)
 

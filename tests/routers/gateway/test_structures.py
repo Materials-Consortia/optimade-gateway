@@ -9,7 +9,7 @@ import pytest
 pytestmark = pytest.mark.asyncio
 
 
-async def test_get_structures(client, get_gateway, mock_responses):
+async def test_get_structures(client, get_gateway, mock_gateway_responses):
     """Test GET /gateways/{gateway_id}/structures"""
     from optimade.models import StructureResponseMany
 
@@ -18,7 +18,7 @@ async def test_get_structures(client, get_gateway, mock_responses):
     gateway_id = "twodbs"
     gateway: dict = await get_gateway(gateway_id)
 
-    mock_responses(gateway)
+    mock_gateway_responses(gateway)
 
     response = await client(f"/gateways/{gateway_id}/structures")
 

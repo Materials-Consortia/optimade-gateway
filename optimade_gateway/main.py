@@ -10,6 +10,7 @@ from optimade.server.routers.versions import router as versions_router
 from optimade_gateway import __version__
 from optimade_gateway.exception_handlers import request_validation_exception_handler
 from optimade_gateway.middleware import CheckWronglyVersionedBaseUrlsGateways
+from optimade_gateway.events import EVENTS
 from optimade_gateway.routers import (
     databases,
     gateways,
@@ -54,7 +55,6 @@ for middleware in OPTIMADE_MIDDLEWARE:
 # Add exception handlers
 for exception, handler in OPTIMADE_EXCEPTIONS:
     if exception == RequestValidationError:
-        print("Adding special exception handler!")
         handler = request_validation_exception_handler
     APP.add_exception_handler(exception, handler)
 
@@ -72,41 +72,5 @@ for prefix in list(BASE_URL_PREFIXES.values()) + [""]:
     ):
         APP.include_router(router.ROUTER, prefix=prefix, include_in_schema=prefix == "")
 
-
-@APP.on_event("startup")
-async def ci_dev_startup():
-    """Function to run at app startup - only relevant for CI or development to add test data"""
-    import os
-    from optimade_gateway.common.logger import LOGGER
-
-    if bool(os.getenv("CI", False)):
-        LOGGER.info(
-            "CI detected - Will load test gateways (after dropping the collection)!"
-        )
-    elif os.getenv("OPTIMADE_MONGO_DATABASE", "") == "optimade_gateway_dev":
-        LOGGER.info(
-            "Running in development mode - Will load test gateways (after dropping the collection)!"
-        )
-    else:
-        LOGGER.debug("Not in CI or development mode - will start normally.")
-        return
-
-    # Add test gateways
-    import json
-    from optimade_gateway.mongo.database import MONGO_DB
-    from pathlib import Path
-
-    collection = "gateways"
-    test_data = (
-        Path(__file__).parent.parent.joinpath(".ci/test_gateways.json").resolve()
-    )
-
-    await MONGO_DB[collection].drop()
-
-    assert await MONGO_DB[collection].count_documents({}) == 0
-    assert test_data.exists()
-
-    with open(test_data) as handle:
-        data = json.load(handle)
-
-    await MONGO_DB[collection].insert_many(data)
+for event, func in EVENTS:
+    APP.add_event_handler(event, func)

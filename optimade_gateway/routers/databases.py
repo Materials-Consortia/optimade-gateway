@@ -19,7 +19,6 @@ from optimade.server.query_params import EntryListingQueryParams, SingleEntryQue
 from optimade.server.routers.utils import handle_response_fields, meta_values
 
 from optimade_gateway.common.config import CONFIG
-from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.mappers import DatabasesMapper
 from optimade_gateway.models import (
     DatabaseCreate,
@@ -114,7 +113,6 @@ async def get_database(
 
     Return a single `LinksResource` representing the database resource object with id=`database_id`.
     """
-    LOGGER.debug("Will find database with id: %r", database_id)
     params.filter = f'id="{database_id}"'
     result, _, fields = await DATABASES_COLLECTION.find(params=params)
 

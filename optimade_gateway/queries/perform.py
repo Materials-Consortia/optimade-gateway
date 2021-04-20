@@ -3,11 +3,12 @@ from concurrent.futures import ThreadPoolExecutor
 import functools
 import json
 import os
-from typing import Tuple, Union
+from typing import Any, Dict, List, Tuple, Union
 import urllib.parse
 
 from optimade import __api_version__
 from optimade.models import (
+    EntryResource,
     EntryResponseMany,
     EntryResponseOne,
     ErrorResponse,
@@ -19,6 +20,7 @@ from optimade.server.routers.utils import BASE_URL_PREFIXES, get_base_url, meta_
 from pydantic import ValidationError
 from starlette.datastructures import URL
 
+from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.models import GatewayResource, QueryResource, QueryState
 from optimade_gateway.queries.prepare import get_query_params, prepare_query
 from optimade_gateway.queries.utils import update_query
@@ -184,26 +186,40 @@ async def perform_query(
 
 
 def db_find(
-    database: LinksResource,
+    database: Union[LinksResource, Dict[str, Any]],
     endpoint: str,
     response_model: Union[EntryResponseMany, EntryResponseOne],
     query_params: str = "",
+    raw_url: str = None,
 ) -> Tuple[Union[ErrorResponse, EntryResponseMany, EntryResponseOne], str]:
     """Imitate Collection.find for any given database for entry-resource endpoints
 
     Parameters:
-        database: The OPTIMADE implementation to be queried.
+        database: The OPTIMADE implementation to be queried. It **must** have a valid base URL and
+            id.
         endpoint: The entry-listing endpoint, e.g., `"structures"`.
-        response_model: The expected OPTIMADE pydantic response model, e.g., `optimade.models.StructureResponseMany`.
+        response_model: The expected OPTIMADE pydantic response model, e.g.,
+            `optimade.models.StructureResponseMany`.
         query_params: URL query parameters to pass to the database.
+        raw_url: A raw URL to use straight up instead of deriving a URL from `database`,
+            `endpoint`, and `query_params`.
 
     Results:
-        Response as an OPTIMADE pydantic model, depending on whether it was a successful or unsuccessful response.
+        Response as an `optimade` pydantic model and the `database`'s ID.
 
     """
     import httpx
 
-    url = f"{str(database.attributes.base_url).strip('/')}{BASE_URL_PREFIXES['major']}/{endpoint.strip('/')}?{query_params}"
+    if isinstance(database, LinksResource):
+        database = database.dict()
+
+    if raw_url:
+        url = raw_url
+    else:
+        url = (
+            f"{str(database['attributes']['base_url']).strip('/')}{BASE_URL_PREFIXES['major']}"
+            f"/{endpoint.strip('/')}?{query_params}"
+        )
     response: httpx.Response = httpx.get(url, timeout=60)
 
     try:
@@ -225,7 +241,7 @@ def db_find(
                     "more_data_available": False,
                 },
             ),
-            database.id,
+            database["id"],
         )
 
     try:
@@ -250,7 +266,83 @@ def db_find(
                         "more_data_available": False,
                     },
                 ),
-                database.id,
+                database["id"],
             )
 
-    return response, database.id
+    return response, database["id"]
+
+
+async def db_get_all_resources(
+    database: Union[LinksResource, Dict[str, Any]],
+    endpoint: str,
+    response_model: EntryResponseMany,
+    query_params: str = "",
+    raw_url: str = None,
+) -> Tuple[
+    List[Union[EntryResource, Dict[str, Any]]], Union[LinksResource, Dict[str, Any]]
+]:
+    """Recursively retrieve all resources from an entry-listing endpoint
+
+    Parameters:
+        database: The OPTIMADE implementation to be queried. It **must** have a valid base URL and
+            id.
+        endpoint: The entry-listing endpoint, e.g., `"structures"`.
+        response_model: The expected OPTIMADE pydantic response model, e.g.,
+            `optimade.models.StructureResponseMany`.
+        query_params: URL query parameters to pass to the database.
+        raw_url: A raw URL to use straight up instead of deriving a URL from `database`,
+            `endpoint`, and `query_params`.
+
+    Results:
+        A collected list of successful responses' `data` value and the `database`'s ID.
+
+    """
+    from optimade.models import Link
+
+    resulting_resources = []
+
+    if isinstance(database, LinksResource):
+        database = database.dict()
+
+    response, _ = db_find(
+        database=database,
+        endpoint=endpoint,
+        response_model=response_model,
+        query_params=query_params,
+        raw_url=raw_url,
+    )
+
+    if isinstance(response, ErrorResponse):
+        # An errored response will result in no databases from a provider.
+        return [], database
+
+    resulting_resources.extend(response.data)
+
+    if not isinstance(response, ErrorResponse) and response.meta.more_data_available:
+        if isinstance(response.links.next, Link):
+            next_page = response.links.next.href
+        elif isinstance(response.links.next, dict):
+            next_page = response.links.next["href"]
+        elif isinstance(response.links.next, str):
+            next_page = response.links.next
+        elif not response.links.next:
+            LOGGER.error(
+                "Could not find a 'next' link for an OPTIMADE query request to %r (id=%r). Cannot "
+                "get all resources from /%s, even though this was asked and `more_data_available` "
+                "is `True` in the response.",
+                database["attributes"].get("name", "N/A"),
+                database["id"],
+                endpoint,
+            )
+            return resulting_resources, database
+
+        more_resources, _ = await db_get_all_resources(
+            database=database,
+            endpoint=endpoint,
+            response_model=response_model,
+            query_params=query_params,
+            raw_url=next_page,
+        )
+        resulting_resources.extend(more_resources)
+
+    return resulting_resources, database

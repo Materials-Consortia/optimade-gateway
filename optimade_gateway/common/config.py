@@ -26,6 +26,14 @@ class ServerConfig(OptimadeServerConfig):
         "queries",
         description="Mongo collection name for /queries endpoint resources.",
     )
+    load_optimade_providers_databases: bool = Field(
+        True,
+        description=(
+            "Whether or not to load all valid OPTIMADE providers' databases from the "
+            "Materials-Consortia list of OPTIMADE providers (https://providers.optimade.org) on "
+            "server startup."
+        ),
+    )
 
     @validator("mongo_uri")
     def replace_with_env_vars(cls, v):
