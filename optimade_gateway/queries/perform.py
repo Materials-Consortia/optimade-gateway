@@ -21,6 +21,7 @@ from pydantic import ValidationError
 from starlette.datastructures import URL
 
 from optimade_gateway.common.logger import LOGGER
+from optimade_gateway.common.utils import get_resource_attribute
 from optimade_gateway.models import GatewayResource, QueryResource, QueryState
 from optimade_gateway.queries.prepare import get_query_params, prepare_query
 from optimade_gateway.queries.utils import update_query
@@ -210,15 +211,12 @@ def db_find(
     """
     import httpx
 
-    if isinstance(database, LinksResource):
-        database = database.dict()
-
     if raw_url:
         url = raw_url
     else:
         url = (
-            f"{str(database['attributes']['base_url']).strip('/')}{BASE_URL_PREFIXES['major']}"
-            f"/{endpoint.strip('/')}?{query_params}"
+            f"{str(get_resource_attribute(database, 'attributes.base_url')).strip('/')}"
+            f"{BASE_URL_PREFIXES['major']}/{endpoint.strip('/')}?{query_params}"
         )
     response: httpx.Response = httpx.get(url, timeout=60)
 
@@ -241,7 +239,7 @@ def db_find(
                     "more_data_available": False,
                 },
             ),
-            database["id"],
+            get_resource_attribute(database, "id"),
         )
 
     try:
@@ -266,10 +264,10 @@ def db_find(
                         "more_data_available": False,
                     },
                 ),
-                database["id"],
+                get_resource_attribute(database, "id"),
             )
 
-    return response, database["id"]
+    return response, get_resource_attribute(database, "id")
 
 
 async def db_get_all_resources(
@@ -297,12 +295,7 @@ async def db_get_all_resources(
         A collected list of successful responses' `data` value and the `database`'s ID.
 
     """
-    from optimade.models import Link
-
     resulting_resources = []
-
-    if isinstance(database, LinksResource):
-        database = database.dict()
 
     response, _ = db_find(
         database=database,
@@ -318,20 +311,15 @@ async def db_get_all_resources(
 
     resulting_resources.extend(response.data)
 
-    if not isinstance(response, ErrorResponse) and response.meta.more_data_available:
-        if isinstance(response.links.next, Link):
-            next_page = response.links.next.href
-        elif isinstance(response.links.next, dict):
-            next_page = response.links.next["href"]
-        elif isinstance(response.links.next, str):
-            next_page = response.links.next
-        elif not response.links.next:
+    if response.meta.more_data_available:
+        next_page = get_resource_attribute(response, "links.next")
+        if next_page is None:
             LOGGER.error(
                 "Could not find a 'next' link for an OPTIMADE query request to %r (id=%r). Cannot "
                 "get all resources from /%s, even though this was asked and `more_data_available` "
                 "is `True` in the response.",
-                database["attributes"].get("name", "N/A"),
-                database["id"],
+                get_resource_attribute(database, "attributes.name", "N/A"),
+                get_resource_attribute(database, "id"),
                 endpoint,
             )
             return resulting_resources, database

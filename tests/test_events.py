@@ -452,7 +452,7 @@ async def test_load_databases_valid_databases(
         CONFIG.load_optimade_providers_databases = org_val
 
 
-async def test_no_provider_databases(
+async def test_bad_provider_databases(
     httpx_mock: HTTPXMock, caplog: pytest.LogCaptureFixture
 ):
     """Test load_optimade_providers_databases() for a provider with no announced databases"""
@@ -496,7 +496,10 @@ async def test_no_provider_databases(
                 "id": "bad_response",
                 "attributes": {
                     "name": "Bad response database",
-                    "base_url": "https://bad-response-database",
+                    "base_url": {
+                        "href": "https://bad-response-database",
+                        "meta": {},
+                    },
                     "link_type": "child",
                 },
             }
@@ -528,7 +531,10 @@ async def test_no_provider_databases(
                 "type": "links",
                 "attributes": {
                     "name": "Timeout database provider",
-                    "base_url": "https://bad-response-database-provider",
+                    "base_url": {
+                        "href": "https://bad-response-database-provider",
+                        "meta": {},
+                    },
                     "link_type": "external",
                 },
             },
@@ -543,7 +549,6 @@ async def test_no_provider_databases(
         (
             no_database_provider,
             timeout_database_provider,
-            bad_response_database_provider,
         )
     ):
         httpx_mock.add_response(
@@ -552,6 +557,12 @@ async def test_no_provider_databases(
             ),
             json=index_db,
         )
+    httpx_mock.add_response(
+        url=re.compile(
+            fr"{mock_provider_list['data'][-1]['attributes']['base_url']['href']}.*"
+        ),
+        json=bad_response_database_provider,
+    )
     httpx_mock.add_callback(
         callback=raise_timeout,
         url=re.compile(
@@ -560,7 +571,7 @@ async def test_no_provider_databases(
     )
     httpx_mock.add_response(
         url=re.compile(
-            fr"{bad_response_database_provider['data'][0]['attributes']['base_url']}.*"
+            fr"{bad_response_database_provider['data'][0]['attributes']['base_url']['href']}.*"
         ),
         status_code=404,
     )

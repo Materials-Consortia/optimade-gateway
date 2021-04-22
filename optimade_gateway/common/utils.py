@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Any
+from typing import Any, Dict, Union
 
 from pydantic import BaseModel  # pylint: disable=no-name-in-module
 
@@ -29,3 +29,58 @@ async def clean_python_types(data: Any) -> Any:
         # Unknown or other basic type, e.g., str, int, etc.
         res = data
     return res
+
+
+def get_resource_attribute(
+    resource: Union[BaseModel, Dict[str, Any]],
+    field: str,
+    default: Any = None,
+    disambiguate: bool = True,
+) -> Any:
+    """Return a resource's field's value
+
+    Get the field value no matter if the resource is a pydantic model or a Python dictionary.
+
+    Determine ambiguous field values and return them if desired (`disambiguate`).
+    For example, if `attributes.base_url` is requested it can be either a string, a
+    [`Link`](https://www.optimade.org/optimade-python-tools/api_reference/models/jsonapi/#optimade.models.jsonapi.Link)
+    model or a dictionary resembling the `Link` model.
+
+    Parameters:
+        resource: The resource, from which to get the field value.
+        field: The resource field. This can be a comma-separated nested field, e.g.,
+            `"attributes.base_url"`.
+        default: The default value to return if `field` does not exist.
+        disambiguate: Whether or not to "shortcut" a field value.
+            For example, for `attributes.base_url`, if `True`, this would return the string value
+            or the value of it's `"href"` key.
+
+    Returns:
+        The resource's field's value.
+
+    """
+    if isinstance(resource, BaseModel):
+        _get_attr = getattr
+    elif isinstance(resource, dict):
+
+        def _get_attr(mapping: dict, key: str, default: Any) -> Any:
+            return mapping.get(key, default)
+
+    else:
+        raise TypeError(
+            "resource must be either a pydantic model or a Python dictionary, it was of type "
+            f"{type(resource)!r}"
+        )
+
+    fields = field.split(".")
+    for field in fields[:-1]:
+        resource = _get_attr(resource, field, {})
+    field = fields[-1]
+    value = _get_attr(resource, field, default)
+
+    if disambiguate:
+        if field in ("base_url",):
+            if not isinstance(value, str):
+                value = _get_attr(value, "href", default)
+
+    return value

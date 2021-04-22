@@ -49,10 +49,11 @@ async def load_optimade_providers_databases() -> None:
 
     import httpx
     from optimade import __api_version__
-    from optimade.models import LinksResource, LinksResponse
+    from optimade.models import LinksResponse
     from optimade.models.links import LinkType
     from optimade.server.routers.utils import BASE_URL_PREFIXES
 
+    from optimade_gateway.common.utils import clean_python_types, get_resource_attribute
     from optimade_gateway.models.databases import DatabaseCreate
     from optimade_gateway.queries.perform import db_get_all_resources
     from optimade_gateway.routers.utils import resource_factory
@@ -83,21 +84,19 @@ async def load_optimade_providers_databases() -> None:
 
     valid_providers = []
     for provider in providers.data:
-        if isinstance(provider, LinksResource):
-            provider = provider.dict()
-        if provider.get("id", "") in ("exmpl", "optimade"):
+        if get_resource_attribute(provider, "id") in ("exmpl", "optimade"):
             LOGGER.info(
                 "- %s (id=%r) - Skipping: Not a real provider.",
-                provider.get("attributes", {}).get("name", "N/A"),
-                provider.get("id"),
+                get_resource_attribute(provider, "attributes.name", "N/A"),
+                get_resource_attribute(provider, "id"),
             )
             continue
 
-        if not provider.get("attributes", {}).get("base_url"):
+        if not get_resource_attribute(provider, "attributes.base_url"):
             LOGGER.info(
                 "- %s (id=%r) - Skipping: No base URL information.",
-                provider.get("attributes", {}).get("name", "N/A"),
-                provider.get("id"),
+                get_resource_attribute(provider, "attributes.name", "N/A"),
+                get_resource_attribute(provider, "id"),
             )
             continue
 
@@ -123,91 +122,80 @@ async def load_optimade_providers_databases() -> None:
 
         LOGGER.info(
             "- %s (id=%r) - Processing",
-            provider.get("attributes", {}).get("name", "N/A"),
-            provider.get("id"),
+            get_resource_attribute(provider, "attributes.name", "N/A"),
+            get_resource_attribute(provider, "id"),
         )
         if not provider_databases:
             LOGGER.info("  - No OPTIMADE databases found.")
             continue
 
-        _provider_databases = []
-        for db in provider_databases:
-            if (
-                isinstance(db, LinksResource)
-                and db.attributes.link_type == LinkType.CHILD
-            ):
-                _provider_databases.append(db)
-            elif (
-                isinstance(db, dict)
-                and db.get("attributes", {}).get("link_type", "")
-                == LinkType.CHILD.value
-            ):
-                _provider_databases.append(db)
-            # No need for an 'else'-clause, as everything else should be disregarded.
-        provider_databases = _provider_databases
+        provider_databases = [
+            db
+            for db in provider_databases
+            if await clean_python_types(
+                get_resource_attribute(db, "attributes.link_type", "")
+            )
+            == LinkType.CHILD.value
+        ]
 
         if not provider_databases:
             LOGGER.info("  - No OPTIMADE databases found.")
             continue
 
         for database in provider_databases:
-            if isinstance(database, LinksResource):
-                database = database.dict()
-
-            if not database.get("attributes", {}).get("base_url"):
+            if not get_resource_attribute(database, "attributes.base_url"):
                 LOGGER.info(
                     "  - %s (id=%r) - Skipping: No base URL information.",
-                    database.get("attributes", {}).get("name", "N/A"),
-                    database.get("id", ""),
+                    get_resource_attribute(database, "attributes.name", "N/A"),
+                    get_resource_attribute(database, "id"),
                 )
                 continue
 
             LOGGER.info(
                 "  - %s (id=%r) - Checking versioned base URL and /structures",
-                database.get("attributes", {}).get("name", "N/A"),
-                database.get("id", ""),
+                get_resource_attribute(database, "attributes.name", "N/A"),
+                get_resource_attribute(database, "id"),
             )
-            if isinstance(database["attributes"]["base_url"], dict):
-                base_url = database["attributes"]["base_url"].get("href", None)
-            else:
-                base_url = database["attributes"]["base_url"]
+
             async with httpx.AsyncClient() as client:
                 try:
                     db_response = await client.get(
-                        f"{str(base_url).rstrip('/')}{BASE_URL_PREFIXES['major']}/structures",
+                        f"{str(get_resource_attribute(database, 'attributes.base_url')).rstrip('/')}{BASE_URL_PREFIXES['major']}/structures",
                     )
                 except httpx.ReadTimeout:
                     LOGGER.info(
                         "  - %s (id=%r) - Skipping: Timeout while requesting %s/structures.",
-                        database.get("attributes", {}).get("name", "N/A"),
-                        database.get("id", ""),
+                        get_resource_attribute(database, "attributes.name", "N/A"),
+                        get_resource_attribute(database, "id"),
                         BASE_URL_PREFIXES["major"],
                     )
                     continue
             if db_response.status_code != 200:
                 LOGGER.info(
                     "  - %s (id=%r) - Skipping: Response from %s/structures is not 200 OK.",
-                    database.get("attributes", {}).get("name", "N/A"),
-                    database.get("id", ""),
+                    get_resource_attribute(database, "attributes.name", "N/A"),
+                    get_resource_attribute(database, "id"),
                     BASE_URL_PREFIXES["major"],
                 )
                 continue
 
             new_id = (
-                f"{provider['id']}/{database['id']}"
+                f"{get_resource_attribute(provider, 'id')}/{get_resource_attribute(database, 'id')}"
                 if len(provider_databases) > 1
-                else database["id"]
+                else get_resource_attribute(database, "id")
             )
             registered_database, _ = await resource_factory(
                 DatabaseCreate(
                     id=new_id,
-                    **database.get("attributes", {}),
+                    **await clean_python_types(
+                        get_resource_attribute(database, "attributes", {})
+                    ),
                 )
             )
             LOGGER.info(
                 "  - %s (id=%r) - Registered database with id=%r",
-                database.get("attributes", {}).get("name", "N/A"),
-                database.get("id", ""),
+                get_resource_attribute(database, "attributes.name", "N/A"),
+                get_resource_attribute(database, "id"),
                 registered_database.id,
             )
 

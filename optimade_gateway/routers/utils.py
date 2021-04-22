@@ -6,7 +6,6 @@ from fastapi import Request
 from optimade.models import (
     EntryResource,
     EntryResponseMany,
-    Link,
     LinksResource,
     ToplevelLinks,
 )
@@ -169,7 +168,7 @@ async def resource_factory(
         - whether or not the resource was newly created.
 
     """
-    from optimade_gateway.common.utils import clean_python_types
+    from optimade_gateway.common.utils import clean_python_types, get_resource_attribute
 
     created = False
 
@@ -178,9 +177,7 @@ async def resource_factory(
             DATABASES_COLLECTION as RESOURCE_COLLECTION,
         )
 
-        base_url = create_resource.base_url
-        if isinstance(create_resource.base_url, Link):
-            base_url = create_resource.base_url.href
+        base_url = get_resource_attribute(create_resource, "base_url")
 
         mongo_query = {
             "$or": [
