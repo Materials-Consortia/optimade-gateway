@@ -307,6 +307,11 @@ async def db_get_all_resources(
 
     if isinstance(response, ErrorResponse):
         # An errored response will result in no databases from a provider.
+        LOGGER.error(
+            "Error while querying database (id=%r). Full response: %s",
+            get_resource_attribute(database, "id"),
+            response.json(indent=2),
+        )
         return [], database
 
     resulting_resources.extend(response.data)

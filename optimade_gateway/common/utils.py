@@ -79,7 +79,7 @@ def get_resource_attribute(
     value = _get_attr(resource, field, default)
 
     if disambiguate:
-        if field in ("base_url",):
+        if field in ("base_url", "next", "prev", "last", "first"):
             if not isinstance(value, str):
                 value = _get_attr(value, "href", default)
 

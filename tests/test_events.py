@@ -453,7 +453,7 @@ async def test_load_databases_valid_databases(
 
 
 async def test_bad_provider_databases(
-    httpx_mock: HTTPXMock, caplog: pytest.LogCaptureFixture
+    httpx_mock: HTTPXMock, caplog: pytest.LogCaptureFixture, generic_meta: dict
 ):
     """Test load_optimade_providers_databases() for a provider with no announced databases"""
     import re
@@ -470,15 +470,9 @@ async def test_bad_provider_databases(
             f"Unable to read within {ext['timeout']} seconds", request=request
         )
 
-    general_meta = {
-        "api_version": "1.0.0",
-        "query": {"representation": "/links"},
-        "more_data_available": False,
-    }
-
-    no_database_provider = {"data": [], "meta": general_meta}
+    no_database_provider = {"data": [], "meta": generic_meta}
     timeout_database_provider = {
-        "meta": general_meta,
+        "meta": generic_meta,
         "data": [
             {
                 "id": "timeout",
@@ -490,7 +484,7 @@ async def test_bad_provider_databases(
         ],
     }
     bad_response_database_provider = {
-        "meta": general_meta,
+        "meta": generic_meta,
         "data": [
             {
                 "id": "bad_response",
@@ -507,7 +501,7 @@ async def test_bad_provider_databases(
     }
 
     mock_provider_list = {
-        "meta": general_meta,
+        "meta": generic_meta,
         "data": [
             {
                 "id": "no_databases",

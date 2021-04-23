@@ -193,3 +193,13 @@ def mock_gateway_responses(
 @pytest.fixture
 def non_mocked_hosts() -> list:
     return ["example.org"]
+
+
+@pytest.fixture
+def generic_meta() -> dict:
+    """A generic valid OPTIMADE response meta value"""
+    return {
+        "api_version": "1.0.0",
+        "query": {"representation": "/links"},
+        "more_data_available": False,
+    }
