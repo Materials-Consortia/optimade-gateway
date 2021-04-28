@@ -5,10 +5,11 @@ from pydantic import BaseModel  # pylint: disable=no-name-in-module
 
 
 async def clean_python_types(data: Any) -> Any:
-    """Turn data in a list into only using standard Python types.
+    """Turn any types into MongoDB-friendly Python types.
 
     Use `dict()` method for Pydantic models.
     Use `value` property for Enums.
+    Turn tuples and sets into lists.
     """
     if isinstance(data, (list, tuple, set)):
         res = []

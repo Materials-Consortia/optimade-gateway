@@ -199,11 +199,11 @@ class AsyncMongoCollection(EntryCollection):
         """
         criteria = criteria or {}
 
-        return self.resource_cls(
-            **self.resource_mapper.map_back(
-                await self.collection.find(**self._valid_find_keys(**criteria))
-            )
-        )
+        results = []
+        async for document in self.collection.find(**self._valid_find_keys(**criteria)):
+            results.append(self.resource_cls(**self.resource_mapper.map_back(document)))
+
+        return results
 
     async def find(
         self,
@@ -236,10 +236,10 @@ class AsyncMongoCollection(EntryCollection):
         fields = criteria.get("fields", self.all_fields)
 
         results = []
-        async for doc in self.collection.find(**self._valid_find_keys(**criteria)):
+        async for document in self.collection.find(**self._valid_find_keys(**criteria)):
             if criteria.get("projection", {}).get("_id"):
-                doc["_id"] = str(doc["_id"])
-            results.append(self.resource_cls(**self.resource_mapper.map_back(doc)))
+                document["_id"] = str(document["_id"])
+            results.append(self.resource_cls(**self.resource_mapper.map_back(document)))
 
         if params is None or isinstance(params, EntryListingQueryParams):
             criteria_nolimit = criteria.copy()

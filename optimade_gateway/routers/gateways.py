@@ -75,7 +75,23 @@ async def post_gateways(
 
     Create or return existing gateway according to `gateway`.
     """
+    from optimade_gateway.common.utils import clean_python_types
     from optimade_gateway.routers.utils import resource_factory
+
+    if gateway.database_ids:
+        from optimade_gateway.routers.databases import DATABASES_COLLECTION
+
+        databases = await DATABASES_COLLECTION.get_multiple(
+            filter={"id": {"$in": await clean_python_types(gateway.database_ids)}}
+        )
+
+        if not isinstance(gateway.databases, list):
+            gateway.databases = []
+
+        current_database_ids = [_.id for _ in gateway.databases]
+        gateway.databases.extend(
+            (_ for _ in databases if _.id not in current_database_ids)
+        )
 
     result, created = await resource_factory(gateway)
 

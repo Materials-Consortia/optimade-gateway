@@ -112,3 +112,108 @@ async def test_path_id_raises(client, top_dir: Path):
         test_data = json.load(handle)
 
     assert await MONGO_DB["gateways"].count_documents({}) == len(test_data)
+
+
+async def test_post_gateways_database_ids(client):
+    """Test POST /gateways with `database_ids` specified"""
+    from optimade.server.routers.utils import BASE_URL_PREFIXES
+    from pydantic import AnyUrl
+
+    from optimade_gateway.common.config import CONFIG
+    from optimade_gateway.models.responses import GatewaysResponseSingle
+    from optimade_gateway.mongo.database import MONGO_DB
+
+    # Databases for gateway "twodbs"
+    data = {"database_ids": ["mcloud/2dstructures", "mcloud/optimade-sample"]}
+
+    response = await client("/gateways", method="post", json=data)
+
+    assert response.status_code == 200, f"Request failed: {response.json()}"
+    url = response.url
+
+    response = GatewaysResponseSingle(**response.json())
+    assert response
+
+    assert not getattr(
+        response.meta, f"_{CONFIG.provider.prefix}_created"
+    ), response.meta.dict()
+
+    datum = response.data
+    assert datum, response
+
+    assert datum.id == "twodbs"
+    for database in datum.attributes.databases:
+        assert database.id in [_.split("/")[-1] for _ in data["database_ids"]]
+
+    assert datum.links.dict() == {
+        "self": AnyUrl(
+            url=f"{'/'.join(str(url).split('/')[:-1])}{BASE_URL_PREFIXES['major']}/gateways/{datum.id}",
+            scheme=url.scheme,
+            host=url.host,
+        )
+    }
+
+    mongo_filter = {"id": datum.id}
+    assert await MONGO_DB["gateways"].count_documents(mongo_filter) == 1
+    db_datum = await MONGO_DB["gateways"].find_one(mongo_filter)
+    for db in db_datum["databases"]:
+        assert db["id"] in [_.split("/")[-1] for _ in data["database_ids"]]
+
+
+async def test_post_gateways_create_with_db_ids(client):
+    """Test POST /gateways with `database_ids`, while creating gateway"""
+    from optimade.server.routers.utils import BASE_URL_PREFIXES
+    from pydantic import AnyUrl
+
+    from optimade_gateway.common.config import CONFIG
+    from optimade_gateway.models.responses import GatewaysResponseSingle
+    from optimade_gateway.mongo.database import MONGO_DB
+
+    data = {
+        "databases": [
+            {
+                "id": "test_post_gateways",
+                "type": "links",
+                "attributes": {
+                    "name": "PyTest test_post_gateways",
+                    "description": "This is a valid test database",
+                    "base_url": "https://example.org/test",
+                    "homepage": "https://example.org",
+                    "link_type": "child",
+                },
+            }
+        ],
+        "database_ids": ["mcloud/2dstructures"],
+    }
+
+    response = await client("/gateways", method="post", json=data)
+
+    assert response.status_code == 200, f"Request failed: {response.json()}"
+    url = response.url
+
+    response = GatewaysResponseSingle(**response.json())
+    assert response
+
+    assert getattr(
+        response.meta, f"_{CONFIG.provider.prefix}_created"
+    ), response.meta.dict()
+
+    datum = response.data
+    assert datum, response
+
+    for database in datum.attributes.databases:
+        assert database.id in [data["databases"][0]["id"], data["database_ids"][0]]
+
+    assert datum.links.dict() == {
+        "self": AnyUrl(
+            url=f"{'/'.join(str(url).split('/')[:-1])}{BASE_URL_PREFIXES['major']}/gateways/{datum.id}",
+            scheme=url.scheme,
+            host=url.host,
+        )
+    }
+
+    mongo_filter = {"id": datum.id}
+    assert await MONGO_DB["gateways"].count_documents(mongo_filter) == 1
+    db_datum = await MONGO_DB["gateways"].find_one(mongo_filter)
+    for db in db_datum["databases"]:
+        assert db["id"] in [data["databases"][0]["id"], data["database_ids"][0]]

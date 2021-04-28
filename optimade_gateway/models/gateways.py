@@ -1,12 +1,13 @@
 """Pydantic models/schemas for the Gateways resource"""
 # pylint: disable=no-self-argument
-from typing import List, Optional
+from typing import List, Optional, Set
 import warnings
 
 from optimade.models import EntryResource, EntryResourceAttributes, LinksResource
 from optimade.models.links import LinkType
 from optimade.models.utils import OptimadeField, SupportLevel
 from pydantic import Field, validator
+from pydantic.class_validators import root_validator
 
 from optimade_gateway.models.resources import EntryResourceCreate
 
@@ -81,12 +82,13 @@ class GatewayResource(EntryResource):
     - **Support**: MUST be supported by all implementations, MUST NOT be `null`.
     - **Query**: MUST be a queryable property with support for all mandatory filter features.
     - **Response**: REQUIRED in the response.
+    - **Gateway-specific**: MUST NOT contain a forward slash (`/`).
 
 - **Examples**:
-    - `"db/1234567"`
-    - `"cod/2000000"`
-    - `"cod/2000000@1234567"`
-    - `"nomad/L1234567890"`
+    - `"db_1234567"`
+    - `"cod_2000000"`
+    - `"cod_2000000@1234567"`
+    - `"nomad_L1234567890"`
     - `"42"`""",
         support=SupportLevel.MUST,
         queryable=SupportLevel.MUST,
@@ -114,14 +116,28 @@ class GatewayCreate(EntryResourceCreate, GatewayResourceAttributes):
     - **Support**: MUST be supported by all implementations, MUST NOT be `null`.
     - **Query**: MUST be a queryable property with support for all mandatory filter features.
     - **Response**: REQUIRED in the response.
+    - **Gateway-specific**: MUST NOT contain a forward slash (`/`).
 
 - **Examples**:
-    - `"db/1234567"`
-    - `"cod/2000000"`
-    - `"cod/2000000@1234567"`
-    - `"nomad/L1234567890"`
+    - `"db_1234567"`
+    - `"cod_2000000"`
+    - `"cod_2000000@1234567"`
+    - `"nomad_L1234567890"`
     - `"42"`""",
         support=SupportLevel.MUST,
         queryable=SupportLevel.MUST,
-        regex=r"^[^/]*$",
+        regex=r"^[^/]*$",  # This regex is the special addition
     )
+
+    database_ids: Optional[Set[str]] = Field(
+        None, description="A unique list of database IDs for registered databases."
+    )
+
+    databases: Optional[List[LinksResource]]
+
+    @root_validator
+    def specify_databases(cls, values: dict) -> dict:
+        """Either `database_ids` or `databases` must be non-empty"""
+        if not any(values.get(field) for field in ("database_ids", "databases")):
+            raise ValueError("Either 'database_ids' or 'databases' MUST be specified")
+        return values

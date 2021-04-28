@@ -253,6 +253,11 @@ async def resource_factory(
                 create_resource.link_type = LinkType.EXTERNAL
             if not create_resource.homepage:
                 create_resource.homepage = None
+        elif isinstance(create_resource, GatewayCreate):
+            # Do not store `database_ids`
+            if "database_ids" in create_resource.__fields_set__:
+                create_resource.database_ids = None
+                create_resource.__fields_set__.remove("database_ids")
         elif isinstance(create_resource, QueryCreate):
             create_resource.state = QueryState.CREATED
         result = await RESOURCE_COLLECTION.create_one(create_resource)

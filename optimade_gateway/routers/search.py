@@ -33,6 +33,7 @@ from pydantic import AnyUrl, ValidationError
 
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.common.logger import LOGGER
+from optimade_gateway.common.utils import clean_python_types, get_resource_attribute
 from optimade_gateway.models import (
     GatewayCreate,
     QueriesResponseSingle,
@@ -76,7 +77,6 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
         [`QueriesResponseSingle`][optimade_gateway.models.responses.QueriesResponseSingle]
 
     """
-    from optimade_gateway.common.utils import get_resource_attribute
     from optimade_gateway.routers.databases import DATABASES_COLLECTION
     from optimade_gateway.routers.queries import QUERIES_COLLECTION
     from optimade_gateway.routers.utils import resource_factory
@@ -87,7 +87,7 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
 
     if search.database_ids:
         databases = await DATABASES_COLLECTION.get_multiple(
-            filter={"id": {"$in": list(search.database_ids)}}
+            filter={"id": {"$in": await clean_python_types(search.database_ids)}}
         )
         base_urls |= set(
             [
