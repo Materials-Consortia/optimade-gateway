@@ -11,11 +11,13 @@ from typing import Union
 from fastapi import (
     APIRouter,
     Depends,
+    HTTPException,
     Request,
     Response,
     status,
 )
 from fastapi.responses import RedirectResponse
+from optimade.server.exceptions import BadRequest
 from optimade.models import (
     EntryResponseMany,
     ErrorResponse,
@@ -27,6 +29,7 @@ from optimade.models.links import LinkType
 from optimade.models import StructureResponseMany, ReferenceResponseMany, LinksResponse
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import meta_values
+from pydantic import AnyUrl, ValidationError
 
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.common.logger import LOGGER
@@ -64,7 +67,7 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
 
     Coordinate a new OPTIMADE query in multiple databases through a gateway:
 
-    1. ~~Search for gateway in DB using `optimade_urls`~~
+    1. Search for gateway in DB using `optimade_urls` and `database_ids`
     1. Create `GatewayCreate` model
     1. POST gateway resource to get ID - using functionality of POST /gateways
     1. Create new Query resource
@@ -73,8 +76,47 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
         [`QueriesResponseSingle`][optimade_gateway.models.responses.QueriesResponseSingle]
 
     """
+    from optimade_gateway.common.utils import get_resource_attribute
+    from optimade_gateway.routers.databases import DATABASES_COLLECTION
     from optimade_gateway.routers.queries import QUERIES_COLLECTION
     from optimade_gateway.routers.utils import resource_factory
+
+    # NOTE: It may be that the final list of base URLs (`base_urls`) contains the same provider(s),
+    # but with differring base URLS, if, for example, a versioned base URL is supplied.
+    base_urls = set()
+
+    if search.database_ids:
+        databases = await DATABASES_COLLECTION.get_multiple(
+            filter={"id": {"$in": list(search.database_ids)}}
+        )
+        base_urls |= set(
+            [
+                get_resource_attribute(database, "attributes.base_url")
+                for database in databases
+                if get_resource_attribute(database, "attributes.base_url") is not None
+            ]
+        )
+
+    if search.optimade_urls:
+        base_urls |= set([_ for _ in search.optimade_urls if _ is not None])
+
+    if not base_urls:
+        msg = "No (valid) OPTIMADE URLs with:"
+        if search.database_ids:
+            msg += (
+                f"\n  Database IDs: {search.database_ids} and corresponding found URLs: "
+                f"{[get_resource_attribute(database, 'attributes.base_url') for database in databases]}"
+            )
+        if search.optimade_urls:
+            msg += f"\n  Passed OPTIMADE URLs: {search.optimade_urls}"
+        raise BadRequest(detail=msg)
+
+    # Ensure all URLs are `pydantic.AnyUrl`s
+    if not all([isinstance(_, AnyUrl) for _ in base_urls]):
+        raise HTTPException(
+            status_code=500,
+            detail="Could unexpectedly not get all base URLs as `pydantic.AnyUrl`s.",
+        )
 
     gateway = GatewayCreate(
         databases=[
@@ -97,7 +139,7 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
                     homepage=None,
                 ),
             )
-            for url in search.optimade_urls
+            for url in base_urls
         ]
     )
     gateway, created = await resource_factory(gateway)
@@ -163,17 +205,26 @@ async def get_search(
     from time import time
     from optimade_gateway.routers.queries import QUERIES_COLLECTION
 
-    search = Search(
-        query_parameters=OptimadeQueryParameters(
-            **{
-                field: getattr(entry_params, field)
-                for field in OptimadeQueryParameters.__fields__
-                if getattr(entry_params, field)
-            }
-        ),
-        optimade_urls=search_params.optimade_urls,
-        endpoint=search_params.endpoint,
-    )
+    try:
+        search = Search(
+            query_parameters=OptimadeQueryParameters(
+                **{
+                    field: getattr(entry_params, field)
+                    for field in OptimadeQueryParameters.__fields__
+                    if getattr(entry_params, field)
+                }
+            ),
+            optimade_urls=search_params.optimade_urls,
+            endpoint=search_params.endpoint,
+            database_ids=search_params.database_ids,
+        )
+    except ValidationError as exc:
+        raise BadRequest(
+            detail=(
+                "A Search object could not be created from the given URL query parameters. "
+                f"Error(s): {[exc.errors]}"
+            )
+        )
 
     queries_response = await post_search(request, search=search)
 

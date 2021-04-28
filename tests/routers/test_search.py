@@ -7,7 +7,9 @@ import pytest
 pytestmark = [pytest.mark.asyncio, pytest.mark.usefixtures("reset_db_after")]
 
 
-async def test_get_search(client, mock_gateway_responses, get_gateway, caplog):
+async def test_get_search(
+    client, mock_gateway_responses, get_gateway, caplog: pytest.LogCaptureFixture
+):
     """Test GET /search
 
     By using the gateway "twodbs", but adding the versioned part to the base URL,
@@ -47,7 +49,7 @@ async def test_get_search(client, mock_gateway_responses, get_gateway, caplog):
 
 
 async def test_get_search_existing_gateway(
-    client, mock_gateway_responses, get_gateway, caplog
+    client, mock_gateway_responses, get_gateway, caplog: pytest.LogCaptureFixture
 ):
     """Test GET /search for base URLs matching an existing gateway"""
     from optimade.models import StructureResponseMany
@@ -57,33 +59,54 @@ async def test_get_search_existing_gateway(
     gateway_id = "twodbs"
     gateway: dict = await get_gateway(gateway_id)
 
-    query_params = {
-        "filter": 'elements HAS "Cu"',
-        "page_limit": 15,
-        "optimade_urls": [
-            _.get("attributes", {}).get("base_url")
-            for _ in gateway.get("databases", [{}])
-        ],
-    }
+    query_params = [
+        # optimade_urls
+        {
+            "filter": 'elements HAS "Cu"',
+            "page_limit": 15,
+            "optimade_urls": [
+                _.get("attributes", {}).get("base_url")
+                for _ in gateway.get("databases", [{}])
+            ],
+        },
+        # database_ids
+        {
+            "filter": 'elements HAS "Cu"',
+            "page_limit": 15,
+            "database_ids": [
+                f"mcloud/{_.get('id')}" for _ in gateway.get("databases", [{}])
+            ],
+        },
+        # Both optimade_urls & database_ids
+        {
+            "filter": 'elements HAS "Cu"',
+            "page_limit": 15,
+            "optimade_urls": [
+                gateway.get("databases", [{}])[0].get("attributes", {}).get("base_url")
+            ],
+            "database_ids": [f"mcloud/{gateway.get('databases', [{}])[-1].get('id')}"],
+        },
+    ]
 
     mock_gateway_responses(gateway)
 
-    response = await client("/search", params=query_params)
+    for query_param in query_params:
+        response = await client("/search", params=query_param)
 
-    assert response.status_code == 200, f"Request failed: {response.json()}"
+        assert response.status_code == 200, f"Request failed: {response.json()}"
 
-    response = StructureResponseMany(**response.json())
-    assert response.data, f"No data: {response.json(indent=2)}"
-    assert (
-        getattr(response.meta, f"_{CONFIG.provider.prefix}_query", "NOT FOUND")
-        == "NOT FOUND"
-    ), f"Special _<prefix>_query field was found in meta. Response: {response.json(indent=2)}"
+        response = StructureResponseMany(**response.json())
+        assert response.data, f"No data: {response.json(indent=2)}"
+        assert (
+            getattr(response.meta, f"_{CONFIG.provider.prefix}_query", "NOT FOUND")
+            == "NOT FOUND"
+        ), f"Special _<prefix>_query field was found in meta. Response: {response.json(indent=2)}"
 
-    assert "A gateway was found and reused for a query" in caplog.text, caplog.text
+        assert "A gateway was found and reused for a query" in caplog.text, caplog.text
 
 
 async def test_get_search_not_finishing(
-    client, mock_gateway_responses, get_gateway, caplog
+    client, mock_gateway_responses, get_gateway, caplog: pytest.LogCaptureFixture
 ):
     """Test GET /search for unfinished query (redirect to query URL)"""
     from optimade.models import EntryResponseMany
@@ -133,7 +156,11 @@ async def test_get_search_not_finishing(
 
 
 async def test_post_search(
-    client, mock_gateway_responses, get_gateway, top_dir: Path, caplog
+    client,
+    mock_gateway_responses,
+    get_gateway,
+    top_dir: Path,
+    caplog: pytest.LogCaptureFixture,
 ):
     """Test POST /search
 
@@ -198,11 +225,9 @@ async def test_post_search(
 
 
 async def test_post_search_existing_gateway(
-    client, mock_gateway_responses, get_gateway, caplog
+    client, mock_gateway_responses, get_gateway, caplog: pytest.LogCaptureFixture
 ):
     """Test POST /search for base URLs matching an existing gateway"""
-    import asyncio
-
     from optimade_gateway.common.config import CONFIG
     from optimade_gateway.models.queries import OptimadeQueryParameters, QueryState
     from optimade_gateway.models.responses import QueriesResponseSingle
@@ -211,43 +236,60 @@ async def test_post_search_existing_gateway(
     gateway_id = "twodbs"
     gateway: dict = await get_gateway(gateway_id)
 
-    data = {
-        "query_parameters": {"filter": 'elements HAS "Cu"', "page_limit": 15},
-        "optimade_urls": [
-            _.get("attributes", {}).get("base_url")
-            for _ in gateway.get("databases", [{}])
-        ],
-    }
+    data = [
+        # optimade_urls
+        {
+            "query_parameters": {"filter": 'elements HAS "Cu"', "page_limit": 15},
+            "optimade_urls": [
+                _.get("attributes", {}).get("base_url")
+                for _ in gateway.get("databases", [{}])
+            ],
+        },
+        # database_ids
+        {
+            "query_parameters": {"filter": 'elements HAS "Cu"', "page_limit": 15},
+            "database_ids": [
+                f"mcloud/{_.get('id')}" for _ in gateway.get("databases", [{}])
+            ],
+        },
+        # Both optimade_urls & database_ids
+        {
+            "query_parameters": {"filter": 'elements HAS "Cu"', "page_limit": 15},
+            "database_ids": [f"mcloud/{gateway.get('databases', [{}])[0].get('id')}"],
+            "optimade_urls": [
+                gateway.get("databases", [{}])[-1].get("attributes", {}).get("base_url")
+            ],
+        },
+    ]
 
     mock_gateway_responses(gateway)
 
-    response = await client("/search", method="post", json=data)
+    for gateway_create_data in data:
+        response = await client("/search", method="post", json=gateway_create_data)
 
-    assert response.status_code == 202, f"Request failed: {response.json()}"
+        assert response.status_code == 202, f"Request failed: {response.json()}"
 
-    response = QueriesResponseSingle(**response.json())
-    assert response
+        response = QueriesResponseSingle(**response.json())
+        assert response
 
-    assert getattr(
-        response.meta, f"_{CONFIG.provider.prefix}_created"
-    ), response.meta.dict()
+        assert getattr(
+            response.meta, f"_{CONFIG.provider.prefix}_created"
+        ), response.meta.dict()
 
-    assert "A gateway was found and reused for a query" in caplog.text, caplog.text
+        assert "A gateway was found and reused for a query" in caplog.text, caplog.text
 
-    datum = response.data
-    assert datum, response
+        datum = response.data
+        assert datum, response
 
-    assert (
-        datum.attributes.query_parameters.dict()
-        == OptimadeQueryParameters(**data["query_parameters"]).dict()
-    ), f"Response: {datum.attributes.query_parameters!r}\n\nTest data: {OptimadeQueryParameters(**data['query_parameters'])!r}"
+        assert (
+            datum.attributes.query_parameters.dict()
+            == OptimadeQueryParameters(**gateway_create_data["query_parameters"]).dict()
+        ), f"Response: {datum.attributes.query_parameters!r}\n\nTest data: {OptimadeQueryParameters(**gateway_create_data['query_parameters'])!r}"
 
-    assert datum.attributes.state == QueryState.CREATED
-    assert datum.attributes.response is None
+        assert datum.attributes.state == QueryState.CREATED
+        assert datum.attributes.response is None
 
-    assert datum.attributes.gateway_id == gateway_id
+        assert datum.attributes.gateway_id == gateway_id
 
-    mongo_filter = {"id": {"$eq": datum.id}}
-    assert await MONGO_DB["queries"].count_documents(mongo_filter) == 1
-
-    await asyncio.sleep(1)  # Ensure mock URL is queried
+        mongo_filter = {"id": {"$eq": datum.id}}
+        assert await MONGO_DB["queries"].count_documents(mongo_filter) == 1

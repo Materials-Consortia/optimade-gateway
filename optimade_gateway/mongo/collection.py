@@ -164,14 +164,15 @@ class AsyncMongoCollection(EntryCollection):
     async def get_one(self, **criteria: Dict[str, Any]) -> EntryResource:
         """Get one resource based on criteria
 
-        NOTE: This is not to be used for creating a REST API response,
-        but is rather a utility function to easily retrieve a single resource.
+        !!! warning
+            This is not to be used for creating a REST API response,
+            but is rather a utility function to easily retrieve a single resource.
 
         Parameters:
             criteria: Already handled/parsed URL query parameters.
 
         Returns:
-            A single resource from the MongoDB.
+            A single resource from the MongoDB (mapped to pydantic models).
 
         """
         criteria = criteria or {}
@@ -179,6 +180,28 @@ class AsyncMongoCollection(EntryCollection):
         return self.resource_cls(
             **self.resource_mapper.map_back(
                 await self.collection.find_one(**self._valid_find_keys(**criteria))
+            )
+        )
+
+    async def get_multiple(self, **criteria: Dict[str, Any]) -> List[EntryResource]:
+        """Get a list of resources based on criteria
+
+        !!! warning
+            This is not to be used for creating a REST API response,
+            but is rather a utility function to easily retrieve a list of resources.
+
+        Parameters:
+            criteria: Already handled/parsed URL query parameters.
+
+        Returns:
+            A list of resources from the MongoDB (mapped to pydantic models).
+
+        """
+        criteria = criteria or {}
+
+        return self.resource_cls(
+            **self.resource_mapper.map_back(
+                await self.collection.find(**self._valid_find_keys(**criteria))
             )
         )
 
