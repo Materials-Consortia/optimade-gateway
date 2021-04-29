@@ -1,4 +1,4 @@
-from typing import List
+from typing import Set
 
 from fastapi import Query
 from pydantic import AnyUrl
@@ -13,10 +13,10 @@ class SearchQueryParams:
     The extra query parameters are as follows.
 
     Attributes:
-        databases (List[str]): List of possible database IDs that are already known by the gateway.
+        database_ids (Set[str]): List of possible database IDs that are already known by the gateway.
             To be known they need to be registered with the gateway (currently not possible).
 
-        optimade_urls (List[AnyUrl]): A list of OPTIMADE base URLs. If a versioned
+        optimade_urls (Set[AnyUrl]): A list of OPTIMADE base URLs. If a versioned
             base URL is supplied it will be used as is, as long as it represents a supported
             version. If an un-versioned base URL, standard version negotiation will be conducted to
             get the versioned base URL, which will be used as long as it represents a supported
@@ -39,20 +39,20 @@ class SearchQueryParams:
     def __init__(
         self,
         *,
-        databases: List[str] = Query(
-            [],
+        database_ids: Set[str] = Query(
+            set(),
             description=(
-                "List of possible database IDs that are already known by the gateway. To be known "
-                "they need to be registered with the gateway (currently not possible)."
+                "Unique list of possible database IDs that are already known by the gateway. To be"
+                " known they need to be registered with the gateway (currently not possible)."
             ),
         ),
-        optimade_urls: List[AnyUrl] = Query(
-            [],
+        optimade_urls: Set[AnyUrl] = Query(
+            set(),
             description=(
-                "A list of OPTIMADE base URLs. If a versioned base URL is supplied it will be used"
-                " as is, as long as it represents a supported version. If an un-versioned base "
-                "URL, standard version negotiation will be conducted to get the versioned base "
-                "URL, which will be used as long as it represents a supported version."
+                "A unique list of OPTIMADE base URLs. If a versioned base URL is supplied it will "
+                "be used as is, as long as it represents a supported version. If an un-versioned "
+                "base URL, standard version negotiation will be conducted to get the versioned "
+                "base URL, which will be used as long as it represents a supported version."
             ),
         ),
         endpoint: str = Query(
@@ -72,7 +72,7 @@ class SearchQueryParams:
             ),
         ),
     ) -> None:
-        self.databases = databases
+        self.database_ids = database_ids
         self.optimade_urls = optimade_urls
         self.endpoint = endpoint
         self.timeout = timeout

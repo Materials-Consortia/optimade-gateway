@@ -1,3 +1,4 @@
+"""Pydantic models/schemas for the Queries resource"""
 from enum import Enum
 from typing import Optional, Tuple, Union
 

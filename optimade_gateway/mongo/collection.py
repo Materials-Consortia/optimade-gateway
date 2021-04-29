@@ -164,14 +164,15 @@ class AsyncMongoCollection(EntryCollection):
     async def get_one(self, **criteria: Dict[str, Any]) -> EntryResource:
         """Get one resource based on criteria
 
-        NOTE: This is not to be used for creating a REST API response,
-        but is rather a utility function to easily retrieve a single resource.
+        !!! warning
+            This is not to be used for creating a REST API response,
+            but is rather a utility function to easily retrieve a single resource.
 
         Parameters:
             criteria: Already handled/parsed URL query parameters.
 
         Returns:
-            A single resource from the MongoDB.
+            A single resource from the MongoDB (mapped to pydantic models).
 
         """
         criteria = criteria or {}
@@ -181,6 +182,28 @@ class AsyncMongoCollection(EntryCollection):
                 await self.collection.find_one(**self._valid_find_keys(**criteria))
             )
         )
+
+    async def get_multiple(self, **criteria: Dict[str, Any]) -> List[EntryResource]:
+        """Get a list of resources based on criteria
+
+        !!! warning
+            This is not to be used for creating a REST API response,
+            but is rather a utility function to easily retrieve a list of resources.
+
+        Parameters:
+            criteria: Already handled/parsed URL query parameters.
+
+        Returns:
+            A list of resources from the MongoDB (mapped to pydantic models).
+
+        """
+        criteria = criteria or {}
+
+        results = []
+        async for document in self.collection.find(**self._valid_find_keys(**criteria)):
+            results.append(self.resource_cls(**self.resource_mapper.map_back(document)))
+
+        return results
 
     async def find(
         self,
@@ -213,10 +236,10 @@ class AsyncMongoCollection(EntryCollection):
         fields = criteria.get("fields", self.all_fields)
 
         results = []
-        async for doc in self.collection.find(**self._valid_find_keys(**criteria)):
+        async for document in self.collection.find(**self._valid_find_keys(**criteria)):
             if criteria.get("projection", {}).get("_id"):
-                doc["_id"] = str(doc["_id"])
-            results.append(self.resource_cls(**self.resource_mapper.map_back(doc)))
+                document["_id"] = str(document["_id"])
+            results.append(self.resource_cls(**self.resource_mapper.map_back(document)))
 
         if params is None or isinstance(params, EntryListingQueryParams):
             criteria_nolimit = criteria.copy()

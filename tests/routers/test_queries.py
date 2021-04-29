@@ -2,14 +2,28 @@
 # pylint: disable=import-error,no-name-in-module
 import json
 from pathlib import Path
+from typing import Awaitable, Callable
 
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal
+
+from fastapi import FastAPI
+import httpx
 import pytest
 
 
 pytestmark = pytest.mark.asyncio
 
 
-async def test_get_queries(client, top_dir: Path):
+async def test_get_queries(
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ],
+    top_dir: Path,
+):
     """Test GET /queries"""
     from optimade_gateway.models.responses import QueriesResponse
 
@@ -28,7 +42,14 @@ async def test_get_queries(client, top_dir: Path):
 
 
 @pytest.mark.usefixtures("reset_db_after")
-async def test_post_queries(client, mock_responses, get_gateway):
+async def test_post_queries(
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ],
+    mock_gateway_responses: Callable[[dict], None],
+    get_gateway: Callable[[str], Awaitable[dict]],
+):
     """Test POST /queries"""
     import asyncio
     from bson.objectid import ObjectId
@@ -45,7 +66,7 @@ async def test_post_queries(client, mock_responses, get_gateway):
         "query_parameters": {"filter": 'elements HAS "Cu"', "page_limit": 15},
     }
 
-    mock_responses(await get_gateway(data["gateway_id"]))
+    mock_gateway_responses(await get_gateway(data["gateway_id"]))
 
     response = await client("/queries", method="post", json=data)
 
@@ -87,7 +108,12 @@ async def test_post_queries(client, mock_responses, get_gateway):
 
 
 @pytest.mark.usefixtures("reset_db_after")
-async def test_post_queries_bad_data(client):
+async def test_post_queries_bad_data(
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ]
+):
     """Test POST /queries with bad data"""
     from optimade.models import ErrorResponse, OptimadeError
 
@@ -119,7 +145,14 @@ async def test_post_queries_bad_data(client):
 
 
 @pytest.mark.usefixtures("reset_db_after")
-async def test_query_results(client, mock_responses, get_gateway):
+async def test_query_results(
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ],
+    mock_gateway_responses: Callable[[dict], None],
+    get_gateway: Callable[[str], Awaitable[dict]],
+):
     """Test POST /queries and GET /queries/{id}"""
     import asyncio
     from optimade.models import EntryResponseMany
@@ -134,7 +167,7 @@ async def test_query_results(client, mock_responses, get_gateway):
         "query_parameters": {"filter": 'elements HAS "Cu" AND nelements>=4'},
     }
 
-    mock_responses(await get_gateway(data["gateway_id"]))
+    mock_gateway_responses(await get_gateway(data["gateway_id"]))
 
     response = await client("/queries", method="post", json=data)
     assert response.status_code == 202, f"Request failed: {response.json()}"
@@ -169,7 +202,14 @@ async def test_query_results(client, mock_responses, get_gateway):
 
 
 @pytest.mark.usefixtures("reset_db_after")
-async def test_errored_query_results(client, mock_responses, get_gateway):
+async def test_errored_query_results(
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ],
+    mock_gateway_responses: Callable[[dict], None],
+    get_gateway: Callable[[str], Awaitable[dict]],
+):
     """Test POST /queries and GET /queries/{id} with an erroneous response"""
     import asyncio
     from optimade.models import ErrorResponse
@@ -182,7 +222,7 @@ async def test_errored_query_results(client, mock_responses, get_gateway):
         "query_parameters": {"filter": 'elements HAS "Cu"', "page_limit": 15},
     }
 
-    mock_responses(await get_gateway(data["gateway_id"]))
+    mock_gateway_responses(await get_gateway(data["gateway_id"]))
 
     response = await client("/queries", method="post", json=data)
     assert response.status_code == 202, f"Request failed: {response.json()}"

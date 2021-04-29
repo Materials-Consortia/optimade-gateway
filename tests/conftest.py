@@ -5,7 +5,7 @@ import json
 import os
 from pathlib import Path
 import re
-from typing import Callable, Union
+from typing import Awaitable, Callable, Union
 
 from fastapi import FastAPI
 import httpx
@@ -39,7 +39,7 @@ async def setup_db_utility(top_dir: Union[Path, str]) -> None:
         MONGO_DB.name == test_config["mongo_database"]
     ), "Test DB has not been loaded!"
 
-    for resource in ("gateways", "links", "queries"):
+    for resource in ("databases", "gateways", "links", "queries"):
         collection = test_config.get(f"{resource}_collection", resource)
         await MONGO_DB[collection].drop()
 
@@ -86,7 +86,7 @@ async def setup_db(top_dir: Path) -> None:
 @pytest.fixture
 def client() -> Callable[
     [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-    httpx.Response,
+    Awaitable[httpx.Response],
 ]:
     """Return function to make HTTP requests with async httpx client"""
     from httpx import AsyncClient
@@ -120,7 +120,7 @@ def client() -> Callable[
 
 
 @pytest.fixture
-def get_gateway() -> Callable[[str], dict]:
+def get_gateway() -> Callable[[str], Awaitable[dict]]:
     """Return function to find a single gateway in the current MongoDB"""
 
     async def _get_gateway(id: str) -> dict:
@@ -136,14 +136,16 @@ def get_gateway() -> Callable[[str], dict]:
 async def reset_db_after(top_dir: Path) -> None:
     """Reset MongoDB with original test data after the test has run"""
     try:
-        pass
+        yield
     finally:
         # Reset MongoDB
         await setup_db_utility(top_dir)
 
 
 @pytest.fixture
-def mock_responses(httpx_mock: HTTPXMock, top_dir: Path) -> Callable[[dict], None]:
+def mock_gateway_responses(
+    httpx_mock: HTTPXMock, top_dir: Path
+) -> Callable[[dict], None]:
     """Add mock responses for gateway databases
 
     (Successful) mock responses are loaded from local JSON files and returned according to the
@@ -159,6 +161,13 @@ def mock_responses(httpx_mock: HTTPXMock, top_dir: Path) -> Callable[[dict], Non
                     callback=sleep_response,
                     url=re.compile(fr"{database['attributes']['base_url']}.*"),
                 )
+            elif (
+                gateway["id"].startswith("single-structure")
+                and "_single" not in database["id"]
+            ):
+                # Don't mock database responses for single-structure gateways' databases that are
+                # not queried.
+                pass
             else:
                 with open(
                     top_dir / f"tests/static/db_responses/{database['id']}.json"
@@ -191,3 +200,13 @@ def mock_responses(httpx_mock: HTTPXMock, top_dir: Path) -> Callable[[dict], Non
 @pytest.fixture
 def non_mocked_hosts() -> list:
     return ["example.org"]
+
+
+@pytest.fixture
+def generic_meta() -> dict:
+    """A generic valid OPTIMADE response meta value"""
+    return {
+        "api_version": "1.0.0",
+        "query": {"representation": "/links"},
+        "more_data_available": False,
+    }

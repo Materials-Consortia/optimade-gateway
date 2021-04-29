@@ -26,7 +26,7 @@ from optimade.server.query_params import EntryListingQueryParams, SingleEntryQue
 from optimade.server.routers.utils import meta_values
 
 from optimade_gateway.models import QueryResource
-from optimade_gateway.routers.gateway.utils import get_valid_resource, validate_version
+from optimade_gateway.routers.gateway.utils import validate_version
 from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
 
 
@@ -102,6 +102,7 @@ async def get_single_structure(
     """
     from optimade_gateway.models import GatewayResource
     from optimade_gateway.queries import db_find
+    from optimade_gateway.routers.utils import get_valid_resource
 
     gateway: GatewayResource = await get_valid_resource(GATEWAYS_COLLECTION, gateway_id)
 

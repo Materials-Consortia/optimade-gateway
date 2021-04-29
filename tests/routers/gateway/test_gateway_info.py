@@ -1,11 +1,26 @@
 """Tests for /gateways/{gateway_id}/info endpoint"""
+from typing import Awaitable, Callable
+
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal
+
+from fastapi import FastAPI
+import httpx
 import pytest
 
 
 pytestmark = pytest.mark.asyncio
 
 
-async def test_get_gateway_info(client, get_gateway):
+async def test_get_gateway_info(
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ],
+    get_gateway: Callable[[str], Awaitable[dict]],
+):
     """Test GET /gateways/{gateway_id}/info"""
     from optimade.models import InfoResponse
 
@@ -42,7 +57,13 @@ async def test_get_gateway_info(client, get_gateway):
     }
 
 
-async def test_get_versioned_gateway_info(client, get_gateway):
+async def test_get_versioned_gateway_info(
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ],
+    get_gateway: Callable[[str], Awaitable[dict]],
+):
     """Test GET /gateways/{gateway_id}/{version}/info"""
     from optimade.models import InfoResponse
     from optimade.server.routers.utils import BASE_URL_PREFIXES
@@ -81,7 +102,12 @@ async def test_get_versioned_gateway_info(client, get_gateway):
         }
 
 
-async def test_bad_versioned_gateway_info(client):
+async def test_bad_versioned_gateway_info(
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ]
+):
     """Test GET /gateways/{gateway_id}/{version}/info with wrong version"""
     from optimade.models import ErrorResponse, OptimadeError
     from optimade.server.exceptions import VersionNotSupported
@@ -140,7 +166,12 @@ async def test_bad_versioned_gateway_info(client):
         assert response.errors == [error_resource]
 
 
-async def test_get_gateway_info_entry(client):
+async def test_get_gateway_info_entry(
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ]
+):
     """Test GET /gateways/{gateway_id}/info/{entry}"""
     from optimade.models import EntryInfoResponse
 
@@ -160,7 +191,12 @@ async def test_get_gateway_info_entry(client):
         assert not response.meta.more_data_available
 
 
-async def test_get_versioned_gateway_info_entry(client, get_gateway):
+async def test_get_versioned_gateway_info_entry(
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ]
+):
     """Test GET /gateways/{gateway_id}/{version}/info/{entry}"""
     from optimade.models import EntryInfoResponse
     from optimade.server.routers.utils import BASE_URL_PREFIXES
@@ -184,7 +220,12 @@ async def test_get_versioned_gateway_info_entry(client, get_gateway):
             assert not response.meta.more_data_available
 
 
-async def test_bad_versioned_gateway_info_entry(client):
+async def test_bad_versioned_gateway_info_entry(
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ]
+):
     """Test GET /gateways/{gateway_id}/{version}/info/{entry} with wrong version"""
     from optimade.models import ErrorResponse, OptimadeError
     from optimade.server.exceptions import VersionNotSupported

@@ -1,7 +1,14 @@
 """Tests for /gateways/{gateway_id}/structures endpoints"""
 # pylint: disable=import-error,no-name-in-module
 import json
+from typing import Awaitable, Callable
 
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal
+
+from fastapi import FastAPI
 import httpx
 import pytest
 
@@ -9,7 +16,14 @@ import pytest
 pytestmark = pytest.mark.asyncio
 
 
-async def test_get_structures(client, get_gateway, mock_responses):
+async def test_get_structures(
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ],
+    get_gateway: Callable[[str], Awaitable[dict]],
+    mock_gateway_responses: Callable[[dict], None],
+):
     """Test GET /gateways/{gateway_id}/structures"""
     from optimade.models import StructureResponseMany
 
@@ -18,7 +32,7 @@ async def test_get_structures(client, get_gateway, mock_responses):
     gateway_id = "twodbs"
     gateway: dict = await get_gateway(gateway_id)
 
-    mock_responses(gateway)
+    mock_gateway_responses(gateway)
 
     response = await client(f"/gateways/{gateway_id}/structures")
 
@@ -64,12 +78,22 @@ async def test_get_structures(client, get_gateway, mock_responses):
     )
 
 
-async def test_get_single_structure(client, get_gateway):
+async def test_get_single_structure(
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ],
+    get_gateway: Callable[[str], Awaitable[dict]],
+    mock_gateway_responses: Callable[[dict], None],
+):
     """TEST GET /gateways/{gateway_id}/structures/{structure_id}"""
     from optimade.models import StructureResponseOne
 
-    gateway_id = "singledb"
-    structure_id = "optimade-sample/1"
+    gateway_id = "single-structure_optimade-sample"
+    structure_id = "optimade-sample_single/1"
+    gateway = await get_gateway(gateway_id)
+
+    mock_gateway_responses(gateway)
 
     response = await client(f"/gateways/{gateway_id}/structures/{structure_id}")
 
@@ -79,8 +103,7 @@ async def test_get_single_structure(client, get_gateway):
 
     assert not response.meta.more_data_available
 
-    gateway = await get_gateway(gateway_id)
-    database = gateway["databases"][0]
+    database = [_ for _ in gateway["databases"] if "_single" in _["id"]][0]
 
     assert response.data is not None
 

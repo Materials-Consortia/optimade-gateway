@@ -3,9 +3,14 @@ from typing import Tuple, Union
 import urllib.parse
 
 from fastapi import Request
-from optimade.models import EntryResponseMany, ToplevelLinks
+from optimade.models import (
+    EntryResource,
+    EntryResponseMany,
+    LinksResource,
+    ToplevelLinks,
+)
+from optimade.models.links import LinkType
 from optimade.server.exceptions import BadRequest
-from optimade.server.schemas import retrieve_queryable_properties
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import (
     get_base_url,
@@ -16,6 +21,7 @@ from optimade.server.routers.utils import (
 from optimade_gateway.common.exceptions import OptimadeGatewayError
 from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.models import (
+    DatabaseCreate,
     GatewayCreate,
     GatewayResource,
     QueryCreate,
@@ -62,9 +68,12 @@ async def get_entries(
 async def aretrieve_queryable_properties(
     schema: dict, queryable_properties: list
 ) -> dict:
-    """Asynchronous implementation of `optimade.server.schemas.retrieve_queryable_properties()`
+    """Asynchronous implementation of `retrieve_queryable_properties()` from `optimade`
 
-    Recurisvely loops through the schema of a pydantic model and resolves all references, returning
+    Reference to the function in the `optimade` API documentation:
+    [`retrieve_queryable_properties()](https://www.optimade.org/optimade-python-tools/api_reference/server/schemas/#optimade.server.schemas.retrieve_queryable_properties).
+
+    Recursively loops through the schema of a pydantic model and resolves all references, returning
     a dictionary of all the OPTIMADE-queryable properties of that model.
 
     Parameters:
@@ -76,6 +85,8 @@ async def aretrieve_queryable_properties(
         sortability, support level, queryability and type, where provided.
 
     """
+    from optimade.server.schemas import retrieve_queryable_properties
+
     return retrieve_queryable_properties(
         schema=schema,
         queryable_properties=queryable_properties,
@@ -92,17 +103,58 @@ async def validate_resource(collection: AsyncMongoCollection, entry_id: str) -> 
         )
 
 
+async def get_valid_resource(
+    collection: AsyncMongoCollection, entry_id: str
+) -> EntryResource:
+    """Validate and retrieve a resource"""
+    from optimade_gateway.routers.utils import validate_resource
+
+    await validate_resource(collection, entry_id)
+    return await collection.get_one(filter={"id": entry_id})
+
+
 async def resource_factory(
-    create_resource: Union[GatewayCreate, QueryCreate]
-) -> Tuple[Union[GatewayResource, QueryResource], bool]:
+    create_resource: Union[DatabaseCreate, GatewayCreate, QueryCreate]
+) -> Tuple[Union[LinksResource, GatewayResource, QueryResource], bool]:
     """Get or create a resource
 
     Currently supported resources:
 
+    - `"databases"` ([`DatabaseCreate`][optimade_gateway.models.databases.DatabaseCreate] ->
+        [`LinksResource`](https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResource))
     - `"gateways"` ([`GatewayCreate`][optimade_gateway.models.gateways.GatewayCreate] ->
         [`GatewayResource`][optimade_gateway.models.gateways.GatewayResource])
     - `"queries"` ([`QueryyCreate`][optimade_gateway.models.queries.QueryCreate] ->
         [`QueryResource`][optimade_gateway.models.queries.QueryResource])
+
+    For each of the resources, "uniqueness" is determined in the following way:
+
+    === "Databases"
+        The `base_url` field is considered unique across all databases.
+
+        If a `base_url` is provided via a
+        [`Link`](https://www.optimade.org/optimade-python-tools/api_reference/models/jsonapi/#optimade.models.jsonapi.Link)
+        model, the `base_url.href` value is used to query the MongoDB.
+
+    === "Gateways"
+        The collected list of `databases.attributes.base_url` values is considered unique across
+        all gateways.
+
+        In the database, the search is done as a combination of the length/size of the `databases`'
+        Python list/MongoDB array and a match on all (using the MongoDB `$all` operator) of the
+        `databases.attributes.base_url` element values, when compared with the `create_resource`.
+
+    === "Queries"
+        The `gateway_id`, `query_parameters`, and `endpoint` fields are collectively considered to
+        be define uniqueness for a `QueryResource` in the MongoDB collection.
+
+        !!! attention
+            Only the `/structures` entry endpoint can be queried with multiple expected responses.
+
+            This means the `endpoint` field defaults to `"structures"` and `endpoint_model`
+            defaults to `("optimade.models.responses", "StructureResponseMany")`, i.e., the
+            [`StructureResponseMany`](https://www.optimade.org/optimade-python-tools/api_reference/models/responses/#optimade.models.responses.StructureResponseMany)
+            response model.
 
     Parameters:
         create_resource: The resource to be retrieved or created anew.
@@ -110,16 +162,30 @@ async def resource_factory(
     Returns:
         Two things in a tuple:
 
-        - Either a [`GatewayResource`][optimade_gateway.models.gateways.GatewayResource] or a
-            [`QueryResource`][optimade_gateway.models.queries.QueryResource]; and
+        - Either a [`GatewayResource`][optimade_gateway.models.gateways.GatewayResource]; a
+            [`QueryResource`][optimade_gateway.models.queries.QueryResource]; or a
+            [`LinksResource`](https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResource) and
         - whether or not the resource was newly created.
 
     """
-    from optimade_gateway.common.utils import clean_python_types
+    from optimade_gateway.common.utils import clean_python_types, get_resource_attribute
 
     created = False
 
-    if isinstance(create_resource, GatewayCreate):
+    if isinstance(create_resource, DatabaseCreate):
+        from optimade_gateway.routers.databases import (
+            DATABASES_COLLECTION as RESOURCE_COLLECTION,
+        )
+
+        base_url = get_resource_attribute(create_resource, "base_url")
+
+        mongo_query = {
+            "$or": [
+                {"base_url": {"$eq": await clean_python_types(base_url)}},
+                {"base_url.href": {"$eq": await clean_python_types(base_url)}},
+            ]
+        }
+    elif isinstance(create_resource, GatewayCreate):
         from optimade_gateway.routers.gateways import (
             GATEWAYS_COLLECTION as RESOURCE_COLLECTION,
         )
@@ -174,12 +240,25 @@ async def resource_factory(
     if result:
         if len(result) > 1:
             raise OptimadeGatewayError(
-                f"More than one {result[0].type} was found. IDs of found {result[0].type}: "
+                f"More than one {result[0].type} were found. IDs of found {result[0].type}: "
                 f"{[_.id for _ in result]}"
             )
         result = result[0]
     else:
-        if isinstance(create_resource, QueryCreate):
+        if isinstance(create_resource, DatabaseCreate):
+            # Set required `LinksResourceAttributes` values if not set
+            if not create_resource.description:
+                create_resource.description = f"{create_resource.name} created by OPTIMADE gateway database registration."
+            if not create_resource.link_type:
+                create_resource.link_type = LinkType.EXTERNAL
+            if not create_resource.homepage:
+                create_resource.homepage = None
+        elif isinstance(create_resource, GatewayCreate):
+            # Do not store `database_ids`
+            if "database_ids" in create_resource.__fields_set__:
+                create_resource.database_ids = None
+                create_resource.__fields_set__.remove("database_ids")
+        elif isinstance(create_resource, QueryCreate):
             create_resource.state = QueryState.CREATED
         result = await RESOURCE_COLLECTION.create_one(create_resource)
         LOGGER.debug("Created new %s: %r", result.type, result)

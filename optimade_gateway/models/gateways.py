@@ -1,11 +1,13 @@
-"""Pydantic models/schemas for the Gateway resource"""
+"""Pydantic models/schemas for the Gateways resource"""
 # pylint: disable=no-self-argument
-from typing import List
+from typing import List, Optional, Set
 import warnings
 
 from optimade.models import EntryResource, EntryResourceAttributes, LinksResource
 from optimade.models.links import LinkType
+from optimade.models.utils import OptimadeField, SupportLevel
 from pydantic import Field, validator
+from pydantic.class_validators import root_validator
 
 from optimade_gateway.models.resources import EntryResourceCreate
 
@@ -70,6 +72,28 @@ class GatewayResource(EntryResource):
     multiple databases. The `id` of each aggregated resource will reflect the originating database.
     """
 
+    id: str = OptimadeField(
+        ...,
+        description="""An entry's ID as defined in section Definition of Terms.
+
+- **Type**: string.
+
+- **Requirements/Conventions**:
+    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.
+    - **Query**: MUST be a queryable property with support for all mandatory filter features.
+    - **Response**: REQUIRED in the response.
+    - **Gateway-specific**: MUST NOT contain a forward slash (`/`).
+
+- **Examples**:
+    - `"db_1234567"`
+    - `"cod_2000000"`
+    - `"cod_2000000@1234567"`
+    - `"nomad_L1234567890"`
+    - `"42"`""",
+        support=SupportLevel.MUST,
+        queryable=SupportLevel.MUST,
+        regex=r"^[^/]*$",
+    )
     type: str = Field(
         "gateways",
         const="gateways",
@@ -81,3 +105,39 @@ class GatewayResource(EntryResource):
 
 class GatewayCreate(EntryResourceCreate, GatewayResourceAttributes):
     """Model for creating new Gateway resources in the MongoDB"""
+
+    id: Optional[str] = OptimadeField(
+        None,
+        description="""An entry's ID as defined in section Definition of Terms.
+
+- **Type**: string.
+
+- **Requirements/Conventions**:
+    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.
+    - **Query**: MUST be a queryable property with support for all mandatory filter features.
+    - **Response**: REQUIRED in the response.
+    - **Gateway-specific**: MUST NOT contain a forward slash (`/`).
+
+- **Examples**:
+    - `"db_1234567"`
+    - `"cod_2000000"`
+    - `"cod_2000000@1234567"`
+    - `"nomad_L1234567890"`
+    - `"42"`""",
+        support=SupportLevel.MUST,
+        queryable=SupportLevel.MUST,
+        regex=r"^[^/]*$",  # This regex is the special addition
+    )
+
+    database_ids: Optional[Set[str]] = Field(
+        None, description="A unique list of database IDs for registered databases."
+    )
+
+    databases: Optional[List[LinksResource]]
+
+    @root_validator
+    def specify_databases(cls, values: dict) -> dict:
+        """Either `database_ids` or `databases` must be non-empty"""
+        if not any(values.get(field) for field in ("database_ids", "databases")):
+            raise ValueError("Either 'database_ids' or 'databases' MUST be specified")
+        return values
