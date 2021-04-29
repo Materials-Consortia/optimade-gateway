@@ -206,5 +206,46 @@
         }
       }
     ]
+  },
+  {
+    "id": "single-structure_optimade-sample",
+    "last_modified": "2021-04-29T14:44:48Z",
+    "databases": [
+      {
+        "id": "2dstructures",
+        "type": "links",
+        "attributes": {
+          "name": "2D Structures",
+          "description": "Two-dimensional (2D) materials from high-throughput computational exfoliation of experimentally known compounds.",
+          "base_url": "https://dev-aiida.materialscloud.org/2dstructures/optimade",
+          "homepage": "https://materialscloud.org/explore/2dstructures",
+          "link_type": "child",
+          "aggregate": "ok"
+        }
+      },
+      {
+        "id": "optimade-sample_single",
+        "type": "links",
+        "attributes": {
+          "name": "OPTIMADE Sample Database",
+          "description": "Database with example structures for OPTIMADE tests. This is a special id for a special gateway that is used to test single structures responses (/structures/ID).",
+          "base_url": "https://dev-aiida.materialscloud.org/optimade-sample/optimade",
+          "homepage": "https://materialscloud.org/explore/optimade-sample",
+          "link_type": "child",
+          "aggregate": "test"
+        }
+      },
+      {
+        "id": "random",
+        "type": "links",
+        "attributes": {
+          "name": "Random database",
+          "description": "A random database not used anywhere else.",
+          "base_url": "http://random-database",
+          "homepage": null,
+          "link_type": "child"
+        }
+      }
+    ]
   }
 ]

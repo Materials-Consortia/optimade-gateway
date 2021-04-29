@@ -1,6 +1,14 @@
 """Tests for the /search endpoint"""
 from pathlib import Path
+from typing import Awaitable, Callable
 
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal
+
+from fastapi import FastAPI
+import httpx
 import pytest
 
 
@@ -8,7 +16,13 @@ pytestmark = [pytest.mark.asyncio, pytest.mark.usefixtures("reset_db_after")]
 
 
 async def test_get_search(
-    client, mock_gateway_responses, get_gateway, caplog: pytest.LogCaptureFixture
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ],
+    mock_gateway_responses: Callable[[dict], None],
+    get_gateway: Callable[[str], Awaitable[dict]],
+    caplog: pytest.LogCaptureFixture,
 ):
     """Test GET /search
 
@@ -49,7 +63,13 @@ async def test_get_search(
 
 
 async def test_get_search_existing_gateway(
-    client, mock_gateway_responses, get_gateway, caplog: pytest.LogCaptureFixture
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ],
+    mock_gateway_responses: Callable[[dict], None],
+    get_gateway: Callable[[str], Awaitable[dict]],
+    caplog: pytest.LogCaptureFixture,
 ):
     """Test GET /search for base URLs matching an existing gateway"""
     from optimade.models import StructureResponseMany
@@ -106,7 +126,13 @@ async def test_get_search_existing_gateway(
 
 
 async def test_get_search_not_finishing(
-    client, mock_gateway_responses, get_gateway, caplog: pytest.LogCaptureFixture
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ],
+    mock_gateway_responses: Callable[[dict], None],
+    get_gateway: Callable[[str], Awaitable[dict]],
+    caplog: pytest.LogCaptureFixture,
 ):
     """Test GET /search for unfinished query (redirect to query URL)"""
     from optimade.models import EntryResponseMany
@@ -156,9 +182,12 @@ async def test_get_search_not_finishing(
 
 
 async def test_post_search(
-    client,
-    mock_gateway_responses,
-    get_gateway,
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ],
+    mock_gateway_responses: Callable[[dict], None],
+    get_gateway: Callable[[str], Awaitable[dict]],
     top_dir: Path,
     caplog: pytest.LogCaptureFixture,
 ):
@@ -225,7 +254,13 @@ async def test_post_search(
 
 
 async def test_post_search_existing_gateway(
-    client, mock_gateway_responses, get_gateway, caplog: pytest.LogCaptureFixture
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ],
+    mock_gateway_responses: Callable[[dict], None],
+    get_gateway: Callable[[str], Awaitable[dict]],
+    caplog: pytest.LogCaptureFixture,
 ):
     """Test POST /search for base URLs matching an existing gateway"""
     from optimade_gateway.common.config import CONFIG

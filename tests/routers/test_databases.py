@@ -1,14 +1,28 @@
 """Tests for /databases endpoints"""
 # pylint: disable=import-error,no-name-in-module
 from pathlib import Path
+from typing import Awaitable, Callable
 
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal
+
+from fastapi import FastAPI
+import httpx
 import pytest
 
 
 pytestmark = pytest.mark.asyncio
 
 
-async def test_get_databases(client, top_dir: Path):
+async def test_get_databases(
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ],
+    top_dir: Path,
+):
     """Test GET /databases"""
     import json
 
@@ -29,7 +43,12 @@ async def test_get_databases(client, top_dir: Path):
 
 
 @pytest.mark.usefixtures("reset_db_after")
-async def test_post_databases(client):
+async def test_post_databases(
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ]
+):
     """Test POST /databases"""
     from bson.objectid import ObjectId
     from optimade.server.routers.utils import BASE_URL_PREFIXES
@@ -78,7 +97,13 @@ async def test_post_databases(client):
         assert db_datum[field] == data[field]
 
 
-async def test_get_single_database(client, top_dir: Path):
+async def test_get_single_database(
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ],
+    top_dir: Path,
+):
     """Test GET /databases/{id}"""
     import json
     from optimade.server.routers.utils import BASE_URL_PREFIXES

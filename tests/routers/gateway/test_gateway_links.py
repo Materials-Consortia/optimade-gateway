@@ -1,11 +1,25 @@
 """Tests for /gateways/{gateway_id}/links endpoint"""
+from typing import Awaitable, Callable
+
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal
+
+from fastapi import FastAPI
+import httpx
 import pytest
 
 
 pytestmark = pytest.mark.asyncio
 
 
-async def test_get_gateway_links(client):
+async def test_get_gateway_links(
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ]
+):
     """Test GET /gateways/{gateway_id}/links"""
     from optimade.models import LinksResponse
 
@@ -22,7 +36,12 @@ async def test_get_gateway_links(client):
     assert not response.meta.more_data_available
 
 
-async def test_get_versioned_gateway_links(client):
+async def test_get_versioned_gateway_links(
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ]
+):
     """Test GET /gateways/{gateway_id}/{version}/links"""
     from optimade.models import LinksResponse
     from optimade.server.routers.utils import BASE_URL_PREFIXES
@@ -41,7 +60,12 @@ async def test_get_versioned_gateway_links(client):
         assert not response.meta.more_data_available
 
 
-async def test_bad_versioned_gateway_links(client):
+async def test_bad_versioned_gateway_links(
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ]
+):
     """Test GET /gateways/{gateway_id}/{version}/links with wrong version"""
     from optimade.models import ErrorResponse, OptimadeError
     from optimade.server.exceptions import VersionNotSupported

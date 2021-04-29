@@ -86,7 +86,7 @@ async def setup_db(top_dir: Path) -> None:
 @pytest.fixture
 def client() -> Callable[
     [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-    httpx.Response,
+    Awaitable[httpx.Response],
 ]:
     """Return function to make HTTP requests with async httpx client"""
     from httpx import AsyncClient
@@ -161,6 +161,13 @@ def mock_gateway_responses(
                     callback=sleep_response,
                     url=re.compile(fr"{database['attributes']['base_url']}.*"),
                 )
+            elif (
+                gateway["id"].startswith("single-structure")
+                and "_single" not in database["id"]
+            ):
+                # Don't mock database responses for single-structure gateways' databases that are
+                # not queried.
+                pass
             else:
                 with open(
                     top_dir / f"tests/static/db_responses/{database['id']}.json"

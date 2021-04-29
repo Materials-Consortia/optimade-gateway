@@ -14,6 +14,7 @@ This folder contains full responses for various databases to be used for testing
 - `index_mcloud.json` (https://dev-www.materialscloud.org/optimade/v1/links)
   This is an index meta-database, specifically the Materials Cloud index meta-database.
   The response has been curated to seem like there are only 6 entries, the only actual databases can be mocked with existing static responses.
+- `optimade-sample_single.json` (https://dev-aiida.materialscloud.org/optimade-sample/optimade/structures/1?)
 
 **Errored responses**:
 
