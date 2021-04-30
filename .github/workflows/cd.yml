@@ -40,7 +40,7 @@ jobs:
         release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
 
     - name: Update documentation and version - Commit changes and update tag
-      run: .github/workflows/update_docs.sh
+      run: .github/utils/update_docs.sh
 
     - name: Update '${{ env.PUBLISH_UPDATE_BRANCH }}'
       uses: CasperWA/push-protected@v2
