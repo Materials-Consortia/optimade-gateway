@@ -10,6 +10,7 @@ from pydantic import Field, validator
 from pydantic.class_validators import root_validator
 
 from optimade_gateway.models.resources import EntryResourceCreate
+from optimade_gateway.warnings import OptimadeGatewayWarning
 
 
 class GatewayResourceAttributes(EntryResourceAttributes):
@@ -60,7 +61,8 @@ class GatewayResourceAttributes(EntryResourceAttributes):
                     f"{base_url} ({db_base_urls.count(base_url)})"
                     for base_url in repeated_base_urls
                 ]
-            )
+            ),
+            OptimadeGatewayWarning,
         )
         return new_databases
 

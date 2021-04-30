@@ -28,6 +28,7 @@ from optimade.server.routers.utils import meta_values
 from optimade_gateway.models import QueryResource
 from optimade_gateway.routers.gateway.utils import validate_version
 from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
+from optimade_gateway.warnings import OptimadeGatewayWarning, SortNotSupported
 
 
 ROUTER = APIRouter(redirect_slashes=True)
@@ -55,6 +56,10 @@ async def get_structures(
     from optimade_gateway.routers.utils import validate_resource
 
     await validate_resource(GATEWAYS_COLLECTION, gateway_id)
+
+    if getattr(params, "sort", False):
+        warnings.warn(SortNotSupported())
+        params.sort = ""
 
     return await perform_query(
         url=request.url,
@@ -142,7 +147,7 @@ async def get_single_structure(
     if isinstance(response, ErrorResponse):
         for error in response.errors:
             if isinstance(error.id, str) and error.id.startswith("OPTIMADE_GATEWAY"):
-                warnings.warn(error.detail)
+                warnings.warn(error.detail, OptimadeGatewayWarning)
             else:
                 meta = {}
                 if error.meta:

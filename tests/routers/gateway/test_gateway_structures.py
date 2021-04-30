@@ -124,3 +124,52 @@ async def test_get_single_structure(
     )
 
     assert db_response["data"] == json.loads(response.json(exclude_unset=True))["data"]
+
+
+async def test_sort_no_effect(
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ],
+    get_gateway: Callable[[str], Awaitable[dict]],
+    mock_gateway_responses: Callable[[dict], None],
+):
+    """Test GET /gateways/{gateway_id}/structures with the `sort` query parameter
+
+    Currently, the `sort` query parameter should not have an effect when used with this endpoint.
+    This means if the `sort` parameter is used, the response should not change - it should be
+    ignored.
+    """
+    from optimade.models import StructureResponseMany, Warnings
+
+    from optimade_gateway.warnings import SortNotSupported
+
+    gateway_id = "twodbs"
+    gateway: dict = await get_gateway(gateway_id)
+
+    mock_gateway_responses(gateway)
+
+    with pytest.warns(SortNotSupported):
+        response_asc = await client(f"/gateways/{gateway_id}/structures?sort=id")
+    with pytest.warns(SortNotSupported):
+        response_desc = await client(f"/gateways/{gateway_id}/structures?sort=-id")
+
+    assert response_asc.status_code == 200, f"Request failed: {response_asc.json()}"
+    assert response_desc.status_code == 200, f"Request failed: {response_desc.json()}"
+
+    response_asc = StructureResponseMany(**response_asc.json())
+    assert response_asc
+    response_desc = StructureResponseMany(**response_desc.json())
+    assert response_desc
+
+    assert response_asc.data == response_desc.data
+
+    sort_warning = SortNotSupported()
+
+    for response in (response_asc, response_desc):
+        assert response.meta.warnings, response.json()
+        assert len(response.meta.warnings) == 1
+        assert response.meta.warnings[0] == Warnings(
+            title=sort_warning.title,
+            detail=sort_warning.detail,
+        )

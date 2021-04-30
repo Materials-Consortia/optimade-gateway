@@ -237,3 +237,58 @@ async def test_errored_query_results(
     ), f"Request succeeded, where it should have failed:\n{json.dumps(response.json(), indent=2)}"
 
     response = ErrorResponse(**response.json())
+
+
+@pytest.mark.usefixtures("reset_db_after")
+async def test_sort_no_effect(
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ],
+    get_gateway: Callable[[str], Awaitable[dict]],
+    mock_gateway_responses: Callable[[dict], None],
+):
+    """Test POST /queries with the `sort` query parameter
+
+    Currently, the `sort` query parameter should not have an effect when used with this endpoint.
+    This means if the `sort` parameter is used, the response should not change - it should be
+    ignored.
+    """
+    from optimade.models import Warnings
+
+    from optimade_gateway.models.responses import QueriesResponseSingle
+    from optimade_gateway.warnings import SortNotSupported
+
+    gateway_id = "twodbs"
+
+    query_params_asc = {
+        "query_parameters": {"sort": "id"},
+        "gateway_id": gateway_id,
+    }
+    query_params_desc = query_params_asc.copy()
+    query_params_desc["query_parameters"]["sort"] = "-id"
+
+    mock_gateway_responses(await get_gateway(gateway_id))
+
+    with pytest.warns(SortNotSupported):
+        response_asc = await client("/queries", method="post", json=query_params_asc)
+    with pytest.warns(SortNotSupported):
+        response_desc = await client("/queries", method="post", json=query_params_desc)
+
+    assert response_asc.status_code == 202, f"Request failed: {response_asc.json()}"
+    assert response_desc.status_code == 202, f"Request failed: {response_desc.json()}"
+
+    response_asc = QueriesResponseSingle(**response_asc.json())
+    assert response_asc
+    response_desc = QueriesResponseSingle(**response_desc.json())
+    assert response_desc
+
+    sort_warning = SortNotSupported()
+
+    for response in (response_asc, response_desc):
+        assert response.meta.warnings, response.json()
+        assert len(response.meta.warnings) == 1
+        assert response.meta.warnings[0] == Warnings(
+            title=sort_warning.title,
+            detail=sort_warning.detail,
+        )

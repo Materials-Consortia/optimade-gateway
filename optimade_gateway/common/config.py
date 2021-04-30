@@ -7,6 +7,8 @@ import warnings
 from optimade.server.config import ServerConfig as OptimadeServerConfig
 from pydantic import Field, validator
 
+from optimade_gateway.warnings import OptimadeGatewayWarning
+
 
 class ServerConfig(OptimadeServerConfig):
     """This class stores server config parameters in a way that
@@ -48,7 +50,8 @@ class ServerConfig(OptimadeServerConfig):
                 res = res.replace(match.group(), env_var)
             else:
                 warnings.warn(
-                    f"Could not find an environment variable for {match.group()!r} from mongo_uri: {v}"
+                    f"Could not find an environment variable for {match.group()!r} from mongo_uri: {v}",
+                    OptimadeGatewayWarning,
                 )
         return res
 

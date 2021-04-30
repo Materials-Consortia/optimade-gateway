@@ -328,3 +328,100 @@ async def test_post_search_existing_gateway(
 
         mongo_filter = {"id": {"$eq": datum.id}}
         assert await MONGO_DB["queries"].count_documents(mongo_filter) == 1
+
+
+@pytest.mark.usefixtures("reset_db_after")
+async def test_sort_no_effect(
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ],
+    get_gateway: Callable[[str], Awaitable[dict]],
+    mock_gateway_responses: Callable[[dict], None],
+):
+    """Test GET and POST /search with the `sort` query parameter
+
+    Currently, the `sort` query parameter should not have an effect when used with this endpoint.
+    This means if the `sort` parameter is used, the response should not change - it should be
+    ignored.
+    """
+    from optimade.models import StructureResponseMany, Warnings
+
+    from optimade_gateway.models.responses import QueriesResponseSingle
+    from optimade_gateway.warnings import SortNotSupported
+
+    gateway_id = "twodbs"
+    gateway: dict = await get_gateway(gateway_id)
+
+    query_params_asc = {
+        "sort": "id",
+        "optimade_urls": [
+            _.get("attributes", {}).get("base_url") + "/v1"
+            for _ in gateway.get("databases", [{}])
+        ],
+    }
+    query_params_desc = query_params_asc.copy()
+    query_params_desc["sort"] = "-id"
+
+    mock_gateway_responses(gateway)
+
+    with pytest.warns(SortNotSupported):
+        response_asc = await client("/search", params=query_params_asc)
+    with pytest.warns(SortNotSupported):
+        response_desc = await client("/search", params=query_params_desc)
+
+    assert response_asc.status_code == 200, f"Request failed: {response_asc.json()}"
+    assert response_desc.status_code == 200, f"Request failed: {response_desc.json()}"
+
+    response_asc = StructureResponseMany(**response_asc.json())
+    assert response_asc
+    response_desc = StructureResponseMany(**response_desc.json())
+    assert response_desc
+
+    assert response_asc.data == response_desc.data
+
+    sort_warning = SortNotSupported()
+
+    for response in (response_asc, response_desc):
+        assert response.meta.warnings, response.json()
+        assert len(response.meta.warnings) == 1
+        assert response.meta.warnings[0] == Warnings(
+            title=sort_warning.title,
+            detail=sort_warning.detail,
+        )
+
+    query_params_post_asc = query_params_asc.copy()
+    query_params_post_asc["query_parameters"] = {
+        "sort": query_params_post_asc.pop("sort")
+    }
+    query_params_post_desc = query_params_desc.copy()
+    query_params_post_desc["query_parameters"] = {
+        "sort": query_params_post_desc.pop("sort")
+    }
+
+    with pytest.warns(SortNotSupported):
+        response_asc = await client(
+            "/search", method="post", json=query_params_post_asc
+        )
+    with pytest.warns(SortNotSupported):
+        response_desc = await client(
+            "/search", method="post", json=query_params_post_desc
+        )
+
+    assert response_asc.status_code == 202, f"Request failed: {response_asc.json()}"
+    assert response_desc.status_code == 202, f"Request failed: {response_desc.json()}"
+
+    response_asc = QueriesResponseSingle(**response_asc.json())
+    assert response_asc
+    response_desc = QueriesResponseSingle(**response_desc.json())
+    assert response_desc
+
+    sort_warning = SortNotSupported()
+
+    for response in (response_asc, response_desc):
+        assert response.meta.warnings, response.json()
+        assert len(response.meta.warnings) == 1
+        assert response.meta.warnings[0] == Warnings(
+            title=sort_warning.title,
+            detail=sort_warning.detail,
+        )

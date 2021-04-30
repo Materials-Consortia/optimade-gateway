@@ -13,6 +13,7 @@ from pymongo.collection import Collection as MongoCollection
 from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.common.utils import clean_python_types
 from optimade_gateway.models import EntryResourceCreate
+from optimade_gateway.warnings import OptimadeGatewayWarning
 
 
 __all__ = ("AsyncMongoCollection",)
@@ -66,7 +67,8 @@ class AsyncMongoCollection(EntryCollection):
         import warnings
 
         warnings.warn(
-            "Cannot calculate length of collection using `len()`. Use `count()` instead."
+            "Cannot calculate length of collection using `len()`. Use `count()` instead.",
+            OptimadeGatewayWarning,
         )
         return 0
 

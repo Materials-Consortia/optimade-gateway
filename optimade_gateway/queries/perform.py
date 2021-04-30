@@ -25,6 +25,7 @@ from optimade_gateway.common.utils import get_resource_attribute
 from optimade_gateway.models import GatewayResource, QueryResource, QueryState
 from optimade_gateway.queries.prepare import get_query_params, prepare_query
 from optimade_gateway.queries.utils import update_query
+from optimade_gateway.warnings import OptimadeGatewayWarning
 
 
 async def perform_query(
@@ -107,7 +108,7 @@ async def perform_query(
                     ):
                         import warnings
 
-                        warnings.warn(error.detail)
+                        warnings.warn(error.detail, OptimadeGatewayWarning)
                     else:
                         meta = {}
                         if error.meta:

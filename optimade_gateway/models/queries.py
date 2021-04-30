@@ -1,6 +1,7 @@
 """Pydantic models/schemas for the Queries resource"""
 from enum import Enum
 from typing import Optional, Tuple, Union
+import warnings
 
 from optimade.models import (
     EntryResource,
@@ -12,6 +13,7 @@ from optimade.server.query_params import EntryListingQueryParams
 from pydantic import BaseModel, EmailStr, Field, validator
 
 from optimade_gateway.models.resources import EntryResourceCreate
+from optimade_gateway.warnings import SortNotSupported
 
 
 QUERY_PARAMETERS = EntryListingQueryParams()
@@ -175,3 +177,13 @@ class QueryCreate(EntryResourceCreate, QueryResourceAttributes):
     state: Optional[QueryState]
     endpoint: Optional[str]
     endpoint_model: Optional[Tuple[str, str]]
+
+    @validator("query_parameters")
+    def sort_not_supported(
+        cls, value: OptimadeQueryParameters
+    ) -> OptimadeQueryParameters:
+        """Warn and reset value if `sort` is supplied."""
+        if value.sort:
+            warnings.warn(SortNotSupported())
+            value.sort = None
+        return value
