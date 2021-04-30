@@ -1,3 +1,4 @@
+invoke~=1.5
 pre-commit~=2.12
 pylint~=2.8
 pytest~=6.2
