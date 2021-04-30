@@ -465,9 +465,9 @@ async def test_bad_provider_databases(
     from optimade_gateway.events import load_optimade_providers_databases
     from optimade_gateway.mongo.database import MONGO_DB
 
-    def raise_timeout(request: httpx.Request, ext: dict):
+    def raise_timeout(request: httpx.Request, extensions: dict):
         raise httpx.ReadTimeout(
-            f"Unable to read within {ext['timeout']} seconds", request=request
+            f"Unable to read within {extensions['timeout']} seconds", request=request
         )
 
     no_database_provider = {"data": [], "meta": generic_meta}

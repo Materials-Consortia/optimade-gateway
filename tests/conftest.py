@@ -178,7 +178,7 @@ def mock_gateway_responses(
                     json=data,
                 )
 
-    def sleep_response(request: httpx.Request, ext: dict) -> MockResponse:
+    def sleep_response(request: httpx.Request, extensions: dict) -> MockResponse:
         """A mock response from an external OPTIMADE DB URL
 
         This response sleeps for X seconds, where X is derived from the database ID.
