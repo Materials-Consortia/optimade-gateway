@@ -55,7 +55,7 @@ async def get_queries(
     request: Request,
     params: EntryListingQueryParams = Depends(),
 ) -> QueriesResponse:
-    """GET /queries
+    """`GET /queries`
 
     Return overview of all (active) queries.
     """
@@ -82,7 +82,7 @@ async def post_queries(
     request: Request,
     query: QueryCreate,
 ) -> QueriesResponseSingle:
-    """POST /queries
+    """`POST /queries`
 
     Create or return existing gateway query according to `query`.
     """
@@ -125,10 +125,10 @@ async def get_query(
     query_id: str,
     response: Response,
 ) -> Union[EntryResponseMany, ErrorResponse]:
-    """GET /queries/{query_id}
+    """`GET /queries/{query_id}`
 
     Return the response from a query
-    [`QueryResource.attributes.response`][optimade_gateway.models.queries.QueryResourceAttributes.response].
+    ([`QueryResource.attributes.response`][optimade_gateway.models.queries.QueryResourceAttributes.response]).
     """
     from optimade_gateway.routers.utils import get_valid_resource
 

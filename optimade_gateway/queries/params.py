@@ -5,10 +5,11 @@ from pydantic import AnyUrl
 
 
 class SearchQueryParams:
-    """URL query parameters for GET /search
+    """URL query parameters for `GET /search`
 
-    This is an extension of the `EntryListingQueryParams` class in `optimade´, which defines the
-    standard entry listing endpoint query parameters.
+    This is an extension of the
+    [`EntryListingQueryParams`](https://www.optimade.org/optimade-python-tools/api_reference/server/query_params/#optimade.server.query_params.EntryListingQueryParams)
+    class in `optimade´, which defines the standard entry listing endpoint query parameters.
 
     The extra query parameters are as follows.
 

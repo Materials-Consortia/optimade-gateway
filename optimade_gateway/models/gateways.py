@@ -22,10 +22,11 @@ class GatewayResourceAttributes(EntryResourceAttributes):
 
     @validator("databases", each_item=True)
     def no_index_databases(cls, value: LinksResource) -> LinksResource:
-        """Ensure databases are not of type "root" and "providers"
+        """Ensure databases are not of type `"root"` or `"providers"`
 
-        NOTE: Both "external" and "child" can still represent index meta-dbs,
-        but "root" and "providers" can not represent "regular" dbs.
+        !!! note
+            Both `"external"` and `"child"` can still represent index meta-dbs,
+            but `"root"` and `"providers"` can not represent "regular" dbs.
         """
         if value.attributes.link_type in (LinkType.ROOT, LinkType.PROVIDERS):
             raise ValueError(

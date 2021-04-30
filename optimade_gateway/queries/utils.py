@@ -9,8 +9,9 @@ from optimade_gateway.models import QueryResource
 async def update_query(query: QueryResource, field: str, value: Any) -> None:
     """Update a query's `field` attribute with `value`.
 
-    Note: This can _only_ update a field for a query's `attributes`, i.e., this function cannot
-    update `id`, `type` or any other top-level resource field.
+    !!! note
+        This can _only_ update a field for a query's `attributes`, i.e., this function cannot
+        update `id`, `type` or any other top-level resource field.
 
     Parameters:
         query: The query to be updated.

@@ -13,8 +13,11 @@ MONGO_CLIENT: MongoClient = AsyncIOMotorClient(
     readPreference="primary",
     w="majority",
 )
+"""The MongoDB motor client."""
 
 MONGO_DB: Database = MONGO_CLIENT[CONFIG.mongo_database]
+"""The MongoDB motor database.
+This is a representation of the database used for the gateway service."""
 
 LOGGER.info("Using: Real MongoDB (motor) at %s", CONFIG.mongo_uri)
 LOGGER.info("Database: %s", CONFIG.mongo_database)

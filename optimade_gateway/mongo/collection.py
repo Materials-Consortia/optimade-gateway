@@ -19,9 +19,9 @@ __all__ = ("AsyncMongoCollection",)
 
 
 class AsyncMongoCollection(EntryCollection):
-    """MongoDB Collection for use with asyncio
+    """MongoDB Collection for use with `asyncio`
 
-    The asynchronicity is implemented using motor and asyncio.
+    The asynchronicity is implemented using [`motor`](https://motor.readthedocs.io) and [`asyncio`](https://asyncio.readthedocs.io/).
     """
 
     def __init__(
@@ -131,7 +131,9 @@ class AsyncMongoCollection(EntryCollection):
         Parameters:
             params: URL query parameters, either from a general entry endpoint or a single-entry endpoint.
             kwargs (dict): Query parameters as keyword arguments. Valid keys will be passed
-                to the `motor.motor_asyncio.AsyncIOMotorCollection.count_documents` method.
+                to the
+                [`AsyncIOMotorCollection.count_documents`](https://motor.readthedocs.io/en/stable/api-asyncio/asyncio_motor_collection.html#motor.motor_asyncio.AsyncIOMotorCollection.count_documents)
+                method.
 
         Returns:
             int: The number of entries matching the query specified by the keyword arguments.
@@ -275,9 +277,9 @@ class AsyncMongoCollection(EntryCollection):
     async def create_one(self, resource: EntryResourceCreate) -> EntryResource:
         """Create a new document in the MongoDB collection based on query parameters.
 
-        Update the newly created document with an "id" field.
-        The value will be the string representation of the "_id" field.
-        This will only be done if `id` is not already present in `resource`.
+        Update the newly created document with an `"id"` field.
+        The value will be the string representation of the `"_id"` field.
+        This will only be done if `"id"` is not already present in `resource`.
 
         Parameters:
             resource: The resource to be created.
@@ -310,10 +312,10 @@ class AsyncMongoCollection(EntryCollection):
         )
 
     async def exists(self, entry_id: str) -> bool:
-        """Assert whether entry_id exists in the collection (value of `id`)
+        """Assert whether entry_id exists in the collection (value of `"id"`)
 
         Parameters:
-            entry_id: The `id` value of the entry.
+            entry_id: The `"id"` value of the entry.
 
         """
         return bool(await self.collection.count_documents({"id": entry_id}))

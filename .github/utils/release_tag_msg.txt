@@ -1,0 +1,6 @@
+TAG_NAME
+
+The full release changelog can be seen in the
+[online docs](https://www.optimade.org/optimade-gateway/CHANGELOG/)
+and in the
+[repository source file](https://github.com/Materials-Consortia/optimade-gateway/blob/TAG_NAME/CHANGELOG.md).

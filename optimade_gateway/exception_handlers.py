@@ -8,7 +8,7 @@ from starlette.responses import JSONResponse
 async def request_validation_exception_handler(
     request: Request, exc: RequestValidationError
 ) -> JSONResponse:
-    """Special handler if a `RequestValidationError` comes from wrong POST data"""
+    """Special handler if a `RequestValidationError` comes from wrong `POST` data"""
     status_code = 500
     if request.method in ("POST", "post"):
         status_code = 400

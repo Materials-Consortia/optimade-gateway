@@ -37,9 +37,9 @@ async def get_gateways_info(
     request: Request,
     gateway_id: str,
 ) -> InfoResponse:
-    """GET /gateways/{gateway_id}/info
+    """`GET /gateways/{gateway_id}/info`
 
-    Return a regular /info response for an OPTIMADE implementation,
+    Return a regular `/info` response for an OPTIMADE implementation,
     including extra information from all the gateway's databases.
     The general information will be a minimum set from the gateway's databases.
     """
@@ -97,9 +97,9 @@ async def get_gateways_info(
 async def get_gateways_entry_info(
     request: Request, gateway_id: str, entry: str
 ) -> EntryInfoResponse:
-    """GET /gateways/{gateway_id}/info/{entry}
+    """`GET /gateways/{gateway_id}/info/{entry}`
 
-    Get information about the gateway {gateway_id}'s entry-listing endpoints.
+    Get information about the gateway `{gateway_id}`'s entry-listing endpoints.
     """
     from optimade.models import EntryInfoResource
     from optimade.server.exceptions import BadRequest
@@ -158,9 +158,9 @@ async def get_versioned_gateways_info(
     gateway_id: str,
     version: str,
 ) -> InfoResponse:
-    """GET /gateways/{gateway_id}/{version}/info
+    """`GET /gateways/{gateway_id}/{version}/info`
 
-    Same as GET /gateways/{gateway_id}/info.
+    Same as `GET /gateways/{gateway_id}/info`.
     """
     from optimade_gateway.routers.gateway.utils import validate_version
 
@@ -182,9 +182,9 @@ async def get_versioned_gateways_entry_info(
     version: str,
     entry: str,
 ) -> EntryInfoResponse:
-    """GET /gateways/{gateway_id}/{version}/info/{entry}
+    """`GET /gateways/{gateway_id}/{version}/info/{entry}`
 
-    Same as GET /gateways/{gateway_id}/info/{entry}.
+    Same as `GET /gateways/{gateway_id}/info/{entry}`.
     """
     from optimade_gateway.routers.gateway.utils import validate_version
 

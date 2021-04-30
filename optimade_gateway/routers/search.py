@@ -64,16 +64,16 @@ ENDPOINT_MODELS = {
     status_code=status.HTTP_202_ACCEPTED,
 )
 async def post_search(request: Request, search: Search) -> QueriesResponseSingle:
-    """POST /search
+    """`POST /search`
 
     Coordinate a new OPTIMADE query in multiple databases through a gateway:
 
     1. Search for gateway in DB using `optimade_urls` and `database_ids`
-    1. Create `GatewayCreate` model
-    1. POST gateway resource to get ID - using functionality of POST /gateways
-    1. Create new Query resource
-    1. POST Query resource - using functionality of POST /queries
-    1. Return POST /queries response -
+    1. Create [`GatewayCreate`][optimade_gateway.models.gateways.GatewayCreate] model
+    1. `POST` gateway resource to get ID - using functionality of `POST /gateways`
+    1. Create new [Query][optimade_gateway.models.queries.QueryCreate] resource
+    1. `POST` Query resource - using functionality of `POST /queries`
+    1. Return `POST /queries` response -
         [`QueriesResponseSingle`][optimade_gateway.models.responses.QueriesResponseSingle]
 
     """
@@ -189,17 +189,18 @@ async def get_search(
     search_params: SearchQueryParams = Depends(),
     entry_params: EntryListingQueryParams = Depends(),
 ) -> Union[EntryResponseMany, ErrorResponse, RedirectResponse]:
-    """GET /search
+    """`GET /search`
 
     Coordinate a new OPTIMADE query in multiple databases through a gateway:
 
-    1. Create a [`Search`][optimade_gateway.models.search.Search] POST data - calling POST /search
-    1. Wait [`search_params.timeout`][optimade_gateway.queries.params.SearchQueryParams.timeout]
+    1. Create a [`Search`][optimade_gateway.models.search.Search] `POST` data - calling `POST /search`
+    1. Wait [`search_params.timeout`][optimade_gateway.queries.params.SearchQueryParams]
         seconds until the query has finished
     1. Return successful response
 
-    Contingency: If the query has not finished within the set timeout period, the client will be
-    redirected to the query's URL instead.
+    !!! important "Contingency"
+        If the query has not finished within the set timeout period, the client will be redirected
+        to the query's URL instead.
 
     """
     from time import time

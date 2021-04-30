@@ -16,21 +16,21 @@ class ServerConfig(OptimadeServerConfig):
 
     databases_collection: str = Field(
         "databases",
-        description="Mongo collection name for /databases endpoint resources.",
+        description="Mongo collection name for `/databases` endpoint resources.",
     )
     gateways_collection: str = Field(
         "gateways",
-        description="Mongo collection name for /gateways endpoint resources.",
+        description="Mongo collection name for `/gateways` endpoint resources.",
     )
     queries_collection: str = Field(
         "queries",
-        description="Mongo collection name for /queries endpoint resources.",
+        description="Mongo collection name for `/queries` endpoint resources.",
     )
     load_optimade_providers_databases: bool = Field(
         True,
         description=(
             "Whether or not to load all valid OPTIMADE providers' databases from the "
-            "Materials-Consortia list of OPTIMADE providers (https://providers.optimade.org) on "
+            "[Materials-Consortia list of OPTIMADE providers](https://providers.optimade.org) on "
             "server startup."
         ),
     )

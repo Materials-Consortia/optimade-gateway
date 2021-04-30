@@ -27,7 +27,7 @@ async def update_query_filter(
     """Update the query parameter `filter` value to be database-specific
 
     This is needed due to the served change of `id` values.
-    If someone searches for a gateway-chaanged `id`, it needs to be reverted to be
+    If someone searches for a gateway-changed `id`, it needs to be reverted to be
     database-specific.
 
     Parameters:

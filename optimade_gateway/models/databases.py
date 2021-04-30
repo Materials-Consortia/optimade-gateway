@@ -13,12 +13,14 @@ class DatabaseCreate(EntryResourceCreate, LinksResourceAttributes):
     """Model for creating new LinksResources representing /databases resources in the MongoDB
 
     Required fields:
+
     - name
     - base_url
 
     Original required fields for a
     [`LinksResourceAttributes`](https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResourceAttributes)
     model:
+
     - name
     - description
     - link_type
@@ -42,10 +44,12 @@ MUST be one of these values: 'child', 'root', 'external', 'providers'.""",
     def ensure_database_link_type(cls, value) -> LinkType:
         """Ensure databases are not index meta-database-only types
 
-        I.e., ensure they're not of type "root" and "providers".
+        I.e., ensure they're not of type `"root"` or `"providers"`.
 
-        NOTE: Both "external" and "child" can still represent index meta-dbs,
-        but "root" and "providers" can not represent "regular" dbs.
+        !!! note
+            Both `"external"` and `"child"` can still represent index meta-dbs,
+            but `"root"` and `"providers"` can not represent "regular" dbs.
+
         """
         if value in (LinkType.ROOT, LinkType.PROVIDERS):
             raise ValueError(

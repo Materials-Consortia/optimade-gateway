@@ -9,13 +9,9 @@ TOP_DIR = Path(__file__).parent.resolve()
 with open(TOP_DIR / "optimade_gateway/__init__.py", "r") as handle:
     VERSION = AUTHOR = AUTHOR_EMAIL = None
     for line in handle.readlines():
-        VERSION_match = re.match(
-            r'__version__ = "(?P<version>[0-9]+(\.[0-9]+){2})"', line
-        )
+        VERSION_match = re.match(r'__version__ = "(?P<version>.+)"', line)
         AUTHOR_match = re.match(r'__author__ = "(?P<author>.+)"', line)
-        AUTHOR_EMAIL_match = re.match(
-            r'__author_email__ = "(?P<email>.+@.+\..+)"', line
-        )
+        AUTHOR_EMAIL_match = re.match(r'__author_email__ = "(?P<email>.+)"', line)
 
         if VERSION_match is not None:
             VERSION = VERSION_match
@@ -44,12 +40,19 @@ with open(TOP_DIR / "requirements.txt", "r") as handle:
         if not _.startswith("#") and "git+" not in _
     ]
 
+with open(TOP_DIR / "requirements_docs.txt", "r") as handle:
+    DOCS = [
+        f"{_.strip()}"
+        for _ in handle.readlines()
+        if not _.startswith("#") and "git+" not in _
+    ]
+
 with open(TOP_DIR / "requirements_dev.txt", "r") as handle:
     DEV = [
         f"{_.strip()}"
         for _ in handle.readlines()
         if not _.startswith("#") and "git+" not in _
-    ]
+    ] + DOCS
 
 setup(
     name="optimade-gateway",
@@ -64,7 +67,7 @@ setup(
     include_package_data=True,
     python_requires=">=3.7",
     install_requires=BASE,
-    extras_require={"dev": DEV},
+    extras_require={"dev": DEV, "docs": DOCS},
     entry_points={
         "console_scripts": ["optimade-gateway = optimade_gateway.run:run"],
     },

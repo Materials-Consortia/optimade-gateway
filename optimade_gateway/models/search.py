@@ -8,7 +8,9 @@ from optimade_gateway.models.queries import OptimadeQueryParameters
 class Search(BaseModel):
     """A general coordinated OPTIMADE search
 
-    Either `database_ids` or `optimade_urls` MUST be specified.
+    !!! important
+        Either `database_ids` or `optimade_urls` MUST be specified.
+
     """
 
     query_parameters: OptimadeQueryParameters = Field(
@@ -18,7 +20,7 @@ class Search(BaseModel):
     database_ids: Set[str] = Field(
         set(),
         description=(
-            "A list of registered database IDs. Go to /databases to get all registered databases."
+            "A list of registered database IDs. Go to `/databases` to get all registered databases."
         ),
     )
     optimade_urls: Set[AnyUrl] = Field(
@@ -27,7 +29,7 @@ class Search(BaseModel):
             "A list of OPTIMADE base URLs. If a versioned base URL is supplied it will be used as "
             "is, as long as it represents a supported version. If an un-versioned base URL, "
             "standard version negotiation will be conducted to get the versioned base URL, which "
-            "will be used as long as it represents a supported version. Note: A single URL can be "
+            "will be used as long as it represents a supported version. Note, a single URL can be "
             "supplied as well, and it will automatically be wrapped in a list in the server logic."
         ),
     )

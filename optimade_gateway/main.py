@@ -32,15 +32,17 @@ APP = FastAPI(
     description="A gateway server to query multiple OPTIMADE databases.",
     version=__version__,
 )
+"""The FastAPI ASGI application."""
 
 
 @APP.get("/", include_in_schema=False)
 async def get_root(request: Request) -> RedirectResponse:
-    """Get /
+    """`GET /`
 
     Introspective overview of gateway server.
 
-    NOTE: Temporarily redirecting to GET /docs
+    !!! note
+        Temporarily redirecting to `GET /docs`.
     """
     return RedirectResponse(
         request.url.replace(path=f"{request.url.path.strip('/')}/docs")

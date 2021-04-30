@@ -16,7 +16,7 @@ class CheckWronglyVersionedBaseUrlsGateways(BaseHTTPMiddleware):
         """Check URL path for versioned part.
 
         Parameters:
-            url: A complete urllib-parsed raw URL.
+            url: A complete `urllib`-parsed raw URL.
 
         Raises:
             VersionNotSupported: If the URL represents an OPTIMADE versioned base URL

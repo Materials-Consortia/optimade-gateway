@@ -17,9 +17,9 @@ ROUTER = APIRouter(redirect_slashes=True)
     tags=["Versions"],
 )
 async def get_gateway_versions(request: Request, gateway_id: str) -> CsvResponse:
-    """GET /gateways/{gateway_id}/versions
+    """`GET /gateways/{gateway_id}/versions`
 
-    Return the result of the function used to GET /versions from the `optimade` package.
+    Return the result of the function used to `GET /versions` from the `optimade` package.
     """
     from optimade.server.routers.versions import get_versions
 

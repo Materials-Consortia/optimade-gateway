@@ -46,9 +46,9 @@ async def get_structures(
     gateway_id: str,
     params: EntryListingQueryParams = Depends(),
 ) -> StructureResponseMany:
-    """GET /gateways/{gateway_id}/structures
+    """`GET /gateways/{gateway_id}/structures`
 
-    Return a regular /structures response for an OPTIMADE implementation,
+    Return a regular `/structures` response for an OPTIMADE implementation,
     including responses from all the gateway's databases.
     """
     from optimade_gateway.queries import perform_query
@@ -95,10 +95,10 @@ async def get_single_structure(
     structure_id: str,
     params: SingleEntryQueryParams = Depends(),
 ) -> StructureResponseOne:
-    """GET /gateways/{gateway_id}/structures/{structure_id}
+    """`GET /gateways/{gateway_id}/structures/{structure_id}`
 
-    Return a regular /structures/{id} response for an OPTIMADE implementation.
-    The structure_id must be of the type {database}/{id}.
+    Return a regular `/structures/{id}` response for an OPTIMADE implementation.
+    The `structure_id` must be of the type `{database ID}/{id}`.
     """
     from optimade_gateway.models import GatewayResource
     from optimade_gateway.queries import db_find
@@ -195,9 +195,9 @@ async def get_versioned_structures(
     version: str,
     params: EntryListingQueryParams = Depends(),
 ) -> StructureResponseMany:
-    """GET /gateways/{gateway_id}/{version}/structures
+    """`GET /gateways/{gateway_id}/{version}/structures`
 
-    Same as GET /gateways/{gateway_id}/structures.
+    Same as `GET /gateways/{gateway_id}/structures`.
     """
     await validate_version(version)
     return await get_structures(request, gateway_id, params)
@@ -219,9 +219,9 @@ async def get_versioned_single_structure(
     structure_id: str,
     params: SingleEntryQueryParams = Depends(),
 ) -> StructureResponseOne:
-    """GET /gateways/{gateway_id}/{version}/structures/{structure_id}
+    """`GET /gateways/{gateway_id}/{version}/structures/{structure_id}`
 
-    Same as GET /gateways/{gateway_id}/structures/{structure_id}.
+    Same as `GET /gateways/{gateway_id}/structures/{structure_id}`.
     """
     await validate_version(version)
     return await get_single_structure(request, gateway_id, structure_id, params)

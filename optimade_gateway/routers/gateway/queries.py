@@ -38,7 +38,7 @@ async def get_gateway_queries(
     gateway_id: str,
     params: EntryListingQueryParams = Depends(),
 ) -> QueriesResponse:
-    """GET /gateways/{gateway_id}/queries
+    """`GET /gateways/{gateway_id}/queries`
 
     Return overview of all (active) queries for specific gateway.
     """
@@ -69,7 +69,7 @@ async def post_gateway_queries(
     gateway_id: str,
     query: QueryCreate,
 ) -> QueriesResponseSingle:
-    """POST /gateways/{gateway_id}/queries
+    """`POST /gateways/{gateway_id}/queries`
 
     Create or return existing gateway query according to `query`.
     """
@@ -102,10 +102,10 @@ async def post_gateway_queries(
 async def get_gateway_query(
     request: Request, gateway_id: str, query_id: str
 ) -> EntryResponseMany:
-    """GET /gateways/{gateway_id}/queries/{query_id}
+    """`GET /gateways/{gateway_id}/queries/{query_id}`
 
     Return the response from a gateway query
-    [`QueryResource.attributes.response`][optimade_gateway.models.queries.QueryResourceAttributes.response].
+    ([`QueryResource.attributes.response`][optimade_gateway.models.queries.QueryResourceAttributes.response]).
     """
     from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
     from optimade_gateway.routers.queries import get_query

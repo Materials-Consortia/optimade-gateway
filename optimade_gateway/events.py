@@ -42,7 +42,8 @@ async def ci_dev_startup() -> None:
 async def load_optimade_providers_databases() -> None:
     """Load in the providers' OPTIMADE databases from Materials-Consortia
 
-    Utilize the Materials-Consortia list of OPTIMADE providers at https://providers.optimade.org.
+    Utilize the Materials-Consortia list of OPTIMADE providers at
+    [https://providers.optimade.org](https://providers.optimade.org).
     Load in all databases with a valid base URL.
     """
     import asyncio

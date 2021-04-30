@@ -12,17 +12,19 @@ from uvicorn.logging import DefaultFormatter
 def disable_logging():
     """Temporarily disable logging.
 
-    Usage::
+    Usage:
 
-        from aiida_optimade.common.utils import disable_logging
+    ```python
+    from optimade_gateway.common.logger import disable_logging
 
-        # Do stuff logging to all handlers.
+    # Do stuff, logging to all handlers.
+    # ...
+    with disable_logging():
+        # Do stuff, without logging to any handlers.
         # ...
-        with disable_logging():
-            # Do stuff without logging to any handlers.
-            # ...
-        # Do stuff logging to all handlers now re-enabled.
-        # ...
+    # Do stuff, logging to all handlers now re-enabled.
+    # ...
+    ```
 
     """
     try:

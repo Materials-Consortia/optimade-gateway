@@ -49,7 +49,7 @@ async def get_databases(
     request: Request,
     params: EntryListingQueryParams = Depends(),
 ) -> DatabasesResponse:
-    """GET /databases
+    """`GET /databases`
 
     Return overview of all (active) databases.
     """
@@ -74,10 +74,11 @@ async def get_databases(
 async def post_databases(
     request: Request, database: DatabaseCreate
 ) -> DatabasesResponseSingle:
-    """POST /databases
+    """`POST /databases`
 
-    Create/Register or return an existing `LinksResource´, representing a database resource object,
-    according to `database`.
+    Create/Register or return an existing
+    [`LinksResource`](https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResource),
+    representing a database resource object, according to `database`.
     """
     from optimade_gateway.routers.utils import resource_factory
 
@@ -109,9 +110,11 @@ async def get_database(
     database_id: str,
     params: SingleEntryQueryParams = Depends(),
 ) -> DatabasesResponseSingle:
-    """GET /databases/{database ID}
+    """`GET /databases/{database ID}`
 
-    Return a single `LinksResource` representing the database resource object with id=`database_id`.
+    Return a single
+    [`LinksResource`](https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResource)
+    representing the database resource object with `id={database ID}`.
     """
     params.filter = f'id="{database_id}"'
     result, _, fields = await DATABASES_COLLECTION.find(params=params)

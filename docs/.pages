@@ -1,0 +1,6 @@
+nav:
+    - index.md
+    - design.md
+    - Changelog: CHANGELOG.md
+    - License: LICENSE.md
+    - api_reference

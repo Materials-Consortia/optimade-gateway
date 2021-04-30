@@ -43,7 +43,11 @@ def get_resource_attribute(
     Get the field value no matter if the resource is a pydantic model or a Python dictionary.
 
     Determine ambiguous field values and return them if desired (`disambiguate`).
-    For example, if `attributes.base_url` is requested it can be either a string, a
+    For example, if
+    [`"attributes.base_url"`](https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResourceAttributes.base_url)
+    is requested for a
+    [`LinksResource`](https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResource)
+    it can be either a string, a
     [`Link`](https://www.optimade.org/optimade-python-tools/api_reference/models/jsonapi/#optimade.models.jsonapi.Link)
     model or a dictionary resembling the `Link` model.
 

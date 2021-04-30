@@ -36,7 +36,7 @@ async def get_entries(
     request: Request,
     params: EntryListingQueryParams,
 ) -> EntryResponseMany:
-    """Generalized /{entries} endpoint getter"""
+    """Generalized `/{entries}` endpoint getter"""
     results, more_data_available, fields = await collection.find(params=params)
 
     if more_data_available:
@@ -71,7 +71,7 @@ async def aretrieve_queryable_properties(
     """Asynchronous implementation of `retrieve_queryable_properties()` from `optimade`
 
     Reference to the function in the `optimade` API documentation:
-    [`retrieve_queryable_properties()](https://www.optimade.org/optimade-python-tools/api_reference/server/schemas/#optimade.server.schemas.retrieve_queryable_properties).
+    [`retrieve_queryable_properties()`](https://www.optimade.org/optimade-python-tools/api_reference/server/schemas/#optimade.server.schemas.retrieve_queryable_properties).
 
     Recursively loops through the schema of a pydantic model and resolves all references, returning
     a dictionary of all the OPTIMADE-queryable properties of that model.
@@ -124,7 +124,7 @@ async def resource_factory(
         [`LinksResource`](https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResource))
     - `"gateways"` ([`GatewayCreate`][optimade_gateway.models.gateways.GatewayCreate] ->
         [`GatewayResource`][optimade_gateway.models.gateways.GatewayResource])
-    - `"queries"` ([`QueryyCreate`][optimade_gateway.models.queries.QueryCreate] ->
+    - `"queries"` ([`QueryCreate`][optimade_gateway.models.queries.QueryCreate] ->
         [`QueryResource`][optimade_gateway.models.queries.QueryResource])
 
     For each of the resources, "uniqueness" is determined in the following way:
@@ -142,11 +142,13 @@ async def resource_factory(
 
         In the database, the search is done as a combination of the length/size of the `databases`'
         Python list/MongoDB array and a match on all (using the MongoDB `$all` operator) of the
-        `databases.attributes.base_url` element values, when compared with the `create_resource`.
+        [`databases.attributes.base_url`](https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResourceAttributes.base_url)
+        element values, when compared with the `create_resource`.
 
     === "Queries"
         The `gateway_id`, `query_parameters`, and `endpoint` fields are collectively considered to
-        be define uniqueness for a `QueryResource` in the MongoDB collection.
+        define uniqueness for a [`QueryResource`][optimade_gateway.models.queries.QueryResource]
+        in the MongoDB collection.
 
         !!! attention
             Only the `/structures` entry endpoint can be queried with multiple expected responses.

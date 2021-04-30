@@ -15,6 +15,8 @@ from optimade_gateway.models.resources import EntryResourceCreate
 
 
 QUERY_PARAMETERS = EntryListingQueryParams()
+"""Entry listing URL query parameters from the `optimade` package
+([`EntryListingQueryParams`](https://www.optimade.org/optimade-python-tools/api_reference/server/query_params/#optimade.server.query_params.EntryListingQueryParams))."""
 
 
 class OptimadeQueryParameters(BaseModel):

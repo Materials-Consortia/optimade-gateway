@@ -193,7 +193,7 @@ def db_find(
     query_params: str = "",
     raw_url: str = None,
 ) -> Tuple[Union[ErrorResponse, EntryResponseMany, EntryResponseOne], str]:
-    """Imitate Collection.find for any given database for entry-resource endpoints
+    """Imitate `Collection.find()` for any given database for entry-resource endpoints
 
     Parameters:
         database: The OPTIMADE implementation to be queried. It **must** have a valid base URL and
@@ -205,7 +205,7 @@ def db_find(
         raw_url: A raw URL to use straight up instead of deriving a URL from `database`,
             `endpoint`, and `query_params`.
 
-    Results:
+    Returns:
         Response as an `optimade` pydantic model and the `database`'s ID.
 
     """
@@ -291,7 +291,7 @@ async def db_get_all_resources(
         raw_url: A raw URL to use straight up instead of deriving a URL from `database`,
             `endpoint`, and `query_params`.
 
-    Results:
+    Returns:
         A collected list of successful responses' `data` value and the `database`'s ID.
 
     """

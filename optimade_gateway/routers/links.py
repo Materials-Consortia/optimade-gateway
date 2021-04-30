@@ -38,9 +38,9 @@ LINKS_COLLECTION = AsyncMongoCollection(
 async def get_links(
     request: Request, params: EntryListingQueryParams = Depends()
 ) -> LinksResponse:
-    """GET /links
+    """`GET /links`
 
-    Return a regular /links response for an OPTIMADE implementation.
+    Return a regular `/links` response for an OPTIMADE implementation.
     """
     return await get_entries(
         collection=LINKS_COLLECTION,

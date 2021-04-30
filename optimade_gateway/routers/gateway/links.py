@@ -4,7 +4,7 @@ This file describes the router for:
 
     /gateways/{id}/{version}/links
 
-where, `version` may be left out.
+where `version` may be left out.
 """
 from typing import Union
 
@@ -31,9 +31,9 @@ async def get_gateways_links(
     gateway_id: str,
     params: EntryListingQueryParams = Depends(),
 ) -> LinksResponse:
-    """GET /gateways/{gateway_id}/links
+    """`GET /gateways/{gateway_id}/links`
 
-    Return a regular /links response for an OPTIMADE implementation.
+    Return a regular `/links` response for an OPTIMADE implementation.
     """
     from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
     from optimade_gateway.routers.links import get_links
@@ -57,9 +57,9 @@ async def get_versioned_gateways_links(
     version: str,
     params: EntryListingQueryParams = Depends(),
 ) -> LinksResponse:
-    """GET /gateways/{gateway_id}/{version}/links
+    """`GET /gateways/{gateway_id}/{version}/links`
 
-    Same as GET /gateways/{gateway_id}/links.
+    Same as `GET /gateways/{gateway_id}/links`.
     """
     from optimade_gateway.routers.gateway.utils import validate_version
 

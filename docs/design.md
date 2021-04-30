@@ -26,7 +26,7 @@ Note, if there is no HTTP method next to the endpoint, it is not an available an
 
 The suggested OPTIMADE gateway API.
 
-This API is based on the expected capabilities [outlined below](#OPTIMADE-gateway-capabilities).
+This API is based on the expected capabilities [outlined below](#optimade-gateway-capabilities).
 
 `/optimade/`  
 **Methods**: `GET`  
@@ -68,9 +68,9 @@ This API is based on the expected capabilities [outlined below](#OPTIMADE-gatewa
 
 ## OPTIMADE gateway capabilities
 
-- [Searching in multiple OPTIMADE databases](#Searching).
-- [Utilize the OPTIMADE filter language](#OPTIMADE-filter-language).
-- [Retrieve entries (OPTIMADE structures) as JSON-serialized CUDS](#Retrieval-formats).
+- [Searching in multiple OPTIMADE databases](#searching).
+- [Utilize the OPTIMADE filter language](#optimade-filter-language).
+- [Retrieve entries (OPTIMADE structures) as JSON-serialized CUDS](#retrieval-formats).
   **Not a required capability for the base gateway API**.
 
 ### Design ideas and comments by Simon Adorf ([@csadorf](https://github.com/csadorf))

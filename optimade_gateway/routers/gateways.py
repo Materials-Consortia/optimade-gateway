@@ -46,7 +46,7 @@ async def get_gateways(
     request: Request,
     params: EntryListingQueryParams = Depends(),
 ) -> GatewaysResponse:
-    """GET /gateways
+    """`GET /gateways`
 
     Return overview of all (active) gateways.
     """
@@ -71,7 +71,7 @@ async def get_gateways(
 async def post_gateways(
     request: Request, gateway: GatewayCreate
 ) -> GatewaysResponseSingle:
-    """POST /gateways
+    """`POST /gateways`
 
     Create or return existing gateway according to `gateway`.
     """
@@ -117,10 +117,13 @@ async def post_gateways(
     tags=["Gateways"],
 )
 async def get_gateway(request: Request, gateway_id: str) -> GatewaysResponseSingle:
-    """GET /gateways/{gateway ID}
+    """`GET /gateways/{gateway ID}`
 
     Represent an OPTIMADE server.
-    NOTE: For now, redirect to the gateway's /structures entry listing endpoint
+
+    !!! note
+        For now, redirect to the gateway's `/structures` entry listing endpoint.
+
     """
     from optimade_gateway.routers.utils import validate_resource
 

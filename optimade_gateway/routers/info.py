@@ -38,7 +38,7 @@ ENTRY_INFO_SCHEMAS = {
     tags=["Info"],
 )
 async def get_info(request: Request) -> InfoResponse:
-    """GET /info
+    """`GET /info`
 
     An introspective endpoint for the gateway service.
     """
@@ -88,7 +88,7 @@ async def get_info(request: Request) -> InfoResponse:
     tags=["Info"],
 )
 async def get_entry_info(request: Request, entry: str) -> EntryInfoResponse:
-    """GET /info/{entry}
+    """`GET /info/{entry}`
 
     Get information about the gateway service's entry-listing endpoints.
     """
