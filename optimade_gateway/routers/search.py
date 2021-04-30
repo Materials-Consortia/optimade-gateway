@@ -198,7 +198,7 @@ async def get_search(
         seconds until the query has finished
     1. Return successful response
 
-    !!! important "Contingency"
+    !!! attention "Contingency"
         If the query has not finished within the set timeout period, the client will be redirected
         to the query's URL instead.
 
