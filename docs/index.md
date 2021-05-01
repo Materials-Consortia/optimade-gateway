@@ -6,6 +6,29 @@ A REST API server acting as a gateway for databases with an OPTIMADE API, handli
 
 The design outline is available [here](design.md).
 
+## Known limitations
+
+Here follows a list of known limitations and oddities of the current OPTIMADE gateway code.
+
+### Pagination
+
+Pagination is a bit awkward in its current implementation state.
+
+When using the `page_limit` query parameter for a gateway query for gateways with multiple databases, i.e., for `GET /gateways/{gateway ID}/structures` and `GET /queries/{query ID}`, the resulting entry-resource number is the product of the `page_limit` value and the number of databases in the gateway (maximum).
+This is because the `page_limit` query parameter is passed straight through to the external database requests, and the returned entries are stitched together for the gateway response.
+
+So effectively, when querying `GET /gateways/{gateway with N databases}/structures?page_limit=5` the resulting (maximum) number of entries returned in the response (the size of the `data` array in the response) will be N x 5, and not 5 as would otherwise be expected.
+
+The intention is to fix this in the future, either through short-time caching of external database responses, or figuring out if there is a usable algorithm that doesn't extend the number of external requests (and therefore the gateway response times) by too much.
+
+### Sorting
+
+Sorting is supported for all the gateway's own resources, i.e., in the `/gateways`, `/databases`, and `/queries` endpoints.
+But sorting is **not supported** for the results from external OPTIMADE databases.
+This means the `sort` query parameter has no effect in the `GET /gateways/{gateway ID}/structures` and `GET /queries/{query ID}` endpoints.
+
+This shortcoming is a direct result of the current `page_limit` query parameter handling, and the [limitation of the same](#pagination).
+
 ## License, copyright & funding support
 
 All code in this repository was originally written by Casper Welzel Andersen ([@CasperWA](https://github.com/CasperWA)).
