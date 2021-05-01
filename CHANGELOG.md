@@ -1,6 +1,22 @@
 # Changelog
 
-## [v0.1.0](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.1.0) (2021-04-30)
+## [Unreleased](https://github.com/Materials-Consortia/optimade-gateway/tree/HEAD)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.1.1...HEAD)
+
+**Fixed bugs:**
+
+- CD workflow not releasing latest documentation build [\#61](https://github.com/Materials-Consortia/optimade-gateway/issues/61)
+
+## [v0.1.1](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.1.1) (2021-05-01)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.1.0...v0.1.1)
+
+**Merged pull requests:**
+
+- Use ref variable for actions/checkout [\#62](https://github.com/Materials-Consortia/optimade-gateway/pull/62) ([CasperWA](https://github.com/CasperWA))
+
+## [v0.1.0](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.1.0) (2021-05-01)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/5605131b4590b8b9b595714513199504e63e312c...v0.1.0)
 
