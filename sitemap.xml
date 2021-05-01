@@ -1,163 +1,163 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url>
      <loc>https://www.optimade.org/optimade-gateway/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/design/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/CHANGELOG/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/LICENSE/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/events/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/exception_handlers/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/main/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/middleware/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/common/config/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/common/exceptions/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/common/logger/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/common/utils/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/mappers/databases/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/mappers/gateways/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/mappers/queries/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/models/databases/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/models/gateways/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/models/queries/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/models/resources/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/models/responses/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/models/search/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/mongo/collection/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/mongo/database/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/queries/params/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/queries/perform/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/queries/prepare/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/queries/utils/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/routers/databases/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/routers/gateways/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/routers/info/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/routers/links/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/routers/queries/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/routers/search/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/routers/utils/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/routers/gateway/info/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/routers/gateway/links/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/routers/gateway/queries/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/routers/gateway/structures/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/routers/gateway/utils/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://www.optimade.org/optimade-gateway/api_reference/routers/gateway/versions/</loc>
-     <lastmod>2021-04-30</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
