@@ -35,17 +35,11 @@ jobs:
         pip install -U setuptools
         pip install -U -e .[dev]
 
-    - name: Get tagged versions
-      run: |
-        echo "PREVIOUS_VERSION=$(git tag -l --sort -version:refname | sed -n 2p)" >> $GITHUB_ENV
-        echo "NEW_VERSION=$(git tag -l --sort -version:refname | sed -n 1p)" >> $GITHUB_ENV
-
     - name: Update changelog
       uses: charmixer/auto-changelog-action@v1.3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
-        future_release: "${{ env.NEW_VERSION }}"
 
     - name: Update documentation and version - Commit changes and update tag
       run: .github/utils/update_docs.sh
@@ -59,6 +53,9 @@ jobs:
         force: true
         tags: true
 
+    - name: Get tagged versions
+      run: echo "PREVIOUS_VERSION=$(git tag -l --sort -version:refname | sed -n 2p)" >> $GITHUB_ENV
+
     - name: Create release-specific changelog
       uses: charmixer/auto-changelog-action@v1.3
       with:
@@ -66,7 +63,6 @@ jobs:
         release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
         since_tag: "${{ env.PREVIOUS_VERSION }}"
         output: "release_msg.md"
-        future_release: "${{ env.NEW_VERSION }}"
 
     - name: Update release description with changelog
       uses: softprops/action-gh-release@v1
