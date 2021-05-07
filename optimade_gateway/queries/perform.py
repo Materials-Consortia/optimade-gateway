@@ -282,6 +282,13 @@ async def db_get_all_resources(
 ]:
     """Recursively retrieve all resources from an entry-listing endpoint
 
+    This function keeps pulling the `links.next` link if `meta.more_data_available` is `True` to
+    ultimately retrieve *all* entries for `endpoint`.
+
+    !!! warning
+        This function can be dangerous if an endpoint with hundreds or thousands of entries is
+        requested.
+
     Parameters:
         database: The OPTIMADE implementation to be queried. It **must** have a valid base URL and
             id.

@@ -10,7 +10,7 @@ async def update_query(query: QueryResource, field: str, value: Any) -> None:
     """Update a query's `field` attribute with `value`.
 
     !!! note
-        This can _only_ update a field for a query's `attributes`, i.e., this function cannot
+        This can *only* update a field for a query's `attributes`, i.e., this function cannot
         update `id`, `type` or any other top-level resource field.
 
     Parameters:
