@@ -125,6 +125,7 @@ jobs:
         path: /gateways/docker_ci
         all versioned paths: True
         validate unversioned path: True
+        validator version: v0.14.1
 
   docs:
     name: Documentation
