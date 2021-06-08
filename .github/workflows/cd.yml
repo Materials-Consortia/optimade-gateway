@@ -25,7 +25,7 @@ jobs:
         fetch-depth: 0
 
     - name: Set up Python 3.8
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v2.2.2
       with:
         python-version: 3.8
 
@@ -45,7 +45,7 @@ jobs:
       run: .github/utils/update_docs.sh
 
     - name: Update '${{ env.PUBLISH_UPDATE_BRANCH }}'
-      uses: CasperWA/push-protected@v2
+      uses: CasperWA/push-protected@v2.3.0
       with:
         token: ${{ secrets.RELEASE_PAT_CASPER }}
         branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
@@ -83,7 +83,7 @@ jobs:
   #       fetch-depth: 2
 
   #   - name: Set up Python 3.8
-  #     uses: actions/setup-python@v2
+  #     uses: actions/setup-python@v2.2.2
   #     with:
   #       python-version: 3.8
 
@@ -115,7 +115,7 @@ jobs:
         ref: ${{ env.PUBLISH_UPDATE_BRANCH }}
 
     - name: Set up Python 3.8
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v2.2.2
       with:
         python-version: 3.8
 
