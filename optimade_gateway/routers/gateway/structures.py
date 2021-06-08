@@ -13,7 +13,7 @@ from typing import Union
 import urllib.parse
 import warnings
 
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends, Request, Response
 from optimade.models import (
     ErrorResponse,
     Meta,
@@ -45,8 +45,9 @@ ROUTER = APIRouter(redirect_slashes=True)
 async def get_structures(
     request: Request,
     gateway_id: str,
+    response: Response,
     params: EntryListingQueryParams = Depends(),
-) -> StructureResponseMany:
+) -> Union[StructureResponseMany, ErrorResponse]:
     """`GET /gateways/{gateway_id}/structures`
 
     Return a regular `/structures` response for an OPTIMADE implementation,
@@ -61,7 +62,7 @@ async def get_structures(
         warnings.warn(SortNotSupported())
         params.sort = ""
 
-    return await perform_query(
+    gateway_response = await perform_query(
         url=request.url,
         query=QueryResource(
             **{
@@ -85,6 +86,16 @@ async def get_structures(
         use_query_resource=False,
     )
 
+    if isinstance(gateway_response, ErrorResponse):
+        for error in gateway_response.errors:
+            if error.status:
+                response.status_code = int(error.status)
+                break
+        else:
+            response.status_code = 500
+
+    return gateway_response
+
 
 @ROUTER.get(
     "/gateways/{gateway_id}/structures/{structure_id:path}",
@@ -98,8 +109,9 @@ async def get_single_structure(
     request: Request,
     gateway_id: str,
     structure_id: str,
+    response: Response,
     params: SingleEntryQueryParams = Depends(),
-) -> StructureResponseOne:
+) -> Union[StructureResponseOne, ErrorResponse]:
     """`GET /gateways/{gateway_id}/structures/{structure_id}`
 
     Return a regular `/structures/{id}` response for an OPTIMADE implementation.
@@ -180,6 +192,12 @@ async def get_single_structure(
     del meta.data_available
 
     if errors:
+        for error in errors:
+            if error.status:
+                response.status_code = int(error.status)
+                break
+        else:
+            response.status_code = 500
         return ErrorResponse(errors=errors, meta=meta)
 
     return StructureResponseOne(links=ToplevelLinks(next=None), data=result, meta=meta)
@@ -198,14 +216,15 @@ async def get_versioned_structures(
     request: Request,
     gateway_id: str,
     version: str,
+    response: Response,
     params: EntryListingQueryParams = Depends(),
-) -> StructureResponseMany:
+) -> Union[StructureResponseMany, ErrorResponse]:
     """`GET /gateways/{gateway_id}/{version}/structures`
 
     Same as `GET /gateways/{gateway_id}/structures`.
     """
     await validate_version(version)
-    return await get_structures(request, gateway_id, params)
+    return await get_structures(request, gateway_id, response, params)
 
 
 @ROUTER.get(
@@ -222,11 +241,14 @@ async def get_versioned_single_structure(
     gateway_id: str,
     version: str,
     structure_id: str,
+    response: Response,
     params: SingleEntryQueryParams = Depends(),
-) -> StructureResponseOne:
+) -> Union[StructureResponseOne, ErrorResponse]:
     """`GET /gateways/{gateway_id}/{version}/structures/{structure_id}`
 
     Same as `GET /gateways/{gateway_id}/structures/{structure_id}`.
     """
     await validate_version(version)
-    return await get_single_structure(request, gateway_id, structure_id, params)
+    return await get_single_structure(
+        request, gateway_id, structure_id, response, params
+    )

@@ -1,3 +1,4 @@
+from optimade.models import LinksResource
 from optimade.server.mappers.links import LinksMapper
 from pydantic import AnyUrl  # pylint: disable=no-name-in-module
 
@@ -9,6 +10,7 @@ __all__ = ("DatabasesMapper",)
 class DatabasesMapper(LinksMapper):
 
     ENDPOINT = "databases"
+    ENTRY_RESOURCE_CLASS = LinksResource
 
     @classmethod
     def map_back(cls, doc: dict) -> dict:
