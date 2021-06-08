@@ -14,10 +14,10 @@ jobs:
     # timeout-minutes: 2
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2.3.4
 
     - name: Set up Python 3.8
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v2.2.2
       with:
         python-version: 3.8
 
@@ -53,12 +53,12 @@ jobs:
         - 27017:27017
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2.3.4
       with:
         fetch-depth: 2
 
     - name: Set up Python ${{ matrix.python-version}}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v2.2.2
       with:
         python-version: ${{ matrix.python-version}}
 
@@ -75,7 +75,7 @@ jobs:
 
     - name: Upload coverage to Codecov
       if: matrix.python-version == 3.8 && github.repository == 'Materials-Consortia/optimade-gateway'
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v1.5.0
       with:
         name: optimade-gateway
         files: ./coverage.xml
@@ -87,10 +87,10 @@ jobs:
     # timeout-minutes: 5
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
 
       - name: Check build and install source distribution
-        uses: CasperWA/check-sdist-action@v1
+        uses: CasperWA/check-sdist-action@v1.1.0
 
   docker:
     name: Docker
@@ -98,7 +98,7 @@ jobs:
     # timeout-minutes
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2.3.4
       with:
         fetch-depth: 2
 
@@ -125,17 +125,18 @@ jobs:
         path: /gateways/docker_ci
         all versioned paths: True
         validate unversioned path: True
+        validator version: v0.14.1
 
   docs:
     name: Documentation
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2.3.4
       with:
         fetch-depth: 2
 
-    - uses: actions/setup-python@v2
+    - uses: actions/setup-python@v2.2.2
       with:
         python-version: 3.8
 
