@@ -1,6 +1,6 @@
 """Pydantic models/schemas for the Queries resource"""
 from enum import Enum
-from typing import Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Union
 import warnings
 
 from optimade.models import (
@@ -8,12 +8,51 @@ from optimade.models import (
     EntryResourceAttributes,
     EntryResponseMany,
     ErrorResponse,
+    ReferenceResource,
+    ReferenceResponseMany,
+    ReferenceResponseOne,
+    StructureResource,
+    StructureResponseMany,
+    StructureResponseOne,
 )
 from optimade.server.query_params import EntryListingQueryParams
 from pydantic import BaseModel, EmailStr, Field, validator
 
 from optimade_gateway.models.resources import EntryResourceCreate
 from optimade_gateway.warnings import SortNotSupported
+
+
+class EndpointEntryType(Enum):
+    """Entry endpoint resource types, mapping to their pydantic models from the `optimade` package."""
+
+    REFERENCES = "references"
+    STRUCTURES = "structures"
+
+    def get_resource_model(self) -> Union[ReferenceResource, StructureResource]:
+        """Get the matching pydantic model for a resource."""
+        return {
+            "references": ReferenceResource,
+            "structures": StructureResource,
+        }[self.value]
+
+    def get_response_model(
+        self, single: bool = False
+    ) -> Union[
+        ReferenceResponseMany,
+        ReferenceResponseOne,
+        StructureResponseMany,
+        StructureResponseOne,
+    ]:
+        """Get the matching pydantic model for a successful response."""
+        if single:
+            return {
+                "references": ReferenceResponseOne,
+                "structures": StructureResponseOne,
+            }[self.value]
+        return {
+            "references": ReferenceResponseMany,
+            "structures": StructureResponseMany,
+        }[self.value]
 
 
 QUERY_PARAMETERS = EntryListingQueryParams()
@@ -99,8 +138,17 @@ class QueryState(Enum):
     FINISHED = "finished"
 
 
+class GatewayQueryResponse(EntryResponseMany):
+    """Response from a Gateway Query."""
+
+    data: Dict[str, Union[List[EntryResource], List[Dict[str, Any]]]] = Field(
+        ...,
+        uniqueItems=True,
+    )
+
+
 class QueryResourceAttributes(EntryResourceAttributes):
-    """Attributes for an OPTIMADE gateway query"""
+    """Attributes for an OPTIMADE gateway query."""
 
     gateway_id: str = Field(
         ...,
@@ -117,45 +165,26 @@ class QueryResourceAttributes(EntryResourceAttributes):
         title="State",
         type="enum",
     )
-    response: Optional[Union[EntryResponseMany, ErrorResponse]] = Field(
+    response: Optional[Union[GatewayQueryResponse, ErrorResponse]] = Field(
         None,
         description="Response from gateway query.",
         type="object",
     )
-    endpoint: str = Field(
-        ..., description="The entry endpoint queried, e.g., 'structures'."
-    )
-    endpoint_model: Tuple[str, str] = Field(
-        ...,
-        description=(
-            "The full importable path to the pydantic response model class (not an instance of "
-            "the class). It should be a tuple of the Python module and the Class name."
-        ),
+    endpoint: EndpointEntryType = Field(
+        EndpointEntryType.STRUCTURES,
+        description="The entry endpoint queried, e.g., 'structures'.",
+        title="Endpoint",
+        type="enum",
     )
 
     @validator("endpoint")
-    def remove_endpoints_slashes(cls, value: str) -> str:
-        """Remove prep-/appended slashes (`/`)"""
-        org_value = value
-        value = value.strip()
-        while value.startswith("/"):
-            value = value[1:]
-        while value.endswith("/"):
-            value = value[:-1]
-        if not value:
-            raise ValueError(
-                "endpoint must not be an empty string or be prep-/appended with slashes (`/`). "
-                f"Original value: {org_value!r}. Final value (after removing prep-/appended "
-                f"slashes): {value!r}"
-            )
-
-        # Temporarily only allow queries to "structures" endpoints.
-        if value != "structures":
+    def only_allow_structures(cls, value: EndpointEntryType) -> EndpointEntryType:
+        """Temporarily only allow queries to "structures" endpoints."""
+        if value != EndpointEntryType.STRUCTURES:
             raise NotImplementedError(
                 'OPTIMADE Gateway temporarily only supports queries to "structures" endpoints, '
                 'i.e.: endpoint="structures"'
             )
-
         return value
 
 
@@ -175,8 +204,7 @@ class QueryCreate(EntryResourceCreate, QueryResourceAttributes):
     """Model for creating new Query resources in the MongoDB"""
 
     state: Optional[QueryState]
-    endpoint: Optional[str]
-    endpoint_model: Optional[Tuple[str, str]]
+    endpoint: Optional[EndpointEntryType]
 
     @validator("query_parameters")
     def sort_not_supported(

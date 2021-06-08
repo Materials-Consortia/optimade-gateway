@@ -21,10 +21,10 @@ from optimade.models.responses import EntryResponseMany
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import meta_values
 
-from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.mappers import QueryMapper
 from optimade_gateway.models import (
+    GatewayQueryResponse,
     QueryCreate,
     QueryResource,
     QueryState,
@@ -114,7 +114,7 @@ async def post_queries(
 
 @ROUTER.get(
     "/queries/{query_id:path}",
-    response_model=Union[EntryResponseMany, ErrorResponse],
+    response_model=Union[EntryResponseMany, ErrorResponse, GatewayQueryResponse],
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
@@ -124,7 +124,7 @@ async def get_query(
     request: Request,
     query_id: str,
     response: Response,
-) -> Union[EntryResponseMany, ErrorResponse]:
+) -> Union[EntryResponseMany, ErrorResponse, GatewayQueryResponse]:
     """`GET /queries/{query_id}`
 
     Return the response from a query
@@ -132,9 +132,7 @@ async def get_query(
     """
     from optimade_gateway.routers.utils import get_valid_resource
 
-    LOGGER.debug("At /queries/<id> with id=%s", query_id)
     query: QueryResource = await get_valid_resource(QUERIES_COLLECTION, query_id)
-    LOGGER.debug("Found query (in /queries/<id>): %s", query)
 
     if query.attributes.state != QueryState.FINISHED:
         return EntryResponseMany(

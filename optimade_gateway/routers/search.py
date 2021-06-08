@@ -26,7 +26,6 @@ from optimade.models import (
     ToplevelLinks,
 )
 from optimade.models.links import LinkType
-from optimade.models import StructureResponseMany, ReferenceResponseMany, LinksResponse
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import meta_values
 from pydantic import AnyUrl, ValidationError
@@ -46,12 +45,6 @@ from optimade_gateway.queries import perform_query, SearchQueryParams
 
 
 ROUTER = APIRouter(redirect_slashes=True)
-
-ENDPOINT_MODELS = {
-    "structures": (StructureResponseMany.__module__, StructureResponseMany.__name__),
-    "references": (ReferenceResponseMany.__module__, ReferenceResponseMany.__name__),
-    "links": (LinksResponse.__module__, LinksResponse.__name__),
-}
 
 
 @ROUTER.post(
@@ -151,7 +144,6 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
 
     query = QueryCreate(
         endpoint=search.endpoint,
-        endpoint_model=ENDPOINT_MODELS.get(search.endpoint),
         gateway_id=gateway.id,
         query_parameters=search.query_parameters,
     )

@@ -21,11 +21,11 @@ from optimade.models import (
     StructureResponseOne,
     ToplevelLinks,
 )
-from optimade.server.exceptions import BadRequest
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.server.routers.utils import meta_values
 
 from optimade_gateway.models import QueryResource
+from optimade_gateway.queries import perform_query
 from optimade_gateway.routers.gateway.utils import validate_version
 from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
 from optimade_gateway.warnings import OptimadeGatewayWarning, SortNotSupported
@@ -53,7 +53,6 @@ async def get_structures(
     Return a regular `/structures` response for an OPTIMADE implementation,
     including responses from all the gateway's databases.
     """
-    from optimade_gateway.queries import perform_query
     from optimade_gateway.routers.utils import validate_resource
 
     await validate_resource(GATEWAYS_COLLECTION, gateway_id)
@@ -76,10 +75,6 @@ async def get_structures(
                         key: value for key, value in params.__dict__.items() if value
                     },
                     "endpoint": "structures",
-                    "endpoint_model": (
-                        StructureResponseMany.__module__,
-                        StructureResponseMany.__name__,
-                    ),
                 },
             }
         ),
@@ -115,7 +110,21 @@ async def get_single_structure(
     """`GET /gateways/{gateway_id}/structures/{structure_id}`
 
     Return a regular `/structures/{id}` response for an OPTIMADE implementation.
-    The `structure_id` must be of the type `{database ID}/{id}`.
+
+    !!! important
+        There are two options for the `structure_id`.
+
+        Either one supplies an entry ID similar to what is given in the local databases.
+        This will result in this endpoint returning the first entry it finds from any database that
+        matches the given ID.
+
+        Example: `GET /gateway/some_gateway/structures/some_structure`.
+
+        Otherwise, one can supply the database ID (call `GET /databases` to see all available
+        databases and their IDs), and then the local entry ID, separated by a forward slash.
+
+        Example: `GET /gateways/some_gateway/structures/some_database/some_structure`.
+
     """
     from optimade_gateway.models import GatewayResource
     from optimade_gateway.queries import db_find
@@ -124,83 +133,110 @@ async def get_single_structure(
     gateway: GatewayResource = await get_valid_resource(GATEWAYS_COLLECTION, gateway_id)
 
     local_structure_id = None
+    database_id = None
+
     for database in gateway.attributes.databases:
         if structure_id.startswith(f"{database.id}/"):
             # Database found
-            local_structure_id = structure_id[len(f"{database.id}/") :]
+            database_id = database.id
+            local_structure_id = structure_id[len(f"{database_id}/") :]
             break
     else:
-        raise BadRequest(
-            detail=(
-                f"Structures entry <id={structure_id}> not found. To get a specific structures entry "
-                "one needs to prepend the ID with a database ID belonging to the gateway, e.g., "
-                f"'{gateway.attributes.databases[0].id}/<local_database_ID>'. Available databases for "
-                f"gateway {gateway_id!r}: {[_.id for _ in gateway.attributes.databases]}"
-            )
-        )
+        # Assume the given ID is already a local database ID - find and return the first one
+        # available.
+        local_structure_id = structure_id
 
     errors = []
-    result = None
     parsed_params = urllib.parse.urlencode(
         {param: value for param, value in params.__dict__.items() if value}
     )
 
-    (response, _) = await asyncio.get_running_loop().run_in_executor(
-        executor=None,  # Run in thread with the event loop
-        func=functools.partial(
-            db_find,
-            database=database,
-            endpoint=f"structures/{local_structure_id}",
-            response_model=StructureResponseOne,
-            query_params=parsed_params,
-        ),
-    )
-
-    if isinstance(response, ErrorResponse):
-        for error in response.errors:
-            if isinstance(error.id, str) and error.id.startswith("OPTIMADE_GATEWAY"):
-                warnings.warn(error.detail, OptimadeGatewayWarning)
-            else:
-                meta = {}
-                if error.meta:
-                    meta = error.meta.dict()
-                meta.update(
-                    {
-                        "optimade_gateway": {
-                            "gateway": gateway,
-                            "source_database_id": database.id,
+    if database_id:
+        (gateway_response, _) = await asyncio.get_running_loop().run_in_executor(
+            executor=None,  # Run in thread with the event loop
+            func=functools.partial(
+                db_find,
+                database=database,
+                endpoint=f"structures/{local_structure_id}",
+                response_model=StructureResponseOne,
+                query_params=parsed_params,
+            ),
+        )
+        if isinstance(gateway_response, ErrorResponse):
+            for error in gateway_response.errors:
+                if isinstance(error.id, str) and error.id.startswith(
+                    "OPTIMADE_GATEWAY"
+                ):
+                    warnings.warn(error.detail, OptimadeGatewayWarning)
+                else:
+                    meta = {}
+                    if error.meta:
+                        meta = error.meta.dict()
+                    meta.update(
+                        {
+                            "optimade_gateway": {
+                                "gateway": gateway,
+                                "source_database_id": database.id,
+                            }
                         }
-                    }
-                )
-                error.meta = Meta(**meta)
-                errors.append(error)
-    else:
-        result = response.data
-        if isinstance(result, dict) and result.get("id") is not None:
-            result["id"] = f"{database.id}/{result['id']}"
-        elif result is None:
-            pass
+                    )
+                    error.meta = Meta(**meta)
+                    errors.append(error)
+
+        meta = meta_values(
+            url=request.url,
+            data_returned=gateway_response.meta.data_returned,
+            data_available=None,  # Don't set this, as we'd have to request ALL gateway databases
+            more_data_available=gateway_response.meta.more_data_available,
+        )
+        del meta.data_available
+
+        if errors:
+            gateway_response = ErrorResponse(errors=errors, meta=meta)
         else:
-            result.id = f"{database.id}/{result.id}"
+            gateway_response = StructureResponseOne(
+                links=ToplevelLinks(next=None), data=gateway_response.data, meta=meta
+            )
 
-    meta = meta_values(
-        url=request.url,
-        data_returned=response.meta.data_returned,
-        data_available=None,  # Don't set this, as we'd have to request ALL gateway databases
-        more_data_available=response.meta.more_data_available,
-    )
-    del meta.data_available
+    else:
+        params.filter = f'id="{local_structure_id}"'
+        gateway_response = await perform_query(
+            url=request.url,
+            query=QueryResource(
+                **{
+                    "id": "temp",
+                    "type": "queries",
+                    "attributes": {
+                        "last_modified": datetime.utcnow(),
+                        "gateway_id": gateway_id,
+                        "state": "created",
+                        "query_parameters": {
+                            key: value
+                            for key, value in params.__dict__.items()
+                            if value
+                        },
+                        "endpoint": "structures",
+                    },
+                }
+            ),
+            use_query_resource=False,
+        )
+        if isinstance(gateway_response, StructureResponseMany):
+            gateway_response = gateway_response.dict(exclude_unset=True)
+            gateway_response["data"] = (
+                gateway_response["data"][0] if gateway_response["data"] else None
+            )
+            gateway_response = StructureResponseOne(**gateway_response)
 
-    if errors:
-        for error in errors:
+    if isinstance(gateway_response, ErrorResponse):
+        for error in errors or gateway_response.errors:
             if error.status:
                 response.status_code = int(error.status)
                 break
         else:
             response.status_code = 500
-        return ErrorResponse(errors=errors, meta=meta)
 
-    return StructureResponseOne(links=ToplevelLinks(next=None), data=result, meta=meta)
+    return gateway_response
 
 
 @ROUTER.get(

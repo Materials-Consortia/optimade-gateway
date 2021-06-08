@@ -16,6 +16,7 @@ from optimade.models import (
     EntryInfoResponse,
     ErrorResponse,
     InfoResponse,
+    LinksResource,
 )
 from optimade.server.routers.utils import get_base_url, meta_values
 
@@ -24,6 +25,7 @@ from optimade_gateway.models import GatewayResource, QueryResource
 ROUTER = APIRouter(redirect_slashes=True)
 
 ENTRY_INFO_SCHEMAS = {
+    "databases": LinksResource.schema,
     "gateways": GatewayResource.schema,
     "queries": QueryResource.schema,
 }

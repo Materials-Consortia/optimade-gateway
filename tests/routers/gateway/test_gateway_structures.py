@@ -105,7 +105,7 @@ async def test_get_single_structure(
 
     database = [_ for _ in gateway["databases"] if "_single" in _["id"]][0]
 
-    assert response.data is not None
+    assert response.data is not None, f"Response:\n{response.json(indent=2)}"
 
     url = f"{database['attributes']['base_url']}/structures/{structure_id[len(database['id']) + 1:]}"
     db_response = httpx.get(url)
@@ -115,15 +115,13 @@ async def test_get_single_structure(
     db_response = db_response.json()
 
     assert db_response["data"] is not None
-    db_response["data"]["id"] = f"{database['id']}/{db_response['data']['id']}"
+    assert db_response["data"] == json.loads(response.json(exclude_unset=True))["data"]
 
     assert db_response["meta"]["data_returned"] == response.meta.data_returned
     assert response.meta.data_available is None
     assert (
         db_response["meta"]["more_data_available"] == response.meta.more_data_available
     )
-
-    assert db_response["data"] == json.loads(response.json(exclude_unset=True))["data"]
 
 
 async def test_sort_no_effect(

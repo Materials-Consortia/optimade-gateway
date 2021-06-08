@@ -1,3 +1,4 @@
+"""Perform OPTIMADE queries"""
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 import functools
@@ -22,17 +23,22 @@ from starlette.datastructures import URL
 
 from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.common.utils import get_resource_attribute
-from optimade_gateway.models import GatewayResource, QueryResource, QueryState
-from optimade_gateway.queries.prepare import get_query_params, prepare_query
+from optimade_gateway.models import (
+    GatewayQueryResponse,
+    GatewayResource,
+    QueryResource,
+    QueryState,
+)
+from optimade_gateway.queries.prepare import get_query_params, prepare_query_filter
+from optimade_gateway.queries.process import process_db_response
 from optimade_gateway.queries.utils import update_query
-from optimade_gateway.warnings import OptimadeGatewayWarning
 
 
 async def perform_query(
     url: URL,
     query: QueryResource,
     use_query_resource: bool = True,
-) -> Union[EntryResponseMany, ErrorResponse]:
+) -> Union[EntryResponseMany, ErrorResponse, GatewayQueryResponse]:
     """Perform OPTIMADE query with gateway.
 
     Parameters:
@@ -44,27 +50,56 @@ async def perform_query(
             through the `/queries` endpoint.
 
     Returns:
-        This function returns the final response; either an `ErrorResponse` or a subclass of
-        `EntryResponseMany`.
+        This function returns the final response; either an `ErrorResponse`, a subclass of
+        `EntryResponseMany` or if `use_query_resource` is true, then a
+        [`GatewayQueryResponse`][optimade_gateway.models.queries.GatewayQueryResponse].
 
     """
     from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
     from optimade_gateway.routers.utils import get_valid_resource
 
-    data_available = data_returned = 0
-    errors = []
-    more_data_available = False
-    results = []
+    response = None
+
+    if use_query_resource:
+        await update_query(query, "state", QueryState.STARTED)
 
     gateway: GatewayResource = await get_valid_resource(
         GATEWAYS_COLLECTION, query.attributes.gateway_id
     )
 
-    (filter_queries, response_model) = await prepare_query(
+    filter_queries = await prepare_query_filter(
         database_ids=[_.id for _ in gateway.attributes.databases],
-        endpoint_model=query.attributes.endpoint_model,
         filter_query=query.attributes.query_parameters.filter,
     )
+
+    if use_query_resource:
+        url = url.replace(path=f"{url.path.rstrip('/')}/{query.id}")
+        await update_query(
+            query,
+            "response",
+            GatewayQueryResponse(
+                data={},
+                links=ToplevelLinks(next=None),
+                meta=meta_values(
+                    url=url,
+                    data_available=0,
+                    data_returned=0,
+                    more_data_available=False,
+                ),
+            ),
+            **{"$set": {"state": QueryState.IN_PROGRESS}},
+        )
+    else:
+        response = EntryResponseMany(
+            data=[],
+            links=ToplevelLinks(next=None),
+            meta=meta_values(
+                url=url,
+                data_available=0,
+                data_returned=0,
+                more_data_available=False,
+            ),
+        )
 
     loop = asyncio.get_running_loop()
     with ThreadPoolExecutor(
@@ -85,105 +120,106 @@ async def perform_query(
                     func=functools.partial(
                         db_find,
                         database=database,
-                        endpoint=query.attributes.endpoint,
-                        response_model=response_model,
+                        endpoint=query.attributes.endpoint.value,
+                        response_model=query.attributes.endpoint.get_response_model(),
                         query_params=query_params,
                     ),
                 )
             )
 
-        if use_query_resource:
-            await update_query(query, "state", QueryState.STARTED)
-
         for query_task in query_tasks:
-            (response, db_id) = await query_task
+            (db_response, db_id) = await query_task
 
-            if use_query_resource and query.attributes.state != QueryState.IN_PROGRESS:
-                await update_query(query, "state", QueryState.IN_PROGRESS)
+            results, errors, response_meta = await process_db_response(
+                response=db_response,
+                database_id=db_id,
+                query=query,
+                gateway=gateway,
+                use_query_resource=use_query_resource,
+            )
 
-            if isinstance(response, ErrorResponse):
-                for error in response.errors:
-                    if isinstance(error.id, str) and error.id.startswith(
-                        "OPTIMADE_GATEWAY"
-                    ):
-                        import warnings
-
-                        warnings.warn(error.detail, OptimadeGatewayWarning)
+            if not use_query_resource:
+                # Create a standard OPTIMADE response, adding the database ID to each returned
+                # resource's meta field.
+                database_id_meta = {"_optimade_gateway_": {"source_database_id": db_id}}
+                if errors or isinstance(response, ErrorResponse):
+                    # Error response
+                    if isinstance(response, ErrorResponse):
+                        response.errors.append(errors)
                     else:
-                        meta = {}
-                        if error.meta:
-                            meta = error.meta.dict()
-                        meta.update(
-                            {
-                                "optimade_gateway": {
-                                    "gateway": gateway,
-                                    "source_database_id": db_id,
-                                }
-                            }
-                        )
-                        error.meta = Meta(**meta)
-                        errors.append(error)
-            else:
-                for datum in response.data:
-                    if isinstance(datum, dict) and datum.get("id") is not None:
-                        datum["id"] = f"{db_id}/{datum['id']}"
+                        response = ErrorResponse(errors=errors, meta=response.meta)
+                        response.meta.data_returned = 0
+                        response.meta.more_data_available = False
+                elif isinstance(results, list):
+                    # "Many" response
+                    for resource in results:
+                        if hasattr(resource, "meta") and resource.meta:
+                            meta = resource.meta.dict()
+                            meta.update(database_id_meta)
+                            resource.meta = Meta(**meta)
+                        elif isinstance(resource, dict) and resource.get("meta", {}):
+                            resource["meta"] = resource["meta"].update(database_id_meta)
+                        elif isinstance(resource, dict):
+                            resource["meta"] = database_id_meta
+                        else:
+                            resource.meta = Meta(**database_id_meta)
+                    response.data.append(results)
+                    response.meta.data_returned += response_meta["data_returned"]
+                    if not response.meta.more_data_available:
+                        # Keep it True, if set to True once.
+                        response.meta.more_data_available = response_meta[
+                            "more_data_available"
+                        ]
+                else:
+                    # "One" response
+                    if hasattr(results, "meta") and results.meta:
+                        meta = results.meta.dict()
+                        meta.update(database_id_meta)
+                        results.meta = Meta(**meta)
+                    elif isinstance(results, dict) and results.get("meta", {}):
+                        results["meta"] = results["meta"].update(database_id_meta)
+                    elif isinstance(results, dict):
+                        results["meta"] = database_id_meta
                     else:
-                        datum.id = f"{db_id}/{datum.id}"
-                results.extend(response.data)
+                        results.meta = Meta(**database_id_meta)
+                    response.data.append(results)
+                    response.meta.data_returned += response_meta["data_returned"]
+                    if not response.meta.more_data_available:
+                        # Keep it True, if set to True once.
+                        response.meta.more_data_available = response_meta[
+                            "more_data_available"
+                        ]
+                response.meta.data_available += response_meta["data_available"]
 
-                data_available += response.meta.data_available or 0
-                data_returned += response.meta.data_returned or len(response.data)
+    if get_resource_attribute(
+        query,
+        "attributes.response.meta.more_data_available",
+        False,
+        disambiguate=False,  # Extremely minor speed-up
+    ) or get_resource_attribute(
+        response,
+        "meta.more_data_available",
+        False,
+        disambiguate=False,
+    ):
+        # Deduce the `next` link from the current request
+        query_string = urllib.parse.parse_qs(url.query)
+        query_string["page_offset"] = int(
+            query_string.get("page_offset", [0])[0]
+        ) + len(results[: query.attributes.query_parameters.page_limit])
+        urlencoded = urllib.parse.urlencode(query_string, doseq=True)
+        base_url = get_base_url(url)
 
-                if not more_data_available:
-                    # Keep it True, if set to True once.
-                    more_data_available = response.meta.more_data_available
+        links = ToplevelLinks(next=f"{base_url}{url.path}?{urlencoded}")
 
-    if use_query_resource:
-        url = url.replace(path=f"{url.path.rstrip('/')}/{query.id}")
-
-    meta = meta_values(
-        url=url,
-        data_available=data_available,
-        data_returned=data_returned,
-        more_data_available=more_data_available,
-    )
-
-    if errors:
-        response = ErrorResponse(errors=errors, meta=meta)
-    else:
-        # Sort results over two steps, first by database id,
-        # and then by (original) "id", since "id" MUST always be present.
-        # NOTE: Possbly remove this sorting?
-        results.sort(key=lambda data: data["id"] if "id" in data else data.id)
-        results.sort(
-            key=lambda data: "/".join(data["id"].split("/")[1:])
-            if "id" in data
-            else "/".join(data.id.split("/")[1:])
-        )
-
-        if more_data_available:
-            # Deduce the `next` link from the current request
-            query_string = urllib.parse.parse_qs(url.query)
-            query_string["page_offset"] = int(
-                query_string.get("page_offset", [0])[0]
-            ) + len(results[: query.attributes.query_parameters.page_limit])
-            urlencoded = urllib.parse.urlencode(query_string, doseq=True)
-            base_url = get_base_url(url)
-
-            links = ToplevelLinks(next=f"{base_url}{url.path}?{urlencoded}")
+        if use_query_resource:
+            await update_query(query, "response.links", links)
         else:
-            links = ToplevelLinks(next=None)
-
-        response = response_model(
-            links=links,
-            data=results,
-            meta=meta,
-        )
+            response.links = links
 
     if use_query_resource:
-        await update_query(query, "response", response)
         await update_query(query, "state", QueryState.FINISHED)
-
+        return query.attributes.response
     return response
 
 

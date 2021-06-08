@@ -151,10 +151,9 @@ async def resource_factory(
         !!! attention
             Only the `/structures` entry endpoint can be queried with multiple expected responses.
 
-            This means the `endpoint` field defaults to `"structures"` and `endpoint_model`
-            defaults to `("optimade.models.responses", "StructureResponseMany")`, i.e., the
-            [`StructureResponseMany`](https://www.optimade.org/optimade-python-tools/api_reference/models/responses/#optimade.models.responses.StructureResponseMany)
-            response model.
+            This means the `endpoint` field defaults to `"structures"`, i.e., the
+            [`StructureResource`](https://www.optimade.org/optimade-python-tools/all_models/#optimade.models.structures.StructureResource)
+            resource model.
 
     Parameters:
         create_resource: The resource to be retrieved or created anew.
@@ -207,11 +206,6 @@ async def resource_factory(
         # Currently only /structures entry endpoints can be queried with multiple expected responses.
         create_resource.endpoint = (
             create_resource.endpoint if create_resource.endpoint else "structures"
-        )
-        create_resource.endpoint_model = (
-            create_resource.endpoint_model
-            if create_resource.endpoint_model
-            else ("optimade.models.responses", "StructureResponseMany")
         )
 
         mongo_query = {
