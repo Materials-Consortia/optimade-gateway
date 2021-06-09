@@ -2,6 +2,7 @@ from optimade.server.mappers.entries import BaseResourceMapper
 from pydantic import AnyUrl  # pylint: disable=no-name-in-module
 
 from optimade_gateway.common.config import CONFIG
+from optimade_gateway.models import GatewayResource
 
 __all__ = ("GatewaysMapper",)
 
@@ -9,6 +10,7 @@ __all__ = ("GatewaysMapper",)
 class GatewaysMapper(BaseResourceMapper):
 
     ENDPOINT = "gateways"
+    ENTRY_RESOURCE_CLASS = GatewayResource
 
     @classmethod
     def map_back(cls, doc: dict) -> dict:

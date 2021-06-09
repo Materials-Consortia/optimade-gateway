@@ -2,6 +2,7 @@ from optimade.server.mappers.entries import BaseResourceMapper
 from pydantic import AnyUrl  # pylint: disable=no-name-in-module
 
 from optimade_gateway.common.config import CONFIG
+from optimade_gateway.models import QueryResource
 
 __all__ = ("QueryMapper",)
 
@@ -9,6 +10,7 @@ __all__ = ("QueryMapper",)
 class QueryMapper(BaseResourceMapper):
 
     ENDPOINT = "queries"
+    ENTRY_RESOURCE_CLASS = QueryResource
 
     @classmethod
     def map_back(cls, doc: dict) -> dict:
