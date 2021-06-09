@@ -6,25 +6,24 @@ This file describes the router for:
 
 where `version` may be left out.
 """
-from typing import Union
-
 from fastapi import APIRouter, Depends, Request
 from optimade.models import (
-    ErrorResponse,
     LinksResponse,
 )
 from optimade.server.query_params import EntryListingQueryParams
+from optimade.server.schemas import ERROR_RESPONSES
 
 ROUTER = APIRouter(redirect_slashes=True)
 
 
 @ROUTER.get(
     "/gateways/{gateway_id}/links",
-    response_model=Union[LinksResponse, ErrorResponse],
+    response_model=LinksResponse,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Links"],
+    responses=ERROR_RESPONSES,
 )
 async def get_gateways_links(
     request: Request,
@@ -45,11 +44,12 @@ async def get_gateways_links(
 
 @ROUTER.get(
     "/gateways/{gateway_id}/{version}/links",
-    response_model=Union[LinksResponse, ErrorResponse],
+    response_model=LinksResponse,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Links"],
+    responses=ERROR_RESPONSES,
 )
 async def get_versioned_gateways_links(
     request: Request,

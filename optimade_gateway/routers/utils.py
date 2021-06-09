@@ -180,8 +180,8 @@ async def resource_factory(
 
         mongo_query = {
             "$or": [
-                {"base_url": {"$eq": await clean_python_types(base_url)}},
-                {"base_url.href": {"$eq": await clean_python_types(base_url)}},
+                {"base_url": {"$eq": base_url}},
+                {"base_url.href": {"$eq": base_url}},
             ]
         }
     elif isinstance(create_resource, GatewayCreate):
@@ -192,9 +192,7 @@ async def resource_factory(
         mongo_query = {
             "databases": {"$size": len(create_resource.databases)},
             "databases.attributes.base_url": {
-                "$all": await clean_python_types(
-                    [_.attributes.base_url for _ in create_resource.databases]
-                )
+                "$all": [_.attributes.base_url for _ in create_resource.databases]
             },
         }
     elif isinstance(create_resource, QueryCreate):
@@ -210,9 +208,7 @@ async def resource_factory(
 
         mongo_query = {
             "gateway_id": {"$eq": create_resource.gateway_id},
-            "query_parameters": {
-                "$eq": await clean_python_types(create_resource.query_parameters),
-            },
+            "query_parameters": {"$eq": create_resource.query_parameters},
             "endpoint": {"$eq": create_resource.endpoint},
         }
     else:
@@ -222,7 +218,7 @@ async def resource_factory(
         )
 
     result, more_data_available, _ = await RESOURCE_COLLECTION.find(
-        criteria={"filter": mongo_query}
+        criteria={"filter": await clean_python_types(mongo_query)}
     )
 
     if more_data_available:

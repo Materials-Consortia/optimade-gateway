@@ -90,7 +90,7 @@ async def perform_query(
             **{"$set": {"state": QueryState.IN_PROGRESS}},
         )
     else:
-        response = EntryResponseMany(
+        response = query.attributes.endpoint.get_response_model()(
             data=[],
             links=ToplevelLinks(next=None),
             meta=meta_values(
@@ -163,7 +163,7 @@ async def perform_query(
                             resource["meta"] = database_id_meta
                         else:
                             resource.meta = Meta(**database_id_meta)
-                    response.data.append(results)
+                    response.data.extend(results)
                     response.meta.data_returned += response_meta["data_returned"]
                     if not response.meta.more_data_available:
                         # Keep it True, if set to True once.

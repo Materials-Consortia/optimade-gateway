@@ -6,13 +6,11 @@ This file describes the router for:
 
 where `version` and the last `id` may be left out.
 """
-from typing import Union
-
 from fastapi import APIRouter, Depends, Request, status
-from optimade.models import ErrorResponse
 from optimade.models.responses import EntryResponseMany
 from optimade.server.exceptions import Forbidden
 from optimade.server.query_params import EntryListingQueryParams
+from optimade.server.schemas import ERROR_RESPONSES
 
 from optimade_gateway.models import (
     QueryCreate,
@@ -27,11 +25,12 @@ ROUTER = APIRouter(redirect_slashes=True)
 
 @ROUTER.get(
     "/gateways/{gateway_id}/queries",
-    response_model=Union[QueriesResponse, ErrorResponse],
+    response_model=QueriesResponse,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Gateways", "Queries"],
+    responses=ERROR_RESPONSES,
 )
 async def get_gateway_queries(
     request: Request,
@@ -57,12 +56,13 @@ async def get_gateway_queries(
 
 @ROUTER.post(
     "/gateways/{gateway_id}/queries",
-    response_model=Union[QueriesResponseSingle, ErrorResponse],
+    response_model=QueriesResponseSingle,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Gateways", "Queries"],
     status_code=status.HTTP_202_ACCEPTED,
+    responses=ERROR_RESPONSES,
 )
 async def post_gateway_queries(
     request: Request,
@@ -91,11 +91,12 @@ async def post_gateway_queries(
 
 @ROUTER.get(
     "/gateways/{gateway_id}/queries/{query_id}",
-    response_model=Union[EntryResponseMany, ErrorResponse],
+    response_model=EntryResponseMany,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Gateways", "Queries"],
+    responses=ERROR_RESPONSES,
 )
 async def get_gateway_query(
     request: Request, gateway_id: str, query_id: str

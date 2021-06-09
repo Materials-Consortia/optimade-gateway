@@ -30,9 +30,8 @@ async def test_get_search(
     this should ensure a new gateway is created, specifically for use with these versioned
     base URLs, but we can reuse the mock_gateway_responses for the "twodbs" gateway.
     """
-    from optimade.models import StructureResponseMany
-
     from optimade_gateway.common.config import CONFIG
+    from optimade_gateway.models import GatewayQueryResponse
 
     gateway_id = "twodbs"
     gateway: dict = await get_gateway(gateway_id)
@@ -52,7 +51,7 @@ async def test_get_search(
 
     assert response.status_code == 200, f"Request failed: {response.json()}"
 
-    response = StructureResponseMany(**response.json())
+    response = GatewayQueryResponse(**response.json())
     assert response.data
     assert (
         getattr(response.meta, f"_{CONFIG.provider.prefix}_query", "NOT FOUND")
@@ -72,9 +71,8 @@ async def test_get_search_existing_gateway(
     caplog: pytest.LogCaptureFixture,
 ):
     """Test GET /search for base URLs matching an existing gateway"""
-    from optimade.models import StructureResponseMany
-
     from optimade_gateway.common.config import CONFIG
+    from optimade_gateway.models import GatewayQueryResponse
 
     gateway_id = "twodbs"
     gateway: dict = await get_gateway(gateway_id)
@@ -115,7 +113,7 @@ async def test_get_search_existing_gateway(
 
         assert response.status_code == 200, f"Request failed: {response.json()}"
 
-        response = StructureResponseMany(**response.json())
+        response = GatewayQueryResponse(**response.json())
         assert response.data, f"No data: {response.json(indent=2)}"
         assert (
             getattr(response.meta, f"_{CONFIG.provider.prefix}_query", "NOT FOUND")
@@ -135,10 +133,12 @@ async def test_get_search_not_finishing(
     caplog: pytest.LogCaptureFixture,
 ):
     """Test GET /search for unfinished query (redirect to query URL)"""
-    from optimade.models import EntryResponseMany
-
     from optimade_gateway.common.config import CONFIG
-    from optimade_gateway.models.queries import QueryResource, QueryState
+    from optimade_gateway.models.queries import (
+        GatewayQueryResponse,
+        QueryResource,
+        QueryState,
+    )
 
     gateway_id = "slow-query"
     gateway: dict = await get_gateway(gateway_id)
@@ -160,12 +160,13 @@ async def test_get_search_not_finishing(
 
     assert "A gateway was found and reused for a query" in caplog.text, caplog.text
 
-    response = EntryResponseMany(**response.json())
-    assert response.data == [], f"Data was found in response: {response.json(indent=2)}"
+    response = GatewayQueryResponse(**response.json())
+    assert response.data == {}, f"Data was found in response: {response.json(indent=2)}"
 
     assert getattr(
         response.meta, f"_{CONFIG.provider.prefix}_query", False
     ), f"Special _<prefix>_query field not found in meta. Response: {response.json(indent=2)}"
+
     query: QueryResource = QueryResource(
         **getattr(response.meta, f"_{CONFIG.provider.prefix}_query")
     )
@@ -175,9 +176,9 @@ async def test_get_search_not_finishing(
     assert (
         query.attributes.query_parameters.page_limit == query_params["page_limit"]
     ), query
-    assert (
-        query.attributes.response == query.attributes.__fields__["response"].default
-    ), query
+    assert isinstance(query.attributes.response, GatewayQueryResponse)
+    assert query.attributes.response.data == {}
+    assert query.attributes.response.errors == []
     assert query.attributes.gateway_id == gateway_id, query
 
 
@@ -239,7 +240,7 @@ async def test_post_search(
         == OptimadeQueryParameters(**data["query_parameters"]).dict()
     ), f"Response: {datum.attributes.query_parameters!r}\n\nTest data: {OptimadeQueryParameters(**data['query_parameters'])!r}"
 
-    assert datum.attributes.state == QueryState.CREATED
+    assert datum.attributes.state in [QueryState.CREATED, QueryState.STARTED]
     assert datum.attributes.response is None
 
     with open(top_dir / "tests/static/test_gateways.json") as handle:
@@ -321,7 +322,7 @@ async def test_post_search_existing_gateway(
             == OptimadeQueryParameters(**gateway_create_data["query_parameters"]).dict()
         ), f"Response: {datum.attributes.query_parameters!r}\n\nTest data: {OptimadeQueryParameters(**gateway_create_data['query_parameters'])!r}"
 
-        assert datum.attributes.state == QueryState.CREATED
+        assert datum.attributes.state in [QueryState.CREATED, QueryState.STARTED]
         assert datum.attributes.response is None
 
         assert datum.attributes.gateway_id == gateway_id
@@ -345,8 +346,9 @@ async def test_sort_no_effect(
     This means if the `sort` parameter is used, the response should not change - it should be
     ignored.
     """
-    from optimade.models import StructureResponseMany, Warnings
+    from optimade.models import Warnings
 
+    from optimade_gateway.models import GatewayQueryResponse
     from optimade_gateway.models.responses import QueriesResponseSingle
     from optimade_gateway.warnings import SortNotSupported
 
@@ -373,9 +375,9 @@ async def test_sort_no_effect(
     assert response_asc.status_code == 200, f"Request failed: {response_asc.json()}"
     assert response_desc.status_code == 200, f"Request failed: {response_desc.json()}"
 
-    response_asc = StructureResponseMany(**response_asc.json())
+    response_asc = GatewayQueryResponse(**response_asc.json())
     assert response_asc
-    response_desc = StructureResponseMany(**response_desc.json())
+    response_desc = GatewayQueryResponse(**response_desc.json())
     assert response_desc
 
     assert response_asc.data == response_desc.data

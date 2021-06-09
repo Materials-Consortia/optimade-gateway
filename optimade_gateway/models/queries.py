@@ -6,15 +6,17 @@ import warnings
 from optimade.models import (
     EntryResource,
     EntryResourceAttributes,
-    EntryResponseMany,
-    ErrorResponse,
+    OptimadeError,
     ReferenceResource,
     ReferenceResponseMany,
     ReferenceResponseOne,
+    Response,
+    ResponseMeta,
     StructureResource,
     StructureResponseMany,
     StructureResponseOne,
 )
+from optimade.models.utils import StrictField
 from optimade.server.query_params import EntryListingQueryParams
 from pydantic import BaseModel, EmailStr, Field, validator
 
@@ -138,12 +140,22 @@ class QueryState(Enum):
     FINISHED = "finished"
 
 
-class GatewayQueryResponse(EntryResponseMany):
+class GatewayQueryResponse(Response):
     """Response from a Gateway Query."""
 
-    data: Dict[str, Union[List[EntryResource], List[Dict[str, Any]]]] = Field(
-        ...,
+    data: Dict[str, Union[List[EntryResource], List[Dict[str, Any]]]] = StrictField(
+        ..., uniqueItems=True, description="Outputted Data"
+    )
+    meta: ResponseMeta = StrictField(
+        ..., description="A meta object containing non-standard information"
+    )
+    errors: Optional[List[OptimadeError]] = StrictField(
+        [],
+        description="A list of OPTIMADE-specific JSON API error objects, where the field detail MUST be present.",
         uniqueItems=True,
+    )
+    included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = Field(
+        None, uniqueItems=True
     )
 
 
@@ -165,10 +177,9 @@ class QueryResourceAttributes(EntryResourceAttributes):
         title="State",
         type="enum",
     )
-    response: Optional[Union[GatewayQueryResponse, ErrorResponse]] = Field(
+    response: Optional[GatewayQueryResponse] = Field(
         None,
         description="Response from gateway query.",
-        type="object",
     )
     endpoint: EndpointEntryType = Field(
         EndpointEntryType.STRUCTURES,

@@ -173,9 +173,21 @@ def mock_gateway_responses(
                     top_dir / f"tests/static/db_responses/{database['id']}.json"
                 ) as handle:
                     data = json.load(handle)
+
+                if data.get("errors", []):
+                    for error in data.get("errors", []):
+                        if "status" in error:
+                            status_code = int(error["status"])
+                            break
+                    else:
+                        status_code = 500
+                else:
+                    status_code = 200
+
                 httpx_mock.add_response(
                     url=re.compile(fr"{database['attributes']['base_url']}.*"),
                     json=data,
+                    status_code=status_code,
                 )
 
     def sleep_response(request: httpx.Request, extensions: dict) -> MockResponse:

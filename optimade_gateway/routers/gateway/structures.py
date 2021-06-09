@@ -23,6 +23,7 @@ from optimade.models import (
 )
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.server.routers.utils import meta_values
+from optimade.server.schemas import ERROR_RESPONSES
 
 from optimade_gateway.models import QueryResource
 from optimade_gateway.queries import perform_query
@@ -36,11 +37,12 @@ ROUTER = APIRouter(redirect_slashes=True)
 
 @ROUTER.get(
     "/gateways/{gateway_id}/structures",
-    response_model=Union[StructureResponseMany, ErrorResponse],
+    response_model=StructureResponseMany,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Structures"],
+    responses=ERROR_RESPONSES,
 )
 async def get_structures(
     request: Request,
@@ -88,17 +90,23 @@ async def get_structures(
                 break
         else:
             response.status_code = 500
-
-    return gateway_response
+        return gateway_response
+    elif isinstance(gateway_response, StructureResponseMany):
+        return gateway_response
+    else:
+        raise TypeError(
+            "The response should be either StructureResponseMany or ErrorResponse."
+        )
 
 
 @ROUTER.get(
     "/gateways/{gateway_id}/structures/{structure_id:path}",
-    response_model=Union[StructureResponseOne, ErrorResponse],
+    response_model=StructureResponseOne,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Structures"],
+    responses=ERROR_RESPONSES,
 )
 async def get_single_structure(
     request: Request,
@@ -241,12 +249,13 @@ async def get_single_structure(
 
 @ROUTER.get(
     "/gateways/{gateway_id}/{version}/structures",
-    response_model=Union[StructureResponseMany, ErrorResponse],
+    response_model=StructureResponseMany,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Structures"],
     include_in_schema=False,
+    responses=ERROR_RESPONSES,
 )
 async def get_versioned_structures(
     request: Request,
@@ -265,12 +274,13 @@ async def get_versioned_structures(
 
 @ROUTER.get(
     "/gateways/{gateway_id}/{version}/structures/{structure_id:path}",
-    response_model=Union[StructureResponseOne, ErrorResponse],
+    response_model=StructureResponseOne,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Structures"],
     include_in_schema=False,
+    responses=ERROR_RESPONSES,
 )
 async def get_versioned_single_structure(
     request: Request,

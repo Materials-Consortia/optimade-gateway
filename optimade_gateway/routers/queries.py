@@ -20,6 +20,7 @@ from optimade.models import ErrorResponse, ToplevelLinks
 from optimade.models.responses import EntryResponseMany
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import meta_values
+from optimade.server.schemas import ERROR_RESPONSES
 
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.mappers import QueryMapper
@@ -45,11 +46,12 @@ QUERIES_COLLECTION = AsyncMongoCollection(
 
 @ROUTER.get(
     "/queries",
-    response_model=Union[QueriesResponse, ErrorResponse],
+    response_model=QueriesResponse,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Queries"],
+    responses=ERROR_RESPONSES,
 )
 async def get_queries(
     request: Request,
@@ -71,12 +73,13 @@ async def get_queries(
 
 @ROUTER.post(
     "/queries",
-    response_model=Union[QueriesResponseSingle, ErrorResponse],
+    response_model=QueriesResponseSingle,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Queries"],
     status_code=status.HTTP_202_ACCEPTED,
+    responses=ERROR_RESPONSES,
 )
 async def post_queries(
     request: Request,
@@ -114,17 +117,18 @@ async def post_queries(
 
 @ROUTER.get(
     "/queries/{query_id:path}",
-    response_model=Union[EntryResponseMany, ErrorResponse, GatewayQueryResponse],
+    response_model=GatewayQueryResponse,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Queries"],
+    responses=ERROR_RESPONSES,
 )
 async def get_query(
     request: Request,
     query_id: str,
     response: Response,
-) -> Union[EntryResponseMany, ErrorResponse, GatewayQueryResponse]:
+) -> Union[ErrorResponse, GatewayQueryResponse]:
     """`GET /queries/{query_id}`
 
     Return the response from a query

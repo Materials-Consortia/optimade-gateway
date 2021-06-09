@@ -6,19 +6,17 @@ This file describes the router for:
 
 where, `entry` may be left out.
 """
-from typing import Union
-
 from fastapi import APIRouter, Request
 from optimade import __api_version__
 from optimade.models import (
     BaseInfoAttributes,
     BaseInfoResource,
     EntryInfoResponse,
-    ErrorResponse,
     InfoResponse,
     LinksResource,
 )
 from optimade.server.routers.utils import get_base_url, meta_values
+from optimade.server.schemas import ERROR_RESPONSES
 
 from optimade_gateway.models import GatewayResource, QueryResource
 
@@ -33,11 +31,12 @@ ENTRY_INFO_SCHEMAS = {
 
 @ROUTER.get(
     "/info",
-    response_model=Union[InfoResponse, ErrorResponse],
+    response_model=InfoResponse,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Info"],
+    responses=ERROR_RESPONSES,
 )
 async def get_info(request: Request) -> InfoResponse:
     """`GET /info`
@@ -83,11 +82,12 @@ async def get_info(request: Request) -> InfoResponse:
 
 @ROUTER.get(
     "/info/{entry}",
-    response_model=Union[EntryInfoResponse, ErrorResponse],
+    response_model=EntryInfoResponse,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Info"],
+    responses=ERROR_RESPONSES,
 )
 async def get_entry_info(request: Request, entry: str) -> EntryInfoResponse:
     """`GET /info/{entry}`

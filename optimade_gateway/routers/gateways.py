@@ -6,13 +6,12 @@ This file describes the router for:
 
 where, `id` may be left out.
 """
-from typing import Union
-
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import RedirectResponse
-from optimade.models import ErrorResponse, ToplevelLinks
+from optimade.models import ToplevelLinks
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import meta_values
+from optimade.server.schemas import ERROR_RESPONSES
 
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.mappers import GatewaysMapper
@@ -36,11 +35,12 @@ GATEWAYS_COLLECTION = AsyncMongoCollection(
 
 @ROUTER.get(
     "/gateways",
-    response_model=Union[GatewaysResponse, ErrorResponse],
+    response_model=GatewaysResponse,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Gateways"],
+    responses=ERROR_RESPONSES,
 )
 async def get_gateways(
     request: Request,
@@ -62,11 +62,12 @@ async def get_gateways(
 
 @ROUTER.post(
     "/gateways",
-    response_model=Union[GatewaysResponseSingle, ErrorResponse],
+    response_model=GatewaysResponseSingle,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Gateways"],
+    responses=ERROR_RESPONSES,
 )
 async def post_gateways(
     request: Request, gateway: GatewayCreate
@@ -110,11 +111,12 @@ async def post_gateways(
 
 @ROUTER.get(
     "/gateways/{gateway_id}",
-    response_model=Union[GatewaysResponseSingle, ErrorResponse],
+    response_model=GatewaysResponseSingle,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Gateways"],
+    responses=ERROR_RESPONSES,
 )
 async def get_gateway(request: Request, gateway_id: str) -> GatewaysResponseSingle:
     """`GET /gateways/{gateway ID}`

@@ -57,6 +57,10 @@ async def process_db_response(
     errors = []
     meta = {}
 
+    from optimade_gateway.common.logger import LOGGER
+
+    LOGGER.debug("database_id: %s", database_id)
+
     if isinstance(response, ErrorResponse):
         for error in response.errors:
             if isinstance(error.id, str) and error.id.startswith("OPTIMADE_GATEWAY"):
@@ -113,14 +117,12 @@ async def process_db_response(
 
         # This ensures an empty list under `response.data.{database_id}` is returned if the case is
         # simply that there is no results to return.
-        # It also ensures that only `response.errors.{database_id}` is created if there are any
-        # errors.
+        if errors:
+            extra_updates.update({"$addToSet": {"response.errors": {"$each": errors}}})
         await update_query(
             query,
-            f"response.errors.{database_id}"
-            if errors
-            else f"response.data.{database_id}",
-            errors or results,
+            f"response.data.{database_id}",
+            results,
             **extra_updates,
         )
     else:

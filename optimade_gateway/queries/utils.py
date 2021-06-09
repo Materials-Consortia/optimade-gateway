@@ -47,17 +47,20 @@ async def update_query(
     update_kwargs = {"$set": {"last_modified": update_time}}
 
     if mongo_kwargs:
-        update_kwargs.update(await clean_python_types(mongo_kwargs))
+        update_kwargs.update(mongo_kwargs)
 
     if operator and operator == "$set":
-        update_kwargs["$set"].update({field: await clean_python_types(value)})
+        update_kwargs["$set"].update({field: value})
     elif operator:
-        update_kwargs.update({operator: {field: await clean_python_types(value)}})
+        if operator in update_kwargs:
+            update_kwargs[operator].update({field: value})
+        else:
+            update_kwargs.update({operator: {field: value}})
 
     # MongoDB
     result: UpdateResult = await QUERIES_COLLECTION.collection.update_one(
         filter={"id": {"$eq": query.id}},
-        update=update_kwargs,
+        update=await clean_python_types(update_kwargs),
     )
     if result.matched_count != 1:
         LOGGER.error(

@@ -19,8 +19,6 @@ from fastapi import (
 from fastapi.responses import RedirectResponse
 from optimade.server.exceptions import BadRequest
 from optimade.models import (
-    EntryResponseMany,
-    ErrorResponse,
     LinksResource,
     LinksResourceAttributes,
     ToplevelLinks,
@@ -28,6 +26,7 @@ from optimade.models import (
 from optimade.models.links import LinkType
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import meta_values
+from optimade.server.schemas import ERROR_RESPONSES
 from pydantic import AnyUrl, ValidationError
 
 from optimade_gateway.common.config import CONFIG
@@ -40,7 +39,11 @@ from optimade_gateway.models import (
     QueryResource,
     Search,
 )
-from optimade_gateway.models.queries import OptimadeQueryParameters, QueryState
+from optimade_gateway.models.queries import (
+    GatewayQueryResponse,
+    OptimadeQueryParameters,
+    QueryState,
+)
 from optimade_gateway.queries import perform_query, SearchQueryParams
 
 
@@ -49,12 +52,13 @@ ROUTER = APIRouter(redirect_slashes=True)
 
 @ROUTER.post(
     "/search",
-    response_model=Union[QueriesResponseSingle, ErrorResponse],
+    response_model=QueriesResponseSingle,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Search"],
     status_code=status.HTTP_202_ACCEPTED,
+    responses=ERROR_RESPONSES,
 )
 async def post_search(request: Request, search: Search) -> QueriesResponseSingle:
     """`POST /search`
@@ -118,7 +122,7 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
                     f"{url.user + '@' if url.user else ''}{url.host}"
                     f"{':' + url.port if url.port else ''}"
                     f"{url.path.rstrip('/') if url.path else ''}"
-                ),
+                ).replace(".", "__"),
                 type="links",
                 attributes=LinksResourceAttributes(
                     name=(
@@ -169,18 +173,19 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
 
 @ROUTER.get(
     "/search",
-    response_model=Union[EntryResponseMany, ErrorResponse],
+    response_model=GatewayQueryResponse,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Search"],
+    responses=ERROR_RESPONSES,
 )
 async def get_search(
     request: Request,
     response: Response,
     search_params: SearchQueryParams = Depends(),
     entry_params: EntryListingQueryParams = Depends(),
-) -> Union[EntryResponseMany, ErrorResponse, RedirectResponse]:
+) -> Union[GatewayQueryResponse, RedirectResponse]:
     """`GET /search`
 
     Coordinate a new OPTIMADE query in multiple databases through a gateway:

@@ -7,6 +7,7 @@ This file describes the router for:
 """
 from fastapi import APIRouter, Request
 from optimade.server.routers.versions import CsvResponse
+from optimade.server.schemas import ERROR_RESPONSES
 
 ROUTER = APIRouter(redirect_slashes=True)
 
@@ -15,6 +16,7 @@ ROUTER = APIRouter(redirect_slashes=True)
     "/gateways/{gateway_id}/versions",
     response_class=CsvResponse,
     tags=["Versions"],
+    responses=ERROR_RESPONSES,
 )
 async def get_gateway_versions(request: Request, gateway_id: str) -> CsvResponse:
     """`GET /gateways/{gateway_id}/versions`

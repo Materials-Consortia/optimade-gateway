@@ -6,19 +6,17 @@ This file describes the router for:
 
 where `version` and `entry` may be left out.
 """
-from typing import Union
-
 from fastapi import APIRouter, Request
 from optimade import __api_version__
 from optimade.models import (
     BaseInfoAttributes,
     BaseInfoResource,
     EntryInfoResponse,
-    ErrorResponse,
     InfoResponse,
     StructureResource,
 )
 from optimade.server.routers.utils import get_base_url, meta_values
+from optimade.server.schemas import ERROR_RESPONSES
 
 ROUTER = APIRouter(redirect_slashes=True)
 
@@ -27,11 +25,12 @@ ENTRY_INFO_SCHEMAS = {"structures": StructureResource.schema}
 
 @ROUTER.get(
     "/gateways/{gateway_id}/info",
-    response_model=Union[InfoResponse, ErrorResponse],
+    response_model=InfoResponse,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Info"],
+    responses=ERROR_RESPONSES,
 )
 async def get_gateways_info(
     request: Request,
@@ -88,11 +87,12 @@ async def get_gateways_info(
 
 @ROUTER.get(
     "/gateways/{gateway_id}/info/{entry}",
-    response_model=Union[EntryInfoResponse, ErrorResponse],
+    response_model=EntryInfoResponse,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Info"],
+    responses=ERROR_RESPONSES,
 )
 async def get_gateways_entry_info(
     request: Request, gateway_id: str, entry: str
@@ -145,11 +145,12 @@ async def get_gateways_entry_info(
 
 @ROUTER.get(
     "/gateways/{gateway_id}/{version}/info",
-    response_model=Union[InfoResponse, ErrorResponse],
+    response_model=InfoResponse,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Info"],
+    responses=ERROR_RESPONSES,
 )
 async def get_versioned_gateways_info(
     request: Request,
@@ -168,11 +169,12 @@ async def get_versioned_gateways_info(
 
 @ROUTER.get(
     "/gateways/{gateway_id}/{version}/info/{entry}",
-    response_model=Union[EntryInfoResponse, ErrorResponse],
+    response_model=EntryInfoResponse,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Info"],
+    responses=ERROR_RESPONSES,
 )
 async def get_versioned_gateways_entry_info(
     request: Request,

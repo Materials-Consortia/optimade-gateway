@@ -63,15 +63,19 @@ async def test_get_structures(
             more_data_available = db_response["meta"]["more_data_available"]
 
         for datum in db_response["data"]:
-            datum["id"] = f"{database['id']}/{datum['id']}"
+            database_id_meta = {
+                "_optimade_gateway_": {"source_database_id": database["id"]}
+            }
+            if "meta" in datum:
+                datum["meta"].update(database_id_meta)
+            else:
+                datum["meta"] = database_id_meta
             data.append(datum)
 
     assert data_returned == response.meta.data_returned
     assert data_available == response.meta.data_available
     assert more_data_available == response.meta.more_data_available
 
-    data.sort(key=lambda datum: datum["id"])
-    data.sort(key=lambda datum: "/".join(datum["id"].split("/")[1:]))
     assert data == json.loads(response.json(exclude_unset=True))["data"], (
         f"IDs in test not in response: {set([_['id'] for _ in data]) - set([_['id'] for _ in json.loads(response.json(exclude_unset=True))['data']])}\n\n"
         f"IDs in response not in test: {set([_['id'] for _ in json.loads(response.json(exclude_unset=True))['data']]) - set([_['id'] for _ in data])}\n\n"

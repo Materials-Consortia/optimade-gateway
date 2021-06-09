@@ -11,12 +11,11 @@ Database resources represent the available databases that may be used for the ga
 One can register a new database (by using `POST /databases`) or look through the available
 databases (by using `GET /databases`) using standard OPTIMADE filtering.
 """
-from typing import Union
-
 from fastapi import APIRouter, Depends, Request
-from optimade.models import ErrorResponse, LinksResource, ToplevelLinks
+from optimade.models import LinksResource, ToplevelLinks
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.server.routers.utils import handle_response_fields, meta_values
+from optimade.server.schemas import ERROR_RESPONSES
 
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.mappers import DatabasesMapper
@@ -39,11 +38,12 @@ DATABASES_COLLECTION = AsyncMongoCollection(
 
 @ROUTER.get(
     "/databases",
-    response_model=Union[DatabasesResponse, ErrorResponse],
+    response_model=DatabasesResponse,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Databases"],
+    responses=ERROR_RESPONSES,
 )
 async def get_databases(
     request: Request,
@@ -65,11 +65,12 @@ async def get_databases(
 
 @ROUTER.post(
     "/databases",
-    response_model=Union[DatabasesResponseSingle, ErrorResponse],
+    response_model=DatabasesResponseSingle,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Databases"],
+    responses=ERROR_RESPONSES,
 )
 async def post_databases(
     request: Request, database: DatabaseCreate
@@ -99,11 +100,12 @@ async def post_databases(
 
 @ROUTER.get(
     "/databases/{database_id:path}",
-    response_model=Union[DatabasesResponseSingle, ErrorResponse],
+    response_model=DatabasesResponseSingle,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Databases"],
+    responses=ERROR_RESPONSES,
 )
 async def get_database(
     request: Request,
