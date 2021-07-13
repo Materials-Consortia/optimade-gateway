@@ -1,4 +1,4 @@
-from optimade.server.exceptions import BadRequest, VersionNotSupported
+from optimade.server.exceptions import NotFound, VersionNotSupported
 from optimade.server.routers.utils import BASE_URL_PREFIXES
 
 
@@ -17,8 +17,6 @@ async def validate_version(version: str) -> None:
                 detail=f"version {version} is not supported. Supported versions: {valid_versions}"
             )
         else:
-            raise BadRequest(
-                title="Not Found",
-                status_code=404,
+            raise NotFound(
                 detail=f"version MUST be one of {valid_versions}",
             )
