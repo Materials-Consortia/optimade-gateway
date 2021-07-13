@@ -11,7 +11,7 @@ from typing import Union
 from fastapi import APIRouter, Depends, Request, status
 from optimade.models import ErrorResponse
 from optimade.models.responses import EntryResponseMany
-from optimade.server.exceptions import BadRequest
+from optimade.server.exceptions import Forbidden
 from optimade.server.query_params import EntryListingQueryParams
 
 from optimade_gateway.models import (
@@ -79,9 +79,7 @@ async def post_gateway_queries(
     await validate_resource(GATEWAYS_COLLECTION, gateway_id)
 
     if query.gateway_id and query.gateway_id != gateway_id:
-        raise BadRequest(
-            status_code=403,
-            title="Forbidden",
+        raise Forbidden(
             detail=(
                 f"The gateway ID in the posted data (<gateway={query.gateway_id}>) does not align "
                 f"with the gateway ID specified in the URL (/{gateway_id}/)."

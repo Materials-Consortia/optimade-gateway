@@ -102,7 +102,7 @@ async def get_gateways_entry_info(
     Get information about the gateway `{gateway_id}`'s entry-listing endpoints.
     """
     from optimade.models import EntryInfoResource
-    from optimade.server.exceptions import BadRequest
+    from optimade.server.exceptions import NotFound
 
     from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
     from optimade_gateway.routers.utils import (
@@ -114,9 +114,7 @@ async def get_gateways_entry_info(
 
     valid_entry_info_endpoints = ENTRY_INFO_SCHEMAS.keys()
     if entry not in valid_entry_info_endpoints:
-        raise BadRequest(
-            title="Not Found",
-            status_code=404,
+        raise NotFound(
             detail=(
                 f"Entry info not found for {entry}, valid entry info endpoints are: "
                 f"{', '.join(valid_entry_info_endpoints)}"

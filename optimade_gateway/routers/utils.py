@@ -10,7 +10,7 @@ from optimade.models import (
     ToplevelLinks,
 )
 from optimade.models.links import LinkType
-from optimade.server.exceptions import BadRequest
+from optimade.server.exceptions import NotFound
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import (
     get_base_url,
@@ -96,9 +96,7 @@ async def aretrieve_queryable_properties(
 async def validate_resource(collection: AsyncMongoCollection, entry_id: str) -> None:
     """Validate whether a resource exists in a collection"""
     if not await collection.exists(entry_id):
-        raise BadRequest(
-            title="Not Found",
-            status_code=404,
+        raise NotFound(
             detail=f"Resource <id={entry_id}> not found in {collection}.",
         )
 
