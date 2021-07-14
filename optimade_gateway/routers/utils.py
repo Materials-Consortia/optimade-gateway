@@ -37,7 +37,13 @@ async def get_entries(
     params: EntryListingQueryParams,
 ) -> EntryResponseMany:
     """Generalized `/{entries}` endpoint getter"""
-    results, more_data_available, fields = await collection.find(params=params)
+    (
+        results,
+        data_returned,
+        more_data_available,
+        fields,
+        include_fields,
+    ) = await collection.find(params=params)
 
     if more_data_available:
         # Deduce the `next` link from the current request
@@ -50,15 +56,15 @@ async def get_entries(
     else:
         links = ToplevelLinks(next=None)
 
-    if fields:
-        results = handle_response_fields(results, fields, set())
+    if fields or include_fields:
+        results = handle_response_fields(results, fields, include_fields)
 
     return response_cls(
         links=links,
         data=results,
         meta=meta_values(
             url=request.url,
-            data_returned=await collection.count(params=params),
+            data_returned=data_returned,
             data_available=await collection.count(),
             more_data_available=more_data_available,
         ),
@@ -217,7 +223,7 @@ async def resource_factory(
             f"{type(create_resource)!r}"
         )
 
-    result, more_data_available, _ = await RESOURCE_COLLECTION.find(
+    result, data_returned, more_data_available, _, _ = await RESOURCE_COLLECTION.find(
         criteria={"filter": await clean_python_types(mongo_query)}
     )
 
@@ -228,12 +234,13 @@ async def resource_factory(
         )
 
     if result:
-        if len(result) > 1:
+        if data_returned > 1:
             raise OptimadeGatewayError(
                 f"More than one {result[0].type} were found. IDs of found {result[0].type}: "
                 f"{[_.id for _ in result]}"
             )
-        result = result[0]
+        if isinstance(result, list):
+            result = result[0]
     else:
         if isinstance(create_resource, DatabaseCreate):
             # Set required `LinksResourceAttributes` values if not set

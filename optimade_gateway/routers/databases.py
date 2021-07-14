@@ -119,18 +119,24 @@ async def get_database(
     representing the database resource object with `id={database ID}`.
     """
     params.filter = f'id="{database_id}"'
-    result, _, fields = await DATABASES_COLLECTION.find(params=params)
+    (
+        result,
+        data_returned,
+        more_data_available,
+        fields,
+        include_fields,
+    ) = await DATABASES_COLLECTION.find(params=params)
 
-    if fields and result is not None:
-        result = handle_response_fields(result, fields, set())[0]
+    if fields or include_fields and result is not None:
+        result = handle_response_fields(result, fields, include_fields)[0]
 
     return DatabasesResponseSingle(
         links=ToplevelLinks(next=None),
         data=result,
         meta=meta_values(
             url=request.url,
-            data_returned=0 if result is None else 1,
+            data_returned=data_returned,
             data_available=await DATABASES_COLLECTION.count(),
-            more_data_available=False,
+            more_data_available=more_data_available,
         ),
     )

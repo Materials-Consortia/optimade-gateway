@@ -8,11 +8,11 @@ This file describes the router for:
 from fastapi import APIRouter, Depends, Request
 
 from optimade.models import LinksResponse, LinksResource
-from optimade.server.mappers import LinksMapper
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.schemas import ERROR_RESPONSES
 
 from optimade_gateway.common.config import CONFIG
+from optimade_gateway.mappers.links import LinksMapper
 from optimade_gateway.mongo.collection import AsyncMongoCollection
 from optimade_gateway.routers.utils import get_entries
 

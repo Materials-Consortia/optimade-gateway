@@ -10,7 +10,6 @@ from fastapi import APIRouter, Depends, Request
 from fastapi.responses import RedirectResponse
 from optimade.models import ToplevelLinks
 from optimade.server.query_params import EntryListingQueryParams
-from optimade.server.routers.utils import meta_values
 from optimade.server.schemas import ERROR_RESPONSES
 
 from optimade_gateway.common.config import CONFIG
@@ -76,6 +75,7 @@ async def post_gateways(
 
     Create or return existing gateway according to `gateway`.
     """
+    from optimade.server.routers.utils import meta_values
     from optimade_gateway.common.utils import clean_python_types
     from optimade_gateway.routers.utils import resource_factory
 
