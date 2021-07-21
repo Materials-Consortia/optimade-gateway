@@ -51,7 +51,7 @@ async def get_entries(
         links = ToplevelLinks(next=None)
 
     if fields:
-        results = handle_response_fields(results, fields)
+        results = handle_response_fields(results, fields, set())
 
     return response_cls(
         links=links,
