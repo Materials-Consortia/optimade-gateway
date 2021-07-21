@@ -120,7 +120,7 @@ async def get_database(
     result, _, fields = await DATABASES_COLLECTION.find(params=params)
 
     if fields and result is not None:
-        result = handle_response_fields(result, fields)[0]
+        result = handle_response_fields(result, fields, set())[0]
 
     return DatabasesResponseSingle(
         links=ToplevelLinks(next=None),
