@@ -75,7 +75,7 @@ jobs:
 
     - name: Upload coverage to Codecov
       if: matrix.python-version == 3.8 && github.repository == 'Materials-Consortia/optimade-gateway'
-      uses: codecov/codecov-action@v2.0.1
+      uses: codecov/codecov-action@v2.0.2
       with:
         name: optimade-gateway
         files: ./coverage.xml
