@@ -1,3 +1,3 @@
 httpx~=0.18.2
-motor~=2.4
+motor~=2.5
 optimade[server]~=0.16.1
