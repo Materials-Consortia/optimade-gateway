@@ -7,7 +7,6 @@ This file describes the router for:
 where, `id` may be left out.
 """
 import asyncio
-from typing import Union
 
 from fastapi import (
     APIRouter,
@@ -16,8 +15,7 @@ from fastapi import (
     Response,
     status,
 )
-from optimade.models import ErrorResponse, ToplevelLinks
-from optimade.models.responses import EntryResponseMany
+from optimade.models import ToplevelLinks
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import meta_values
 from optimade.server.schemas import ERROR_RESPONSES
@@ -128,7 +126,7 @@ async def get_query(
     request: Request,
     query_id: str,
     response: Response,
-) -> Union[ErrorResponse, GatewayQueryResponse]:
+) -> GatewayQueryResponse:
     """`GET /queries/{query_id}`
 
     Return the response from a query
@@ -139,15 +137,27 @@ async def get_query(
     query: QueryResource = await get_valid_resource(QUERIES_COLLECTION, query_id)
 
     if query.attributes.state != QueryState.FINISHED:
-        return EntryResponseMany(
-            data=[],
-            meta=meta_values(
-                url=request.url,
-                data_returned=0,
-                data_available=None,  # It is at this point unknown
-                more_data_available=False,
-                **{f"_{CONFIG.provider.prefix}_query": query},
-            ),
+        unfinished_meta = {f"_{CONFIG.provider.prefix}_query": query}
+        if hasattr(query.attributes.response, "meta"):
+            unfinished_meta.update(
+                {
+                    "data_available": query.attributes.response.meta.data_available,
+                    "data_returned": query.attributes.response.meta.data_returned,
+                    "more_data_available": query.attributes.response.meta.more_data_available,
+                }
+            )
+        else:
+            unfinished_meta.update(
+                {
+                    "data_available": 0,
+                    "data_returned": 0,
+                    "more_data_available": False,
+                }
+            )
+        return GatewayQueryResponse(
+            data=getattr(query.attributes.response, "data", {}),
+            links=getattr(query.attributes.response, "links", ToplevelLinks(next=None)),
+            meta=meta_values(url=request.url, **unfinished_meta),
         )
 
     if query.attributes.response.errors:
