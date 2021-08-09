@@ -37,7 +37,7 @@ ROUTER = APIRouter(redirect_slashes=True)
 
 @ROUTER.get(
     "/gateways/{gateway_id}/structures",
-    response_model=StructureResponseMany,
+    response_model=Union[StructureResponseMany, ErrorResponse],
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
@@ -101,7 +101,7 @@ async def get_structures(
 
 @ROUTER.get(
     "/gateways/{gateway_id}/structures/{structure_id:path}",
-    response_model=StructureResponseOne,
+    response_model=Union[StructureResponseOne, ErrorResponse],
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
@@ -249,7 +249,7 @@ async def get_single_structure(
 
 @ROUTER.get(
     "/gateways/{gateway_id}/{version}/structures",
-    response_model=StructureResponseMany,
+    response_model=Union[StructureResponseMany, ErrorResponse],
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
@@ -274,7 +274,7 @@ async def get_versioned_structures(
 
 @ROUTER.get(
     "/gateways/{gateway_id}/{version}/structures/{structure_id:path}",
-    response_model=StructureResponseOne,
+    response_model=Union[StructureResponseOne, ErrorResponse],
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,

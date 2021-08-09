@@ -23,8 +23,8 @@ from optimade_gateway.routers.gateway import (
     info as gateway_info,
     links as gateway_links,
     queries as gateway_queries,
-    structures,
-    versions,
+    structures as gateway_structures,
+    versions as gateway_versions,
 )
 
 APP = FastAPI(
@@ -62,7 +62,7 @@ for exception, handler in OPTIMADE_EXCEPTIONS:
 
 # Add the special /versions endpoint(s)
 APP.include_router(versions_router)
-APP.include_router(versions.ROUTER)
+APP.include_router(gateway_versions.ROUTER)
 
 # Add endpoints to / and /vMAJOR
 for prefix in list(BASE_URL_PREFIXES.values()) + [""]:
@@ -70,7 +70,7 @@ for prefix in list(BASE_URL_PREFIXES.values()) + [""]:
         gateway_info,
         gateway_links,
         gateway_queries,
-        structures,
+        gateway_structures,
     ):
         APP.include_router(router.ROUTER, prefix=prefix, include_in_schema=prefix == "")
 

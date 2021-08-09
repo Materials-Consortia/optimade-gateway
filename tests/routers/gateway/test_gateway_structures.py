@@ -64,7 +64,7 @@ async def test_get_structures(
 
         for datum in db_response["data"]:
             database_id_meta = {
-                "_optimade_gateway_": {"source_database_id": database["id"]}
+                f"_{CONFIG.provider.prefix}_source_database_id": database["id"]
             }
             if "meta" in datum:
                 datum["meta"].update(database_id_meta)

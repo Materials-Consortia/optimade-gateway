@@ -1,17 +1,15 @@
-from optimade.models import LinksResource
 from pydantic import AnyUrl  # pylint: disable=no-name-in-module
 
 from optimade_gateway.common.config import CONFIG
 
-from optimade_gateway.mappers.base import BaseResourceMapper
+from optimade_gateway.mappers.links import LinksMapper
 
 __all__ = ("DatabasesMapper",)
 
 
-class DatabasesMapper(BaseResourceMapper):
+class DatabasesMapper(LinksMapper):
 
     ENDPOINT = "databases"
-    ENTRY_RESOURCE_CLASS = LinksResource
 
     @classmethod
     def map_back(cls, doc: dict) -> dict:
@@ -31,6 +29,4 @@ class DatabasesMapper(BaseResourceMapper):
         }
 
         # Ensure the type does not change to "databases"
-        newdoc = super().map_back(doc)
-        newdoc["type"] = "links"
-        return newdoc
+        return super().map_back(doc)

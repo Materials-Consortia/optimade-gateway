@@ -21,6 +21,7 @@ from optimade.server.routers.utils import BASE_URL_PREFIXES, get_base_url, meta_
 from pydantic import ValidationError
 from starlette.datastructures import URL
 
+from optimade_gateway.common.config import CONFIG
 from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.common.utils import get_resource_attribute
 from optimade_gateway.models import (
@@ -141,7 +142,9 @@ async def perform_query(
             if not use_query_resource:
                 # Create a standard OPTIMADE response, adding the database ID to each returned
                 # resource's meta field.
-                database_id_meta = {"_optimade_gateway_": {"source_database_id": db_id}}
+                database_id_meta = {
+                    f"_{CONFIG.provider.prefix}_source_database_id": db_id
+                }
                 if errors or isinstance(response, ErrorResponse):
                     # Error response
                     if isinstance(response, ErrorResponse):
