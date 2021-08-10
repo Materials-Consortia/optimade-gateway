@@ -133,6 +133,19 @@ def get_gateway() -> Callable[[str], Awaitable[dict]]:
 
 
 @pytest.fixture
+async def random_gateway() -> dict:
+    """Get a random gateway currently in the MongoDB"""
+    from optimade_gateway.mongo.database import MONGO_DB
+
+    gateway_ids = set()
+    async for gateway in MONGO_DB["gateways"].find(
+        filter={}, projection={"id": True, "_id": False}
+    ):
+        gateway_ids.add(gateway["id"])
+    return gateway_ids.pop()
+
+
+@pytest.fixture
 async def reset_db_after(top_dir: Path) -> None:
     """Reset MongoDB with original test data after the test has run"""
     try:

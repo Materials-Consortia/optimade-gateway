@@ -7,7 +7,6 @@ This file describes the router for:
 where, `id` may be left out.
 """
 from fastapi import APIRouter, Depends, Request
-from fastapi.responses import RedirectResponse
 from optimade.models import ToplevelLinks
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.schemas import ERROR_RESPONSES
@@ -121,15 +120,20 @@ async def post_gateways(
 async def get_gateway(request: Request, gateway_id: str) -> GatewaysResponseSingle:
     """`GET /gateways/{gateway ID}`
 
-    Represent an OPTIMADE server.
-
-    !!! note
-        For now, redirect to the gateway's `/structures` entry listing endpoint.
-
+    Return a single [`GatewayResource`][optimade_gateway.models.gateways.GatewayResource].
     """
-    from optimade_gateway.routers.utils import validate_resource
+    from optimade.server.routers.utils import meta_values
+    from optimade_gateway.routers.utils import get_valid_resource
 
-    await validate_resource(GATEWAYS_COLLECTION, gateway_id)
-    return RedirectResponse(
-        request.url.replace(path=f"{request.url.path.rstrip('/')}/structures")
+    result = await get_valid_resource(GATEWAYS_COLLECTION, gateway_id)
+
+    return GatewaysResponseSingle(
+        links=ToplevelLinks(next=None),
+        data=result,
+        meta=meta_values(
+            url=request.url,
+            data_returned=1,
+            data_available=await GATEWAYS_COLLECTION.count(),
+            more_data_available=False,
+        ),
     )
