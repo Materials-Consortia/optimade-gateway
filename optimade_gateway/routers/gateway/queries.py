@@ -7,7 +7,6 @@ This file describes the router for:
 where `version` and the last `id` may be left out.
 """
 from fastapi import APIRouter, Depends, Request, status
-from optimade.models.responses import EntryResponseMany
 from optimade.server.exceptions import Forbidden
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.schemas import ERROR_RESPONSES
@@ -47,9 +46,9 @@ async def get_gateway_queries(
     await validate_resource(GATEWAYS_COLLECTION, gateway_id)
 
     params.filter = (
-        f'( {params.filter} ) AND ( gateway="{gateway_id}" )'
+        f'( {params.filter} ) AND ( gateway_id="{gateway_id}" )'
         if params.filter
-        else f'gateway="{gateway_id}"'
+        else f'gateway_id="{gateway_id}"'
     )
     return await get_queries(request, params)
 
@@ -91,7 +90,7 @@ async def post_gateway_queries(
 
 @ROUTER.get(
     "/gateways/{gateway_id}/queries/{query_id}",
-    response_model=EntryResponseMany,
+    response_model=QueriesResponseSingle,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
@@ -100,7 +99,7 @@ async def post_gateway_queries(
 )
 async def get_gateway_query(
     request: Request, gateway_id: str, query_id: str
-) -> EntryResponseMany:
+) -> QueriesResponseSingle:
     """`GET /gateways/{gateway_id}/queries/{query_id}`
 
     Return the response from a gateway query

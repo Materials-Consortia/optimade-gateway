@@ -170,7 +170,8 @@ def mock_gateway_responses(
                 pass
             else:
                 with open(
-                    top_dir / f"tests/static/db_responses/{database['id']}.json"
+                    top_dir
+                    / f"tests/static/db_responses/{''.join(database['id'].split('/')[1:])}.json"
                 ) as handle:
                     data = json.load(handle)
 

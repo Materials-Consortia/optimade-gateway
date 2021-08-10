@@ -40,7 +40,6 @@ from optimade_gateway.models import (
     Search,
 )
 from optimade_gateway.models.queries import (
-    GatewayQueryResponse,
     OptimadeQueryParameters,
     QueryState,
 )
@@ -173,7 +172,7 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
 
 @ROUTER.get(
     "/search",
-    response_model=GatewayQueryResponse,
+    response_model=QueriesResponseSingle,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
@@ -185,19 +184,25 @@ async def get_search(
     response: Response,
     search_params: SearchQueryParams = Depends(),
     entry_params: EntryListingQueryParams = Depends(),
-) -> Union[GatewayQueryResponse, RedirectResponse]:
+) -> Union[QueriesResponseSingle, RedirectResponse]:
     """`GET /search`
 
     Coordinate a new OPTIMADE query in multiple databases through a gateway:
 
-    1. Create a [`Search`][optimade_gateway.models.search.Search] `POST` data - calling `POST /search`
+    1. Create a [`Search`][optimade_gateway.models.search.Search] `POST` data - calling `POST /search`.
     1. Wait [`search_params.timeout`][optimade_gateway.queries.params.SearchQueryParams]
-        seconds until the query has finished
-    1. Return successful response
+        seconds before returning the query, if it has not finished before.
+    1. Return query - similar to `GET /queries/{query_id}`.
 
-    !!! attention "Contingency"
-        If the query has not finished within the set timeout period, the client will be redirected
-        to the query's URL instead.
+    This endpoint works similarly to `GET /queries/{query_id}`, where one passes the query
+    parameters directly in the URL, instead of first POSTing a query and then going to its URL.
+    Hence, a [`QueryResponseSingle`][optimade_gateway.models.responses.QueriesResponseSingle] is
+    the standard response model for this endpoint.
+
+    If the timeout time is reached and the query has not yet finished, the user is redirected to the
+    specific URL for the query.
+
+    In the future, this might introduce a mode to return a response as a standard OPTIMADE response.
 
     """
     from time import time
@@ -220,7 +225,7 @@ async def get_search(
         raise BadRequest(
             detail=(
                 "A Search object could not be created from the given URL query parameters. "
-                f"Error(s): {[exc.errors]}"
+                f"Error(s): {exc.errors}"
             )
         )
 
@@ -245,7 +250,16 @@ async def get_search(
                 else:
                     response.status_code = 500
 
-            return query.attributes.response
+            return QueriesResponseSingle(
+                links=ToplevelLinks(next=None),
+                data=query,
+                meta=meta_values(
+                    url=request.url,
+                    data_returned=1,
+                    data_available=await QUERIES_COLLECTION.count(),
+                    more_data_available=False,
+                ),
+            )
 
         await asyncio.sleep(0.1)
 

@@ -30,8 +30,7 @@ async def test_get_search(
     this should ensure a new gateway is created, specifically for use with these versioned
     base URLs, but we can reuse the mock_gateway_responses for the "twodbs" gateway.
     """
-    from optimade_gateway.common.config import CONFIG
-    from optimade_gateway.models import GatewayQueryResponse
+    from optimade_gateway.models import QueriesResponseSingle
 
     gateway_id = "twodbs"
     gateway: dict = await get_gateway(gateway_id)
@@ -51,12 +50,9 @@ async def test_get_search(
 
     assert response.status_code == 200, f"Request failed: {response.json()}"
 
-    response = GatewayQueryResponse(**response.json())
-    assert response.data
-    assert (
-        getattr(response.meta, f"_{CONFIG.provider.prefix}_query", "NOT FOUND")
-        == "NOT FOUND"
-    )
+    response = QueriesResponseSingle(**response.json())
+    assert response.data.attributes.response.data
+    assert response.data.attributes.state.value == "finished"
 
     assert "A new gateway was created for a query" in caplog.text, caplog.text
 
@@ -71,8 +67,7 @@ async def test_get_search_existing_gateway(
     caplog: pytest.LogCaptureFixture,
 ):
     """Test GET /search for base URLs matching an existing gateway"""
-    from optimade_gateway.common.config import CONFIG
-    from optimade_gateway.models import GatewayQueryResponse
+    from optimade_gateway.models import QueriesResponseSingle
 
     gateway_id = "twodbs"
     gateway: dict = await get_gateway(gateway_id)
@@ -91,9 +86,7 @@ async def test_get_search_existing_gateway(
         {
             "filter": 'elements HAS "Cu"',
             "page_limit": 15,
-            "database_ids": [
-                f"mcloud/{_.get('id')}" for _ in gateway.get("databases", [{}])
-            ],
+            "database_ids": [_.get("id") for _ in gateway.get("databases", [{}])],
         },
         # Both optimade_urls & database_ids
         {
@@ -102,7 +95,7 @@ async def test_get_search_existing_gateway(
             "optimade_urls": [
                 gateway.get("databases", [{}])[0].get("attributes", {}).get("base_url")
             ],
-            "database_ids": [f"mcloud/{gateway.get('databases', [{}])[-1].get('id')}"],
+            "database_ids": [gateway.get("databases", [{}])[-1].get("id")],
         },
     ]
 
@@ -113,12 +106,13 @@ async def test_get_search_existing_gateway(
 
         assert response.status_code == 200, f"Request failed: {response.json()}"
 
-        response = GatewayQueryResponse(**response.json())
-        assert response.data, f"No data: {response.json(indent=2)}"
+        response = QueriesResponseSingle(**response.json())
         assert (
-            getattr(response.meta, f"_{CONFIG.provider.prefix}_query", "NOT FOUND")
-            == "NOT FOUND"
-        ), f"Special _<prefix>_query field was found in meta. Response: {response.json(indent=2)}"
+            response.data.attributes.response.data
+        ), f"No data: {response.json(indent=2)}"
+        assert (
+            response.data.attributes.state.value == "finished"
+        ), f"Query never finished. Response: {response.json(indent=2)}"
 
         assert "A gateway was found and reused for a query" in caplog.text, caplog.text
 
@@ -133,12 +127,8 @@ async def test_get_search_not_finishing(
     caplog: pytest.LogCaptureFixture,
 ):
     """Test GET /search for unfinished query (redirect to query URL)"""
-    from optimade_gateway.common.config import CONFIG
-    from optimade_gateway.models.queries import (
-        GatewayQueryResponse,
-        QueryResource,
-        QueryState,
-    )
+    from optimade_gateway.models.queries import GatewayQueryResponse, QueryState
+    from optimade_gateway.models.responses import QueriesResponseSingle
 
     gateway_id = "slow-query"
     gateway: dict = await get_gateway(gateway_id)
@@ -160,16 +150,12 @@ async def test_get_search_not_finishing(
 
     assert "A gateway was found and reused for a query" in caplog.text, caplog.text
 
-    response = GatewayQueryResponse(**response.json())
-    assert response.data == {}, f"Data was found in response: {response.json(indent=2)}"
+    response = QueriesResponseSingle(**response.json())
+    assert (
+        response.data.attributes.response.data == {}
+    ), f"Data was found in response: {response.json(indent=2)}"
 
-    assert getattr(
-        response.meta, f"_{CONFIG.provider.prefix}_query", False
-    ), f"Special _<prefix>_query field not found in meta. Response: {response.json(indent=2)}"
-
-    query: QueryResource = QueryResource(
-        **getattr(response.meta, f"_{CONFIG.provider.prefix}_query")
-    )
+    query = response.data
     assert query, query
     assert query.attributes.state in (QueryState.STARTED, QueryState.IN_PROGRESS), query
     assert query.attributes.query_parameters.filter == query_params["filter"], query
@@ -284,14 +270,12 @@ async def test_post_search_existing_gateway(
         # database_ids
         {
             "query_parameters": {"filter": 'elements HAS "Cu"', "page_limit": 15},
-            "database_ids": [
-                f"mcloud/{_.get('id')}" for _ in gateway.get("databases", [{}])
-            ],
+            "database_ids": [_.get("id") for _ in gateway.get("databases", [{}])],
         },
         # Both optimade_urls & database_ids
         {
             "query_parameters": {"filter": 'elements HAS "Cu"', "page_limit": 15},
-            "database_ids": [f"mcloud/{gateway.get('databases', [{}])[0].get('id')}"],
+            "database_ids": [gateway.get("databases", [{}])[0].get("id")],
             "optimade_urls": [
                 gateway.get("databases", [{}])[-1].get("attributes", {}).get("base_url")
             ],
@@ -348,7 +332,6 @@ async def test_sort_no_effect(
     """
     from optimade.models import Warnings
 
-    from optimade_gateway.models import GatewayQueryResponse
     from optimade_gateway.models.responses import QueriesResponseSingle
     from optimade_gateway.warnings import SortNotSupported
 
@@ -375,12 +358,15 @@ async def test_sort_no_effect(
     assert response_asc.status_code == 200, f"Request failed: {response_asc.json()}"
     assert response_desc.status_code == 200, f"Request failed: {response_desc.json()}"
 
-    response_asc = GatewayQueryResponse(**response_asc.json())
+    response_asc = QueriesResponseSingle(**response_asc.json())
     assert response_asc
-    response_desc = GatewayQueryResponse(**response_desc.json())
+    response_desc = QueriesResponseSingle(**response_desc.json())
     assert response_desc
 
-    assert response_asc.data == response_desc.data
+    assert (
+        response_asc.data.attributes.response.data
+        == response_desc.data.attributes.response.data
+    )
 
     sort_warning = SortNotSupported()
 

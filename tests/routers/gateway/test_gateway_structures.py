@@ -94,7 +94,7 @@ async def test_get_single_structure(
     from optimade.models import StructureResponseOne
 
     gateway_id = "single-structure_optimade-sample"
-    structure_id = "optimade-sample_single/1"
+    structure_id = "mcloud/optimade-sample_single/1"
     gateway = await get_gateway(gateway_id)
 
     mock_gateway_responses(gateway)

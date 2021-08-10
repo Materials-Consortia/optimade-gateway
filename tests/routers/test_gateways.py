@@ -173,7 +173,7 @@ async def test_post_gateways_database_ids(
 
     assert datum.id == "twodbs"
     for database in datum.attributes.databases:
-        assert database.id in [_.split("/")[-1] for _ in data["database_ids"]]
+        assert database.id in data["database_ids"]
 
     assert datum.links.dict() == {
         "self": AnyUrl(
@@ -187,7 +187,7 @@ async def test_post_gateways_database_ids(
     assert await MONGO_DB["gateways"].count_documents(mongo_filter) == 1
     db_datum = await MONGO_DB["gateways"].find_one(mongo_filter)
     for db in db_datum["databases"]:
-        assert db["id"] in [_.split("/")[-1] for _ in data["database_ids"]]
+        assert db["id"] in data["database_ids"]
 
 
 async def test_post_gateways_create_with_db_ids(

@@ -116,7 +116,7 @@ async def process_db_response(
             )
 
         # This ensures an empty list under `response.data.{database_id}` is returned if the case is
-        # simply that there is no results to return.
+        # simply that there are no results to return.
         if errors:
             extra_updates.update({"$addToSet": {"response.errors": {"$each": errors}}})
         await update_query(

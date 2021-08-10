@@ -292,7 +292,11 @@ def db_find(
                 ErrorResponse(
                     errors=[
                         {
-                            "detail": f"Could not pass response from {url} as either a {response_model.__name__!r} or 'ErrorResponse'. ValidationError: {exc}",
+                            "detail": (
+                                f"Could not pass response from {url} as either a "
+                                f"{response_model.__name__!r} or 'ErrorResponse'. "
+                                f"ValidationError: {exc}"
+                            ),
                             "id": "OPTIMADE_GATEWAY_DB_FIND_MANY_VALIDATIONERROR",
                         }
                     ],

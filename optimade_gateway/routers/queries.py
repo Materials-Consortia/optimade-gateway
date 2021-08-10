@@ -23,10 +23,8 @@ from optimade.server.schemas import ERROR_RESPONSES
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.mappers import QueryMapper
 from optimade_gateway.models import (
-    GatewayQueryResponse,
     QueryCreate,
     QueryResource,
-    QueryState,
     QueriesResponse,
     QueriesResponseSingle,
 )
@@ -114,8 +112,8 @@ async def post_queries(
 
 
 @ROUTER.get(
-    "/queries/{query_id:path}",
-    response_model=GatewayQueryResponse,
+    "/queries/{query_id}",
+    response_model=QueriesResponseSingle,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
@@ -126,39 +124,14 @@ async def get_query(
     request: Request,
     query_id: str,
     response: Response,
-) -> GatewayQueryResponse:
+) -> QueriesResponseSingle:
     """`GET /queries/{query_id}`
 
-    Return the response from a query
-    ([`QueryResource.attributes.response`][optimade_gateway.models.queries.QueryResourceAttributes.response]).
+    Return a single [`QueryResource`][optimade_gateway.models.queries.QueryResource].
     """
     from optimade_gateway.routers.utils import get_valid_resource
 
     query: QueryResource = await get_valid_resource(QUERIES_COLLECTION, query_id)
-
-    if query.attributes.state != QueryState.FINISHED:
-        unfinished_meta = {f"_{CONFIG.provider.prefix}_query": query}
-        if hasattr(query.attributes.response, "meta"):
-            unfinished_meta.update(
-                {
-                    "data_available": query.attributes.response.meta.data_available,
-                    "data_returned": query.attributes.response.meta.data_returned,
-                    "more_data_available": query.attributes.response.meta.more_data_available,
-                }
-            )
-        else:
-            unfinished_meta.update(
-                {
-                    "data_available": 0,
-                    "data_returned": 0,
-                    "more_data_available": False,
-                }
-            )
-        return GatewayQueryResponse(
-            data=getattr(query.attributes.response, "data", {}),
-            links=getattr(query.attributes.response, "links", ToplevelLinks(next=None)),
-            meta=meta_values(url=request.url, **unfinished_meta),
-        )
 
     if query.attributes.response.errors:
         for error in query.attributes.response.errors:
@@ -168,4 +141,13 @@ async def get_query(
         else:
             response.status_code = 500
 
-    return query.attributes.response
+    return QueriesResponseSingle(
+        links=ToplevelLinks(next=None),
+        data=query,
+        meta=meta_values(
+            url=request.url,
+            data_returned=1,
+            data_available=await QUERIES_COLLECTION.count(),
+            more_data_available=False,
+        ),
+    )
