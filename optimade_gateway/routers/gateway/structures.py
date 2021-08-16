@@ -86,8 +86,14 @@ async def get_structures(
     if isinstance(gateway_response, ErrorResponse):
         for error in gateway_response.errors:
             if error.status:
-                response.status_code = int(error.status)
-                break
+                for part in error.status.split(" "):
+                    try:
+                        response.status_code = int(part)
+                        break
+                    except ValueError:
+                        pass
+                if response.status_code and response.status_code >= 300:
+                    break
         else:
             response.status_code = 500
         return gateway_response
@@ -134,6 +140,7 @@ async def get_single_structure(
         Example: `GET /gateways/some_gateway/structures/some_database/some_structure`.
 
     """
+    from optimade_gateway.common.config import CONFIG
     from optimade_gateway.models import GatewayResource
     from optimade_gateway.queries import db_find
     from optimade_gateway.routers.utils import get_valid_resource
@@ -182,10 +189,16 @@ async def get_single_structure(
                         meta = error.meta.dict()
                     meta.update(
                         {
-                            "optimade_gateway": {
-                                "gateway": gateway,
-                                "source_database_id": database.id,
-                            }
+                            f"_{CONFIG.provider.prefix}_source_gateway": {
+                                "id": gateway.id,
+                                "type": gateway.type,
+                                "links": {"self": gateway.links.self},
+                            },
+                            f"_{CONFIG.provider.prefix}_source_database": {
+                                "id": database.id,
+                                "type": database.type,
+                                "links": {"self": database.links.self},
+                            },
                         }
                     )
                     error.meta = Meta(**meta)
@@ -239,8 +252,14 @@ async def get_single_structure(
     if isinstance(gateway_response, ErrorResponse):
         for error in errors or gateway_response.errors:
             if error.status:
-                response.status_code = int(error.status)
-                break
+                for part in error.status.split(" "):
+                    try:
+                        response.status_code = int(part)
+                        break
+                    except ValueError:
+                        pass
+                if response.status_code and response.status_code >= 300:
+                    break
         else:
             response.status_code = 500
 

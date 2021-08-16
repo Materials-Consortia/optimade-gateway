@@ -288,6 +288,34 @@ def db_find(
         try:
             response = ErrorResponse(**response)
         except ValidationError as exc:
+            # If it's an error and `meta` is missing, it is not a valid OPTIMADE response,
+            # but this happens a lot, and is therefore worth having an edge-case for.
+            if "errors" in response:
+                errors = list(response["errors"])
+                errors.append(
+                    {
+                        "detail": (
+                            f"Could not pass response from {url} as either a "
+                            f"{response_model.__name__!r} or 'ErrorResponse'. "
+                            f"ValidationError: {exc}"
+                        ),
+                        "id": "OPTIMADE_GATEWAY_DB_FINDS_MANY_VALIDATIONERRORS",
+                    }
+                )
+                return (
+                    ErrorResponse(
+                        errors=errors,
+                        meta={
+                            "query": {
+                                "representation": f"/{endpoint.strip('/')}?{query_params}"
+                            },
+                            "api_version": __api_version__,
+                            "more_data_available": False,
+                        },
+                    ),
+                    get_resource_attribute(database, "id"),
+                )
+
             return (
                 ErrorResponse(
                     errors=[
@@ -297,7 +325,7 @@ def db_find(
                                 f"{response_model.__name__!r} or 'ErrorResponse'. "
                                 f"ValidationError: {exc}"
                             ),
-                            "id": "OPTIMADE_GATEWAY_DB_FIND_MANY_VALIDATIONERROR",
+                            "id": "OPTIMADE_GATEWAY_DB_FINDS_MANY_VALIDATIONERRORS",
                         }
                     ],
                     meta={

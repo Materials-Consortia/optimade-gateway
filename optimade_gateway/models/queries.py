@@ -1,11 +1,15 @@
 """Pydantic models/schemas for the Queries resource"""
+from datetime import timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional, Union
+import urllib.parse
 import warnings
 
 from optimade.models import (
-    EntryResource,
+    EntryResource as OptimadeEntryResource,
     EntryResourceAttributes,
+    EntryResponseMany,
+    ErrorResponse,
     OptimadeError,
     ReferenceResource,
     ReferenceResponseMany,
@@ -19,6 +23,7 @@ from optimade.models import (
 from optimade.models.utils import StrictField
 from optimade.server.query_params import EntryListingQueryParams
 from pydantic import BaseModel, EmailStr, Field, validator
+from starlette.datastructures import URL as StarletteURL
 
 from optimade_gateway.models.resources import EntryResourceCreate
 from optimade_gateway.warnings import SortNotSupported
@@ -140,6 +145,19 @@ class QueryState(Enum):
     FINISHED = "finished"
 
 
+class EntryResource(OptimadeEntryResource):
+    """Entry Resource ensuring datetimes are not naive."""
+
+    @validator("attributes")
+    def ensure_non_naive_datetime(
+        cls, value: EntryResourceAttributes
+    ) -> EntryResourceAttributes:
+        """Set timezone to UTC if datetime is naive."""
+        if value.last_modified and value.last_modified.tzinfo is None:
+            value.last_modified = value.last_modified.replace(tzinfo=timezone.utc)
+        return value
+
+
 class GatewayQueryResponse(Response):
     """Response from a Gateway Query."""
 
@@ -209,6 +227,103 @@ class QueryResource(EntryResource):
         regex="^queries$",
     )
     attributes: QueryResourceAttributes
+
+    async def response_as_optimade(
+        self,
+        url: Optional[
+            Union[urllib.parse.ParseResult, urllib.parse.SplitResult, StarletteURL, str]
+        ] = None,
+    ) -> Union[EntryResponseMany, ErrorResponse]:
+        """Return `attributes.response` as a valid OPTIMADE entry listing response.
+
+        Note, this method disregards the state of the query and will simply return the query results
+        as they currently are (if there are any at all).
+
+        Parameters:
+            url: Optionally, update the `meta.query.representation` value with this.
+
+        Returns:
+            A valid OPTIMADE entry-listing response according to the
+            [OPTIMADE specification](https://github.com/Materials-Consortia/OPTIMADE/blob/master/optimade.rst#entry-listing-endpoints)
+            or an error response, if errors were returned or occurred during the query.
+
+        """
+        from copy import deepcopy
+        from optimade.server.routers.utils import meta_values
+
+        async def _update_id(
+            entry_: Union[EntryResource, Dict[str, Any]], database_provider_: str
+        ) -> Union[EntryResource, Dict[str, Any]]:
+            """Internal utility function to prepend the entries' `id` with `provider/database/`.
+
+            Parameters:
+                entry_: The entry as a model or a dictionary.
+                database_provider_: `provider/database` string.
+
+            Returns:
+                The entry with an updated `id` value.
+
+            """
+            if isinstance(entry_, dict):
+                _entry = deepcopy(entry_)
+                _entry["id"] = f"{database_provider_}/{entry_['id']}"
+            else:
+                _entry = entry_.copy(deep=True)
+                _entry.id = f"{database_provider_}/{entry_.id}"
+            return _entry
+
+        if not self.attributes.response:
+            # The query has not yet been initiated
+            return ErrorResponse(
+                errors=[
+                    {
+                        "detail": (
+                            "Can not return as a valid OPTIMADE response as the query has not yet "
+                            "been initialized."
+                        ),
+                        "id": "OPTIMADE_GATEWAY_QUERY_NOT_INITIALIZED",
+                    }
+                ],
+                meta=meta_values(
+                    url=url or f"/queries/{self.id}?",
+                    data_returned=0,
+                    data_available=0,
+                    more_data_available=False,
+                ),
+            )
+
+        meta_ = self.attributes.response.meta
+        if url:
+            meta_ = meta_.dict(exclude_unset=True)
+            for repeated_key in (
+                "query",
+                "api_version",
+                "time_stamp",
+                "provider",
+                "implementation",
+            ):
+                meta_.pop(repeated_key, None)
+            meta_ = meta_values(url=url, **meta_)
+
+        # Error response
+        if self.attributes.response.errors:
+            return ErrorResponse(
+                errors=self.attributes.response.errors,
+                meta=meta_,
+            )
+
+        # Data response
+        results = []
+        for database_provider, entries in self.attributes.response.data.items():
+            results.extend(
+                [await _update_id(entry, database_provider) for entry in entries]
+            )
+
+        return self.attributes.endpoint.get_response_model()(
+            data=results,
+            meta=meta_,
+            links=self.attributes.response.links,
+        )
 
 
 class QueryCreate(EntryResourceCreate, QueryResourceAttributes):

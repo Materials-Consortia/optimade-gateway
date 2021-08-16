@@ -149,6 +149,13 @@ async def resource_factory(
         [`databases.attributes.base_url`](https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResourceAttributes.base_url)
         element values, when compared with the `create_resource`.
 
+        !!! important
+            The `database_ids` attribute **must not** contain values that are not also included in the
+            `databases` attribute, in the form of the IDs for the individual databases.
+            If this should be the case an
+            [`OptimadeGatewayError`][optimade_gateway.common.exceptions.OptimadeGatewayError] will be
+            thrown.
+
     === "Queries"
         The `gateway_id`, `query_parameters`, and `endpoint` fields are collectively considered to
         define uniqueness for a [`QueryResource`][optimade_gateway.models.queries.QueryResource]
@@ -195,10 +202,23 @@ async def resource_factory(
             GATEWAYS_COLLECTION as RESOURCE_COLLECTION,
         )
 
+        # One MUST have taken care of database_ids prior to calling `resource_factory()`
+        database_attr_ids = {_.id for _ in create_resource.databases or []}
+        unknown_ids = {
+            database_id
+            for database_id in create_resource.database_ids or []
+            if database_id not in database_attr_ids
+        }
+        if unknown_ids:
+            raise OptimadeGatewayError(
+                "When using `resource_factory()` for `GatewayCreate`, `database_ids` MUST not "
+                f"include unknown IDs. Passed unknown IDs: {unknown_ids}"
+            )
+
         mongo_query = {
             "databases": {"$size": len(create_resource.databases)},
             "databases.attributes.base_url": {
-                "$all": [_.attributes.base_url for _ in create_resource.databases]
+                "$all": [_.attributes.base_url for _ in create_resource.databases or []]
             },
         }
     elif isinstance(create_resource, QueryCreate):

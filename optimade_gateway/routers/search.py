@@ -11,13 +11,13 @@ from typing import Union
 from fastapi import (
     APIRouter,
     Depends,
-    HTTPException,
     Request,
     Response,
     status,
 )
 from fastapi.responses import RedirectResponse
-from optimade.server.exceptions import BadRequest
+from optimade.models.responses import EntryResponseMany, ErrorResponse
+from optimade.server.exceptions import BadRequest, InternalServerError
 from optimade.models import (
     LinksResource,
     LinksResourceAttributes,
@@ -109,35 +109,60 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
 
     # Ensure all URLs are `pydantic.AnyUrl`s
     if not all([isinstance(_, AnyUrl) for _ in base_urls]):
-        raise HTTPException(
-            status_code=500,
-            detail="Could unexpectedly not get all base URLs as `pydantic.AnyUrl`s.",
+        raise InternalServerError(
+            "Could unexpectedly not validate all base URLs as proper URLs."
         )
 
-    gateway = GatewayCreate(
-        databases=[
-            LinksResource(
-                id=(
-                    f"{url.user + '@' if url.user else ''}{url.host}"
-                    f"{':' + url.port if url.port else ''}"
-                    f"{url.path.rstrip('/') if url.path else ''}"
-                ).replace(".", "__"),
-                type="links",
-                attributes=LinksResourceAttributes(
-                    name=(
+    databases = await DATABASES_COLLECTION.get_multiple(
+        filter={"base_url": {"$in": await clean_python_types(base_urls)}}
+    )
+    if len(databases) == len(base_urls):
+        # At this point it is expected that the list of databases in `databases`
+        # is a complete set of databases requested.
+        gateway = GatewayCreate(databases=databases)
+    elif len(databases) < len(base_urls):
+        # There are unregistered databases
+        current_base_urls = set(
+            [
+                get_resource_attribute(database, "attributes.base_url")
+                for database in databases
+            ]
+        )
+        databases.extend(
+            [
+                LinksResource(
+                    id=(
                         f"{url.user + '@' if url.user else ''}{url.host}"
                         f"{':' + url.port if url.port else ''}"
                         f"{url.path.rstrip('/') if url.path else ''}"
+                    ).replace(".", "__"),
+                    type="links",
+                    attributes=LinksResourceAttributes(
+                        name=(
+                            f"{url.user + '@' if url.user else ''}{url.host}"
+                            f"{':' + url.port if url.port else ''}"
+                            f"{url.path.rstrip('/') if url.path else ''}"
+                        ),
+                        description="",
+                        base_url=url,
+                        link_type=LinkType.CHILD,
+                        homepage=None,
                     ),
-                    description="",
-                    base_url=url,
-                    link_type=LinkType.CHILD,
-                    homepage=None,
-                ),
-            )
-            for url in base_urls
-        ]
-    )
+                )
+                for url in base_urls - current_base_urls
+            ]
+        )
+    else:
+        LOGGER.error(
+            "Found more database entries in MongoDB than then number of passed base URLs. "
+            "This suggests ambiguity in the base URLs of databases stored in MongoDB.\n"
+            "  base_urls: %s\n  databases %s",
+            base_urls,
+            databases,
+        )
+        raise InternalServerError("Unambiguous base URLs. See logs for more details.")
+
+    gateway = GatewayCreate(databases=databases)
     gateway, created = await resource_factory(gateway)
 
     if created:
@@ -172,7 +197,7 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
 
 @ROUTER.get(
     "/search",
-    response_model=QueriesResponseSingle,
+    response_model=Union[QueriesResponseSingle, EntryResponseMany, ErrorResponse],
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
@@ -184,7 +209,7 @@ async def get_search(
     response: Response,
     search_params: SearchQueryParams = Depends(),
     entry_params: EntryListingQueryParams = Depends(),
-) -> Union[QueriesResponseSingle, RedirectResponse]:
+) -> Union[QueriesResponseSingle, EntryResponseMany, ErrorResponse, RedirectResponse]:
     """`GET /search`
 
     Coordinate a new OPTIMADE query in multiple databases through a gateway:
@@ -202,7 +227,10 @@ async def get_search(
     If the timeout time is reached and the query has not yet finished, the user is redirected to the
     specific URL for the query.
 
-    In the future, this might introduce a mode to return a response as a standard OPTIMADE response.
+    If the `as_optimade` query parameter is `True`, the response will be parseable as a standard
+    OPTIMADE entry listing endpoint like, e.g., `/structures`.
+    For more information see the
+    [OPTIMADE specification](https://github.com/Materials-Consortia/OPTIMADE/blob/master/optimade.rst#entry-listing-endpoints).
 
     """
     from time import time
@@ -245,10 +273,19 @@ async def get_search(
             if query.attributes.response.errors:
                 for error in query.attributes.response.errors:
                     if error.status:
-                        response.status_code = int(error.status)
-                        break
+                        for part in error.status.split(" "):
+                            try:
+                                response.status_code = int(part)
+                                break
+                            except ValueError:
+                                pass
+                        if response.status_code and response.status_code >= 300:
+                            break
                 else:
                     response.status_code = 500
+
+            if search_params.as_optimade:
+                return await query.response_as_optimade(url=request.url)
 
             return QueriesResponseSingle(
                 links=ToplevelLinks(next=None),

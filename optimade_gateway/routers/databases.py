@@ -128,7 +128,9 @@ async def get_database(
     ) = await DATABASES_COLLECTION.find(params=params)
 
     if fields or include_fields and result is not None:
-        result = handle_response_fields(result, fields, include_fields)[0]
+        result = handle_response_fields(result, fields, include_fields)
+
+    result = result[0] if data_returned else None
 
     return DatabasesResponseSingle(
         links=ToplevelLinks(next=None),

@@ -136,8 +136,14 @@ async def get_query(
     if query.attributes.response.errors:
         for error in query.attributes.response.errors:
             if error.status:
-                response.status_code = int(error.status)
-                break
+                for part in error.status.split(" "):
+                    try:
+                        response.status_code = int(part)
+                        break
+                    except ValueError:
+                        pass
+                if response.status_code and response.status_code >= 300:
+                    break
         else:
             response.status_code = 500
 

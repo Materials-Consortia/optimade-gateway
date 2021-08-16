@@ -10,6 +10,7 @@ from optimade.models import (
     OptimadeError,
 )
 
+from optimade_gateway.common.config import CONFIG
 from optimade_gateway.common.utils import get_resource_attribute
 from optimade_gateway.models import GatewayResource, QueryResource
 from optimade_gateway.queries.utils import update_query
@@ -75,10 +76,21 @@ async def process_db_response(
                     meta_error = error.meta.dict()
                 meta_error.update(
                     {
-                        "optimade_gateway": {
-                            "gateway": gateway,
-                            "source_database_id": database_id,
-                        }
+                        f"_{CONFIG.provider.prefix}_source_gateway": {
+                            "id": gateway.id,
+                            "type": gateway.type,
+                            "links": {"self": gateway.links.self},
+                        },
+                        f"_{CONFIG.provider.prefix}_source_database": {
+                            "id": database_id,
+                            "type": "links",
+                            "links": {
+                                "self": (
+                                    str(gateway.links.self).split("gateways")[0]
+                                    + f"databases/{database_id}"
+                                )
+                            },
+                        },
                     }
                 )
                 error.meta = Meta(**meta_error)

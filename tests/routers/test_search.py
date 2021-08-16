@@ -12,9 +12,10 @@ import httpx
 import pytest
 
 
-pytestmark = [pytest.mark.asyncio, pytest.mark.usefixtures("reset_db_after")]
+pytestmark = [pytest.mark.asyncio]
 
 
+@pytest.mark.usefixtures("reset_db_after")
 async def test_get_search(
     client: Callable[
         [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
@@ -55,6 +56,7 @@ async def test_get_search(
     assert response.data.attributes.state.value == "finished"
 
     assert "A new gateway was created for a query" in caplog.text, caplog.text
+    assert "A gateway was found and reused for a query" not in caplog.text, caplog.text
 
 
 async def test_get_search_existing_gateway(
@@ -115,6 +117,7 @@ async def test_get_search_existing_gateway(
         ), f"Query never finished. Response: {response.json(indent=2)}"
 
         assert "A gateway was found and reused for a query" in caplog.text, caplog.text
+        assert "A new gateway was created for a query" not in caplog.text, caplog.text
 
 
 async def test_get_search_not_finishing(
@@ -149,6 +152,7 @@ async def test_get_search_not_finishing(
     assert response.status_code == 200, f"Request failed: {response.json()}"
 
     assert "A gateway was found and reused for a query" in caplog.text, caplog.text
+    assert "A new gateway was created for a query" not in caplog.text, caplog.text
 
     response = QueriesResponseSingle(**response.json())
     assert (
@@ -168,6 +172,85 @@ async def test_get_search_not_finishing(
     assert query.attributes.gateway_id == gateway_id, query
 
 
+async def test_get_as_optimade(
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ],
+    mock_gateway_responses: Callable[[dict], None],
+    get_gateway: Callable[[str], Awaitable[dict]],
+    caplog: pytest.LogCaptureFixture,
+):
+    """Test GET /search with `as_optimade=True`
+
+    This should be equivalent of `GET /gateways/{gateway_id}/structures`.
+    """
+    from optimade.models import StructureResponseMany
+
+    from optimade_gateway.common.config import CONFIG
+
+    gateway_id = "twodbs"
+    gateway: dict = await get_gateway(gateway_id)
+
+    query_params = {
+        "filter": 'elements HAS "Cu"',
+        "page_limit": CONFIG.page_limit,
+        "database_ids": [_.get("id") for _ in gateway.get("databases", [{}])],
+        "as_optimade": True,
+    }
+
+    mock_gateway_responses(gateway)
+
+    response = await client("/search", params=query_params)
+
+    assert response.status_code == 200, f"Request failed: {response.json()}"
+
+    response = StructureResponseMany(**response.json())
+    assert response
+
+    assert response.meta.more_data_available
+
+    more_data_available = False
+    data_returned = 0
+    data_available = 0
+    data = []
+
+    assert len(response.data) == query_params["page_limit"] * len(gateway["databases"])
+
+    for database in gateway["databases"]:
+        url = f"{database['attributes']['base_url']}/structures?page_limit={query_params['page_limit']}"
+        db_response = httpx.get(url)
+        assert (
+            db_response.status_code == 200
+        ), f"Request to {url} failed: {db_response.json()}"
+        db_response = StructureResponseMany(**db_response.json())
+
+        data_returned += db_response.meta.data_returned
+        data_available += db_response.meta.data_available
+        if not more_data_available:
+            more_data_available = db_response.meta.more_data_available
+
+        for datum in db_response.data:
+            datum = datum.dict(exclude_unset=True, exclude_none=True)
+            datum["id"] = f"{database['id']}/{datum['id']}"
+            data.append(datum)
+
+    assert data_returned == response.meta.data_returned
+    assert data_available == response.meta.data_available
+    assert more_data_available == response.meta.more_data_available
+
+    assert data == response.dict(exclude_unset=True, exclude_none=True)["data"], (
+        f"IDs in test not in response: {set([_['id'] for _ in data]) - set([_['id'] for _ in response.dict(exclude_unset=True)['data']])}\n\n"
+        f"IDs in response not in test: {set([_['id'] for _ in response.dict(exclude_unset=True)['data']]) - set([_['id'] for _ in data])}\n\n"
+        f"A /search datum: {response.dict(exclude_unset=True)['data'][0]}\n\n"
+        f"A retrieved datum: {[_ for _ in data if _['id'] == response.dict(exclude_unset=True)['data'][0]['id']][0]}"
+    )
+
+    assert "A gateway was found and reused for a query" in caplog.text, caplog.text
+    assert "A new gateway was created for a query" not in caplog.text, caplog.text
+
+
+@pytest.mark.usefixtures("reset_db_after")
 async def test_post_search(
     client: Callable[
         [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
@@ -217,6 +300,7 @@ async def test_post_search(
     ), response.meta.dict()
 
     assert "A new gateway was created for a query" in caplog.text, caplog.text
+    assert "A gateway was found and reused for a query" not in caplog.text, caplog.text
 
     datum = response.data
     assert datum, response
@@ -297,6 +381,7 @@ async def test_post_search_existing_gateway(
         ), response.meta.dict()
 
         assert "A gateway was found and reused for a query" in caplog.text, caplog.text
+        assert "A new gateway was created for a query" not in caplog.text, caplog.text
 
         datum = response.data
         assert datum, response
