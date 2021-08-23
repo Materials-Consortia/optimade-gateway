@@ -1,6 +1,6 @@
 invoke~=1.6
 pre-commit~=2.14
-pylint~=2.9
+pylint~=2.10
 pytest~=6.2
 pytest-asyncio~=0.15.1
 pytest-cov~=2.12
