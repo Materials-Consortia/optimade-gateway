@@ -162,10 +162,10 @@ class GatewayQueryResponse(Response):
     """Response from a Gateway Query."""
 
     data: Dict[str, Union[List[EntryResource], List[Dict[str, Any]]]] = StrictField(
-        ..., uniqueItems=True, description="Outputted Data"
+        ..., uniqueItems=True, description="Outputted Data."
     )
     meta: ResponseMeta = StrictField(
-        ..., description="A meta object containing non-standard information"
+        ..., description="A meta object containing non-standard information."
     )
     errors: Optional[List[OptimadeError]] = StrictField(
         [],
@@ -175,6 +175,25 @@ class GatewayQueryResponse(Response):
     included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = Field(
         None, uniqueItems=True
     )
+
+    @classmethod
+    def _remove_pre_root_validators(cls):
+        """Remove `either_data_meta_or_errors_must_be_set` pre root_validator.
+        This will always be available through `meta`, and more importantly,
+        `errors` should be allowed to be present always for this special response.
+        """
+        pre_root_validators = []
+        for validator_ in cls.__pre_root_validators__:
+            if not str(validator_).startswith(
+                "<function Response.either_data_meta_or_errors_must_be_set"
+            ):
+                pre_root_validators.append(validator_)
+        cls.__pre_root_validators__ = pre_root_validators
+
+    def __init__(self, **data: Any) -> None:
+        """Remove root_validator `either_data_meta_or_errors_must_be_set`."""
+        self._remove_pre_root_validators()
+        super().__init__(**data)
 
 
 class QueryResourceAttributes(EntryResourceAttributes):
