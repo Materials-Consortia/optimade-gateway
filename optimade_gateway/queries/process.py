@@ -1,5 +1,5 @@
 """Process performed OPTIMADE queries"""
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any, Dict, List, Union
 
 from optimade.models import (
     EntryResource,
@@ -7,7 +7,6 @@ from optimade.models import (
     EntryResponseOne,
     ErrorResponse,
     Meta,
-    OptimadeError,
 )
 
 from optimade_gateway.common.config import CONFIG
@@ -22,13 +21,8 @@ async def process_db_response(
     database_id: str,
     query: QueryResource,
     gateway: GatewayResource,
-    use_query_resource: bool = True,
-) -> Tuple[
-    Union[
-        List[EntryResource], List[Dict[str, Any]], EntryResource, Dict[str, Any], None
-    ],
-    List[OptimadeError],
-    Dict[str, Union[bool, int]],
+) -> Union[
+    List[EntryResource], List[Dict[str, Any]], EntryResource, Dict[str, Any], None
 ]:
     """Process an OPTIMADE database response.
 
@@ -37,9 +31,6 @@ async def process_db_response(
 
     Since, only either `data` or `errors` should ever be present, one or the other will be either
     an empty list or `None`.
-    `meta` will only be a non-empty dictionary when not using a
-    [`QueryResource`][optimade_gateway.models.queries.QueryResource], i.e., if `use_query_resource`
-    is `False`.
 
     Parameters:
         response: The OPTIMADE database response to be processed.
@@ -47,16 +38,13 @@ async def process_db_response(
             delivered.
         query: A resource representing the performed query.
         gateway: A resource representing the gateway that was queried.
-        use_query_resource: Whether or not to update the passed
-            [`QueryResource`][optimade_gateway.models.queries.QueryResource].
 
     Returns:
-        A tuple of the response's `data`, `errors`, and `meta`.
+        The response's `data`.
 
     """
     results = []
     errors = []
-    meta = {}
 
     from optimade_gateway.common.logger import LOGGER
 
@@ -109,39 +97,32 @@ async def process_db_response(
 
     data_available = response.meta.data_available or 0
 
-    if use_query_resource:
-        extra_updates = {
-            "$inc": {
-                "response.meta.data_available": data_available,
-                "response.meta.data_returned": data_returned,
-            }
+    extra_updates = {
+        "$inc": {
+            "response.meta.data_available": data_available,
+            "response.meta.data_returned": data_returned,
         }
-        if not get_resource_attribute(
-            query,
-            "attributes.response.meta.more_data_available",
-            False,
-            disambiguate=False,  # Extremely minor speed-up
-        ):
-            # Keep it True, if set to True once.
-            extra_updates.update(
-                {"$set": {"response.meta.more_data_available": more_data_available}}
-            )
-
-        # This ensures an empty list under `response.data.{database_id}` is returned if the case is
-        # simply that there are no results to return.
-        if errors:
-            extra_updates.update({"$addToSet": {"response.errors": {"$each": errors}}})
-        await update_query(
-            query,
-            f"response.data.{database_id}",
-            results,
-            **extra_updates,
+    }
+    if not get_resource_attribute(
+        query,
+        "attributes.response.meta.more_data_available",
+        False,
+        disambiguate=False,  # Extremely minor speed-up
+    ):
+        # Keep it True, if set to True once.
+        extra_updates.update(
+            {"$set": {"response.meta.more_data_available": more_data_available}}
         )
-    else:
-        meta = {
-            "data_returned": data_returned,
-            "data_available": data_available,
-            "more_data_available": more_data_available,
-        }
 
-    return results, errors, meta
+    # This ensures an empty list under `response.data.{database_id}` is returned if the case is
+    # simply that there are no results to return.
+    if errors:
+        extra_updates.update({"$addToSet": {"response.errors": {"$each": errors}}})
+    await update_query(
+        query,
+        f"response.data.{database_id}",
+        results,
+        **extra_updates,
+    )
+
+    return results

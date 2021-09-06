@@ -94,9 +94,7 @@ async def post_queries(
     result, created = await resource_factory(query)
 
     if created:
-        asyncio.create_task(
-            perform_query(url=request.url, query=result, use_query_resource=True)
-        )
+        asyncio.create_task(perform_query(url=request.url, query=result))
 
     return QueriesResponseSingle(
         links=ToplevelLinks(next=None),

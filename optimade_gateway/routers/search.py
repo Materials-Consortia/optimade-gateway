@@ -178,9 +178,7 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
     query, created = await resource_factory(query)
 
     if created:
-        asyncio.create_task(
-            perform_query(url=request.url, query=query, use_query_resource=True)
-        )
+        asyncio.create_task(perform_query(url=request.url, query=query))
 
     return QueriesResponseSingle(
         links=ToplevelLinks(next=None),

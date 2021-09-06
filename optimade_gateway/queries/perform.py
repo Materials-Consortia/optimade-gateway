@@ -14,14 +14,12 @@ from optimade.models import (
     EntryResponseOne,
     ErrorResponse,
     LinksResource,
-    Meta,
     ToplevelLinks,
 )
 from optimade.server.routers.utils import BASE_URL_PREFIXES, get_base_url, meta_values
 from pydantic import ValidationError
 from starlette.datastructures import URL
 
-from optimade_gateway.common.config import CONFIG
 from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.common.utils import get_resource_attribute
 from optimade_gateway.models import (
@@ -38,31 +36,22 @@ from optimade_gateway.queries.utils import update_query
 async def perform_query(
     url: URL,
     query: QueryResource,
-    use_query_resource: bool = True,
 ) -> Union[EntryResponseMany, ErrorResponse, GatewayQueryResponse]:
     """Perform OPTIMADE query with gateway.
 
     Parameters:
         url: Original request URL.
         query: The query to be performed.
-        use_query_resource: Whether or not to update the passed
-            [`QueryResource`][optimade_gateway.models.queries.QueryResource] or not.
-            The URL will be changed if this is `True`, to allow for requesting the query back
-            through the `/queries` endpoint.
 
     Returns:
-        This function returns the final response; either an `ErrorResponse`, a subclass of
-        `EntryResponseMany` or if `use_query_resource` is true, then a
+        This function returns the final response; a
         [`GatewayQueryResponse`][optimade_gateway.models.queries.GatewayQueryResponse].
 
     """
     from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
     from optimade_gateway.routers.utils import get_valid_resource
 
-    response = None
-
-    if use_query_resource:
-        await update_query(query, "state", QueryState.STARTED)
+    await update_query(query, "state", QueryState.STARTED)
 
     gateway: GatewayResource = await get_valid_resource(
         GATEWAYS_COLLECTION, query.attributes.gateway_id
@@ -73,26 +62,12 @@ async def perform_query(
         filter_query=query.attributes.query_parameters.filter,
     )
 
-    if use_query_resource:
-        url = url.replace(path=f"{url.path.rstrip('/')}/{query.id}")
-        await update_query(
-            query,
-            "response",
-            GatewayQueryResponse(
-                data={},
-                links=ToplevelLinks(next=None),
-                meta=meta_values(
-                    url=url,
-                    data_available=0,
-                    data_returned=0,
-                    more_data_available=False,
-                ),
-            ),
-            **{"$set": {"state": QueryState.IN_PROGRESS}},
-        )
-    else:
-        response = query.attributes.endpoint.get_response_model()(
-            data=[],
+    url = url.replace(path=f"{url.path.rstrip('/')}/{query.id}")
+    await update_query(
+        query,
+        "response",
+        GatewayQueryResponse(
+            data={},
             links=ToplevelLinks(next=None),
             meta=meta_values(
                 url=url,
@@ -100,7 +75,9 @@ async def perform_query(
                 data_returned=0,
                 more_data_available=False,
             ),
-        )
+        ),
+        **{"$set": {"state": QueryState.IN_PROGRESS}},
+    )
 
     loop = asyncio.get_running_loop()
     with ThreadPoolExecutor(
@@ -131,79 +108,18 @@ async def perform_query(
         for query_task in query_tasks:
             (db_response, db_id) = await query_task
 
-            results, errors, response_meta = await process_db_response(
+            results = await process_db_response(
                 response=db_response,
                 database_id=db_id,
                 query=query,
                 gateway=gateway,
-                use_query_resource=use_query_resource,
             )
-
-            if not use_query_resource:
-                # Create a standard OPTIMADE response, adding the database ID to each returned
-                # resource's meta field.
-                database_id_meta = {
-                    f"_{CONFIG.provider.prefix}_source_database_id": db_id
-                }
-                if errors or isinstance(response, ErrorResponse):
-                    # Error response
-                    if isinstance(response, ErrorResponse):
-                        response.errors.append(errors)
-                    else:
-                        response = ErrorResponse(errors=errors, meta=response.meta)
-                        response.meta.data_returned = 0
-                        response.meta.more_data_available = False
-                elif isinstance(results, list):
-                    # "Many" response
-                    for resource in results:
-                        if hasattr(resource, "meta") and resource.meta:
-                            meta = resource.meta.dict()
-                            meta.update(database_id_meta)
-                            resource.meta = Meta(**meta)
-                        elif isinstance(resource, dict) and resource.get("meta", {}):
-                            resource["meta"] = resource["meta"].update(database_id_meta)
-                        elif isinstance(resource, dict):
-                            resource["meta"] = database_id_meta
-                        else:
-                            resource.meta = Meta(**database_id_meta)
-                    response.data.extend(results)
-                    response.meta.data_returned += response_meta["data_returned"]
-                    if not response.meta.more_data_available:
-                        # Keep it True, if set to True once.
-                        response.meta.more_data_available = response_meta[
-                            "more_data_available"
-                        ]
-                else:
-                    # "One" response
-                    if hasattr(results, "meta") and results.meta:
-                        meta = results.meta.dict()
-                        meta.update(database_id_meta)
-                        results.meta = Meta(**meta)
-                    elif isinstance(results, dict) and results.get("meta", {}):
-                        results["meta"] = results["meta"].update(database_id_meta)
-                    elif isinstance(results, dict):
-                        results["meta"] = database_id_meta
-                    else:
-                        results.meta = Meta(**database_id_meta)
-                    response.data.append(results)
-                    response.meta.data_returned += response_meta["data_returned"]
-                    if not response.meta.more_data_available:
-                        # Keep it True, if set to True once.
-                        response.meta.more_data_available = response_meta[
-                            "more_data_available"
-                        ]
-                response.meta.data_available += response_meta["data_available"]
 
     if get_resource_attribute(
         query,
         "attributes.response.meta.more_data_available",
         False,
         disambiguate=False,  # Extremely minor speed-up
-    ) or get_resource_attribute(
-        response,
-        "meta.more_data_available",
-        False,
-        disambiguate=False,
     ):
         # Deduce the `next` link from the current request
         query_string = urllib.parse.parse_qs(url.query)
@@ -215,15 +131,10 @@ async def perform_query(
 
         links = ToplevelLinks(next=f"{base_url}{url.path}?{urlencoded}")
 
-        if use_query_resource:
-            await update_query(query, "response.links", links)
-        else:
-            response.links = links
+        await update_query(query, "response.links", links)
 
-    if use_query_resource:
-        await update_query(query, "state", QueryState.FINISHED)
-        return query.attributes.response
-    return response
+    await update_query(query, "state", QueryState.FINISHED)
+    return query.attributes.response
 
 
 def db_find(
