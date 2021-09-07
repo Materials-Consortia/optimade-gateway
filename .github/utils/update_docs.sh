@@ -23,7 +23,7 @@ echo -e "\n-o- Update version -o-"
 invoke setver --ver="${GITHUB_REF#refs/tags/}"
 
 echo -e "\n-o- Commit updates - Version & Changelog -o-"
-git add optimade_gateway/__init__.py optimade_gateway/config.json tests/static/test_config.json .github/docker/docker_config.json
+git add optimade_gateway/__init__.py optimade_gateway/config.json tests/static/test_config.json
 git add CHANGELOG.md
 git commit -m "Release ${GITHUB_REF#refs/tags/} - Changelog"
 
