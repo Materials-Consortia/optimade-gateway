@@ -50,10 +50,6 @@ def setver(_, ver=""):
         TOP_DIR / "tests/static/test_config.json",
         (r'"version": ".*",', f'"version": "{ver}",'),
     )
-    update_file(
-        TOP_DIR / ".github/docker/docker_config.json",
-        (r'"version": ".*",', f'"version": "{ver}",'),
-    )
 
     print(f"Bumped version to {ver}")
 
