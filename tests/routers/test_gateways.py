@@ -173,7 +173,7 @@ async def test_post_gateways_database_ids(
 
     assert datum.id == "twodbs"
     for database in datum.attributes.databases:
-        assert database.id in [_.split("/")[-1] for _ in data["database_ids"]]
+        assert database.id in data["database_ids"]
 
     assert datum.links.dict() == {
         "self": AnyUrl(
@@ -187,9 +187,10 @@ async def test_post_gateways_database_ids(
     assert await MONGO_DB["gateways"].count_documents(mongo_filter) == 1
     db_datum = await MONGO_DB["gateways"].find_one(mongo_filter)
     for db in db_datum["databases"]:
-        assert db["id"] in [_.split("/")[-1] for _ in data["database_ids"]]
+        assert db["id"] in data["database_ids"]
 
 
+@pytest.mark.usefixtures("reset_db_after")
 async def test_post_gateways_create_with_db_ids(
     client: Callable[
         [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
@@ -252,3 +253,30 @@ async def test_post_gateways_create_with_db_ids(
     db_datum = await MONGO_DB["gateways"].find_one(mongo_filter)
     for db in db_datum["databases"]:
         assert db["id"] in [data["databases"][0]["id"], data["database_ids"][0]]
+
+
+async def test_get_single_gateway(
+    client: Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[httpx.Response],
+    ],
+    random_gateway: str,
+    top_dir: Path,
+):
+    """Test GET /gateways/{gateway_id}"""
+    import json
+
+    from optimade_gateway.models.responses import GatewaysResponseSingle
+
+    response = await client(f"/gateways/{random_gateway}")
+
+    assert response.status_code == 200, f"Request failed: {response.json()}"
+    response = GatewaysResponseSingle(**response.json())
+    assert response
+
+    with open(top_dir / "tests/static/test_gateways.json") as handle:
+        test_data = json.load(handle)
+
+    assert response.meta.data_returned == 1
+    assert response.meta.data_available == len(test_data)
+    assert not response.meta.more_data_available

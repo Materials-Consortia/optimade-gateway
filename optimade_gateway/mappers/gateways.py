@@ -1,8 +1,9 @@
-from optimade.server.mappers.entries import BaseResourceMapper
 from pydantic import AnyUrl  # pylint: disable=no-name-in-module
 
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.models import GatewayResource
+
+from optimade_gateway.mappers.base import BaseResourceMapper
 
 __all__ = ("GatewaysMapper",)
 

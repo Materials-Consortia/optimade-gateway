@@ -11,24 +11,22 @@ from typing import Union
 from fastapi import (
     APIRouter,
     Depends,
-    HTTPException,
     Request,
     Response,
     status,
 )
 from fastapi.responses import RedirectResponse
-from optimade.server.exceptions import BadRequest
+from optimade.models.responses import EntryResponseMany, ErrorResponse
+from optimade.server.exceptions import BadRequest, InternalServerError
 from optimade.models import (
-    EntryResponseMany,
-    ErrorResponse,
     LinksResource,
     LinksResourceAttributes,
     ToplevelLinks,
 )
 from optimade.models.links import LinkType
-from optimade.models import StructureResponseMany, ReferenceResponseMany, LinksResponse
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import meta_values
+from optimade.server.schemas import ERROR_RESPONSES
 from pydantic import AnyUrl, ValidationError
 
 from optimade_gateway.common.config import CONFIG
@@ -41,27 +39,25 @@ from optimade_gateway.models import (
     QueryResource,
     Search,
 )
-from optimade_gateway.models.queries import OptimadeQueryParameters, QueryState
+from optimade_gateway.models.queries import (
+    OptimadeQueryParameters,
+    QueryState,
+)
 from optimade_gateway.queries import perform_query, SearchQueryParams
 
 
 ROUTER = APIRouter(redirect_slashes=True)
 
-ENDPOINT_MODELS = {
-    "structures": (StructureResponseMany.__module__, StructureResponseMany.__name__),
-    "references": (ReferenceResponseMany.__module__, ReferenceResponseMany.__name__),
-    "links": (LinksResponse.__module__, LinksResponse.__name__),
-}
-
 
 @ROUTER.post(
     "/search",
-    response_model=Union[QueriesResponseSingle, ErrorResponse],
+    response_model=QueriesResponseSingle,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Search"],
     status_code=status.HTTP_202_ACCEPTED,
+    responses=ERROR_RESPONSES,
 )
 async def post_search(request: Request, search: Search) -> QueriesResponseSingle:
     """`POST /search`
@@ -113,35 +109,60 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
 
     # Ensure all URLs are `pydantic.AnyUrl`s
     if not all([isinstance(_, AnyUrl) for _ in base_urls]):
-        raise HTTPException(
-            status_code=500,
-            detail="Could unexpectedly not get all base URLs as `pydantic.AnyUrl`s.",
+        raise InternalServerError(
+            "Could unexpectedly not validate all base URLs as proper URLs."
         )
 
-    gateway = GatewayCreate(
-        databases=[
-            LinksResource(
-                id=(
-                    f"{url.user + '@' if url.user else ''}{url.host}"
-                    f"{':' + url.port if url.port else ''}"
-                    f"{url.path.rstrip('/') if url.path else ''}"
-                ),
-                type="links",
-                attributes=LinksResourceAttributes(
-                    name=(
+    databases = await DATABASES_COLLECTION.get_multiple(
+        filter={"base_url": {"$in": await clean_python_types(base_urls)}}
+    )
+    if len(databases) == len(base_urls):
+        # At this point it is expected that the list of databases in `databases`
+        # is a complete set of databases requested.
+        gateway = GatewayCreate(databases=databases)
+    elif len(databases) < len(base_urls):
+        # There are unregistered databases
+        current_base_urls = set(
+            [
+                get_resource_attribute(database, "attributes.base_url")
+                for database in databases
+            ]
+        )
+        databases.extend(
+            [
+                LinksResource(
+                    id=(
                         f"{url.user + '@' if url.user else ''}{url.host}"
                         f"{':' + url.port if url.port else ''}"
                         f"{url.path.rstrip('/') if url.path else ''}"
+                    ).replace(".", "__"),
+                    type="links",
+                    attributes=LinksResourceAttributes(
+                        name=(
+                            f"{url.user + '@' if url.user else ''}{url.host}"
+                            f"{':' + url.port if url.port else ''}"
+                            f"{url.path.rstrip('/') if url.path else ''}"
+                        ),
+                        description="",
+                        base_url=url,
+                        link_type=LinkType.CHILD,
+                        homepage=None,
                     ),
-                    description="",
-                    base_url=url,
-                    link_type=LinkType.CHILD,
-                    homepage=None,
-                ),
-            )
-            for url in base_urls
-        ]
-    )
+                )
+                for url in base_urls - current_base_urls
+            ]
+        )
+    else:
+        LOGGER.error(
+            "Found more database entries in MongoDB than then number of passed base URLs. "
+            "This suggests ambiguity in the base URLs of databases stored in MongoDB.\n"
+            "  base_urls: %s\n  databases %s",
+            base_urls,
+            databases,
+        )
+        raise InternalServerError("Unambiguous base URLs. See logs for more details.")
+
+    gateway = GatewayCreate(databases=databases)
     gateway, created = await resource_factory(gateway)
 
     if created:
@@ -151,16 +172,13 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
 
     query = QueryCreate(
         endpoint=search.endpoint,
-        endpoint_model=ENDPOINT_MODELS.get(search.endpoint),
         gateway_id=gateway.id,
         query_parameters=search.query_parameters,
     )
     query, created = await resource_factory(query)
 
     if created:
-        asyncio.create_task(
-            perform_query(url=request.url, query=query, use_query_resource=True)
-        )
+        asyncio.create_task(perform_query(url=request.url, query=query))
 
     return QueriesResponseSingle(
         links=ToplevelLinks(next=None),
@@ -177,30 +195,40 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
 
 @ROUTER.get(
     "/search",
-    response_model=Union[EntryResponseMany, ErrorResponse],
+    response_model=Union[QueriesResponseSingle, EntryResponseMany, ErrorResponse],
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Search"],
+    responses=ERROR_RESPONSES,
 )
 async def get_search(
     request: Request,
     response: Response,
     search_params: SearchQueryParams = Depends(),
     entry_params: EntryListingQueryParams = Depends(),
-) -> Union[EntryResponseMany, ErrorResponse, RedirectResponse]:
+) -> Union[QueriesResponseSingle, EntryResponseMany, ErrorResponse, RedirectResponse]:
     """`GET /search`
 
     Coordinate a new OPTIMADE query in multiple databases through a gateway:
 
-    1. Create a [`Search`][optimade_gateway.models.search.Search] `POST` data - calling `POST /search`
+    1. Create a [`Search`][optimade_gateway.models.search.Search] `POST` data - calling `POST /search`.
     1. Wait [`search_params.timeout`][optimade_gateway.queries.params.SearchQueryParams]
-        seconds until the query has finished
-    1. Return successful response
+        seconds before returning the query, if it has not finished before.
+    1. Return query - similar to `GET /queries/{query_id}`.
 
-    !!! attention "Contingency"
-        If the query has not finished within the set timeout period, the client will be redirected
-        to the query's URL instead.
+    This endpoint works similarly to `GET /queries/{query_id}`, where one passes the query
+    parameters directly in the URL, instead of first POSTing a query and then going to its URL.
+    Hence, a [`QueryResponseSingle`][optimade_gateway.models.responses.QueriesResponseSingle] is
+    the standard response model for this endpoint.
+
+    If the timeout time is reached and the query has not yet finished, the user is redirected to the
+    specific URL for the query.
+
+    If the `as_optimade` query parameter is `True`, the response will be parseable as a standard
+    OPTIMADE entry listing endpoint like, e.g., `/structures`.
+    For more information see the
+    [OPTIMADE specification](https://github.com/Materials-Consortia/OPTIMADE/blob/master/optimade.rst#entry-listing-endpoints).
 
     """
     from time import time
@@ -223,7 +251,7 @@ async def get_search(
         raise BadRequest(
             detail=(
                 "A Search object could not be created from the given URL query parameters. "
-                f"Error(s): {[exc.errors]}"
+                f"Error(s): {exc.errors}"
             )
         )
 
@@ -243,12 +271,30 @@ async def get_search(
             if query.attributes.response.errors:
                 for error in query.attributes.response.errors:
                     if error.status:
-                        response.status_code = int(error.status)
-                        break
+                        for part in error.status.split(" "):
+                            try:
+                                response.status_code = int(part)
+                                break
+                            except ValueError:
+                                pass
+                        if response.status_code and response.status_code >= 300:
+                            break
                 else:
                     response.status_code = 500
 
-            return query.attributes.response
+            if search_params.as_optimade:
+                return await query.response_as_optimade(url=request.url)
+
+            return QueriesResponseSingle(
+                links=ToplevelLinks(next=None),
+                data=query,
+                meta=meta_values(
+                    url=request.url,
+                    data_returned=1,
+                    data_available=await QUERIES_COLLECTION.count(),
+                    more_data_available=False,
+                ),
+            )
 
         await asyncio.sleep(0.1)
 

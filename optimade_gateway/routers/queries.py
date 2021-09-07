@@ -7,7 +7,6 @@ This file describes the router for:
 where, `id` may be left out.
 """
 import asyncio
-from typing import Union
 
 from fastapi import (
     APIRouter,
@@ -16,18 +15,16 @@ from fastapi import (
     Response,
     status,
 )
-from optimade.models import ErrorResponse, ToplevelLinks
-from optimade.models.responses import EntryResponseMany
+from optimade.models import ToplevelLinks
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import meta_values
+from optimade.server.schemas import ERROR_RESPONSES
 
-from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.mappers import QueryMapper
 from optimade_gateway.models import (
     QueryCreate,
     QueryResource,
-    QueryState,
     QueriesResponse,
     QueriesResponseSingle,
 )
@@ -45,11 +42,12 @@ QUERIES_COLLECTION = AsyncMongoCollection(
 
 @ROUTER.get(
     "/queries",
-    response_model=Union[QueriesResponse, ErrorResponse],
+    response_model=QueriesResponse,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Queries"],
+    responses=ERROR_RESPONSES,
 )
 async def get_queries(
     request: Request,
@@ -71,12 +69,13 @@ async def get_queries(
 
 @ROUTER.post(
     "/queries",
-    response_model=Union[QueriesResponseSingle, ErrorResponse],
+    response_model=QueriesResponseSingle,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Queries"],
     status_code=status.HTTP_202_ACCEPTED,
+    responses=ERROR_RESPONSES,
 )
 async def post_queries(
     request: Request,
@@ -95,9 +94,7 @@ async def post_queries(
     result, created = await resource_factory(query)
 
     if created:
-        asyncio.create_task(
-            perform_query(url=request.url, query=result, use_query_resource=True)
-        )
+        asyncio.create_task(perform_query(url=request.url, query=result))
 
     return QueriesResponseSingle(
         links=ToplevelLinks(next=None),
@@ -113,47 +110,48 @@ async def post_queries(
 
 
 @ROUTER.get(
-    "/queries/{query_id:path}",
-    response_model=Union[EntryResponseMany, ErrorResponse],
+    "/queries/{query_id}",
+    response_model=QueriesResponseSingle,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Queries"],
+    responses=ERROR_RESPONSES,
 )
 async def get_query(
     request: Request,
     query_id: str,
     response: Response,
-) -> Union[EntryResponseMany, ErrorResponse]:
+) -> QueriesResponseSingle:
     """`GET /queries/{query_id}`
 
-    Return the response from a query
-    ([`QueryResource.attributes.response`][optimade_gateway.models.queries.QueryResourceAttributes.response]).
+    Return a single [`QueryResource`][optimade_gateway.models.queries.QueryResource].
     """
     from optimade_gateway.routers.utils import get_valid_resource
 
-    LOGGER.debug("At /queries/<id> with id=%s", query_id)
     query: QueryResource = await get_valid_resource(QUERIES_COLLECTION, query_id)
-    LOGGER.debug("Found query (in /queries/<id>): %s", query)
-
-    if query.attributes.state != QueryState.FINISHED:
-        return EntryResponseMany(
-            data=[],
-            meta=meta_values(
-                url=request.url,
-                data_returned=0,
-                data_available=None,  # It is at this point unknown
-                more_data_available=False,
-                **{f"_{CONFIG.provider.prefix}_query": query},
-            ),
-        )
 
     if query.attributes.response.errors:
         for error in query.attributes.response.errors:
             if error.status:
-                response.status_code = int(error.status)
-                break
+                for part in error.status.split(" "):
+                    try:
+                        response.status_code = int(part)
+                        break
+                    except ValueError:
+                        pass
+                if response.status_code and response.status_code >= 300:
+                    break
         else:
             response.status_code = 500
 
-    return query.attributes.response
+    return QueriesResponseSingle(
+        links=ToplevelLinks(next=None),
+        data=query,
+        meta=meta_values(
+            url=request.url,
+            data_returned=1,
+            data_available=await QUERIES_COLLECTION.count(),
+            more_data_available=False,
+        ),
+    )

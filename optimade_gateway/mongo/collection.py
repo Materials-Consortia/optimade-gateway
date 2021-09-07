@@ -1,13 +1,15 @@
 from datetime import datetime
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any, Dict, List, Set, Tuple, Union
+import warnings
 
-from fastapi import HTTPException
 from optimade.filterparser import LarkParser
 from optimade.filtertransformers.mongo import MongoTransformer
 from optimade.models import EntryResource
 from optimade.server.entry_collections.entry_collections import EntryCollection
+from optimade.server.exceptions import BadRequest, NotFound
 from optimade.server.mappers.entries import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
+from optimade.server.warnings import UnknownProviderProperty
 from pymongo.collection import Collection as MongoCollection
 
 from optimade_gateway.common.logger import LOGGER
@@ -55,73 +57,25 @@ class AsyncMongoCollection(EntryCollection):
         self._check_aliases(self.resource_mapper.all_length_aliases())
 
     def __str__(self) -> str:
-        """Standard printing result for an instance"""
+        """Standard printing result for an instance."""
         return f"<{self.__class__.__name__}: resource={self.resource_cls.__name__} endpoint(mapper)={self.resource_mapper.ENDPOINT} DB_collection={self.collection.name}>"
 
     def __repr__(self) -> str:
-        """Representation of instance"""
-        return f"{self.__class__.__name__}(name={self.collection.name!r}, resource_cls={self.resource_cls!r}, resource_mapper={self.resource_mapper!r}"
+        """Representation of instance."""
+        return f"{self.__class__.__name__}(name={self.collection.name!r}, resource_cls={self.resource_cls!r}, resource_mapper={self.resource_mapper!r})"
 
     def __len__(self) -> int:
-        """Length of collection"""
         import warnings
 
         warnings.warn(
-            "Cannot calculate length of collection using `len()`. Use `count()` instead.",
-            OptimadeGatewayWarning,
+            OptimadeGatewayWarning(
+                detail="Cannot calculate length of collection using `len()`. Use `count()` instead."
+            )
         )
         return 0
 
-    def _check_aliases(self, aliases: Tuple[Tuple[str, str]]) -> None:
-        """Check that aliases do not clash with mongo keywords.
-
-        Parameters:
-            aliases: Tuple of tuple of aliases to be checked.
-
-        Raises:
-            RuntimeError: If any alias starts with the dollar (`$`) character.
-
-        """
-        if any(
-            alias[0].startswith("$") or alias[1].startswith("$") for alias in aliases
-        ):
-            raise RuntimeError(f"Cannot define an alias starting with a '$': {aliases}")
-
-    @staticmethod
-    def _valid_find_keys(**kwargs) -> Dict[str, Any]:
-        """Return valid MongoDB find() keys with values from kwargs
-
-        Note, not including deprecated flags
-        (see https://pymongo.readthedocs.io/en/3.11.0/api/pymongo/collection.html#pymongo.collection.Collection.find).
-        """
-        valid_method_keys = (
-            "filter",
-            "projection",
-            "session",
-            "skip",
-            "limit",
-            "no_cursor_timeout",
-            "cursor_type",
-            "sort",
-            "allow_partial_results",
-            "batch_size",
-            "collation",
-            "return_key",
-            "show_record_id",
-            "hint",
-            "max_time_ms",
-            "min",
-            "max",
-            "comment",
-            "allow_disk_use",
-        )
-        criteria = {key: kwargs[key] for key in valid_method_keys if key in kwargs}
-
-        if criteria.get("filter") is None:
-            # Ensure documents are included in the result set
-            criteria["filter"] = {}
-
-        return criteria
+    async def insert(self, data: List[EntryResource]) -> None:
+        await self.collection.insert_many(await clean_python_types(data))
 
     async def count(
         self,
@@ -165,10 +119,140 @@ class AsyncMongoCollection(EntryCollection):
 
         return await self.collection.count_documents(**criteria)
 
+    async def find(
+        self,
+        params: Union[EntryListingQueryParams, SingleEntryQueryParams] = None,
+        criteria: Dict[str, Any] = None,
+    ) -> Tuple[
+        Union[List[EntryResource], EntryResource, None], bool, Set[str], Set[str]
+    ]:
+        """Perform the query on the underlying MongoDB Collection, handling projection
+        and pagination of the output.
+
+        Either provide `params` or `criteria`. Not both, but at least one.
+
+        Parameters:
+            params: URL query parameters, either from a general entry endpoint or a single-entry endpoint.
+            criteria: Already handled/parsed URL query parameters.
+
+        Returns:
+            A list of entry resource objects, whether more data is available with pagination, and fields
+            (excluded, included).
+
+        """
+        if (params is None and criteria is None) or (
+            params is not None and criteria is not None
+        ):
+            raise ValueError(
+                "Exacly one of either `params` and `criteria` must be specified."
+            )
+
+        # Set single_entry to False, this is done since if criteria is defined,
+        # this is an unknown factor - better to then get a list of results.
+        single_entry = False
+        if criteria is None:
+            criteria = await self.handle_query_params(params)
+        else:
+            single_entry = isinstance(params, SingleEntryQueryParams)
+
+        response_fields = criteria.pop("fields", self.all_fields)
+
+        results, data_returned, more_data_available = await self._run_db_query(
+            criteria=criteria,
+            single_entry=single_entry,
+        )
+
+        if single_entry:
+            results = results[0] if results else None
+
+            if data_returned > 1:
+                raise NotFound(
+                    detail=f"Instead of a single entry, {data_returned} entries were found",
+                )
+
+        include_fields = (
+            response_fields - self.resource_mapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS
+        )
+        bad_optimade_fields = set()
+        bad_provider_fields = set()
+        for field in include_fields:
+            if field not in self.resource_mapper.ALL_ATTRIBUTES:
+                if field.startswith("_"):
+                    if any(
+                        field.startswith(f"_{prefix}_")
+                        for prefix in self.resource_mapper.SUPPORTED_PREFIXES
+                    ):
+                        bad_provider_fields.add(field)
+                else:
+                    bad_optimade_fields.add(field)
+
+        if bad_provider_fields:
+            warnings.warn(
+                UnknownProviderProperty(
+                    detail=f"Unrecognised field(s) for this provider requested in `response_fields`: {bad_provider_fields}."
+                )
+            )
+
+        if bad_optimade_fields:
+            raise BadRequest(
+                detail=f"Unrecognised OPTIMADE field(s) in requested `response_fields`: {bad_optimade_fields}."
+            )
+
+        if results:
+            results = await self.resource_mapper.deserialize(results)
+
+        return (
+            results,
+            data_returned,
+            more_data_available,
+            self.all_fields - response_fields,
+            include_fields,
+        )
+
+    async def handle_query_params(
+        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
+    ) -> Dict[str, Any]:
+        return super().handle_query_params(params)
+
+    async def _run_db_query(
+        self, criteria: Dict[str, Any], single_entry: bool
+    ) -> Tuple[List[Dict[str, Any]], int, bool]:
+        results = []
+        async for document in self.collection.find(**self._valid_find_keys(**criteria)):
+            if criteria.get("projection", {}).get("_id"):
+                document["_id"] = str(document["_id"])
+            results.append(document)
+
+        if single_entry:
+            data_returned = len(results)
+            more_data_available = False
+        else:
+            criteria_nolimit = criteria.copy()
+            criteria_nolimit.pop("limit", None)
+            data_returned = await self.count(params=None, **criteria_nolimit)
+            more_data_available = len(results) < data_returned
+
+        return results, data_returned, more_data_available
+
+    def _check_aliases(self, aliases: Tuple[Tuple[str, str]]) -> None:
+        """Check that aliases do not clash with mongo keywords.
+
+        Parameters:
+            aliases: Tuple of tuple of aliases to be checked.
+
+        Raises:
+            RuntimeError: If any alias starts with the dollar (`$`) character.
+
+        """
+        if any(
+            alias[0].startswith("$") or alias[1].startswith("$") for alias in aliases
+        ):
+            raise RuntimeError(f"Cannot define an alias starting with a '$': {aliases}")
+
     async def get_one(self, **criteria: Dict[str, Any]) -> EntryResource:
         """Get one resource based on criteria
 
-        !!! warning
+        Warning:
             This is not to be used for creating a REST API response,
             but is rather a utility function to easily retrieve a single resource.
 
@@ -190,7 +274,7 @@ class AsyncMongoCollection(EntryCollection):
     async def get_multiple(self, **criteria: Dict[str, Any]) -> List[EntryResource]:
         """Get a list of resources based on criteria
 
-        !!! warning
+        Warning:
             This is not to be used for creating a REST API response,
             but is rather a utility function to easily retrieve a list of resources.
 
@@ -208,73 +292,6 @@ class AsyncMongoCollection(EntryCollection):
             results.append(self.resource_cls(**self.resource_mapper.map_back(document)))
 
         return results
-
-    async def find(
-        self,
-        params: Union[EntryListingQueryParams, SingleEntryQueryParams] = None,
-        criteria: Dict[str, Any] = None,
-    ) -> Tuple[Union[List[EntryResource], EntryResource], bool, set]:
-        """Perform the query on the underlying MongoDB Collection, handling projection
-        and pagination of the output.
-
-        Either provide `params` or `criteria`. Not both, but at least one.
-
-        Parameters:
-            params: URL query parameters, either from a general entry endpoint or a single-entry endpoint.
-            criteria: Already handled/parsed URL query parameters.
-
-        Returns:
-            A list of entry resource objects, whether more data is available with pagination, and fields.
-
-        """
-        if (params is None and criteria is None) or (
-            params is not None and criteria is not None
-        ):
-            raise ValueError(
-                "Exacly one of either `params` and `criteria` must be specified."
-            )
-
-        if criteria is None:
-            criteria = await self.handle_query_params(params)
-
-        fields = criteria.get("fields", self.all_fields)
-
-        results = []
-        async for document in self.collection.find(**self._valid_find_keys(**criteria)):
-            if criteria.get("projection", {}).get("_id"):
-                document["_id"] = str(document["_id"])
-            results.append(self.resource_cls(**self.resource_mapper.map_back(document)))
-
-        if params is None or isinstance(params, EntryListingQueryParams):
-            criteria_nolimit = criteria.copy()
-            criteria_nolimit.pop("limit", None)
-            more_data_available = len(results) < await self.count(**criteria_nolimit)
-        else:
-            # SingleEntryQueryParams, e.g., /structures/{entry_id}
-            more_data_available = False
-            if len(results) > 1:
-                raise HTTPException(
-                    status_code=404,
-                    detail=f"Instead of a single entry, {len(results)} entries were found",
-                )
-            results = results[0] if results else None
-
-        return results, more_data_available, self.all_fields - fields
-
-    async def handle_query_params(
-        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> dict:
-        cursor_kwargs = super().handle_query_params(params)
-
-        if getattr(params, "response_fields", False):
-            fields = set(params.response_fields.split(","))
-            fields |= self.resource_mapper.get_required_fields()
-            cursor_kwargs["fields"] = fields
-        else:
-            # cursor_kwargs["fields"] is already set to self.all_fields
-            pass
-
-        return cursor_kwargs
 
     async def create_one(self, resource: EntryResourceCreate) -> EntryResource:
         """Create a new document in the MongoDB collection based on query parameters.
@@ -322,20 +339,38 @@ class AsyncMongoCollection(EntryCollection):
         """
         return bool(await self.collection.count_documents({"id": entry_id}))
 
-    async def insert(self, data: List[EntryResource]) -> None:
-        """Add the given entries to the underlying database.
+    @staticmethod
+    def _valid_find_keys(**kwargs) -> Dict[str, Any]:
+        """Return valid MongoDB find() keys with values from kwargs
 
-        Warning:
-            No validation is performed on the incoming data.
-
-        Parameters:
-            data: The entry resource objects to add to the database.
-
+        Note, not including deprecated flags
+        (see https://pymongo.readthedocs.io/en/3.11.0/api/pymongo/collection.html#pymongo.collection.Collection.find).
         """
-        await self.collection.insert_many(await clean_python_types(data))
+        valid_method_keys = (
+            "filter",
+            "projection",
+            "session",
+            "skip",
+            "limit",
+            "no_cursor_timeout",
+            "cursor_type",
+            "sort",
+            "allow_partial_results",
+            "batch_size",
+            "collation",
+            "return_key",
+            "show_record_id",
+            "hint",
+            "max_time_ms",
+            "min",
+            "max",
+            "comment",
+            "allow_disk_use",
+        )
+        criteria = {key: kwargs[key] for key in valid_method_keys if key in kwargs}
 
-    def _run_db_query(
-        self, criteria: Dict[str, Any], single_entry: bool
-    ) -> Tuple[List[Dict[str, Any]], int, bool]:
-        """Abstract class - not implemented"""
-        return super()._run_db_query(criteria, single_entry=single_entry)
+        if criteria.get("filter") is None:
+            # Ensure documents are included in the result set
+            criteria["filter"] = {}
+
+        return criteria

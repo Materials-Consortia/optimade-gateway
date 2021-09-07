@@ -155,11 +155,9 @@ async def test_query_results(
 ):
     """Test POST /queries and GET /queries/{id}"""
     import asyncio
-    from optimade.models import EntryResponseMany
-    from optimade.models import StructureResponseMany
 
-    from optimade_gateway.common.config import CONFIG
-    from optimade_gateway.models.queries import QueryState, QueryResource
+    from optimade_gateway.models.queries import QueryState
+    from optimade_gateway.models.responses import QueriesResponseSingle
 
     data = {
         "id": "test",
@@ -179,12 +177,10 @@ async def test_query_results(
     response = await client(f"/queries/{data['id']}")
     assert response.status_code == 200, f"Request failed: {response.json()}"
 
-    response = EntryResponseMany(**response.json())
-    assert response.data == []
+    response = QueriesResponseSingle(**response.json())
+    assert response.data.attributes.response.data == {}
 
-    query: QueryResource = QueryResource(
-        **getattr(response.meta, f"_{CONFIG.provider.prefix}_query")
-    )
+    query = response.data
     assert query
     assert query.attributes.state in (QueryState.STARTED, QueryState.IN_PROGRESS)
 
@@ -193,12 +189,9 @@ async def test_query_results(
     response = await client(f"/queries/{data['id']}")
     assert response.status_code == 200, f"Request failed: {response.json()}"
 
-    response = StructureResponseMany(**response.json())
-    assert response.data
-    assert (
-        getattr(response.meta, f"_{CONFIG.provider.prefix}_query", "NOT FOUND")
-        == "NOT FOUND"
-    )
+    response = QueriesResponseSingle(**response.json())
+    assert response.data.attributes.response.data
+    assert response.data.attributes.state == QueryState.FINISHED
 
 
 @pytest.mark.usefixtures("reset_db_after")
@@ -212,7 +205,6 @@ async def test_errored_query_results(
 ):
     """Test POST /queries and GET /queries/{id} with an erroneous response"""
     import asyncio
-    from optimade.models import ErrorResponse
 
     from optimade_gateway.models.responses import QueriesResponseSingle
 
@@ -236,7 +228,8 @@ async def test_errored_query_results(
         response.status_code == 404
     ), f"Request succeeded, where it should have failed:\n{json.dumps(response.json(), indent=2)}"
 
-    response = ErrorResponse(**response.json())
+    response = QueriesResponseSingle(**response.json())
+    assert response.data.attributes.response.errors
 
 
 @pytest.mark.usefixtures("reset_db_after")

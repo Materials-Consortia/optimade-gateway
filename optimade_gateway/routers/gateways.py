@@ -6,13 +6,10 @@ This file describes the router for:
 
 where, `id` may be left out.
 """
-from typing import Union
-
 from fastapi import APIRouter, Depends, Request
-from fastapi.responses import RedirectResponse
-from optimade.models import ErrorResponse, ToplevelLinks
+from optimade.models import ToplevelLinks
 from optimade.server.query_params import EntryListingQueryParams
-from optimade.server.routers.utils import meta_values
+from optimade.server.schemas import ERROR_RESPONSES
 
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.mappers import GatewaysMapper
@@ -36,11 +33,12 @@ GATEWAYS_COLLECTION = AsyncMongoCollection(
 
 @ROUTER.get(
     "/gateways",
-    response_model=Union[GatewaysResponse, ErrorResponse],
+    response_model=GatewaysResponse,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Gateways"],
+    responses=ERROR_RESPONSES,
 )
 async def get_gateways(
     request: Request,
@@ -62,11 +60,12 @@ async def get_gateways(
 
 @ROUTER.post(
     "/gateways",
-    response_model=Union[GatewaysResponseSingle, ErrorResponse],
+    response_model=GatewaysResponseSingle,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Gateways"],
+    responses=ERROR_RESPONSES,
 )
 async def post_gateways(
     request: Request, gateway: GatewayCreate
@@ -75,6 +74,7 @@ async def post_gateways(
 
     Create or return existing gateway according to `gateway`.
     """
+    from optimade.server.routers.utils import meta_values
     from optimade_gateway.common.utils import clean_python_types
     from optimade_gateway.routers.utils import resource_factory
 
@@ -110,24 +110,30 @@ async def post_gateways(
 
 @ROUTER.get(
     "/gateways/{gateway_id}",
-    response_model=Union[GatewaysResponseSingle, ErrorResponse],
+    response_model=GatewaysResponseSingle,
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
     tags=["Gateways"],
+    responses=ERROR_RESPONSES,
 )
 async def get_gateway(request: Request, gateway_id: str) -> GatewaysResponseSingle:
     """`GET /gateways/{gateway ID}`
 
-    Represent an OPTIMADE server.
-
-    !!! note
-        For now, redirect to the gateway's `/structures` entry listing endpoint.
-
+    Return a single [`GatewayResource`][optimade_gateway.models.gateways.GatewayResource].
     """
-    from optimade_gateway.routers.utils import validate_resource
+    from optimade.server.routers.utils import meta_values
+    from optimade_gateway.routers.utils import get_valid_resource
 
-    await validate_resource(GATEWAYS_COLLECTION, gateway_id)
-    return RedirectResponse(
-        request.url.replace(path=f"{request.url.path.rstrip('/')}/structures")
+    result = await get_valid_resource(GATEWAYS_COLLECTION, gateway_id)
+
+    return GatewaysResponseSingle(
+        links=ToplevelLinks(next=None),
+        data=result,
+        meta=meta_values(
+            url=request.url,
+            data_returned=1,
+            data_available=await GATEWAYS_COLLECTION.count(),
+            more_data_available=False,
+        ),
     )

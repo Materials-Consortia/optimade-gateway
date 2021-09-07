@@ -7,8 +7,7 @@
     "query_parameters": {
       "filter": "elements HAS \"Si\""
     },
-    "endpoint": "structures",
-    "endpoint_model": ["optimade.models.responses", "StructureResponseMany"]
+    "endpoint": "structures"
   },
   {
     "id": "twodbs_query_2",
@@ -18,8 +17,7 @@
     "query_parameters": {
       "filter": "elements HAS \"Si\""
     },
-    "endpoint": "structures",
-    "endpoint_model": ["optimade.models.responses", "StructureResponseMany"]
+    "endpoint": "structures"
   },
   {
     "id": "singledb_query_1",
@@ -30,7 +28,6 @@
       "filter": "elements HAS \"Si\"",
       "page_limit": 5
     },
-    "endpoint": "structures",
-    "endpoint_model": ["optimade.models.responses", "StructureResponseMany"]
+    "endpoint": "structures"
   }
 ]

@@ -1,19 +1,65 @@
 """Pydantic models/schemas for the Queries resource"""
+from datetime import timezone
 from enum import Enum
-from typing import Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Union
+import urllib.parse
 import warnings
 
 from optimade.models import (
-    EntryResource,
+    EntryResource as OptimadeEntryResource,
     EntryResourceAttributes,
     EntryResponseMany,
     ErrorResponse,
+    OptimadeError,
+    ReferenceResource,
+    ReferenceResponseMany,
+    ReferenceResponseOne,
+    Response,
+    ResponseMeta,
+    StructureResource,
+    StructureResponseMany,
+    StructureResponseOne,
 )
+from optimade.models.utils import StrictField
 from optimade.server.query_params import EntryListingQueryParams
 from pydantic import BaseModel, EmailStr, Field, validator
+from starlette.datastructures import URL as StarletteURL
 
 from optimade_gateway.models.resources import EntryResourceCreate
 from optimade_gateway.warnings import SortNotSupported
+
+
+class EndpointEntryType(Enum):
+    """Entry endpoint resource types, mapping to their pydantic models from the `optimade` package."""
+
+    REFERENCES = "references"
+    STRUCTURES = "structures"
+
+    def get_resource_model(self) -> Union[ReferenceResource, StructureResource]:
+        """Get the matching pydantic model for a resource."""
+        return {
+            "references": ReferenceResource,
+            "structures": StructureResource,
+        }[self.value]
+
+    def get_response_model(
+        self, single: bool = False
+    ) -> Union[
+        ReferenceResponseMany,
+        ReferenceResponseOne,
+        StructureResponseMany,
+        StructureResponseOne,
+    ]:
+        """Get the matching pydantic model for a successful response."""
+        if single:
+            return {
+                "references": ReferenceResponseOne,
+                "structures": StructureResponseOne,
+            }[self.value]
+        return {
+            "references": ReferenceResponseMany,
+            "structures": StructureResponseMany,
+        }[self.value]
 
 
 QUERY_PARAMETERS = EntryListingQueryParams()
@@ -99,8 +145,59 @@ class QueryState(Enum):
     FINISHED = "finished"
 
 
+class EntryResource(OptimadeEntryResource):
+    """Entry Resource ensuring datetimes are not naive."""
+
+    @validator("attributes")
+    def ensure_non_naive_datetime(
+        cls, value: EntryResourceAttributes
+    ) -> EntryResourceAttributes:
+        """Set timezone to UTC if datetime is naive."""
+        if value.last_modified and value.last_modified.tzinfo is None:
+            value.last_modified = value.last_modified.replace(tzinfo=timezone.utc)
+        return value
+
+
+class GatewayQueryResponse(Response):
+    """Response from a Gateway Query."""
+
+    data: Dict[str, Union[List[EntryResource], List[Dict[str, Any]]]] = StrictField(
+        ..., uniqueItems=True, description="Outputted Data."
+    )
+    meta: ResponseMeta = StrictField(
+        ..., description="A meta object containing non-standard information."
+    )
+    errors: Optional[List[OptimadeError]] = StrictField(
+        [],
+        description="A list of OPTIMADE-specific JSON API error objects, where the field detail MUST be present.",
+        uniqueItems=True,
+    )
+    included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = Field(
+        None, uniqueItems=True
+    )
+
+    @classmethod
+    def _remove_pre_root_validators(cls):
+        """Remove `either_data_meta_or_errors_must_be_set` pre root_validator.
+        This will always be available through `meta`, and more importantly,
+        `errors` should be allowed to be present always for this special response.
+        """
+        pre_root_validators = []
+        for validator_ in cls.__pre_root_validators__:
+            if not str(validator_).startswith(
+                "<function Response.either_data_meta_or_errors_must_be_set"
+            ):
+                pre_root_validators.append(validator_)
+        cls.__pre_root_validators__ = pre_root_validators
+
+    def __init__(self, **data: Any) -> None:
+        """Remove root_validator `either_data_meta_or_errors_must_be_set`."""
+        self._remove_pre_root_validators()
+        super().__init__(**data)
+
+
 class QueryResourceAttributes(EntryResourceAttributes):
-    """Attributes for an OPTIMADE gateway query"""
+    """Attributes for an OPTIMADE gateway query."""
 
     gateway_id: str = Field(
         ...,
@@ -117,45 +214,25 @@ class QueryResourceAttributes(EntryResourceAttributes):
         title="State",
         type="enum",
     )
-    response: Optional[Union[EntryResponseMany, ErrorResponse]] = Field(
+    response: Optional[GatewayQueryResponse] = Field(
         None,
         description="Response from gateway query.",
-        type="object",
     )
-    endpoint: str = Field(
-        ..., description="The entry endpoint queried, e.g., 'structures'."
-    )
-    endpoint_model: Tuple[str, str] = Field(
-        ...,
-        description=(
-            "The full importable path to the pydantic response model class (not an instance of "
-            "the class). It should be a tuple of the Python module and the Class name."
-        ),
+    endpoint: EndpointEntryType = Field(
+        EndpointEntryType.STRUCTURES,
+        description="The entry endpoint queried, e.g., 'structures'.",
+        title="Endpoint",
+        type="enum",
     )
 
     @validator("endpoint")
-    def remove_endpoints_slashes(cls, value: str) -> str:
-        """Remove prep-/appended slashes (`/`)"""
-        org_value = value
-        value = value.strip()
-        while value.startswith("/"):
-            value = value[1:]
-        while value.endswith("/"):
-            value = value[:-1]
-        if not value:
-            raise ValueError(
-                "endpoint must not be an empty string or be prep-/appended with slashes (`/`). "
-                f"Original value: {org_value!r}. Final value (after removing prep-/appended "
-                f"slashes): {value!r}"
-            )
-
-        # Temporarily only allow queries to "structures" endpoints.
-        if value != "structures":
+    def only_allow_structures(cls, value: EndpointEntryType) -> EndpointEntryType:
+        """Temporarily only allow queries to "structures" endpoints."""
+        if value != EndpointEntryType.STRUCTURES:
             raise NotImplementedError(
                 'OPTIMADE Gateway temporarily only supports queries to "structures" endpoints, '
                 'i.e.: endpoint="structures"'
             )
-
         return value
 
 
@@ -170,13 +247,109 @@ class QueryResource(EntryResource):
     )
     attributes: QueryResourceAttributes
 
+    async def response_as_optimade(
+        self,
+        url: Optional[
+            Union[urllib.parse.ParseResult, urllib.parse.SplitResult, StarletteURL, str]
+        ] = None,
+    ) -> Union[EntryResponseMany, ErrorResponse]:
+        """Return `attributes.response` as a valid OPTIMADE entry listing response.
+
+        Note, this method disregards the state of the query and will simply return the query results
+        as they currently are (if there are any at all).
+
+        Parameters:
+            url: Optionally, update the `meta.query.representation` value with this.
+
+        Returns:
+            A valid OPTIMADE entry-listing response according to the
+            [OPTIMADE specification](https://github.com/Materials-Consortia/OPTIMADE/blob/master/optimade.rst#entry-listing-endpoints)
+            or an error response, if errors were returned or occurred during the query.
+
+        """
+        from copy import deepcopy
+        from optimade.server.routers.utils import meta_values
+
+        async def _update_id(
+            entry_: Union[EntryResource, Dict[str, Any]], database_provider_: str
+        ) -> Union[EntryResource, Dict[str, Any]]:
+            """Internal utility function to prepend the entries' `id` with `provider/database/`.
+
+            Parameters:
+                entry_: The entry as a model or a dictionary.
+                database_provider_: `provider/database` string.
+
+            Returns:
+                The entry with an updated `id` value.
+
+            """
+            if isinstance(entry_, dict):
+                _entry = deepcopy(entry_)
+                _entry["id"] = f"{database_provider_}/{entry_['id']}"
+            else:
+                _entry = entry_.copy(deep=True)
+                _entry.id = f"{database_provider_}/{entry_.id}"
+            return _entry
+
+        if not self.attributes.response:
+            # The query has not yet been initiated
+            return ErrorResponse(
+                errors=[
+                    {
+                        "detail": (
+                            "Can not return as a valid OPTIMADE response as the query has not yet "
+                            "been initialized."
+                        ),
+                        "id": "OPTIMADE_GATEWAY_QUERY_NOT_INITIALIZED",
+                    }
+                ],
+                meta=meta_values(
+                    url=url or f"/queries/{self.id}?",
+                    data_returned=0,
+                    data_available=0,
+                    more_data_available=False,
+                ),
+            )
+
+        meta_ = self.attributes.response.meta
+        if url:
+            meta_ = meta_.dict(exclude_unset=True)
+            for repeated_key in (
+                "query",
+                "api_version",
+                "time_stamp",
+                "provider",
+                "implementation",
+            ):
+                meta_.pop(repeated_key, None)
+            meta_ = meta_values(url=url, **meta_)
+
+        # Error response
+        if self.attributes.response.errors:
+            return ErrorResponse(
+                errors=self.attributes.response.errors,
+                meta=meta_,
+            )
+
+        # Data response
+        results = []
+        for database_provider, entries in self.attributes.response.data.items():
+            results.extend(
+                [await _update_id(entry, database_provider) for entry in entries]
+            )
+
+        return self.attributes.endpoint.get_response_model()(
+            data=results,
+            meta=meta_,
+            links=self.attributes.response.links,
+        )
+
 
 class QueryCreate(EntryResourceCreate, QueryResourceAttributes):
     """Model for creating new Query resources in the MongoDB"""
 
     state: Optional[QueryState]
-    endpoint: Optional[str]
-    endpoint_model: Optional[Tuple[str, str]]
+    endpoint: Optional[EndpointEntryType]
 
     @validator("query_parameters")
     def sort_not_supported(
