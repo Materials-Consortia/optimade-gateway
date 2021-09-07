@@ -6,7 +6,7 @@ All pydantic data and response models used to define the API can be found in thi
 
 from .databases import DatabaseCreate
 from .gateways import GatewayCreate, GatewayResource, GatewayResourceAttributes
-from .queries import QueryCreate, QueryResource, QueryState
+from .queries import GatewayQueryResponse, QueryCreate, QueryResource, QueryState
 from .resources import EntryResourceCreate
 from .responses import (
     DatabasesResponse,
@@ -25,6 +25,7 @@ __all__ = (
     "DatabasesResponseSingle",
     "EntryResourceCreate",
     "GatewayCreate",
+    "GatewayQueryResponse",
     "GatewayResource",
     "GatewayResourceAttributes",
     "GatewaysResponse",

@@ -1,27 +1,12 @@
-import importlib
 import re
-from typing import Dict, List, Tuple, Union
+from typing import Dict, List, Union
 import urllib.parse
 
-from optimade.models.responses import EntryResponseMany, EntryResponseOne
-from optimade.server.exceptions import BadRequest
-
 from optimade_gateway.models.queries import OptimadeQueryParameters
+from optimade_gateway.warnings import OptimadeGatewayWarning
 
 
-async def prepare_query(
-    database_ids: List[str],
-    endpoint_model: Tuple[str, str],
-    filter_query: Union[str, None],
-) -> Tuple[Dict[str, Union[str, None]], Union[EntryResponseMany, EntryResponseOne]]:
-    """Prepare a query by returning necessary variables."""
-    return (
-        await update_query_filter(database_ids, filter_query),
-        await get_response_model(endpoint_model),
-    )
-
-
-async def update_query_filter(
+async def prepare_query_filter(
     database_ids: List[str], filter_query: Union[str, None]
 ) -> Dict[str, Union[str, None]]:
     """Update the query parameter `filter` value to be database-specific
@@ -60,12 +45,18 @@ async def update_query_filter(
                 break
             # TODO: Remove `id="value"` sections here for queries to databases that doesn't match the id value!
         else:
-            raise BadRequest(
-                detail=(
-                    f"Structures entry <id={matched_id}> not found. To get a specific structures "
-                    "entry one needs to prepend the ID with a database ID belonging to the gateway,"
-                    f" e.g., '{database_ids[0]}/<local_database_ID>'. Available"
-                    f"databases for this gateway: {database_ids}"
+            from warnings import warn
+
+            warn(
+                OptimadeGatewayWarning(
+                    title="Non-Unique Entry ID",
+                    detail=(
+                        f"The passed entry ID <id={matched_id}> may be ambiguous! To get a "
+                        "specific structures entry, one can prepend the ID with a database ID "
+                        "belonging to the gateway, followed by a forward slash, e.g., "
+                        f"'{database_ids[0]}/<local_database_ID>'. Available databases for this "
+                        f"gateway: {database_ids}"
+                    ),
                 )
             )
     return updated_filter
@@ -83,22 +74,3 @@ async def get_query_params(
     if filter_mapping[database_id]:
         query_params.update({"filter": filter_mapping[database_id]})
     return urllib.parse.urlencode(query_params)
-
-
-async def get_response_model(
-    endpoint_model: Tuple[str, str]
-) -> Union[EntryResponseMany, EntryResponseOne]:
-    """Import and return response model based on `endpoint_model`.
-
-    Parameters:
-        endpoint_model: The
-            [`endpoint_model`][optimade_gateway.models.queries.QueryResourceAttributes.endpoint_model]
-            from the
-            [`QueryResource` attributes][optimade_gateway.models.queries.QueryResourceAttributes].
-
-    Returns:
-        The imported response model class, e.g., `StructureResponseMany`.
-
-    """
-    module, name = endpoint_model
-    return getattr(importlib.import_module(module), name)

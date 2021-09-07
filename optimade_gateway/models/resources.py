@@ -16,7 +16,7 @@ class EntryResourceCreate(EntryResourceAttributes):
 
     @classmethod
     def _remove_pre_root_validators(cls):
-        """Remove `check_illegal_attributes_fields` pre root_validators"""
+        """Remove `check_illegal_attributes_fields` pre root_validators."""
         pre_root_validators = []
         for validator in cls.__pre_root_validators__:
             if not str(validator).startswith(
@@ -26,6 +26,6 @@ class EntryResourceCreate(EntryResourceAttributes):
         cls.__pre_root_validators__ = pre_root_validators
 
     def __init__(self, **data: Any) -> None:
-        """Remove root_validator `check_illegal_attributes_fields`"""
+        """Remove root_validator `check_illegal_attributes_fields`."""
         self._remove_pre_root_validators()
         super().__init__(**data)

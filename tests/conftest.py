@@ -133,6 +133,19 @@ def get_gateway() -> Callable[[str], Awaitable[dict]]:
 
 
 @pytest.fixture
+async def random_gateway() -> dict:
+    """Get a random gateway currently in the MongoDB"""
+    from optimade_gateway.mongo.database import MONGO_DB
+
+    gateway_ids = set()
+    async for gateway in MONGO_DB["gateways"].find(
+        filter={}, projection={"id": True, "_id": False}
+    ):
+        gateway_ids.add(gateway["id"])
+    return gateway_ids.pop()
+
+
+@pytest.fixture
 async def reset_db_after(top_dir: Path) -> None:
     """Reset MongoDB with original test data after the test has run"""
     try:
@@ -170,12 +183,25 @@ def mock_gateway_responses(
                 pass
             else:
                 with open(
-                    top_dir / f"tests/static/db_responses/{database['id']}.json"
+                    top_dir
+                    / f"tests/static/db_responses/{''.join(database['id'].split('/')[1:])}.json"
                 ) as handle:
                     data = json.load(handle)
+
+                if data.get("errors", []):
+                    for error in data.get("errors", []):
+                        if "status" in error:
+                            status_code = int(error["status"])
+                            break
+                    else:
+                        status_code = 500
+                else:
+                    status_code = 200
+
                 httpx_mock.add_response(
                     url=re.compile(fr"{database['attributes']['base_url']}.*"),
                     json=data,
+                    status_code=status_code,
                 )
 
     def sleep_response(request: httpx.Request, extensions: dict) -> MockResponse:

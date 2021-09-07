@@ -37,7 +37,13 @@ async def get_entries(
     params: EntryListingQueryParams,
 ) -> EntryResponseMany:
     """Generalized `/{entries}` endpoint getter"""
-    results, more_data_available, fields = await collection.find(params=params)
+    (
+        results,
+        data_returned,
+        more_data_available,
+        fields,
+        include_fields,
+    ) = await collection.find(params=params)
 
     if more_data_available:
         # Deduce the `next` link from the current request
@@ -50,15 +56,15 @@ async def get_entries(
     else:
         links = ToplevelLinks(next=None)
 
-    if fields:
-        results = handle_response_fields(results, fields, set())
+    if fields or include_fields:
+        results = handle_response_fields(results, fields, include_fields)
 
     return response_cls(
         links=links,
         data=results,
         meta=meta_values(
             url=request.url,
-            data_returned=await collection.count(params=params),
+            data_returned=data_returned,
             data_available=await collection.count(),
             more_data_available=more_data_available,
         ),
@@ -143,6 +149,13 @@ async def resource_factory(
         [`databases.attributes.base_url`](https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResourceAttributes.base_url)
         element values, when compared with the `create_resource`.
 
+        !!! important
+            The `database_ids` attribute **must not** contain values that are not also included in the
+            `databases` attribute, in the form of the IDs for the individual databases.
+            If this should be the case an
+            [`OptimadeGatewayError`][optimade_gateway.common.exceptions.OptimadeGatewayError] will be
+            thrown.
+
     === "Queries"
         The `gateway_id`, `query_parameters`, and `endpoint` fields are collectively considered to
         define uniqueness for a [`QueryResource`][optimade_gateway.models.queries.QueryResource]
@@ -151,10 +164,9 @@ async def resource_factory(
         !!! attention
             Only the `/structures` entry endpoint can be queried with multiple expected responses.
 
-            This means the `endpoint` field defaults to `"structures"` and `endpoint_model`
-            defaults to `("optimade.models.responses", "StructureResponseMany")`, i.e., the
-            [`StructureResponseMany`](https://www.optimade.org/optimade-python-tools/api_reference/models/responses/#optimade.models.responses.StructureResponseMany)
-            response model.
+            This means the `endpoint` field defaults to `"structures"`, i.e., the
+            [`StructureResource`](https://www.optimade.org/optimade-python-tools/all_models/#optimade.models.structures.StructureResource)
+            resource model.
 
     Parameters:
         create_resource: The resource to be retrieved or created anew.
@@ -181,8 +193,8 @@ async def resource_factory(
 
         mongo_query = {
             "$or": [
-                {"base_url": {"$eq": await clean_python_types(base_url)}},
-                {"base_url.href": {"$eq": await clean_python_types(base_url)}},
+                {"base_url": {"$eq": base_url}},
+                {"base_url.href": {"$eq": base_url}},
             ]
         }
     elif isinstance(create_resource, GatewayCreate):
@@ -190,12 +202,23 @@ async def resource_factory(
             GATEWAYS_COLLECTION as RESOURCE_COLLECTION,
         )
 
+        # One MUST have taken care of database_ids prior to calling `resource_factory()`
+        database_attr_ids = {_.id for _ in create_resource.databases or []}
+        unknown_ids = {
+            database_id
+            for database_id in create_resource.database_ids or []
+            if database_id not in database_attr_ids
+        }
+        if unknown_ids:
+            raise OptimadeGatewayError(
+                "When using `resource_factory()` for `GatewayCreate`, `database_ids` MUST not "
+                f"include unknown IDs. Passed unknown IDs: {unknown_ids}"
+            )
+
         mongo_query = {
             "databases": {"$size": len(create_resource.databases)},
             "databases.attributes.base_url": {
-                "$all": await clean_python_types(
-                    [_.attributes.base_url for _ in create_resource.databases]
-                )
+                "$all": [_.attributes.base_url for _ in create_resource.databases or []]
             },
         }
     elif isinstance(create_resource, QueryCreate):
@@ -208,17 +231,10 @@ async def resource_factory(
         create_resource.endpoint = (
             create_resource.endpoint if create_resource.endpoint else "structures"
         )
-        create_resource.endpoint_model = (
-            create_resource.endpoint_model
-            if create_resource.endpoint_model
-            else ("optimade.models.responses", "StructureResponseMany")
-        )
 
         mongo_query = {
             "gateway_id": {"$eq": create_resource.gateway_id},
-            "query_parameters": {
-                "$eq": await clean_python_types(create_resource.query_parameters),
-            },
+            "query_parameters": {"$eq": create_resource.query_parameters},
             "endpoint": {"$eq": create_resource.endpoint},
         }
     else:
@@ -227,8 +243,8 @@ async def resource_factory(
             f"{type(create_resource)!r}"
         )
 
-    result, more_data_available, _ = await RESOURCE_COLLECTION.find(
-        criteria={"filter": mongo_query}
+    result, data_returned, more_data_available, _, _ = await RESOURCE_COLLECTION.find(
+        criteria={"filter": await clean_python_types(mongo_query)}
     )
 
     if more_data_available:
@@ -238,12 +254,13 @@ async def resource_factory(
         )
 
     if result:
-        if len(result) > 1:
+        if data_returned > 1:
             raise OptimadeGatewayError(
                 f"More than one {result[0].type} were found. IDs of found {result[0].type}: "
                 f"{[_.id for _ in result]}"
             )
-        result = result[0]
+        if isinstance(result, list):
+            result = result[0]
     else:
         if isinstance(create_resource, DatabaseCreate):
             # Set required `LinksResourceAttributes` values if not set

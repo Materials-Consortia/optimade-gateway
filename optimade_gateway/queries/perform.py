@@ -1,3 +1,4 @@
+"""Perform OPTIMADE queries"""
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 import functools
@@ -13,7 +14,6 @@ from optimade.models import (
     EntryResponseOne,
     ErrorResponse,
     LinksResource,
-    Meta,
     ToplevelLinks,
 )
 from optimade.server.routers.utils import BASE_URL_PREFIXES, get_base_url, meta_values
@@ -22,48 +22,61 @@ from starlette.datastructures import URL
 
 from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.common.utils import get_resource_attribute
-from optimade_gateway.models import GatewayResource, QueryResource, QueryState
-from optimade_gateway.queries.prepare import get_query_params, prepare_query
+from optimade_gateway.models import (
+    GatewayQueryResponse,
+    GatewayResource,
+    QueryResource,
+    QueryState,
+)
+from optimade_gateway.queries.prepare import get_query_params, prepare_query_filter
+from optimade_gateway.queries.process import process_db_response
 from optimade_gateway.queries.utils import update_query
-from optimade_gateway.warnings import OptimadeGatewayWarning
 
 
 async def perform_query(
     url: URL,
     query: QueryResource,
-    use_query_resource: bool = True,
-) -> Union[EntryResponseMany, ErrorResponse]:
+) -> Union[EntryResponseMany, ErrorResponse, GatewayQueryResponse]:
     """Perform OPTIMADE query with gateway.
 
     Parameters:
         url: Original request URL.
         query: The query to be performed.
-        use_query_resource: Whether or not to update the passed
-            [`QueryResource`][optimade_gateway.models.queries.QueryResource] or not.
-            The URL will be changed if this is `True`, to allow for requesting the query back
-            through the `/queries` endpoint.
 
     Returns:
-        This function returns the final response; either an `ErrorResponse` or a subclass of
-        `EntryResponseMany`.
+        This function returns the final response; a
+        [`GatewayQueryResponse`][optimade_gateway.models.queries.GatewayQueryResponse].
 
     """
     from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
     from optimade_gateway.routers.utils import get_valid_resource
 
-    data_available = data_returned = 0
-    errors = []
-    more_data_available = False
-    results = []
+    await update_query(query, "state", QueryState.STARTED)
 
     gateway: GatewayResource = await get_valid_resource(
         GATEWAYS_COLLECTION, query.attributes.gateway_id
     )
 
-    (filter_queries, response_model) = await prepare_query(
+    filter_queries = await prepare_query_filter(
         database_ids=[_.id for _ in gateway.attributes.databases],
-        endpoint_model=query.attributes.endpoint_model,
         filter_query=query.attributes.query_parameters.filter,
+    )
+
+    url = url.replace(path=f"{url.path.rstrip('/')}/{query.id}")
+    await update_query(
+        query,
+        "response",
+        GatewayQueryResponse(
+            data={},
+            links=ToplevelLinks(next=None),
+            meta=meta_values(
+                url=url,
+                data_available=0,
+                data_returned=0,
+                more_data_available=False,
+            ),
+        ),
+        **{"$set": {"state": QueryState.IN_PROGRESS}},
     )
 
     loop = asyncio.get_running_loop()
@@ -85,106 +98,43 @@ async def perform_query(
                     func=functools.partial(
                         db_find,
                         database=database,
-                        endpoint=query.attributes.endpoint,
-                        response_model=response_model,
+                        endpoint=query.attributes.endpoint.value,
+                        response_model=query.attributes.endpoint.get_response_model(),
                         query_params=query_params,
                     ),
                 )
             )
 
-        if use_query_resource:
-            await update_query(query, "state", QueryState.STARTED)
-
         for query_task in query_tasks:
-            (response, db_id) = await query_task
+            (db_response, db_id) = await query_task
 
-            if use_query_resource and query.attributes.state != QueryState.IN_PROGRESS:
-                await update_query(query, "state", QueryState.IN_PROGRESS)
+            results = await process_db_response(
+                response=db_response,
+                database_id=db_id,
+                query=query,
+                gateway=gateway,
+            )
 
-            if isinstance(response, ErrorResponse):
-                for error in response.errors:
-                    if isinstance(error.id, str) and error.id.startswith(
-                        "OPTIMADE_GATEWAY"
-                    ):
-                        import warnings
+    if get_resource_attribute(
+        query,
+        "attributes.response.meta.more_data_available",
+        False,
+        disambiguate=False,  # Extremely minor speed-up
+    ):
+        # Deduce the `next` link from the current request
+        query_string = urllib.parse.parse_qs(url.query)
+        query_string["page_offset"] = int(
+            query_string.get("page_offset", [0])[0]
+        ) + len(results[: query.attributes.query_parameters.page_limit])
+        urlencoded = urllib.parse.urlencode(query_string, doseq=True)
+        base_url = get_base_url(url)
 
-                        warnings.warn(error.detail, OptimadeGatewayWarning)
-                    else:
-                        meta = {}
-                        if error.meta:
-                            meta = error.meta.dict()
-                        meta.update(
-                            {
-                                "optimade_gateway": {
-                                    "gateway": gateway,
-                                    "source_database_id": db_id,
-                                }
-                            }
-                        )
-                        error.meta = Meta(**meta)
-                        errors.append(error)
-            else:
-                for datum in response.data:
-                    if isinstance(datum, dict) and datum.get("id") is not None:
-                        datum["id"] = f"{db_id}/{datum['id']}"
-                    else:
-                        datum.id = f"{db_id}/{datum.id}"
-                results.extend(response.data)
+        links = ToplevelLinks(next=f"{base_url}{url.path}?{urlencoded}")
 
-                data_available += response.meta.data_available or 0
-                data_returned += response.meta.data_returned or len(response.data)
+        await update_query(query, "response.links", links)
 
-                if not more_data_available:
-                    # Keep it True, if set to True once.
-                    more_data_available = response.meta.more_data_available
-
-    if use_query_resource:
-        url = url.replace(path=f"{url.path.rstrip('/')}/{query.id}")
-
-    meta = meta_values(
-        url=url,
-        data_available=data_available,
-        data_returned=data_returned,
-        more_data_available=more_data_available,
-    )
-
-    if errors:
-        response = ErrorResponse(errors=errors, meta=meta)
-    else:
-        # Sort results over two steps, first by database id,
-        # and then by (original) "id", since "id" MUST always be present.
-        # NOTE: Possbly remove this sorting?
-        results.sort(key=lambda data: data["id"] if "id" in data else data.id)
-        results.sort(
-            key=lambda data: "/".join(data["id"].split("/")[1:])
-            if "id" in data
-            else "/".join(data.id.split("/")[1:])
-        )
-
-        if more_data_available:
-            # Deduce the `next` link from the current request
-            query_string = urllib.parse.parse_qs(url.query)
-            query_string["page_offset"] = int(
-                query_string.get("page_offset", [0])[0]
-            ) + len(results[: query.attributes.query_parameters.page_limit])
-            urlencoded = urllib.parse.urlencode(query_string, doseq=True)
-            base_url = get_base_url(url)
-
-            links = ToplevelLinks(next=f"{base_url}{url.path}?{urlencoded}")
-        else:
-            links = ToplevelLinks(next=None)
-
-        response = response_model(
-            links=links,
-            data=results,
-            meta=meta,
-        )
-
-    if use_query_resource:
-        await update_query(query, "response", response)
-        await update_query(query, "state", QueryState.FINISHED)
-
-    return response
+    await update_query(query, "state", QueryState.FINISHED)
+    return query.attributes.response
 
 
 def db_find(
@@ -249,12 +199,44 @@ def db_find(
         try:
             response = ErrorResponse(**response)
         except ValidationError as exc:
+            # If it's an error and `meta` is missing, it is not a valid OPTIMADE response,
+            # but this happens a lot, and is therefore worth having an edge-case for.
+            if "errors" in response:
+                errors = list(response["errors"])
+                errors.append(
+                    {
+                        "detail": (
+                            f"Could not pass response from {url} as either a "
+                            f"{response_model.__name__!r} or 'ErrorResponse'. "
+                            f"ValidationError: {exc}"
+                        ),
+                        "id": "OPTIMADE_GATEWAY_DB_FINDS_MANY_VALIDATIONERRORS",
+                    }
+                )
+                return (
+                    ErrorResponse(
+                        errors=errors,
+                        meta={
+                            "query": {
+                                "representation": f"/{endpoint.strip('/')}?{query_params}"
+                            },
+                            "api_version": __api_version__,
+                            "more_data_available": False,
+                        },
+                    ),
+                    get_resource_attribute(database, "id"),
+                )
+
             return (
                 ErrorResponse(
                     errors=[
                         {
-                            "detail": f"Could not pass response from {url} as either a {response_model.__name__!r} or 'ErrorResponse'. ValidationError: {exc}",
-                            "id": "OPTIMADE_GATEWAY_DB_FIND_MANY_VALIDATIONERROR",
+                            "detail": (
+                                f"Could not pass response from {url} as either a "
+                                f"{response_model.__name__!r} or 'ErrorResponse'. "
+                                f"ValidationError: {exc}"
+                            ),
+                            "id": "OPTIMADE_GATEWAY_DB_FINDS_MANY_VALIDATIONERRORS",
                         }
                     ],
                     meta={
@@ -281,6 +263,13 @@ async def db_get_all_resources(
     List[Union[EntryResource, Dict[str, Any]]], Union[LinksResource, Dict[str, Any]]
 ]:
     """Recursively retrieve all resources from an entry-listing endpoint
+
+    This function keeps pulling the `links.next` link if `meta.more_data_available` is `True` to
+    ultimately retrieve *all* entries for `endpoint`.
+
+    !!! warning
+        This function can be dangerous if an endpoint with hundreds or thousands of entries is
+        requested.
 
     Parameters:
         database: The OPTIMADE implementation to be queried. It **must** have a valid base URL and

@@ -4,7 +4,7 @@
     "last_modified": "2021-01-28T15:49:58Z",
     "databases": [
       {
-        "id": "2dstructures",
+        "id": "mcloud/2dstructures",
         "type": "links",
         "attributes": {
           "name": "2D Structures",
@@ -16,7 +16,7 @@
         }
       },
       {
-        "id": "optimade-sample",
+        "id": "mcloud/optimade-sample",
         "type": "links",
         "attributes": {
           "name": "OPTIMADE Sample Database",
@@ -28,7 +28,7 @@
         }
       },
       {
-        "id": "scdm",
+        "id": "mcloud/scdm",
         "type": "links",
         "attributes": {
           "name": "Automated high-throughput Wannierisation",
@@ -40,7 +40,7 @@
         }
       },
       {
-        "id": "mcloud",
+        "id": "mcloud/index",
         "type": "links",
         "attributes": {
           "name": "Materials Cloud",
@@ -57,7 +57,7 @@
     "last_modified": "2021-01-28T16:35:37Z",
     "databases": [
       {
-        "id": "2dstructures",
+        "id": "mcloud/2dstructures",
         "type": "links",
         "attributes": {
           "name": "2D Structures",
@@ -69,7 +69,7 @@
         }
       },
       {
-        "id": "optimade-sample",
+        "id": "mcloud/optimade-sample",
         "type": "links",
         "attributes": {
           "name": "OPTIMADE Sample Database",
@@ -81,7 +81,7 @@
         }
       },
       {
-        "id": "scdm",
+        "id": "mcloud/scdm",
         "type": "links",
         "attributes": {
           "name": "Automated high-throughput Wannierisation",
@@ -99,7 +99,7 @@
     "last_modified": "2021-01-28T16:36:19Z",
     "databases": [
       {
-        "id": "optimade-sample",
+        "id": "mcloud/optimade-sample",
         "type": "links",
         "attributes": {
           "name": "OPTIMADE Sample Database",
@@ -117,7 +117,7 @@
     "last_modified": "2021-01-28T16:36:55Z",
     "databases": [
       {
-        "id": "2dstructures",
+        "id": "mcloud/2dstructures",
         "type": "links",
         "attributes": {
           "name": "2D Structures",
@@ -129,7 +129,7 @@
         }
       },
       {
-        "id": "optimade-sample",
+        "id": "mcloud/optimade-sample",
         "type": "links",
         "attributes": {
           "name": "OPTIMADE Sample Database",
@@ -165,7 +165,7 @@
     "last_modified": "2021-04-06T16:44:35Z",
     "databases": [
       {
-        "id": "optimade-sample",
+        "id": "mcloud/optimade-sample",
         "type": "links",
         "attributes": {
           "name": "OPTIMADE Sample Database",
@@ -177,7 +177,7 @@
         }
       },
       {
-        "id": "mcloud",
+        "id": "mcloud/index",
         "type": "links",
         "attributes": {
           "name": "Materials Cloud",
@@ -212,7 +212,7 @@
     "last_modified": "2021-04-29T14:44:48Z",
     "databases": [
       {
-        "id": "2dstructures",
+        "id": "mcloud/2dstructures",
         "type": "links",
         "attributes": {
           "name": "2D Structures",
@@ -224,7 +224,7 @@
         }
       },
       {
-        "id": "optimade-sample_single",
+        "id": "mcloud/optimade-sample_single",
         "type": "links",
         "attributes": {
           "name": "OPTIMADE Sample Database",

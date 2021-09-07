@@ -140,7 +140,9 @@ class GatewayCreate(EntryResourceCreate, GatewayResourceAttributes):
 
     @root_validator
     def specify_databases(cls, values: dict) -> dict:
-        """Either `database_ids` or `databases` must be non-empty"""
+        """Either `database_ids` or `databases` must be non-empty.
+        Both together is also fine.
+        """
         if not any(values.get(field) for field in ("database_ids", "databases")):
             raise ValueError("Either 'database_ids' or 'databases' MUST be specified")
         return values

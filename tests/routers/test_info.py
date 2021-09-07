@@ -33,9 +33,10 @@ async def test_get_info(
             "redoc",
             "search",
             "queries",
+            "databases",
         ]
     )
-    entry_types_by_format = {"json": ["gateways", "queries"]}
+    entry_types_by_format = {"json": ["databases", "gateways", "queries"]}
 
     response = await client("/info")
 

@@ -35,6 +35,11 @@ class SearchQueryParams:
             time, a redirection will still be performed, but to a zero-results page, which can be
             refreshed to get the finished query (once it has finished).
 
+        as_optimade (bool): Return the response as a standard OPTIMADE entry listing endpoint
+            response. Otherwise, the response will be based on the
+            [`QueriesResponseSingle`][optimade_gateway.models.responses.QueriesResponseSingle]
+            model.
+
     """
 
     def __init__(
@@ -72,8 +77,18 @@ class SearchQueryParams:
                 "which can be refreshed to get the finished query (once it has finished)."
             ),
         ),
+        as_optimade: bool = Query(
+            False,
+            description=(
+                "Return the response as a standard OPTIMADE entry listing endpoint response. "
+                "Otherwise, the response will be based on the "
+                "[`QueriesResponseSingle`][optimade_gateway.models.responses.QueriesResponseSingle]"
+                " model."
+            ),
+        )
     ) -> None:
         self.database_ids = database_ids
         self.optimade_urls = optimade_urls
         self.endpoint = endpoint
         self.timeout = timeout
+        self.as_optimade = as_optimade

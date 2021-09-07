@@ -33,7 +33,7 @@ async def clean_python_types(data: Any) -> Any:
 
 
 def get_resource_attribute(
-    resource: Union[BaseModel, Dict[str, Any]],
+    resource: Union[BaseModel, Dict[str, Any], None],
     field: str,
     default: Any = None,
     disambiguate: bool = True,
@@ -53,7 +53,7 @@ def get_resource_attribute(
 
     Parameters:
         resource: The resource, from which to get the field value.
-        field: The resource field. This can be a comma-separated nested field, e.g.,
+        field: The resource field. This can be a dot-separated nested field, e.g.,
             `"attributes.base_url"`.
         default: The default value to return if `field` does not exist.
         disambiguate: Whether or not to "shortcut" a field value.
@@ -71,6 +71,9 @@ def get_resource_attribute(
         def _get_attr(mapping: dict, key: str, default: Any) -> Any:
             return mapping.get(key, default)
 
+    elif resource is None:
+        # Allow passing `None`, but simply return `default`
+        return default
     else:
         raise TypeError(
             "resource must be either a pydantic model or a Python dictionary, it was of type "
