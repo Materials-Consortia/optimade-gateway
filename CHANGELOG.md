@@ -1,5 +1,37 @@
 # Changelog
 
+## [Unreleased](https://github.com/Materials-Consortia/optimade-gateway/tree/HEAD)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.2.0...HEAD)
+
+**Fixed bugs:**
+
+- Fix CD - remnants from \#82 [\#117](https://github.com/Materials-Consortia/optimade-gateway/issues/117)
+
+## [v0.2.0](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.2.0) (2021-09-07)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.1.2...v0.2.0)
+
+**Implemented enhancements:**
+
+- Minor re-design [\#82](https://github.com/Materials-Consortia/optimade-gateway/pull/82) ([CasperWA](https://github.com/CasperWA))
+
+**Merged pull requests:**
+
+- Remove references to docker\_config.json [\#118](https://github.com/Materials-Consortia/optimade-gateway/pull/118) ([CasperWA](https://github.com/CasperWA))
+- Return to major version tags \(where available\) for GH Actions [\#114](https://github.com/Materials-Consortia/optimade-gateway/pull/114) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#112](https://github.com/Materials-Consortia/optimade-gateway/pull/112) ([CasperWA](https://github.com/CasperWA))
+- Update pytest-httpx requirement from ~=0.12.0 to ~=0.12.1 [\#108](https://github.com/Materials-Consortia/optimade-gateway/pull/108) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Update dependencies [\#107](https://github.com/Materials-Consortia/optimade-gateway/pull/107) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies & GH Actions [\#104](https://github.com/Materials-Consortia/optimade-gateway/pull/104) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies and GH Actions [\#99](https://github.com/Materials-Consortia/optimade-gateway/pull/99) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#96](https://github.com/Materials-Consortia/optimade-gateway/pull/96) ([CasperWA](https://github.com/CasperWA))
+- Bump codecov/codecov-action from 1.5.0 to 1.5.2 [\#83](https://github.com/Materials-Consortia/optimade-gateway/pull/83) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Update dependencies + GH Actions [\#81](https://github.com/Materials-Consortia/optimade-gateway/pull/81) ([CasperWA](https://github.com/CasperWA))
+- Update optimade\[server\] requirement from ~=0.14.0 to ~=0.15.0 [\#79](https://github.com/Materials-Consortia/optimade-gateway/pull/79) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump mkdocs-material from 7.1.3 to 7.1.4 [\#67](https://github.com/Materials-Consortia/optimade-gateway/pull/67) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Update auto-changelog-action to v1.4 [\#65](https://github.com/Materials-Consortia/optimade-gateway/pull/65) ([CasperWA](https://github.com/CasperWA))
+
 ## [v0.1.2](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.1.2) (2021-05-01)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.1.1...v0.1.2)
