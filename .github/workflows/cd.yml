@@ -20,12 +20,12 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2.3.4
+      uses: actions/checkout@v2
       with:
         fetch-depth: 0
 
     - name: Set up Python 3.8
-      uses: actions/setup-python@v2.2.2
+      uses: actions/setup-python@v2
       with:
         python-version: 3.8
 
@@ -45,7 +45,7 @@ jobs:
       run: .github/utils/update_docs.sh
 
     - name: Update '${{ env.PUBLISH_UPDATE_BRANCH }}'
-      uses: CasperWA/push-protected@v2.4.0
+      uses: CasperWA/push-protected@v2
       with:
         token: ${{ secrets.RELEASE_PAT_CASPER }}
         branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
@@ -78,12 +78,12 @@ jobs:
 
   #   steps:
   #   - name: Checkout repository
-  #     uses: actions/checkout@v2.3.4
+  #     uses: actions/checkout@v2
   #     with:
   #       fetch-depth: 2
 
   #   - name: Set up Python 3.8
-  #     uses: actions/setup-python@v2.2.2
+  #     uses: actions/setup-python@v2
   #     with:
   #       python-version: 3.8
 
@@ -109,13 +109,13 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2.3.4
+      uses: actions/checkout@v2
       with:
         fetch-depth: 2
         ref: ${{ env.PUBLISH_UPDATE_BRANCH }}
 
     - name: Set up Python 3.8
-      uses: actions/setup-python@v2.2.2
+      uses: actions/setup-python@v2
       with:
         python-version: 3.8
 
@@ -129,7 +129,7 @@ jobs:
       run: mkdocs build
 
     - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3.8.0
+      uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./site
