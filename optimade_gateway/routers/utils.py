@@ -43,7 +43,7 @@ async def get_entries(
         more_data_available,
         fields,
         include_fields,
-    ) = await collection.find(params=params)
+    ) = await collection.afind(params=params)
 
     if more_data_available:
         # Deduce the `next` link from the current request
@@ -65,7 +65,7 @@ async def get_entries(
         meta=meta_values(
             url=request.url,
             data_returned=data_returned,
-            data_available=await collection.count(),
+            data_available=await collection.acount(),
             more_data_available=more_data_available,
         ),
     )
@@ -243,7 +243,7 @@ async def resource_factory(
             f"{type(create_resource)!r}"
         )
 
-    result, data_returned, more_data_available, _, _ = await RESOURCE_COLLECTION.find(
+    result, data_returned, more_data_available, _, _ = await RESOURCE_COLLECTION.afind(
         criteria={"filter": await clean_python_types(mongo_query)}
     )
 

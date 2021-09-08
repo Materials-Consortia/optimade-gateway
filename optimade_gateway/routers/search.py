@@ -76,6 +76,7 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
     from optimade_gateway.queries.perform import perform_query
     from optimade_gateway.routers.databases import DATABASES_COLLECTION
     from optimade_gateway.routers.queries import QUERIES_COLLECTION
+    from optimade_gateway.routers.utils import resource_factory
 
     # NOTE: It may be that the final list of base URLs (`base_urls`) contains the same provider(s),
     # but with differring base URLS, if, for example, a versioned base URL is supplied.
@@ -186,7 +187,7 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
         meta=meta_values(
             url=request.url,
             data_returned=1,
-            data_available=await QUERIES_COLLECTION.count(),
+            data_available=await QUERIES_COLLECTION.acount(),
             more_data_available=False,
             **{f"_{CONFIG.provider.prefix}_created": created},
         ),
@@ -299,7 +300,7 @@ async def get_search(
                 meta=meta_values(
                     url=request.url,
                     data_returned=1,
-                    data_available=await QUERIES_COLLECTION.count(),
+                    data_available=await QUERIES_COLLECTION.acount(),
                     more_data_available=False,
                 ),
             )

@@ -101,7 +101,7 @@ async def post_gateways(
         meta=meta_values(
             url=request.url,
             data_returned=1,
-            data_available=await GATEWAYS_COLLECTION.count(),
+            data_available=await GATEWAYS_COLLECTION.acount(),
             more_data_available=False,
             **{f"_{CONFIG.provider.prefix}_created": created},
         ),
@@ -133,7 +133,7 @@ async def get_gateway(request: Request, gateway_id: str) -> GatewaysResponseSing
         meta=meta_values(
             url=request.url,
             data_returned=1,
-            data_available=await GATEWAYS_COLLECTION.count(),
+            data_available=await GATEWAYS_COLLECTION.acount(),
             more_data_available=False,
         ),
     )

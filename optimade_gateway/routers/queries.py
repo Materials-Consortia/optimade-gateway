@@ -102,7 +102,7 @@ async def post_queries(
         meta=meta_values(
             url=request.url,
             data_returned=1,
-            data_available=await QUERIES_COLLECTION.count(),
+            data_available=await QUERIES_COLLECTION.acount(),
             more_data_available=False,
             **{f"_{CONFIG.provider.prefix}_created": created},
         ),
@@ -151,7 +151,7 @@ async def get_query(
         meta=meta_values(
             url=request.url,
             data_returned=1,
-            data_available=await QUERIES_COLLECTION.count(),
+            data_available=await QUERIES_COLLECTION.acount(),
             more_data_available=False,
         ),
     )

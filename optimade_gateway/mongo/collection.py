@@ -154,7 +154,7 @@ class AsyncMongoCollection(EntryCollection):
             )
 
         if params is not None:
-            kwargs = await self.handle_query_params(params)
+            kwargs = await self.ahandle_query_params(params)
 
         valid_method_keys = (
             "filter",
@@ -216,13 +216,13 @@ class AsyncMongoCollection(EntryCollection):
         # this is an unknown factor - better to then get a list of results.
         single_entry = False
         if criteria is None:
-            criteria = await self.handle_query_params(params)
+            criteria = await self.ahandle_query_params(params)
         else:
             single_entry = isinstance(params, SingleEntryQueryParams)
 
         response_fields = criteria.pop("fields", self.all_fields)
 
-        results, data_returned, more_data_available = await self._run_db_query(
+        results, data_returned, more_data_available = await self._arun_db_query(
             criteria=criteria,
             single_entry=single_entry,
         )
@@ -356,7 +356,7 @@ class AsyncMongoCollection(EntryCollection):
         else:
             criteria_nolimit = criteria.copy()
             criteria_nolimit.pop("limit", None)
-            data_returned = await self.count(params=None, **criteria_nolimit)
+            data_returned = await self.acount(params=None, **criteria_nolimit)
             more_data_available = len(results) < data_returned
 
         return results, data_returned, more_data_available
