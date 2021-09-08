@@ -99,7 +99,7 @@ class GatewayResource(EntryResource):
     )
     type: str = Field(
         "gateways",
-        const="gateways",
+        const=True,
         description="The name of the type of an entry.",
         regex="^gateways$",
     )
@@ -136,7 +136,7 @@ class GatewayCreate(EntryResourceCreate, GatewayResourceAttributes):
         None, description="A unique list of database IDs for registered databases."
     )
 
-    databases: Optional[List[LinksResource]]
+    databases: Optional[List[LinksResource]]  # type: ignore
 
     @root_validator
     def specify_databases(cls, values: dict) -> dict:

@@ -122,6 +122,7 @@ async def process_db_response(
         query,
         f"response.data.{database_id}",
         results,
+        operator=None,
         **extra_updates,
     )
 

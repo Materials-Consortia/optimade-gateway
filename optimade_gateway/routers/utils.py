@@ -1,17 +1,10 @@
 """Utility functions for all routers"""
-from typing import Tuple, Union
+from typing import TYPE_CHECKING
 import urllib.parse
 
-from fastapi import Request
-from optimade.models import (
-    EntryResource,
-    EntryResponseMany,
-    LinksResource,
-    ToplevelLinks,
-)
+from optimade.models import ToplevelLinks
 from optimade.models.links import LinkType
 from optimade.server.exceptions import NotFound
-from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import (
     get_base_url,
     handle_response_fields,
@@ -23,19 +16,26 @@ from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.models import (
     DatabaseCreate,
     GatewayCreate,
-    GatewayResource,
     QueryCreate,
-    QueryResource,
 )
-from optimade_gateway.mongo.collection import AsyncMongoCollection
+
+if TYPE_CHECKING:
+    from typing import Any, Dict, Iterable, Tuple, Union
+
+    from fastapi import Request
+    from optimade.models import EntryResource, EntryResponseMany, LinksResource
+    from optimade.server.query_params import EntryListingQueryParams
+
+    from optimade_gateway.models import GatewayResource, QueryResource
+    from optimade_gateway.mongo.collection import AsyncMongoCollection
 
 
 async def get_entries(
-    collection: AsyncMongoCollection,
-    response_cls: EntryResponseMany,
-    request: Request,
-    params: EntryListingQueryParams,
-) -> EntryResponseMany:
+    collection: "AsyncMongoCollection",
+    response_cls: "EntryResponseMany",
+    request: "Request",
+    params: "EntryListingQueryParams",
+) -> "EntryResponseMany":
     """Generalized `/{entries}` endpoint getter"""
     (
         results,
@@ -48,7 +48,7 @@ async def get_entries(
     if more_data_available:
         # Deduce the `next` link from the current request
         query = urllib.parse.parse_qs(request.url.query)
-        query["page_offset"] = int(query.get("page_offset", [0])[0]) + len(results)
+        query["page_offset"] = [int(query.get("page_offset", [0])[0]) + len(results)]  # type: ignore[list-item, arg-type]
         urlencoded = urllib.parse.urlencode(query, doseq=True)
         base_url = get_base_url(request.url)
 
@@ -72,7 +72,7 @@ async def get_entries(
 
 
 async def aretrieve_queryable_properties(
-    schema: dict, queryable_properties: list
+    schema: "Dict[str, Any]", queryable_properties: "Iterable"
 ) -> dict:
     """Asynchronous implementation of `retrieve_queryable_properties()` from `optimade`
 
@@ -99,7 +99,7 @@ async def aretrieve_queryable_properties(
     )
 
 
-async def validate_resource(collection: AsyncMongoCollection, entry_id: str) -> None:
+async def validate_resource(collection: "AsyncMongoCollection", entry_id: str) -> None:
     """Validate whether a resource exists in a collection"""
     if not await collection.exists(entry_id):
         raise NotFound(
@@ -108,8 +108,8 @@ async def validate_resource(collection: AsyncMongoCollection, entry_id: str) -> 
 
 
 async def get_valid_resource(
-    collection: AsyncMongoCollection, entry_id: str
-) -> EntryResource:
+    collection: "AsyncMongoCollection", entry_id: str
+) -> "EntryResource":
     """Validate and retrieve a resource"""
     from optimade_gateway.routers.utils import validate_resource
 
@@ -118,8 +118,8 @@ async def get_valid_resource(
 
 
 async def resource_factory(
-    create_resource: Union[DatabaseCreate, GatewayCreate, QueryCreate]
-) -> Tuple[Union[LinksResource, GatewayResource, QueryResource], bool]:
+    create_resource: "Union[DatabaseCreate, GatewayCreate, QueryCreate]",
+) -> "Tuple[Union[LinksResource, GatewayResource, QueryResource], bool]":
     """Get or create a resource
 
     Currently supported resources:
@@ -185,7 +185,7 @@ async def resource_factory(
     created = False
 
     if isinstance(create_resource, DatabaseCreate):
-        from optimade_gateway.routers.databases import (
+        from optimade_gateway.routers.databases import (  # type: ignore[no-redef]
             DATABASES_COLLECTION as RESOURCE_COLLECTION,
         )
 
@@ -198,7 +198,7 @@ async def resource_factory(
             ]
         }
     elif isinstance(create_resource, GatewayCreate):
-        from optimade_gateway.routers.gateways import (
+        from optimade_gateway.routers.gateways import (  # type: ignore[no-redef]
             GATEWAYS_COLLECTION as RESOURCE_COLLECTION,
         )
 
@@ -223,7 +223,7 @@ async def resource_factory(
         }
     elif isinstance(create_resource, QueryCreate):
         from optimade_gateway.models.queries import QueryState
-        from optimade_gateway.routers.queries import (
+        from optimade_gateway.routers.queries import (  # type: ignore[no-redef]
             QUERIES_COLLECTION as RESOURCE_COLLECTION,
         )
 

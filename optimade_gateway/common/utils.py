@@ -1,16 +1,20 @@
 from enum import Enum
-from typing import Any, Dict, Union
+from typing import TYPE_CHECKING
 
 from pydantic import BaseModel  # pylint: disable=no-name-in-module
 
+if TYPE_CHECKING:
+    from typing import Any, Dict, Union
 
-async def clean_python_types(data: Any) -> Any:
+
+async def clean_python_types(data: "Any") -> "Any":
     """Turn any types into MongoDB-friendly Python types.
 
     Use `dict()` method for Pydantic models.
     Use `value` property for Enums.
     Turn tuples and sets into lists.
     """
+    res: "Any" = None
     if isinstance(data, (list, tuple, set)):
         res = []
         for datum in data:
@@ -33,11 +37,11 @@ async def clean_python_types(data: Any) -> Any:
 
 
 def get_resource_attribute(
-    resource: Union[BaseModel, Dict[str, Any], None],
+    resource: "Union[BaseModel, Dict[str, Any], None]",
     field: str,
-    default: Any = None,
+    default: "Any" = None,
     disambiguate: bool = True,
-) -> Any:
+) -> "Any":
     """Return a resource's field's value
 
     Get the field value no matter if the resource is a pydantic model or a Python dictionary.
@@ -68,7 +72,7 @@ def get_resource_attribute(
         _get_attr = getattr
     elif isinstance(resource, dict):
 
-        def _get_attr(mapping: dict, key: str, default: Any) -> Any:
+        def _get_attr(mapping: dict, key: str, default: "Any") -> "Any":  # type: ignore[misc]
             return mapping.get(key, default)
 
     elif resource is None:

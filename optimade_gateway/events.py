@@ -1,7 +1,10 @@
-from typing import Callable, Tuple
+from typing import TYPE_CHECKING
 
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.common.logger import LOGGER
+
+if TYPE_CHECKING:
+    from typing import Any, Callable, Coroutine, Sequence, Tuple, Union
 
 
 async def ci_dev_startup() -> None:
@@ -73,6 +76,9 @@ async def load_optimade_providers_databases() -> None:
             "Will not load databases from Materials-Consortia list of providers."
         )
         return
+
+    if TYPE_CHECKING:
+        providers: "Union[httpx.Response, LinksResponse]"
 
     async with httpx.AsyncClient() as client:
         providers = await client.get(
@@ -210,7 +216,7 @@ async def load_optimade_providers_databases() -> None:
             )
 
 
-EVENTS: Tuple[Tuple[str, Callable[[], None]]] = (
+EVENTS: "Sequence[Tuple[str, Callable[[], Coroutine[Any, Any, None]]]]" = (
     ("startup", ci_dev_startup),
     ("startup", load_optimade_providers_databases),
 )

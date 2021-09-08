@@ -59,7 +59,7 @@ APP.include_router(versions_router)
 # Add endpoints to / and /vMAJOR
 for prefix in list(BASE_URL_PREFIXES.values()) + [""]:
     for router in (databases, gateways, info, links, queries, search):
-        APP.include_router(router.ROUTER, prefix=prefix, include_in_schema=prefix == "")
+        APP.include_router(router.ROUTER, prefix=prefix, include_in_schema=prefix == "")  # type: ignore[attr-defined]
 
 for event, func in EVENTS:
     APP.add_event_handler(event, func)

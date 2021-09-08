@@ -195,7 +195,7 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
 
 @ROUTER.get(
     "/search",
-    response_model=Union[QueriesResponseSingle, EntryResponseMany, ErrorResponse],
+    response_model=Union[QueriesResponseSingle, EntryResponseMany, ErrorResponse],  # type: ignore[arg-type]
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
@@ -257,6 +257,14 @@ async def get_search(
 
     queries_response = await post_search(request, search=search)
 
+    if not queries_response.data:
+        LOGGER.error(
+            "QueryResource not found in POST /search response:\n%s", queries_response
+        )
+        raise RuntimeError(
+            "Expected the response from POST /search to return a QueryResource, it did not"
+        )
+
     once = True
     start_time = time()
     while time() < (start_time + search_params.timeout) or once:
@@ -268,7 +276,7 @@ async def get_search(
         )
 
         if query.attributes.state == QueryState.FINISHED:
-            if query.attributes.response.errors:
+            if query.attributes.response and query.attributes.response.errors:
                 for error in query.attributes.response.errors:
                     if error.status:
                         for part in error.status.split(" "):

@@ -241,7 +241,7 @@ class QueryResource(EntryResource):
 
     type: str = Field(
         "queries",
-        const="queries",
+        const=True,
         description="The name of the type of an entry.",
         regex="^queries$",
     )
@@ -288,7 +288,7 @@ class QueryResource(EntryResource):
                 _entry["id"] = f"{database_provider_}/{entry_['id']}"
             else:
                 _entry = entry_.copy(deep=True)
-                _entry.id = f"{database_provider_}/{entry_.id}"
+                _entry.id = f"{database_provider_}/{entry_.id}"  # type: ignore[union-attr]
             return _entry
 
         if not self.attributes.response:
@@ -348,8 +348,8 @@ class QueryResource(EntryResource):
 class QueryCreate(EntryResourceCreate, QueryResourceAttributes):
     """Model for creating new Query resources in the MongoDB"""
 
-    state: Optional[QueryState]
-    endpoint: Optional[EndpointEntryType]
+    state: Optional[QueryState]  # type: ignore[assignment]
+    endpoint: Optional[EndpointEntryType]  # type: ignore[assignment]
 
     @validator("query_parameters")
     def sort_not_supported(

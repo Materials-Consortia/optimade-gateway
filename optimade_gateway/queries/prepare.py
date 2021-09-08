@@ -1,14 +1,17 @@
 import re
-from typing import Dict, List, Union
+from typing import TYPE_CHECKING
 import urllib.parse
 
 from optimade_gateway.models.queries import OptimadeQueryParameters
 from optimade_gateway.warnings import OptimadeGatewayWarning
 
+if TYPE_CHECKING:
+    from typing import Dict, List, Mapping, Union
+
 
 async def prepare_query_filter(
-    database_ids: List[str], filter_query: Union[str, None]
-) -> Dict[str, Union[str, None]]:
+    database_ids: "List[str]", filter_query: "Union[str, None]"
+) -> "Mapping[str, Union[str, None]]":
     """Update the query parameter `filter` value to be database-specific
 
     This is needed due to the served change of `id` values.
@@ -24,10 +27,13 @@ async def prepare_query_filter(
         A mapping for database IDs to database-specific `filter` query parameter values.
 
     """
-    updated_filter = {}.fromkeys(database_ids, filter_query)
+    updated_filter: "Dict[str, Union[str, None]]" = {}.fromkeys(
+        database_ids, filter_query
+    )
 
     if not filter_query:
         return updated_filter
+    updated_filter: "Dict[str, str]"
 
     for id_match in re.finditer(
         r'"(?P<id_value_l>[^\s]*)"[\s]*(<|>|<=|>=|=|!=|CONTAINS|STARTS WITH|ENDS WITH|STARTS|ENDS)'
@@ -59,13 +65,13 @@ async def prepare_query_filter(
                     ),
                 )
             )
-    return updated_filter
+    return updated_filter  # type: ignore[return-value]
 
 
 async def get_query_params(
     query_parameters: OptimadeQueryParameters,
     database_id: str,
-    filter_mapping: Dict[str, Union[str, None]],
+    filter_mapping: "Mapping[str, Union[str, None]]",
 ) -> str:
     """Construct the parsed URL query parameters"""
     query_params = {

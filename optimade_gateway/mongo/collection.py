@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Dict, List, Set, Tuple, Union
+from typing import TYPE_CHECKING
 import warnings
 
 from optimade.filterparser import LarkParser
@@ -16,6 +16,9 @@ from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.common.utils import clean_python_types
 from optimade_gateway.models import EntryResourceCreate
 from optimade_gateway.warnings import OptimadeGatewayWarning
+
+if TYPE_CHECKING:
+    from typing import Any, Dict, List, Set, Tuple, Union
 
 
 __all__ = ("AsyncMongoCollection",)
@@ -74,12 +77,12 @@ class AsyncMongoCollection(EntryCollection):
         )
         return 0
 
-    async def insert(self, data: List[EntryResource]) -> None:
+    async def insert(self, data: "List[EntryResource]") -> None:
         await self.collection.insert_many(await clean_python_types(data))
 
     async def count(
         self,
-        params: Union[EntryListingQueryParams, SingleEntryQueryParams] = None,
+        params: "Union[EntryListingQueryParams, SingleEntryQueryParams]" = None,
         **kwargs,
     ) -> int:
         """Count documents in Collection
@@ -121,11 +124,9 @@ class AsyncMongoCollection(EntryCollection):
 
     async def find(
         self,
-        params: Union[EntryListingQueryParams, SingleEntryQueryParams] = None,
-        criteria: Dict[str, Any] = None,
-    ) -> Tuple[
-        Union[List[EntryResource], EntryResource, None], bool, Set[str], Set[str]
-    ]:
+        params: "Union[EntryListingQueryParams, SingleEntryQueryParams]" = None,
+        criteria: "Dict[str, Any]" = None,
+    ) -> "Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]":
         """Perform the query on the underlying MongoDB Collection, handling projection
         and pagination of the output.
 
@@ -136,8 +137,8 @@ class AsyncMongoCollection(EntryCollection):
             criteria: Already handled/parsed URL query parameters.
 
         Returns:
-            A list of entry resource objects, whether more data is available with pagination, and fields
-            (excluded, included).
+            A list of entry resource objects, how much data was returned for the query,
+            whether more data is available with pagination, and fields (excluded, included).
 
         """
         if (params is None and criteria is None) or (
@@ -163,7 +164,7 @@ class AsyncMongoCollection(EntryCollection):
         )
 
         if single_entry:
-            results = results[0] if results else None
+            results = results[0] if results else None  # type: ignore[assignment]
 
             if data_returned > 1:
                 raise NotFound(
@@ -201,7 +202,7 @@ class AsyncMongoCollection(EntryCollection):
         if results:
             results = await self.resource_mapper.deserialize(results)
 
-        return (
+        return (  # type: ignore[return-value]
             results,
             data_returned,
             more_data_available,
@@ -210,13 +211,13 @@ class AsyncMongoCollection(EntryCollection):
         )
 
     async def handle_query_params(
-        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> Dict[str, Any]:
+        self, params: "Union[EntryListingQueryParams, SingleEntryQueryParams]"
+    ) -> "Dict[str, Any]":
         return super().handle_query_params(params)
 
     async def _run_db_query(
-        self, criteria: Dict[str, Any], single_entry: bool
-    ) -> Tuple[List[Dict[str, Any]], int, bool]:
+        self, criteria: "Dict[str, Any]", single_entry: bool
+    ) -> "Tuple[List[Dict[str, Any]], int, bool]":
         results = []
         async for document in self.collection.find(**self._valid_find_keys(**criteria)):
             if criteria.get("projection", {}).get("_id"):
@@ -234,7 +235,7 @@ class AsyncMongoCollection(EntryCollection):
 
         return results, data_returned, more_data_available
 
-    def _check_aliases(self, aliases: Tuple[Tuple[str, str]]) -> None:
+    def _check_aliases(self, aliases: "Tuple[Tuple[str, str]]") -> None:
         """Check that aliases do not clash with mongo keywords.
 
         Parameters:
@@ -249,7 +250,7 @@ class AsyncMongoCollection(EntryCollection):
         ):
             raise RuntimeError(f"Cannot define an alias starting with a '$': {aliases}")
 
-    async def get_one(self, **criteria: Dict[str, Any]) -> EntryResource:
+    async def get_one(self, **criteria: "Dict[str, Any]") -> EntryResource:
         """Get one resource based on criteria
 
         Warning:
@@ -271,7 +272,7 @@ class AsyncMongoCollection(EntryCollection):
             )
         )
 
-    async def get_multiple(self, **criteria: Dict[str, Any]) -> List[EntryResource]:
+    async def get_multiple(self, **criteria: "Dict[str, Any]") -> "List[EntryResource]":
         """Get a list of resources based on criteria
 
         Warning:
@@ -340,7 +341,7 @@ class AsyncMongoCollection(EntryCollection):
         return bool(await self.collection.count_documents({"id": entry_id}))
 
     @staticmethod
-    def _valid_find_keys(**kwargs) -> Dict[str, Any]:
+    def _valid_find_keys(**kwargs: "Dict[str, Any]") -> "Dict[str, Any]":
         """Return valid MongoDB find() keys with values from kwargs
 
         Note, not including deprecated flags

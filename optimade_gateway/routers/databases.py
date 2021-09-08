@@ -130,7 +130,7 @@ async def get_database(
     if fields or include_fields and result is not None:
         result = handle_response_fields(result, fields, include_fields)
 
-    result = result[0] if data_returned else None
+    result = result[0] if isinstance(result, list) and data_returned else None
 
     return DatabasesResponseSingle(
         links=ToplevelLinks(next=None),

@@ -131,7 +131,7 @@ async def get_query(
 
     query: QueryResource = await get_valid_resource(QUERIES_COLLECTION, query_id)
 
-    if query.attributes.response.errors:
+    if query.attributes.response and query.attributes.response.errors:
         for error in query.attributes.response.errors:
             if error.status:
                 for part in error.status.split(" "):

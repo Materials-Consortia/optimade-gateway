@@ -1,13 +1,20 @@
-from typing import Any
+from typing import TYPE_CHECKING
 
 from pymongo.results import UpdateResult
 
 from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.models import QueryResource
 
+if TYPE_CHECKING:
+    from typing import Any, Optional
+
 
 async def update_query(
-    query: QueryResource, field: str, value: Any, operator: str = None, **mongo_kwargs
+    query: QueryResource,
+    field: str,
+    value: "Any",
+    operator: "Optional[str]" = None,
+    **mongo_kwargs,
 ) -> None:
     """Update a query's `field` attribute with `value`.
 
