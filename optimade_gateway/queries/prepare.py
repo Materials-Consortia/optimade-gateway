@@ -2,11 +2,12 @@ import re
 from typing import TYPE_CHECKING
 import urllib.parse
 
-from optimade_gateway.models.queries import OptimadeQueryParameters
 from optimade_gateway.warnings import OptimadeGatewayWarning
 
 if TYPE_CHECKING:
-    from typing import Dict, List, Mapping, Union
+    from typing import List, Mapping, Union
+
+    from optimade_gateway.models.queries import OptimadeQueryParameters
 
 
 async def prepare_query_filter(
@@ -27,13 +28,10 @@ async def prepare_query_filter(
         A mapping for database IDs to database-specific `filter` query parameter values.
 
     """
-    updated_filter: "Dict[str, Union[str, None]]" = {}.fromkeys(
-        database_ids, filter_query
-    )
+    updated_filter = {}.fromkeys(database_ids, filter_query)
 
     if not filter_query:
         return updated_filter
-    updated_filter: "Dict[str, str]"
 
     for id_match in re.finditer(
         r'"(?P<id_value_l>[^\s]*)"[\s]*(<|>|<=|>=|=|!=|CONTAINS|STARTS WITH|ENDS WITH|STARTS|ENDS)'
@@ -45,7 +43,7 @@ async def prepare_query_filter(
         for database_id in database_ids:
             if matched_id.startswith(f"{database_id}/"):
                 # Database found
-                updated_filter[database_id] = updated_filter[database_id].replace(
+                updated_filter[database_id] = updated_filter[database_id].replace(  # type: ignore[union-attr]
                     f"{database_id}/", "", 1
                 )
                 break
@@ -69,7 +67,7 @@ async def prepare_query_filter(
 
 
 async def get_query_params(
-    query_parameters: OptimadeQueryParameters,
+    query_parameters: "OptimadeQueryParameters",
     database_id: str,
     filter_mapping: "Mapping[str, Union[str, None]]",
 ) -> str:

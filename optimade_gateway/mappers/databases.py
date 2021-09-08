@@ -1,4 +1,4 @@
-from pydantic import AnyUrl  # pylint: disable=no-name-in-module
+from pydantic import AnyUrl
 
 from optimade_gateway.common.config import CONFIG
 

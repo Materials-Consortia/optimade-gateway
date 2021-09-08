@@ -1,9 +1,13 @@
-from typing import Iterable, List, Union
+from typing import TYPE_CHECKING
 
-from optimade.models import EntryResource
 from optimade.server.mappers.entries import (
     BaseResourceMapper as OptimadeBaseResourceMapper,
 )
+
+if TYPE_CHECKING:
+    from typing import Iterable, List, Union
+
+    from optimade.models import EntryResource
 
 
 class BaseResourceMapper(OptimadeBaseResourceMapper):
@@ -40,6 +44,6 @@ class BaseResourceMapper(OptimadeBaseResourceMapper):
 
     @classmethod
     async def deserialize(
-        cls, results: Union[dict, Iterable[dict]]
-    ) -> Union[List[EntryResource], EntryResource]:
+        cls, results: "Union[dict, Iterable[dict]]"
+    ) -> "Union[List[EntryResource], EntryResource]":
         return super(BaseResourceMapper, cls).deserialize(results)

@@ -38,10 +38,10 @@ class ServerConfig(OptimadeServerConfig):
     )
 
     @validator("mongo_uri")
-    def replace_with_env_vars(cls, v):
+    def replace_with_env_vars(cls, value: str) -> str:
         """Replace string variables with environment variables, if possible"""
-        res: str = v
-        for match in re.finditer(r"\{[^{}]+\}", v):
+        res = value
+        for match in re.finditer(r"\{[^{}]+\}", value):
             string_var = match.group()[1:-1]
             env_var = os.getenv(
                 string_var, os.getenv(string_var.upper(), os.getenv(string_var.lower()))
@@ -50,7 +50,7 @@ class ServerConfig(OptimadeServerConfig):
                 res = res.replace(match.group(), env_var)
             else:
                 warnings.warn(
-                    f"Could not find an environment variable for {match.group()!r} from mongo_uri: {v}",
+                    f"Could not find an environment variable for {match.group()!r} from mongo_uri: {value}",
                     OptimadeGatewayWarning,
                 )
         return res

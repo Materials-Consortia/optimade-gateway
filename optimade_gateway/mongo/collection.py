@@ -4,21 +4,24 @@ import warnings
 
 from optimade.filterparser import LarkParser
 from optimade.filtertransformers.mongo import MongoTransformer
-from optimade.models import EntryResource
 from optimade.server.entry_collections.entry_collections import EntryCollection
 from optimade.server.exceptions import BadRequest, NotFound
-from optimade.server.mappers.entries import BaseResourceMapper
-from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
+from optimade.server.query_params import SingleEntryQueryParams
 from optimade.server.warnings import UnknownProviderProperty
 from pymongo.collection import Collection as MongoCollection
 
 from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.common.utils import clean_python_types
-from optimade_gateway.models import EntryResourceCreate
 from optimade_gateway.warnings import OptimadeGatewayWarning
 
 if TYPE_CHECKING:
     from typing import Any, Dict, List, Set, Tuple, Union
+
+    from optimade.models import EntryResource
+    from optimade.server.mappers.entries import BaseResourceMapper
+    from optimade.server.query_params import EntryListingQueryParams
+
+    from optimade_gateway.models import EntryResourceCreate
 
 
 __all__ = ("AsyncMongoCollection",)
@@ -33,8 +36,8 @@ class AsyncMongoCollection(EntryCollection):
     def __init__(
         self,
         name: str,
-        resource_cls: EntryResource,
-        resource_mapper: BaseResourceMapper,
+        resource_cls: "EntryResource",
+        resource_mapper: "BaseResourceMapper",
     ):
         """Initialize the AsyncMongoCollection for the given parameters.
 
@@ -250,7 +253,7 @@ class AsyncMongoCollection(EntryCollection):
         ):
             raise RuntimeError(f"Cannot define an alias starting with a '$': {aliases}")
 
-    async def get_one(self, **criteria: "Dict[str, Any]") -> EntryResource:
+    async def get_one(self, **criteria: "Dict[str, Any]") -> "EntryResource":
         """Get one resource based on criteria
 
         Warning:
@@ -294,7 +297,7 @@ class AsyncMongoCollection(EntryCollection):
 
         return results
 
-    async def create_one(self, resource: EntryResourceCreate) -> EntryResource:
+    async def create_one(self, resource: "EntryResourceCreate") -> "EntryResource":
         """Create a new document in the MongoDB collection based on query parameters.
 
         Update the newly created document with an `"id"` field.

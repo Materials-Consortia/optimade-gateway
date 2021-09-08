@@ -1,29 +1,28 @@
 """Process performed OPTIMADE queries"""
-from typing import Any, Dict, List, Union
+from typing import TYPE_CHECKING
 
-from optimade.models import (
-    EntryResource,
-    EntryResponseMany,
-    EntryResponseOne,
-    ErrorResponse,
-    Meta,
-)
+from optimade.models import ErrorResponse, Meta
 
 from optimade_gateway.common.config import CONFIG
+from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.common.utils import get_resource_attribute
-from optimade_gateway.models import GatewayResource, QueryResource
 from optimade_gateway.queries.utils import update_query
 from optimade_gateway.warnings import OptimadeGatewayWarning
 
+if TYPE_CHECKING:
+    from typing import Any, Dict, List, Union
+
+    from optimade.models import EntryResource, EntryResponseMany, EntryResponseOne
+
+    from optimade_gateway.models import GatewayResource, QueryResource
+
 
 async def process_db_response(
-    response: Union[ErrorResponse, EntryResponseMany, EntryResponseOne],
+    response: "Union[ErrorResponse, EntryResponseMany, EntryResponseOne]",
     database_id: str,
-    query: QueryResource,
-    gateway: GatewayResource,
-) -> Union[
-    List[EntryResource], List[Dict[str, Any]], EntryResource, Dict[str, Any], None
-]:
+    query: "QueryResource",
+    gateway: "GatewayResource",
+) -> "Union[List[EntryResource], List[Dict[str, Any]], EntryResource, Dict[str, Any], None]":
     """Process an OPTIMADE database response.
 
     The passed `query` will be updated with the top-level `meta` information: `data_available`,
@@ -46,9 +45,7 @@ async def process_db_response(
     results = []
     errors = []
 
-    from optimade_gateway.common.logger import LOGGER
-
-    LOGGER.debug("database_id: %s", database_id)
+    LOGGER.debug("Starting to process database_id: %s", database_id)
 
     if isinstance(response, ErrorResponse):
         for error in response.errors:

@@ -1,16 +1,19 @@
+from datetime import datetime
 from typing import TYPE_CHECKING
 
-from pymongo.results import UpdateResult
-
 from optimade_gateway.common.logger import LOGGER
-from optimade_gateway.models import QueryResource
+from optimade_gateway.common.utils import clean_python_types
 
 if TYPE_CHECKING:
     from typing import Any, Optional
 
+    from pymongo.results import UpdateResult
+
+    from optimade_gateway.models import QueryResource
+
 
 async def update_query(
-    query: QueryResource,
+    query: "QueryResource",
     field: str,
     value: "Any",
     operator: "Optional[str]" = None,
@@ -39,9 +42,6 @@ async def update_query(
         mongo_kwargs (dict): Further MongoDB update filters.
 
     """
-    from datetime import datetime
-
-    from optimade_gateway.common.utils import clean_python_types
     from optimade_gateway.routers.queries import QUERIES_COLLECTION
 
     operator = operator or "$set"
@@ -65,7 +65,7 @@ async def update_query(
             update_kwargs.update({operator: {field: value}})
 
     # MongoDB
-    result: UpdateResult = await QUERIES_COLLECTION.collection.update_one(
+    result: "UpdateResult" = await QUERIES_COLLECTION.collection.update_one(
         filter={"id": {"$eq": query.id}},
         update=await clean_python_types(update_kwargs),
     )

@@ -41,7 +41,7 @@ MUST be one of these values: 'child', 'root', 'external', 'providers'.""",
     )
 
     @validator("link_type")
-    def ensure_database_link_type(cls, value) -> LinkType:
+    def ensure_database_link_type(cls, value: LinkType) -> LinkType:
         """Ensure databases are not index meta-database-only types
 
         I.e., ensure they're not of type `"root"` or `"providers"`.

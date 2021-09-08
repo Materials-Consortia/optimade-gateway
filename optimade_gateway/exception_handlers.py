@@ -1,13 +1,17 @@
-from fastapi import Request
-from fastapi.exceptions import RequestValidationError
+from typing import TYPE_CHECKING
+
 from optimade.models import ErrorSource, OptimadeError
 from optimade.server.exception_handlers import general_exception
-from starlette.responses import JSONResponse
+
+if TYPE_CHECKING:
+    from fastapi import Request
+    from fastapi.exceptions import RequestValidationError
+    from starlette.responses import JSONResponse
 
 
 async def request_validation_exception_handler(
-    request: Request, exc: RequestValidationError
-) -> JSONResponse:
+    request: "Request", exc: "RequestValidationError"
+) -> "JSONResponse":
     """Special handler if a `RequestValidationError` comes from wrong `POST` data"""
     status_code = 500
     if request.method in ("POST", "post"):

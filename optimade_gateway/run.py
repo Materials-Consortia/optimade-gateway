@@ -1,12 +1,15 @@
 import argparse
 import os
 from pathlib import Path
-from typing import Sequence, Text
+from typing import TYPE_CHECKING
 
 import uvicorn
 
+if TYPE_CHECKING:
+    from typing import Optional, Sequence, Text
 
-def run(argv: Sequence[Text] = None) -> None:
+
+def run(argv: "Optional[Sequence[Text]]" = None) -> None:
     """Run OPTIMADE Gateway REST API server."""
     parser = argparse.ArgumentParser(
         "optimade-gateway",
