@@ -1,3 +1,5 @@
+"""Utility functions for the `queries` module."""
+# pylint: disable=import-outside-toplevel
 from datetime import datetime
 from typing import TYPE_CHECKING
 
@@ -12,7 +14,7 @@ if TYPE_CHECKING:
     from optimade_gateway.models import QueryResource
 
 
-async def update_query(
+async def update_query(  # pylint: disable=too-many-branches
     query: "QueryResource",
     field: str,
     value: "Any",
@@ -21,12 +23,12 @@ async def update_query(
 ) -> None:
     """Update a query's `field` attribute with `value`.
 
-    If `field` is a dot-separated value, then only the last field part may be a non-pre-existing
-    field. Otherwise a `KeyError` or `AttributeError` will be raised.
+    If `field` is a dot-separated value, then only the last field part may be a
+    non-pre-existing field. Otherwise a `KeyError` or `AttributeError` will be raised.
 
     !!! note
-        This can *only* update a field for a query's `attributes`, i.e., this function cannot
-        update `id`, `type` or any other top-level resource field.
+        This can *only* update a field for a query's `attributes`, i.e., this function
+        cannot update `id`, `type` or any other top-level resource field.
 
     !!! important
         `mongo_kwargs` will not be considered for updating the pydantic model instance.
@@ -71,7 +73,10 @@ async def update_query(
     )
     if result.matched_count != 1:
         LOGGER.error(
-            "matched_count should have been exactly 1, it was: %s. Returned update_one result: %s",
+            (
+                "matched_count should have been exactly 1, it was: %s. "
+                "Returned update_one result: %s"
+            ),
             result.matched_count,
             result.raw_result,
         )

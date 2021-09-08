@@ -1,3 +1,4 @@
+"""Initialize the MongoDB database."""
 from typing import TYPE_CHECKING
 
 from motor.motor_asyncio import AsyncIOMotorClient

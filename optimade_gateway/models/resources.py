@@ -1,3 +1,9 @@
+"""Pydantic models/schemas for entry-endpoint resources.
+
+This module is mainly used for a special pydantic base model, which can be used as a
+mix-in class when creating entry-endpoint resources.
+"""
+# pylint: disable=too-few-public-methods
 from datetime import datetime
 from typing import Any, Optional
 
@@ -12,6 +18,8 @@ class EntryResourceCreate(EntryResourceAttributes):
     id: Optional[str]
 
     class Config:
+        """Silently discard extra initiation keys."""
+
         extra = "ignore"
 
     @classmethod

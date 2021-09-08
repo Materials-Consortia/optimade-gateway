@@ -1,4 +1,5 @@
 """Perform OPTIMADE queries"""
+# pylint: disable=import-outside-toplevel,cyclic-import
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 import functools
@@ -11,7 +12,6 @@ from typing import TYPE_CHECKING
 import httpx
 from optimade import __api_version__
 from optimade.models import (
-    EntryResource,
     ErrorResponse,
     ToplevelLinks,
 )
@@ -34,7 +34,12 @@ from optimade_gateway.queries.utils import update_query
 if TYPE_CHECKING:
     from typing import Any, Dict, List, Tuple, Union
 
-    from optimade.models import EntryResponseMany, EntryResponseOne, LinksResource
+    from optimade.models import (
+        EntryResource,
+        EntryResponseMany,
+        EntryResponseOne,
+        LinksResource,
+    )
     from starlette.datastructures import URL
 
     from optimade_gateway.models import QueryResource
@@ -93,8 +98,8 @@ async def perform_query(
             32, (os.cpu_count() or 0) + 4, len(gateway.attributes.databases)
         )
     ) as executor:
-        # Run OPTIMADE DB queries in a thread pool, i.e., not using the main OS thread, where the
-        # asyncio event loop is running.
+        # Run OPTIMADE DB queries in a thread pool, i.e., not using the main OS thread,
+        # where the asyncio event loop is running.
         query_tasks = []
         for database in gateway.attributes.databases:
             query_params = await get_query_params(
@@ -125,26 +130,26 @@ async def perform_query(
                 gateway=gateway,
             )
 
-            # Pagination
-            #
-            # if isinstance(results, list) and get_resource_attribute(
-            #     query,
-            #     "attributes.response.meta.more_data_available",
-            #     False,
-            #     disambiguate=False,  # Extremely minor speed-up
-            # ):
-            #     # Deduce the `next` link from the current request
-            #     query_string = urllib.parse.parse_qs(url.query)
-            #     query_string["page_offset"] = [
-            #         int(query_string.get("page_offset", [0])[0])  # type: ignore[list-item]
-            #         + len(results[: query.attributes.query_parameters.page_limit])
-            #     ]
-            #     urlencoded = urllib.parse.urlencode(query_string, doseq=True)
-            #     base_url = get_base_url(url)
+    # Pagination
+    #
+    # if isinstance(results, list) and get_resource_attribute(
+    #     query,
+    #     "attributes.response.meta.more_data_available",
+    #     False,
+    #     disambiguate=False,  # Extremely minor speed-up
+    # ):
+    #     # Deduce the `next` link from the current request
+    #     query_string = urllib.parse.parse_qs(url.query)
+    #     query_string["page_offset"] = [
+    #         int(query_string.get("page_offset", [0])[0])  # type: ignore[list-item]
+    #         + len(results[: query.attributes.query_parameters.page_limit])
+    #     ]
+    #     urlencoded = urllib.parse.urlencode(query_string, doseq=True)
+    #     base_url = get_base_url(url)
 
-            #     links = ToplevelLinks(next=f"{base_url}{url.path}?{urlencoded}")
+    #     links = ToplevelLinks(next=f"{base_url}{url.path}?{urlencoded}")
 
-            #     await update_query(query, "response.links", links)
+    #     await update_query(query, "response.links", links)
 
     await update_query(query, "state", QueryState.FINISHED)
     return query.attributes.response
@@ -160,8 +165,8 @@ def db_find(
     """Imitate `Collection.find()` for any given database for entry-resource endpoints
 
     Parameters:
-        database: The OPTIMADE implementation to be queried. It **must** have a valid base URL and
-            id.
+        database: The OPTIMADE implementation to be queried.
+            It **must** have a valid base URL and id.
         endpoint: The entry-listing endpoint, e.g., `"structures"`.
         response_model: The expected OPTIMADE pydantic response model, e.g.,
             `optimade.models.StructureResponseMany`.
@@ -174,7 +179,7 @@ def db_find(
 
     """
     if TYPE_CHECKING:
-        response: "Union[httpx.Response, Dict[str, Any], EntryResponseMany, EntryResponseOne, ErrorResponse]"
+        response: "Union[httpx.Response, Dict[str, Any], EntryResponseMany, EntryResponseOne, ErrorResponse]"  # pylint: disable=line-too-long
 
     if raw_url:
         url = raw_url
@@ -273,19 +278,19 @@ async def db_get_all_resources(
     response_model: "EntryResponseMany",
     query_params: str = "",
     raw_url: str = None,
-) -> "Tuple[List[Union[EntryResource, Dict[str, Any]]], Union[LinksResource, Dict[str, Any]]]":
+) -> "Tuple[List[Union[EntryResource, Dict[str, Any]]], Union[LinksResource, Dict[str, Any]]]":  # pylint: disable=line-too-long
     """Recursively retrieve all resources from an entry-listing endpoint
 
-    This function keeps pulling the `links.next` link if `meta.more_data_available` is `True` to
-    ultimately retrieve *all* entries for `endpoint`.
+    This function keeps pulling the `links.next` link if `meta.more_data_available` is
+    `True` to ultimately retrieve *all* entries for `endpoint`.
 
     !!! warning
-        This function can be dangerous if an endpoint with hundreds or thousands of entries is
-        requested.
+        This function can be dangerous if an endpoint with hundreds or thousands of
+        entries is requested.
 
     Parameters:
-        database: The OPTIMADE implementation to be queried. It **must** have a valid base URL and
-            id.
+        database: The OPTIMADE implementation to be queried.
+            It **must** have a valid base URL and id.
         endpoint: The entry-listing endpoint, e.g., `"structures"`.
         response_model: The expected OPTIMADE pydantic response model, e.g.,
             `optimade.models.StructureResponseMany`.
@@ -322,9 +327,9 @@ async def db_get_all_resources(
         next_page = get_resource_attribute(response, "links.next")
         if next_page is None:
             LOGGER.error(
-                "Could not find a 'next' link for an OPTIMADE query request to %r (id=%r). Cannot "
-                "get all resources from /%s, even though this was asked and `more_data_available` "
-                "is `True` in the response.",
+                "Could not find a 'next' link for an OPTIMADE query request to %r "
+                "(id=%r). Cannot get all resources from /%s, even though this was asked "
+                "and `more_data_available` is `True` in the response.",
                 get_resource_attribute(database, "attributes.name", "N/A"),
                 get_resource_attribute(database, "id"),
                 endpoint,

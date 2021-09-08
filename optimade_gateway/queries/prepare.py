@@ -1,6 +1,8 @@
+"""Prepare OPTIMADE queries."""
 import re
 from typing import TYPE_CHECKING
 import urllib.parse
+from warnings import warn
 
 from optimade_gateway.warnings import OptimadeGatewayWarning
 
@@ -22,7 +24,8 @@ async def prepare_query_filter(
     Parameters:
         database_ids: List of the databases to create updated filter values for.
             These values are part of the gateway-changed `id` values and are essential.
-        filter_query: The submitted `filter` query parameter value. Can be `None` if not supplied.
+        filter_query: The submitted `filter` query parameter value. Can be `None` if not
+            supplied.
 
     Returns:
         A mapping for database IDs to database-specific `filter` query parameter values.
@@ -34,8 +37,10 @@ async def prepare_query_filter(
         return updated_filter
 
     for id_match in re.finditer(
-        r'"(?P<id_value_l>[^\s]*)"[\s]*(<|>|<=|>=|=|!=|CONTAINS|STARTS WITH|ENDS WITH|STARTS|ENDS)'
-        r'[\s]*id|[^_]+id[\s]*(<|>|<=|>=|=|!=|CONTAINS|STARTS WITH|ENDS WITH|STARTS|ENDS)[\s]*"'
+        r'"(?P<id_value_l>[^\s]*)"[\s]*'
+        r"(<|>|<=|>=|=|!=|CONTAINS|STARTS WITH|ENDS WITH|STARTS|ENDS)"
+        r"[\s]*id|[^_]+id[\s]*"
+        r'(<|>|<=|>=|=|!=|CONTAINS|STARTS WITH|ENDS WITH|STARTS|ENDS)[\s]*"'
         r'(?P<id_value_r>[^\s]*)"',
         f"={filter_query}" if filter_query else "",
     ):
@@ -43,23 +48,20 @@ async def prepare_query_filter(
         for database_id in database_ids:
             if matched_id.startswith(f"{database_id}/"):
                 # Database found
-                updated_filter[database_id] = updated_filter[database_id].replace(  # type: ignore[union-attr]
+                updated_filter[database_id] = updated_filter[database_id].replace(  # type: ignore[union-attr]  # pylint: disable=line-too-long
                     f"{database_id}/", "", 1
                 )
                 break
-            # TODO: Remove `id="value"` sections here for queries to databases that doesn't match the id value!
         else:
-            from warnings import warn
-
             warn(
                 OptimadeGatewayWarning(
                     title="Non-Unique Entry ID",
                     detail=(
-                        f"The passed entry ID <id={matched_id}> may be ambiguous! To get a "
-                        "specific structures entry, one can prepend the ID with a database ID "
-                        "belonging to the gateway, followed by a forward slash, e.g., "
-                        f"'{database_ids[0]}/<local_database_ID>'. Available databases for this "
-                        f"gateway: {database_ids}"
+                        f"The passed entry ID <id={matched_id}> may be ambiguous! To get"
+                        " a specific structures entry, one can prepend the ID with a "
+                        "database ID belonging to the gateway, followed by a forward "
+                        f"slash, e.g., '{database_ids[0]}/<local_database_ID>'. "
+                        f"Available databases for this gateway: {database_ids}"
                     ),
                 )
             )

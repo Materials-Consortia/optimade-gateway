@@ -1,7 +1,12 @@
+"""Common utility functions.
+
+These functions may be used in general throughout the OPTIMADE Gateway Python code.
+"""
+# pylint: disable=line-too-long
 from enum import Enum
 from typing import TYPE_CHECKING
 
-from pydantic import BaseModel  # pylint: disable=no-name-in-module
+from pydantic import BaseModel
 
 if TYPE_CHECKING:
     from typing import Any, Dict, Union
@@ -61,8 +66,8 @@ def get_resource_attribute(
             `"attributes.base_url"`.
         default: The default value to return if `field` does not exist.
         disambiguate: Whether or not to "shortcut" a field value.
-            For example, for `attributes.base_url`, if `True`, this would return the string value
-            or the value of it's `"href"` key.
+            For example, for `attributes.base_url`, if `True`, this would return the
+            string value or the value of it's `"href"` key.
 
     Returns:
         The resource's field's value.
@@ -80,13 +85,13 @@ def get_resource_attribute(
         return default
     else:
         raise TypeError(
-            "resource must be either a pydantic model or a Python dictionary, it was of type "
-            f"{type(resource)!r}"
+            "resource must be either a pydantic model or a Python dictionary, it was of "
+            f"type {type(resource)!r}"
         )
 
     fields = field.split(".")
-    for field in fields[:-1]:
-        resource = _get_attr(resource, field, {})
+    for _ in fields[:-1]:
+        resource = _get_attr(resource, _, {})
     field = fields[-1]
     value = _get_attr(resource, field, default)
 

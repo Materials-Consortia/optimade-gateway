@@ -1,6 +1,13 @@
+# pylint: disable=line-too-long,too-many-branches
+"""MongoDB collection for entry-endpoint resources.
+
+The [`AsyncMongoCollection`][optimade_gateway.mongo.collection.AsyncMongoCollection]
+represents an asynchronous version of the equivalent MongoDB collection in `optimade`:
+[`MongoCollection`](https://www.optimade.org/optimade-python-tools/api_reference/server/entry_collections/mongo/#optimade.server.entry_collections.mongo.MongoCollection).
+"""
 from datetime import datetime
 from typing import TYPE_CHECKING
-import warnings
+from warnings import warn
 
 from optimade.filterparser import LarkParser
 from optimade.filtertransformers.mongo import MongoTransformer
@@ -15,7 +22,7 @@ from optimade_gateway.common.utils import clean_python_types
 from optimade_gateway.warnings import OptimadeGatewayWarning
 
 if TYPE_CHECKING:
-    from typing import Any, Dict, List, Set, Tuple, Union
+    from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
     from optimade.models import EntryResource
     from optimade.server.mappers.entries import BaseResourceMapper
@@ -30,7 +37,8 @@ __all__ = ("AsyncMongoCollection",)
 class AsyncMongoCollection(EntryCollection):
     """MongoDB Collection for use with `asyncio`
 
-    The asynchronicity is implemented using [`motor`](https://motor.readthedocs.io) and [`asyncio`](https://asyncio.readthedocs.io/).
+    The asynchronicity is implemented using [`motor`](https://motor.readthedocs.io) and
+    [`asyncio`](https://asyncio.readthedocs.io/).
     """
 
     def __init__(
@@ -44,10 +52,13 @@ class AsyncMongoCollection(EntryCollection):
         Parameters:
             name: The name of the collection.
             resource_cls: The `EntryResource` model that is stored by the collection.
-            resource_mapper: A resource mapper object that handles aliases and format changes between deserialization and response.
+            resource_mapper: A resource mapper object that handles aliases and format
+                changes between deserialization and response.
 
         """
-        from optimade_gateway.mongo.database import MONGO_DB
+        from optimade_gateway.mongo.database import (  # pylint: disable=import-outside-toplevel
+            MONGO_DB,
+        )
 
         super().__init__(
             resource_cls=resource_cls,
@@ -64,41 +75,77 @@ class AsyncMongoCollection(EntryCollection):
 
     def __str__(self) -> str:
         """Standard printing result for an instance."""
-        return f"<{self.__class__.__name__}: resource={self.resource_cls.__name__} endpoint(mapper)={self.resource_mapper.ENDPOINT} DB_collection={self.collection.name}>"
+        return (
+            f"<{self.__class__.__name__}: resource={self.resource_cls.__name__} "
+            f"endpoint(mapper)={self.resource_mapper.ENDPOINT} "
+            f"DB_collection={self.collection.name}>"
+        )
 
     def __repr__(self) -> str:
         """Representation of instance."""
-        return f"{self.__class__.__name__}(name={self.collection.name!r}, resource_cls={self.resource_cls!r}, resource_mapper={self.resource_mapper!r})"
+        return (
+            f"{self.__class__.__name__}(name={self.collection.name!r}, "
+            f"resource_cls={self.resource_cls!r}, "
+            f"resource_mapper={self.resource_mapper!r})"
+        )
 
     def __len__(self) -> int:
-        import warnings
-
-        warnings.warn(
+        warn(
             OptimadeGatewayWarning(
-                detail="Cannot calculate length of collection using `len()`. Use `count()` instead."
+                detail=(
+                    "Cannot calculate length of collection using `len()`. Use `count()` "
+                    "instead."
+                )
             )
         )
         return 0
 
-    async def insert(self, data: "List[EntryResource]") -> None:
+    def insert(self, data: "List[EntryResource]") -> None:
+        raise NotImplementedError(
+            "This method cannot be used with this class and is a remnant from the parent "
+            "class. Use instead the asynchronous method `ainsert(data: "
+            "List[EntryResource])`."
+        )
+
+    async def ainsert(self, data: "List[EntryResource]") -> None:
+        """Add the given entries to the underlying database.
+
+        This is the asynchronous version of the parent class method named `insert()`.
+
+        Arguments:
+            data: The entry resource objects to add to the database.
+
+        """
         await self.collection.insert_many(await clean_python_types(data))
 
-    async def count(
+    def count(self, **kwargs) -> int:
+        raise NotImplementedError(
+            "This method cannot be used with this class and is a remnant from the parent "
+            "class. Use instead the asynchronous method `acount(params: "
+            "Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]], "
+            "**kwargs)`."
+        )
+
+    async def acount(
         self,
-        params: "Union[EntryListingQueryParams, SingleEntryQueryParams]" = None,
+        params: "Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]" = None,
         **kwargs,
     ) -> int:
-        """Count documents in Collection
+        """Count documents in Collection.
+
+        This is the asynchronous version of the parent class method named `count()`.
 
         Parameters:
-            params: URL query parameters, either from a general entry endpoint or a single-entry endpoint.
+            params: URL query parameters, either from a general entry endpoint or a
+                single-entry endpoint.
             kwargs (dict): Query parameters as keyword arguments. Valid keys will be passed
                 to the
                 [`AsyncIOMotorCollection.count_documents`](https://motor.readthedocs.io/en/stable/api-asyncio/asyncio_motor_collection.html#motor.motor_asyncio.AsyncIOMotorCollection.count_documents)
                 method.
 
         Returns:
-            int: The number of entries matching the query specified by the keyword arguments.
+            int: The number of entries matching the query specified by the keyword
+                arguments.
 
         """
         if params is not None and kwargs:
@@ -125,23 +172,37 @@ class AsyncMongoCollection(EntryCollection):
 
         return await self.collection.count_documents(**criteria)
 
-    async def find(
+    def find(
+        self, params: "Union[EntryListingQueryParams, SingleEntryQueryParams]"
+    ) -> "Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]":
+        raise NotImplementedError(
+            "This method cannot be used with this class and is a remnant from the parent "
+            "class. Use instead the asynchronous method `afind(params: "
+            "Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]], criteria: "
+            "Optional[Dict[str, Any]])`."
+        )
+
+    async def afind(
         self,
-        params: "Union[EntryListingQueryParams, SingleEntryQueryParams]" = None,
-        criteria: "Dict[str, Any]" = None,
+        params: "Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]" = None,
+        criteria: "Optional[Dict[str, Any]]" = None,
     ) -> "Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]":
         """Perform the query on the underlying MongoDB Collection, handling projection
         and pagination of the output.
 
+        This is the asynchronous version of the parent class method named `count()`.
+
         Either provide `params` or `criteria`. Not both, but at least one.
 
         Parameters:
-            params: URL query parameters, either from a general entry endpoint or a single-entry endpoint.
+            params: URL query parameters, either from a general entry endpoint or a
+                single-entry endpoint.
             criteria: Already handled/parsed URL query parameters.
 
         Returns:
             A list of entry resource objects, how much data was returned for the query,
-            whether more data is available with pagination, and fields (excluded, included).
+            whether more data is available with pagination, and fields (excluded,
+            included).
 
         """
         if (params is None and criteria is None) or (
@@ -171,7 +232,9 @@ class AsyncMongoCollection(EntryCollection):
 
             if data_returned > 1:
                 raise NotFound(
-                    detail=f"Instead of a single entry, {data_returned} entries were found",
+                    detail=(
+                        f"Instead of a single entry, {data_returned} entries were found"
+                    ),
                 )
 
         include_fields = (
@@ -191,15 +254,21 @@ class AsyncMongoCollection(EntryCollection):
                     bad_optimade_fields.add(field)
 
         if bad_provider_fields:
-            warnings.warn(
+            warn(
                 UnknownProviderProperty(
-                    detail=f"Unrecognised field(s) for this provider requested in `response_fields`: {bad_provider_fields}."
+                    detail=(
+                        "Unrecognised field(s) for this provider requested in "
+                        f"`response_fields`: {bad_provider_fields}."
+                    )
                 )
             )
 
         if bad_optimade_fields:
             raise BadRequest(
-                detail=f"Unrecognised OPTIMADE field(s) in requested `response_fields`: {bad_optimade_fields}."
+                detail=(
+                    "Unrecognised OPTIMADE field(s) in requested `response_fields`: "
+                    f"{bad_optimade_fields}."
+                )
             )
 
         if results:
@@ -213,14 +282,68 @@ class AsyncMongoCollection(EntryCollection):
             include_fields,
         )
 
-    async def handle_query_params(
+    def handle_query_params(
         self, params: "Union[EntryListingQueryParams, SingleEntryQueryParams]"
     ) -> "Dict[str, Any]":
+        raise NotImplementedError(
+            "This method cannot be used with this class and is a remnant from the parent "
+            "class. Use instead the asynchronous method `ahandle_query_params(params: "
+            "Union[EntryListingQueryParams, SingleEntryQueryParams])`."
+        )
+
+    async def ahandle_query_params(
+        self, params: "Union[EntryListingQueryParams, SingleEntryQueryParams]"
+    ) -> "Dict[str, Any]":
+        """Parse and interpret the backend-agnostic query parameter models into a
+        dictionary that can be used by the specific backend.
+
+        This is the asynchronous version of the parent class method named
+        `handle_query_params()`.
+
+        Note:
+            Currently this method returns the pymongo interpretation of the parameters,
+            which will need modification for modified for other backends.
+
+        Parameters:
+            params: The initialized query parameter model from the server.
+
+        Raises:
+            Forbidden: If too large of a page limit is provided.
+            BadRequest: If an invalid request is made, e.g., with incorrect fields or
+                response format.
+
+        Returns:
+            A dictionary representation of the query parameters.
+
+        """
         return super().handle_query_params(params)
 
-    async def _run_db_query(
-        self, criteria: "Dict[str, Any]", single_entry: bool
+    def _run_db_query(
+        self, criteria: "Dict[str, Any]", single_entry: bool = False
     ) -> "Tuple[List[Dict[str, Any]], int, bool]":
+        raise NotImplementedError(
+            "This method cannot be used with this class and is a remnant from the parent "
+            "class. Use instead the asynchronous method `_arun_db_query(criteria: "
+            "Dict[str, Any], single_entry: bool)`."
+        )
+
+    async def _arun_db_query(
+        self, criteria: "Dict[str, Any]", single_entry: bool = False
+    ) -> "Tuple[List[Dict[str, Any]], int, bool]":
+        """Run the query on the backend and collect the results.
+
+        This is the asynchronous version of the parent class method named `count()`.
+
+        Arguments:
+            criteria: A dictionary representation of the query parameters.
+            single_entry: Whether or not the caller is expecting a single entry response.
+
+        Returns:
+            The list of entries from the database (without any re-mapping), the total
+            number of entries matching the query and a boolean for whether or not there
+            is more data available.
+
+        """
         results = []
         async for document in self.collection.find(**self._valid_find_keys(**criteria)):
             if criteria.get("projection", {}).get("_id"):
@@ -238,7 +361,8 @@ class AsyncMongoCollection(EntryCollection):
 
         return results, data_returned, more_data_available
 
-    def _check_aliases(self, aliases: "Tuple[Tuple[str, str]]") -> None:
+    @staticmethod
+    def _check_aliases(aliases: "Tuple[Tuple[str, str]]") -> None:
         """Check that aliases do not clash with mongo keywords.
 
         Parameters:

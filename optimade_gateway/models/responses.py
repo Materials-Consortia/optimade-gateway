@@ -1,3 +1,5 @@
+"""Pydantic models/schemas for the API responses."""
+# pylint: disable=line-too-long,too-few-public-methods
 from typing import List, Optional
 
 from optimade.models import EntryResponseMany, EntryResponseOne, LinksResource
@@ -17,8 +19,11 @@ class DatabasesResponse(EntryResponseMany):
 
     data: List[LinksResource] = Field(
         ...,
-        description="""List of unique OPTIMADE links resource objects.
-These links resource objects represents OPTIMADE databases that can be used for queries in gateways.""",
+        description=(
+            "List of unique OPTIMADE links resource objects.\nThese links resource "
+            "objects represents OPTIMADE databases that can be used for queries in "
+            "gateways."
+        ),
         uniqueItems=True,
     )
 
@@ -28,9 +33,12 @@ class DatabasesResponseSingle(EntryResponseOne):
 
     data: Optional[LinksResource] = Field(
         ...,
-        description="""A unique OPTIMADE links resource object.
-The OPTIMADE links resource object has just been created or found according to the specific query parameter(s) or URL id.
-It represents an OPTIMADE database that can be used for queries in gateways.""",
+        description=(
+            "A unique OPTIMADE links resource object.\nThe OPTIMADE links resource object"
+            " has just been created or found according to the specific query parameter(s)"
+            " or URL id.\nIt represents an OPTIMADE database that can be used for queries"
+            " in gateways."
+        ),
     )
 
 
@@ -45,17 +53,20 @@ class GatewaysResponse(EntryResponseMany):
 
 
 class GatewaysResponseSingle(EntryResponseOne):
-    """Successful response for `POST /gateways` and `GET /gateways/{gateway_id}`"""
+    """Successful response for `POST /gateways` and `GET /gateways/{gateway_id}`."""
 
     data: Optional[GatewayResource] = Field(
         ...,
-        description="""A unique OPTIMADE gateway resource object.
-The OPTIMADE gateway resource object has just been created or found according to the specific query parameter(s) or URL id.""",
+        description=(
+            "A unique OPTIMADE gateway resource object.\nThe OPTIMADE gateway resource "
+            "object has just been created or found according to the specific query "
+            "parameter(s) or URL id."
+        ),
     )
 
 
 class QueriesResponse(EntryResponseMany):
-    """Successful response for `GET /gateways/{gateway_ID}/queries`"""
+    """Successful response for `GET /gateways/{gateway_ID}/queries`."""
 
     data: List[QueryResource] = Field(
         ...,
@@ -65,10 +76,14 @@ class QueriesResponse(EntryResponseMany):
 
 
 class QueriesResponseSingle(EntryResponseOne):
-    """Successful response for `POST /gateways/{gateway_ID}/queries` and `GET /gateways/{gateway_ID}/queries/{query_id}`"""
+    """Successful response for `POST /gateways/{gateway_ID}/queries`
+    and `GET /gateways/{gateway_ID}/queries/{query_id}`."""
 
     data: Optional[QueryResource] = Field(
         ...,
-        description="""A unique OPTIMADE gateway query resource object.
-The OPTIMADE gateway query resource object has just been created or found according to the specific query parameter(s) or URL id.""",
+        description=(
+            "A unique OPTIMADE gateway query resource object.\nThe OPTIMADE gateway query"
+            " resource object has just been created or found according to the specific "
+            "query parameter(s) or URL id."
+        ),
     )

@@ -43,7 +43,7 @@ from optimade_gateway.models.queries import (
     OptimadeQueryParameters,
     QueryState,
 )
-from optimade_gateway.queries import perform_query, SearchQueryParams
+from optimade_gateway.queries.params import SearchQueryParams
 
 
 ROUTER = APIRouter(redirect_slashes=True)
@@ -73,9 +73,9 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
         [`QueriesResponseSingle`][optimade_gateway.models.responses.QueriesResponseSingle]
 
     """
+    from optimade_gateway.queries.perform import perform_query
     from optimade_gateway.routers.databases import DATABASES_COLLECTION
     from optimade_gateway.routers.queries import QUERIES_COLLECTION
-    from optimade_gateway.routers.utils import resource_factory
 
     # NOTE: It may be that the final list of base URLs (`base_urls`) contains the same provider(s),
     # but with differring base URLS, if, for example, a versioned base URL is supplied.

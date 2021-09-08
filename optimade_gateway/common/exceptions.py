@@ -1,3 +1,4 @@
+"""Specific OPTIMADE Gateway Python exceptions."""
 __all__ = ("OptimadeGatewayError",)
 
 

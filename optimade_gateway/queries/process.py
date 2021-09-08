@@ -1,5 +1,6 @@
-"""Process performed OPTIMADE queries"""
+"""Process performed OPTIMADE queries."""
 from typing import TYPE_CHECKING
+from warnings import warn
 
 from optimade.models import ErrorResponse, Meta
 
@@ -22,19 +23,19 @@ async def process_db_response(
     database_id: str,
     query: "QueryResource",
     gateway: "GatewayResource",
-) -> "Union[List[EntryResource], List[Dict[str, Any]], EntryResource, Dict[str, Any], None]":
+) -> "Union[List[EntryResource], List[Dict[str, Any]], EntryResource, Dict[str, Any], None]":  # pylint: disable=line-too-long
     """Process an OPTIMADE database response.
 
-    The passed `query` will be updated with the top-level `meta` information: `data_available`,
-    `data_returned`, and `more_data_available`.
+    The passed `query` will be updated with the top-level `meta` information:
+    `data_available`, `data_returned`, and `more_data_available`.
 
-    Since, only either `data` or `errors` should ever be present, one or the other will be either
-    an empty list or `None`.
+    Since, only either `data` or `errors` should ever be present, one or the other will
+    be either an empty list or `None`.
 
     Parameters:
         response: The OPTIMADE database response to be processed.
-        database_id: The database's `id` under which the returned resources or errors will be
-            delivered.
+        database_id: The database's `id` under which the returned resources or errors
+            will be delivered.
         query: A resource representing the performed query.
         gateway: A resource representing the gateway that was queried.
 
@@ -50,12 +51,11 @@ async def process_db_response(
     if isinstance(response, ErrorResponse):
         for error in response.errors:
             if isinstance(error.id, str) and error.id.startswith("OPTIMADE_GATEWAY"):
-                import warnings
-
-                warnings.warn(error.detail, OptimadeGatewayWarning)
+                warn(error.detail, OptimadeGatewayWarning)
             else:
-                # The model `ErrorResponse` does not allow the objects in the top-level `errors`
-                # list to be parsed as dictionaries - they must be a pydantic model.
+                # The model `ErrorResponse` does not allow the objects in the top-level
+                # `errors` list to be parsed as dictionaries - they must be a pydantic
+                # model.
                 meta_error = {}
                 if error.meta:
                     meta_error = error.meta.dict()
@@ -71,7 +71,9 @@ async def process_db_response(
                             "type": "links",
                             "links": {
                                 "self": (
-                                    str(gateway.links.self).split("gateways")[0]
+                                    str(gateway.links.self).split(
+                                        "gateways", maxsplit=1
+                                    )[0]
                                     + f"databases/{database_id}"
                                 )
                             },
@@ -111,8 +113,8 @@ async def process_db_response(
             {"$set": {"response.meta.more_data_available": more_data_available}}
         )
 
-    # This ensures an empty list under `response.data.{database_id}` is returned if the case is
-    # simply that there are no results to return.
+    # This ensures an empty list under `response.data.{database_id}` is returned if the
+    # case is simply that there are no results to return.
     if errors:
         extra_updates.update({"$addToSet": {"response.errors": {"$each": errors}}})
     await update_query(

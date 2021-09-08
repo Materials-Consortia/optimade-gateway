@@ -1,8 +1,8 @@
-"""Configuration of the FastAPI server"""
-# pylint: disable=no-self-argument
+"""Configuration of the FastAPI server."""
+# pylint: disable=no-self-use,no-self-argument
 import os
 import re
-import warnings
+from warnings import warn
 
 from optimade.server.config import ServerConfig as OptimadeServerConfig
 from pydantic import Field, validator
@@ -32,8 +32,8 @@ class ServerConfig(OptimadeServerConfig):
         True,
         description=(
             "Whether or not to load all valid OPTIMADE providers' databases from the "
-            "[Materials-Consortia list of OPTIMADE providers](https://providers.optimade.org) on "
-            "server startup."
+            "[Materials-Consortia list of OPTIMADE providers]"
+            "(https://providers.optimade.org) on server startup."
         ),
     )
 
@@ -49,9 +49,13 @@ class ServerConfig(OptimadeServerConfig):
             if env_var is not None:
                 res = res.replace(match.group(), env_var)
             else:
-                warnings.warn(
-                    f"Could not find an environment variable for {match.group()!r} from mongo_uri: {value}",
-                    OptimadeGatewayWarning,
+                warn(
+                    OptimadeGatewayWarning(
+                        detail=(
+                            "Could not find an environment variable for "
+                            f"{match.group()!r} from mongo_uri: {value}"
+                        )
+                    )
                 )
         return res
 

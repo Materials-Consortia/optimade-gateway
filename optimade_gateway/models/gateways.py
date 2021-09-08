@@ -1,5 +1,5 @@
-"""Pydantic models/schemas for the Gateways resource"""
-# pylint: disable=no-self-argument
+"""Pydantic models/schemas for the Gateways resource."""
+# pylint: disable=no-self-argument,no-self-use,too-few-public-methods
 from typing import List, Optional, Set
 import warnings
 
@@ -31,8 +31,8 @@ class GatewayResourceAttributes(EntryResourceAttributes):
         """
         if value.attributes.link_type in (LinkType.ROOT, LinkType.PROVIDERS):
             raise ValueError(
-                "Databases with 'root' or 'providers' link_type is not allowed for gateway "
-                f"resources. Given database: {value}"
+                "Databases with 'root' or 'providers' link_type is not allowed for "
+                f"gateway resources. Given database: {value}"
             )
         return value
 
@@ -53,10 +53,11 @@ class GatewayResourceAttributes(EntryResourceAttributes):
                 [_ for _ in value if _.attributes.base_url == base_url][0]
             )
         warnings.warn(
-            "Removed extra database entries for a gateway, because the base_url was repeated. The "
-            "first found database entry was kept, while the others were removed. Original number "
-            f"of databases: {len(value)}. New number of databases: {len(new_databases)} Repeated "
-            "base_urls (number of repeats): {}".format(
+            "Removed extra database entries for a gateway, because the base_url was "
+            "repeated. The first found database entry was kept, while the others were "
+            f"removed. Original number of databases: {len(value)}. New number of "
+            f"databases: {len(new_databases)} Repeated base_urls (number of repeats): "
+            "{}".format(
                 [
                     f"{base_url} ({db_base_urls.count(base_url)})"
                     for base_url in repeated_base_urls
@@ -71,8 +72,9 @@ class GatewayResource(EntryResource):
     """OPTIMADE gateway
 
     A resource representing a dynamic collection of OPTIMADE databases.
-    The gateway can be treated as any other OPTIMADE gateway, but the entries are an aggregate of
-    multiple databases. The `id` of each aggregated resource will reflect the originating database.
+    The gateway can be treated as any other OPTIMADE gateway, but the entries are an
+    aggregate of multiple databases. The `id` of each aggregated resource will reflect
+    the originating database.
     """
 
     id: str = OptimadeField(
@@ -83,7 +85,8 @@ class GatewayResource(EntryResource):
 
 - **Requirements/Conventions**:
     - **Support**: MUST be supported by all implementations, MUST NOT be `null`.
-    - **Query**: MUST be a queryable property with support for all mandatory filter features.
+    - **Query**: MUST be a queryable property with support for all mandatory filter
+      features.
     - **Response**: REQUIRED in the response.
     - **Gateway-specific**: MUST NOT contain a forward slash (`/`).
 
@@ -117,7 +120,8 @@ class GatewayCreate(EntryResourceCreate, GatewayResourceAttributes):
 
 - **Requirements/Conventions**:
     - **Support**: MUST be supported by all implementations, MUST NOT be `null`.
-    - **Query**: MUST be a queryable property with support for all mandatory filter features.
+    - **Query**: MUST be a queryable property with support for all mandatory filter
+      features.
     - **Response**: REQUIRED in the response.
     - **Gateway-specific**: MUST NOT contain a forward slash (`/`).
 
