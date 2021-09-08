@@ -31,9 +31,18 @@ async def ci_dev_startup() -> None:
 
     await MONGO_DB[CONFIG.gateways_collection].drop()
 
-    assert await MONGO_DB[CONFIG.gateways_collection].count_documents({}) == 0
+    if await MONGO_DB[CONFIG.gateways_collection].count_documents({}) != 0:
+        raise RuntimeError(
+            f"Unexpectedly found documents in the {CONFIG.gateways_collection!r} Mongo"
+            " collection after dropping it ! Found number of documents: "
+            f"{await MONGO_DB[CONFIG.gateways_collection].count_documents({})}"
+        )
 
-    assert test_data.exists()
+    if not test_data.exists():
+        raise FileNotFoundError(
+            f"Could not find test data file with test gateways at {test_data} !"
+        )
+
     with open(test_data) as handle:
         data = json.load(handle)
     await MONGO_DB[CONFIG.gateways_collection].insert_many(data)
