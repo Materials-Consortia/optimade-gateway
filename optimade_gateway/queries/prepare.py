@@ -1,4 +1,5 @@
 """Prepare OPTIMADE queries."""
+from os import getenv
 import re
 from typing import TYPE_CHECKING
 import urllib.parse
@@ -6,7 +7,8 @@ from warnings import warn
 
 from optimade_gateway.warnings import OptimadeGatewayWarning
 
-if TYPE_CHECKING:
+if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):
+    # pylint: disable=unused-import,ungrouped-imports
     from typing import List, Mapping, Union
 
     from optimade_gateway.models.queries import OptimadeQueryParameters

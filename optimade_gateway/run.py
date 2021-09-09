@@ -6,7 +6,8 @@ from typing import TYPE_CHECKING
 
 import uvicorn
 
-if TYPE_CHECKING:
+if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):
+    # pylint: disable=unused-import
     from typing import Optional, Sequence, Text
 
 

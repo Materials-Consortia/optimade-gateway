@@ -1,4 +1,5 @@
 """Process performed OPTIMADE queries."""
+from os import getenv
 from typing import TYPE_CHECKING
 from warnings import warn
 
@@ -10,7 +11,8 @@ from optimade_gateway.common.utils import get_resource_attribute
 from optimade_gateway.queries.utils import update_query
 from optimade_gateway.warnings import OptimadeGatewayWarning
 
-if TYPE_CHECKING:
+if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):
+    # pylint: disable=unused-import,ungrouped-imports
     from typing import Any, Dict, List, Union
 
     from optimade.models import EntryResource, EntryResponseMany, EntryResponseOne

@@ -33,7 +33,8 @@ from optimade_gateway.queries.process import process_db_response
 from optimade_gateway.queries.utils import update_query
 from optimade_gateway.routers.utils import collection_factory, get_valid_resource
 
-if TYPE_CHECKING:
+if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):
+    # pylint: disable=unused-import,ungrouped-imports
     from typing import Any, Dict, List, Tuple, Union
 
     from optimade.models import (
@@ -178,7 +179,7 @@ def db_find(
         Response as an `optimade` pydantic model and the `database`'s ID.
 
     """
-    if TYPE_CHECKING:
+    if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):
         response: "Union[httpx.Response, Dict[str, Any], EntryResponseMany, EntryResponseOne, ErrorResponse]"  # pylint: disable=line-too-long
 
     if raw_url:

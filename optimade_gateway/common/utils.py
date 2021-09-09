@@ -4,11 +4,13 @@ These functions may be used in general throughout the OPTIMADE Gateway Python co
 """
 # pylint: disable=line-too-long
 from enum import Enum
+from os import getenv
 from typing import TYPE_CHECKING
 
 from pydantic import BaseModel
 
-if TYPE_CHECKING:
+if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):
+    # pylint: disable=unused-import
     from typing import Any, Dict, Union
 
 

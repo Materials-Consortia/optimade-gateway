@@ -1,5 +1,6 @@
 """Utility functions for all routers."""
 # pylint: disable=line-too-long,import-outside-toplevel
+from os import getenv
 from typing import TYPE_CHECKING
 import urllib.parse
 
@@ -25,7 +26,8 @@ from optimade_gateway.models import (
 )
 from optimade_gateway.mongo.collection import AsyncMongoCollection
 
-if TYPE_CHECKING:
+if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):
+    # pylint: disable=unused-import,ungrouped-imports
     from typing import Any, Dict, Iterable, Tuple, Union
 
     from fastapi import Request

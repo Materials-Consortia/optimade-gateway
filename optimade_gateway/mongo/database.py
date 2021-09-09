@@ -1,4 +1,5 @@
 """Initialize the MongoDB database."""
+from os import getenv
 from typing import TYPE_CHECKING
 
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -6,7 +7,8 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.common.logger import LOGGER
 
-if TYPE_CHECKING:
+if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):
+    # pylint: disable=unused-import
     from pymongo.database import Database
     from pymongo.mongo_client import MongoClient
 

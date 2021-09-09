@@ -6,6 +6,7 @@ represents an asynchronous version of the equivalent MongoDB collection in `opti
 [`MongoCollection`](https://www.optimade.org/optimade-python-tools/api_reference/server/entry_collections/mongo/#optimade.server.entry_collections.mongo.MongoCollection).
 """
 from datetime import datetime
+from os import getenv
 from typing import TYPE_CHECKING
 from warnings import warn
 
@@ -21,7 +22,8 @@ from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.common.utils import clean_python_types
 from optimade_gateway.warnings import OptimadeGatewayWarning
 
-if TYPE_CHECKING:
+if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):
+    # pylint: disable=unused-import,ungrouped-imports
     from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
     from optimade.models import EntryResource

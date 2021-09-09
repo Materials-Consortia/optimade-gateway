@@ -5,20 +5,20 @@ The specific events are listed in [`EVENTS`][optimade_gateway.events.EVENTS] alo
 their respected proper invocation time.
 """
 # pylint: disable=import-outside-toplevel
+import os
 from typing import TYPE_CHECKING
 
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.common.logger import LOGGER
 
-if TYPE_CHECKING:
+if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):
+    # pylint: disable=unused-import
     from typing import Any, Callable, Coroutine, Sequence, Tuple, Union
 
 
 async def ci_dev_startup() -> None:
     """Function to run at app startup - only relevant for CI or development to add test
     data."""
-    import os
-
     if bool(os.getenv("CI", "")):
         LOGGER.info(
             "CI detected - Will load test gateways (after dropping the collection)!"
@@ -86,7 +86,7 @@ async def load_optimade_providers_databases() -> None:  # pylint: disable=too-ma
         )
         return
 
-    if TYPE_CHECKING:
+    if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):
         providers: "Union[httpx.Response, LinksResponse]"
 
     async with httpx.AsyncClient() as client:

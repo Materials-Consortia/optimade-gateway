@@ -1,6 +1,7 @@
 """Utility functions for the `queries` module."""
 # pylint: disable=import-outside-toplevel
 from datetime import datetime
+from os import getenv
 from typing import TYPE_CHECKING
 
 from optimade_gateway.common.config import CONFIG
@@ -8,7 +9,8 @@ from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.common.utils import clean_python_types
 from optimade_gateway.routers.utils import collection_factory
 
-if TYPE_CHECKING:
+if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):
+    # pylint: disable=unused-import,ungrouped-imports
     from typing import Any, Optional
 
     from pymongo.results import UpdateResult
