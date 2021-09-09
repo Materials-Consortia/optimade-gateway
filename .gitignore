@@ -1,4 +1,14 @@
-logs/
+# Tools
 .coverage
 htmlcov/
+.mypy*
+.pytest*
+
+# Python
+*.egg*
+
+# Application
+logs/
+
+# Documentation
 site/

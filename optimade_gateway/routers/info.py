@@ -6,19 +6,24 @@ This file describes the router for:
 
 where, `entry` may be left out.
 """
+# pylint: disable=import-outside-toplevel
 from fastapi import APIRouter, Request
 from optimade import __api_version__
 from optimade.models import (
     BaseInfoAttributes,
     BaseInfoResource,
+    EntryInfoResource,
     EntryInfoResponse,
     InfoResponse,
     LinksResource,
 )
+from optimade.server.exceptions import NotFound
 from optimade.server.routers.utils import get_base_url, meta_values
 from optimade.server.schemas import ERROR_RESPONSES
 
 from optimade_gateway.models import GatewayResource, QueryResource
+from optimade_gateway.routers.utils import aretrieve_queryable_properties
+
 
 ROUTER = APIRouter(redirect_slashes=True)
 
@@ -51,7 +56,10 @@ async def get_info(request: Request) -> InfoResponse:
                 api_version=__api_version__,
                 available_api_versions=[
                     {
-                        "url": f"{get_base_url(request.url)}/v{__api_version__.split('.')[0]}",
+                        "url": (
+                            f"{get_base_url(request.url)}"
+                            f"/v{__api_version__.split('.', maxsplit=1)[0]}"
+                        ),
                         "version": __api_version__,
                     }
                 ],
@@ -94,11 +102,6 @@ async def get_entry_info(request: Request, entry: str) -> EntryInfoResponse:
 
     Get information about the gateway service's entry-listing endpoints.
     """
-    from optimade.models import EntryInfoResource
-    from optimade.server.exceptions import NotFound
-
-    from optimade_gateway.routers.utils import aretrieve_queryable_properties
-
     valid_entry_info_endpoints = ENTRY_INFO_SCHEMAS.keys()
     if entry not in valid_entry_info_endpoints:
         raise NotFound(

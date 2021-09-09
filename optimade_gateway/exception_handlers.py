@@ -1,13 +1,25 @@
-from fastapi import Request
-from fastapi.exceptions import RequestValidationError
+"""ASGI app exception handlers.
+
+These are in addition to the exception handlers available in OPTIMADE Python tools.
+For more information see
+https://www.optimade.org/optimade-python-tools/api_reference/server/exception_handlers/.
+"""
+from os import getenv
+from typing import TYPE_CHECKING
+
 from optimade.models import ErrorSource, OptimadeError
 from optimade.server.exception_handlers import general_exception
-from starlette.responses import JSONResponse
+
+if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
+    # pylint: disable=unused-import
+    from fastapi import Request
+    from fastapi.exceptions import RequestValidationError
+    from starlette.responses import JSONResponse
 
 
 async def request_validation_exception_handler(
-    request: Request, exc: RequestValidationError
-) -> JSONResponse:
+    request: "Request", exc: "RequestValidationError"
+) -> "JSONResponse":
     """Special handler if a `RequestValidationError` comes from wrong `POST` data"""
     status_code = 500
     if request.method in ("POST", "post"):

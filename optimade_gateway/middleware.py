@@ -1,10 +1,21 @@
-import re
+"""ASGI app middleware.
 
-from fastapi import Request
+These are in addition to the middleware available in OPTIMADE Python tools.
+For more information see
+https://www.optimade.org/optimade-python-tools/api_reference/server/middleware/.
+"""
+from os import getenv
+import re
+from typing import TYPE_CHECKING
+
 from optimade.server.exceptions import VersionNotSupported
 from optimade.server.routers.utils import BASE_URL_PREFIXES, get_base_url
-from starlette.datastructures import URL
 from starlette.middleware.base import BaseHTTPMiddleware
+
+if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
+    # pylint: disable=unused-import,ungrouped-imports
+    from fastapi import Request
+    from starlette.datastructures import URL
 
 
 class CheckWronglyVersionedBaseUrlsGateways(BaseHTTPMiddleware):
@@ -12,7 +23,7 @@ class CheckWronglyVersionedBaseUrlsGateways(BaseHTTPMiddleware):
     return `553 Version Not Supported`."""
 
     @staticmethod
-    async def check_url(url: URL):
+    async def check_url(url: "URL"):
         """Check URL path for versioned part.
 
         Parameters:
@@ -34,11 +45,12 @@ class CheckWronglyVersionedBaseUrlsGateways(BaseHTTPMiddleware):
                     detail=(
                         f"The parsed versioned base URL {match.group('version')!r} from "
                         f"{url} is not supported by this implementation. "
-                        f"Supported versioned base URLs are: {', '.join(BASE_URL_PREFIXES.values())}"
+                        "Supported versioned base URLs are: "
+                        f"{', '.join(BASE_URL_PREFIXES.values())}"
                     )
                 )
 
-    async def dispatch(self, request: Request, call_next):
+    async def dispatch(self, request: "Request", call_next):
         if request.url.path:
             await self.check_url(request.url)
         response = await call_next(request)

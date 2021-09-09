@@ -68,12 +68,17 @@ plugins:
               - "!__json_encoder__$"
               - "!__all__$"
               - "!__config__$"
+              - "!__str__$"
+              - "!__repr__$"
               - "!ValidatorResults$"
             members: true
             inherited_members: false
             docstring_style: google
             docstring_options:
               replace_admonitions: true
+          setup_commands:
+            - import os
+            - os.environ["MKDOCS_BUILD"] = "1"
       watch:
         - optimade_gateway
   - awesome-pages

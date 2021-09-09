@@ -1,4 +1,5 @@
 """Pydantic models/schemas for the LinksResource used in /databases"""
+# pylint: disable=no-self-argument,no-self-use,line-too-long
 from typing import Optional, Union
 
 from optimade.models import Link, LinksResourceAttributes
@@ -10,20 +11,21 @@ from optimade_gateway.models.resources import EntryResourceCreate
 
 
 class DatabaseCreate(EntryResourceCreate, LinksResourceAttributes):
-    """Model for creating new LinksResources representing /databases resources in the MongoDB
+    """Model for creating new LinksResources representing `/databases` resources in the
+    MongoDB.
 
     Required fields:
 
-    - name
-    - base_url
+    - `name`
+    - `base_url`
 
     Original required fields for a
     [`LinksResourceAttributes`](https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResourceAttributes)
     model:
 
-    - name
-    - description
-    - link_type
+    - `name`
+    - `description`
+    - `link_type`
 
     """
 
@@ -31,17 +33,21 @@ class DatabaseCreate(EntryResourceCreate, LinksResourceAttributes):
     base_url: Union[AnyUrl, Link]
     homepage: Optional[Union[AnyUrl, Link]] = StrictField(
         None,
-        description="JSON API links object, pointing to a homepage URL for this implementation",
+        description=(
+            "JSON API links object, pointing to a homepage URL for this implementation."
+        ),
     )
     link_type: Optional[LinkType] = StrictField(
         None,
         title="Link Type",
-        description="""The type of the linked relation.
-MUST be one of these values: 'child', 'root', 'external', 'providers'.""",
+        description=(
+            "The type of the linked relation.\nMUST be one of these values: 'child', "
+            "'root', 'external', 'providers'."
+        ),
     )
 
     @validator("link_type")
-    def ensure_database_link_type(cls, value) -> LinkType:
+    def ensure_database_link_type(cls, value: LinkType) -> LinkType:
         """Ensure databases are not index meta-database-only types
 
         I.e., ensure they're not of type `"root"` or `"providers"`.
@@ -53,7 +59,7 @@ MUST be one of these values: 'child', 'root', 'external', 'providers'.""",
         """
         if value in (LinkType.ROOT, LinkType.PROVIDERS):
             raise ValueError(
-                "Databases with 'root' or 'providers' link_type is not allowed for gateway-usable "
-                f"database resources. Given link_type: {value}"
+                "Databases with 'root' or 'providers' link_type is not allowed for "
+                f"gateway-usable database resources. Given link_type: {value}"
             )
         return value

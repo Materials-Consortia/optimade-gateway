@@ -11,29 +11,27 @@ Database resources represent the available databases that may be used for the ga
 One can register a new database (by using `POST /databases`) or look through the available
 databases (by using `GET /databases`) using standard OPTIMADE filtering.
 """
+# pylint: disable=line-too-long,import-outside-toplevel
 from fastapi import APIRouter, Depends, Request
-from optimade.models import LinksResource, ToplevelLinks
+from optimade.models import ToplevelLinks
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.server.routers.utils import handle_response_fields, meta_values
 from optimade.server.schemas import ERROR_RESPONSES
 
 from optimade_gateway.common.config import CONFIG
-from optimade_gateway.mappers import DatabasesMapper
 from optimade_gateway.models import (
     DatabaseCreate,
     DatabasesResponse,
     DatabasesResponseSingle,
 )
-from optimade_gateway.mongo.collection import AsyncMongoCollection
+from optimade_gateway.routers.utils import (
+    collection_factory,
+    get_entries,
+    resource_factory,
+)
 
 
 ROUTER = APIRouter(redirect_slashes=True)
-
-DATABASES_COLLECTION = AsyncMongoCollection(
-    name=CONFIG.databases_collection,
-    resource_cls=LinksResource,
-    resource_mapper=DatabasesMapper,
-)
 
 
 @ROUTER.get(
@@ -53,10 +51,8 @@ async def get_databases(
 
     Return overview of all (active) databases.
     """
-    from optimade_gateway.routers.utils import get_entries
-
     return await get_entries(
-        collection=DATABASES_COLLECTION,
+        collection=await collection_factory(CONFIG.databases_collection),
         response_cls=DatabasesResponse,
         request=request,
         params=params,
@@ -81,9 +77,8 @@ async def post_databases(
     [`LinksResource`](https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResource),
     representing a database resource object, according to `database`.
     """
-    from optimade_gateway.routers.utils import resource_factory
-
     result, created = await resource_factory(database)
+    collection = await collection_factory(CONFIG.databases_collection)
 
     return DatabasesResponseSingle(
         links=ToplevelLinks(next=None),
@@ -91,7 +86,7 @@ async def post_databases(
         meta=meta_values(
             url=request.url,
             data_returned=1,
-            data_available=await DATABASES_COLLECTION.count(),
+            data_available=await collection.acount(),
             more_data_available=False,
             **{f"_{CONFIG.provider.prefix}_created": created},
         ),
@@ -118,6 +113,8 @@ async def get_database(
     [`LinksResource`](https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResource)
     representing the database resource object with `id={database ID}`.
     """
+    collection = await collection_factory(CONFIG.databases_collection)
+
     params.filter = f'id="{database_id}"'
     (
         result,
@@ -125,12 +122,12 @@ async def get_database(
         more_data_available,
         fields,
         include_fields,
-    ) = await DATABASES_COLLECTION.find(params=params)
+    ) = await collection.afind(params=params)
 
     if fields or include_fields and result is not None:
         result = handle_response_fields(result, fields, include_fields)
 
-    result = result[0] if data_returned else None
+    result = result[0] if isinstance(result, list) and data_returned else None
 
     return DatabasesResponseSingle(
         links=ToplevelLinks(next=None),
@@ -138,7 +135,7 @@ async def get_database(
         meta=meta_values(
             url=request.url,
             data_returned=data_returned,
-            data_available=await DATABASES_COLLECTION.count(),
+            data_available=await collection.acount(),
             more_data_available=more_data_available,
         ),
     )

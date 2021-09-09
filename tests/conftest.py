@@ -1,5 +1,4 @@
 """Pytest fixtures and configuration for all tests"""
-# pylint: disable=import-error
 import asyncio
 import json
 import os

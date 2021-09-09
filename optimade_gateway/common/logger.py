@@ -4,8 +4,13 @@ import logging
 import os
 from pathlib import Path
 import sys
+from typing import TYPE_CHECKING
 
 from uvicorn.logging import DefaultFormatter
+
+if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):  # pragma: no cover
+    # pylint: disable=ungrouped-imports
+    import logging.handlers
 
 
 @contextmanager

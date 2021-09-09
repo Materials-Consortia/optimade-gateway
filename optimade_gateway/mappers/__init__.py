@@ -1,6 +1,11 @@
-from .databases import *  # noqa: F403
-from .gateways import *  # noqa: F403
-from .queries import *  # noqa: F403
+"""OPTIMADE Gateway mappers for entry-endpoint resources.
+
+The design for these mappers is based on the mappers in OPTIMADE Python tools.
+"""
+from .databases import DatabasesMapper
+from .gateways import GatewaysMapper
+from .links import LinksMapper
+from .queries import QueryMapper
 
 
-__all__ = databases.__all__ + gateways.__all__ + queries.__all__  # noqa: F405
+__all__ = ("DatabasesMapper", "GatewaysMapper", "LinksMapper", "QueryMapper")

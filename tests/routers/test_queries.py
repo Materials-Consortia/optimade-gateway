@@ -1,5 +1,5 @@
 """Tests for /queries endpoints"""
-# pylint: disable=import-error,no-name-in-module
+# pylint: disable=no-name-in-module
 import json
 from pathlib import Path
 from typing import Awaitable, Callable
@@ -117,7 +117,8 @@ async def test_post_queries_bad_data(
     """Test POST /queries with bad data"""
     from optimade.models import ErrorResponse, OptimadeError
 
-    from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
+    from optimade_gateway.common.config import CONFIG
+    from optimade_gateway.routers.utils import collection_factory
 
     data = {
         "gateway_id": "non-existent",
@@ -139,7 +140,10 @@ async def test_post_queries_bad_data(
         == OptimadeError(
             title="Not Found",
             status="404",
-            detail=f"Resource <id=non-existent> not found in {GATEWAYS_COLLECTION}.",
+            detail=(
+                "Resource <id=non-existent> not found in "
+                f"{await collection_factory(CONFIG.gateways_collection)}."
+            ),
         ).dict()
     )
 

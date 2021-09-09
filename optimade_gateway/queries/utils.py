@@ -1,22 +1,38 @@
-from typing import Any
+"""Utility functions for the `queries` module."""
+# pylint: disable=import-outside-toplevel
+from datetime import datetime
+from os import getenv
+from typing import TYPE_CHECKING
 
-from pymongo.results import UpdateResult
-
+from optimade_gateway.common.config import CONFIG
 from optimade_gateway.common.logger import LOGGER
-from optimade_gateway.models import QueryResource
+from optimade_gateway.common.utils import clean_python_types
+from optimade_gateway.routers.utils import collection_factory
+
+if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
+    # pylint: disable=unused-import,ungrouped-imports
+    from typing import Any, Optional
+
+    from pymongo.results import UpdateResult
+
+    from optimade_gateway.models import QueryResource
 
 
-async def update_query(
-    query: QueryResource, field: str, value: Any, operator: str = None, **mongo_kwargs
+async def update_query(  # pylint: disable=too-many-branches
+    query: "QueryResource",
+    field: str,
+    value: "Any",
+    operator: "Optional[str]" = None,
+    **mongo_kwargs,
 ) -> None:
     """Update a query's `field` attribute with `value`.
 
-    If `field` is a dot-separated value, then only the last field part may be a non-pre-existing
-    field. Otherwise a `KeyError` or `AttributeError` will be raised.
+    If `field` is a dot-separated value, then only the last field part may be a
+    non-pre-existing field. Otherwise a `KeyError` or `AttributeError` will be raised.
 
     !!! note
-        This can *only* update a field for a query's `attributes`, i.e., this function cannot
-        update `id`, `type` or any other top-level resource field.
+        This can *only* update a field for a query's `attributes`, i.e., this function
+        cannot update `id`, `type` or any other top-level resource field.
 
     !!! important
         `mongo_kwargs` will not be considered for updating the pydantic model instance.
@@ -32,11 +48,6 @@ async def update_query(
         mongo_kwargs (dict): Further MongoDB update filters.
 
     """
-    from datetime import datetime
-
-    from optimade_gateway.common.utils import clean_python_types
-    from optimade_gateway.routers.queries import QUERIES_COLLECTION
-
     operator = operator or "$set"
 
     if operator and not operator.startswith("$"):
@@ -58,13 +69,17 @@ async def update_query(
             update_kwargs.update({operator: {field: value}})
 
     # MongoDB
-    result: UpdateResult = await QUERIES_COLLECTION.collection.update_one(
+    collection = await collection_factory(CONFIG.queries_collection)
+    result: "UpdateResult" = await collection.collection.update_one(
         filter={"id": {"$eq": query.id}},
         update=await clean_python_types(update_kwargs),
     )
     if result.matched_count != 1:
         LOGGER.error(
-            "matched_count should have been exactly 1, it was: %s. Returned update_one result: %s",
+            (
+                "matched_count should have been exactly 1, it was: %s. "
+                "Returned update_one result: %s"
+            ),
             result.matched_count,
             result.raw_result,
         )

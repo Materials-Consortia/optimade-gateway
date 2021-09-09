@@ -1,16 +1,27 @@
+"""Common utility functions.
+
+These functions may be used in general throughout the OPTIMADE Gateway Python code.
+"""
+# pylint: disable=line-too-long
 from enum import Enum
-from typing import Any, Dict, Union
+from os import getenv
+from typing import TYPE_CHECKING
 
-from pydantic import BaseModel  # pylint: disable=no-name-in-module
+from pydantic import BaseModel
+
+if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
+    # pylint: disable=unused-import
+    from typing import Any, Dict, Union
 
 
-async def clean_python_types(data: Any) -> Any:
+async def clean_python_types(data: "Any") -> "Any":
     """Turn any types into MongoDB-friendly Python types.
 
     Use `dict()` method for Pydantic models.
     Use `value` property for Enums.
     Turn tuples and sets into lists.
     """
+    res: "Any" = None
     if isinstance(data, (list, tuple, set)):
         res = []
         for datum in data:
@@ -33,11 +44,11 @@ async def clean_python_types(data: Any) -> Any:
 
 
 def get_resource_attribute(
-    resource: Union[BaseModel, Dict[str, Any], None],
+    resource: "Union[BaseModel, Dict[str, Any], None]",
     field: str,
-    default: Any = None,
+    default: "Any" = None,
     disambiguate: bool = True,
-) -> Any:
+) -> "Any":
     """Return a resource's field's value
 
     Get the field value no matter if the resource is a pydantic model or a Python dictionary.
@@ -57,8 +68,8 @@ def get_resource_attribute(
             `"attributes.base_url"`.
         default: The default value to return if `field` does not exist.
         disambiguate: Whether or not to "shortcut" a field value.
-            For example, for `attributes.base_url`, if `True`, this would return the string value
-            or the value of it's `"href"` key.
+            For example, for `attributes.base_url`, if `True`, this would return the
+            string value or the value of it's `"href"` key.
 
     Returns:
         The resource's field's value.
@@ -68,7 +79,7 @@ def get_resource_attribute(
         _get_attr = getattr
     elif isinstance(resource, dict):
 
-        def _get_attr(mapping: dict, key: str, default: Any) -> Any:
+        def _get_attr(mapping: dict, key: str, default: "Any") -> "Any":  # type: ignore[misc]
             return mapping.get(key, default)
 
     elif resource is None:
@@ -76,13 +87,13 @@ def get_resource_attribute(
         return default
     else:
         raise TypeError(
-            "resource must be either a pydantic model or a Python dictionary, it was of type "
-            f"{type(resource)!r}"
+            "resource must be either a pydantic model or a Python dictionary, it was of "
+            f"type {type(resource)!r}"
         )
 
     fields = field.split(".")
-    for field in fields[:-1]:
-        resource = _get_attr(resource, field, {})
+    for _ in fields[:-1]:
+        resource = _get_attr(resource, _, {})
     field = fields[-1]
     value = _get_attr(resource, field, default)
 

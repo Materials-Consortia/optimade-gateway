@@ -1,4 +1,5 @@
-from .collection import *  # noqa: F403
+"""Everything to do with the MongoDB backend."""
+from .collection import AsyncMongoCollection
 
 
-__all__ = collection.__all__  # noqa: F405
+__all__ = ("AsyncMongoCollection",)

@@ -1,4 +1,6 @@
-"""Pydantic models/schemas for the Queries resource"""
+"""Pydantic models/schemas for the Queries resource."""
+# pylint: disable=line-too-long,too-few-public-methods,no-self-argument,no-self-use
+from copy import deepcopy
 from datetime import timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional, Union
@@ -30,7 +32,8 @@ from optimade_gateway.warnings import SortNotSupported
 
 
 class EndpointEntryType(Enum):
-    """Entry endpoint resource types, mapping to their pydantic models from the `optimade` package."""
+    """Entry endpoint resource types, mapping to their pydantic models from the
+    `optimade` package."""
 
     REFERENCES = "references"
     STRUCTURES = "structures"
@@ -169,7 +172,10 @@ class GatewayQueryResponse(Response):
     )
     errors: Optional[List[OptimadeError]] = StrictField(
         [],
-        description="A list of OPTIMADE-specific JSON API error objects, where the field detail MUST be present.",
+        description=(
+            "A list of OPTIMADE-specific JSON API error objects, where the field detail "
+            "MUST be present."
+        ),
         uniqueItems=True,
     )
     included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = Field(
@@ -205,7 +211,9 @@ class QueryResourceAttributes(EntryResourceAttributes):
     )
     query_parameters: OptimadeQueryParameters = Field(
         ...,
-        description="OPTIMADE query parameters for entry listing endpoints used for this query.",
+        description=(
+            "OPTIMADE query parameters for entry listing endpoints used for this query."
+        ),
         type="object",
     )
     state: QueryState = Field(
@@ -230,8 +238,8 @@ class QueryResourceAttributes(EntryResourceAttributes):
         """Temporarily only allow queries to "structures" endpoints."""
         if value != EndpointEntryType.STRUCTURES:
             raise NotImplementedError(
-                'OPTIMADE Gateway temporarily only supports queries to "structures" endpoints, '
-                'i.e.: endpoint="structures"'
+                'OPTIMADE Gateway temporarily only supports queries to "structures" '
+                'endpoints, i.e.: endpoint="structures"'
             )
         return value
 
@@ -241,7 +249,7 @@ class QueryResource(EntryResource):
 
     type: str = Field(
         "queries",
-        const="queries",
+        const=True,
         description="The name of the type of an entry.",
         regex="^queries$",
     )
@@ -255,8 +263,8 @@ class QueryResource(EntryResource):
     ) -> Union[EntryResponseMany, ErrorResponse]:
         """Return `attributes.response` as a valid OPTIMADE entry listing response.
 
-        Note, this method disregards the state of the query and will simply return the query results
-        as they currently are (if there are any at all).
+        Note, this method disregards the state of the query and will simply return the
+        query results as they currently are (if there are any at all).
 
         Parameters:
             url: Optionally, update the `meta.query.representation` value with this.
@@ -267,13 +275,15 @@ class QueryResource(EntryResource):
             or an error response, if errors were returned or occurred during the query.
 
         """
-        from copy import deepcopy
-        from optimade.server.routers.utils import meta_values
+        from optimade.server.routers.utils import (  # pylint: disable=import-outside-toplevel
+            meta_values,
+        )
 
         async def _update_id(
             entry_: Union[EntryResource, Dict[str, Any]], database_provider_: str
         ) -> Union[EntryResource, Dict[str, Any]]:
-            """Internal utility function to prepend the entries' `id` with `provider/database/`.
+            """Internal utility function to prepend the entries' `id` with
+            `provider/database/`.
 
             Parameters:
                 entry_: The entry as a model or a dictionary.
@@ -288,7 +298,7 @@ class QueryResource(EntryResource):
                 _entry["id"] = f"{database_provider_}/{entry_['id']}"
             else:
                 _entry = entry_.copy(deep=True)
-                _entry.id = f"{database_provider_}/{entry_.id}"
+                _entry.id = f"{database_provider_}/{entry_.id}"  # type: ignore[union-attr]
             return _entry
 
         if not self.attributes.response:
@@ -297,8 +307,8 @@ class QueryResource(EntryResource):
                 errors=[
                     {
                         "detail": (
-                            "Can not return as a valid OPTIMADE response as the query has not yet "
-                            "been initialized."
+                            "Can not return as a valid OPTIMADE response as the query has"
+                            " not yet been initialized."
                         ),
                         "id": "OPTIMADE_GATEWAY_QUERY_NOT_INITIALIZED",
                     }
@@ -348,8 +358,8 @@ class QueryResource(EntryResource):
 class QueryCreate(EntryResourceCreate, QueryResourceAttributes):
     """Model for creating new Query resources in the MongoDB"""
 
-    state: Optional[QueryState]
-    endpoint: Optional[EndpointEntryType]
+    state: Optional[QueryState]  # type: ignore[assignment]
+    endpoint: Optional[EndpointEntryType]  # type: ignore[assignment]
 
     @validator("query_parameters")
     def sort_not_supported(

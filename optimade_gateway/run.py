@@ -1,12 +1,17 @@
+"""Simplified function for running the server used in the CLI."""
 import argparse
 import os
 from pathlib import Path
-from typing import Sequence, Text
+from typing import TYPE_CHECKING
 
 import uvicorn
 
+if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):  # pragma: no cover
+    # pylint: disable=unused-import
+    from typing import Optional, Sequence, Text
 
-def run(argv: Sequence[Text] = None) -> None:
+
+def run(argv: "Optional[Sequence[Text]]" = None) -> None:
     """Run OPTIMADE Gateway REST API server."""
     parser = argparse.ArgumentParser(
         "optimade-gateway",
@@ -29,7 +34,8 @@ def run(argv: Sequence[Text] = None) -> None:
 
     if args.prod:
         print(
-            "Consider running the gateway using Docker or the `uvicorn` CLI directly instead!"
+            "Consider running the gateway using Docker or the `uvicorn` CLI directly "
+            "instead!"
         )
         uvicorn_kwargs.update({"reload": False, "log_level": "info"})
     else:

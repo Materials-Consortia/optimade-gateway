@@ -1,3 +1,4 @@
+"""The initialization of the ASGI FastAPI application."""
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import RedirectResponse
@@ -59,7 +60,11 @@ APP.include_router(versions_router)
 # Add endpoints to / and /vMAJOR
 for prefix in list(BASE_URL_PREFIXES.values()) + [""]:
     for router in (databases, gateways, info, links, queries, search):
-        APP.include_router(router.ROUTER, prefix=prefix, include_in_schema=prefix == "")
+        APP.include_router(
+            router.ROUTER,  # type: ignore[attr-defined]
+            prefix=prefix,
+            include_in_schema=prefix == "",
+        )
 
 for event, func in EVENTS:
     APP.add_event_handler(event, func)

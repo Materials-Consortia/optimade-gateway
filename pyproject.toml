@@ -1,0 +1,22 @@
+[tool.mypy]
+python_version = "3.8"
+ignore_missing_imports = true
+scripts_are_modules = true
+warn_unused_configs = true
+show_error_codes = true
+allow_redefinition = true
+
+[tool.pylint.messages_control]
+max-line-length = 90
+disable = [
+    "duplicate-code",
+    "no-name-in-module"
+]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+required_plugins = "pytest-asyncio>=0.15.1 pytest-cov>=2.12 pytest-httpx>=0.13.0"
+addopts = "-rs --cov=./optimade_gateway/ --cov-report=term --durations=10"
+filterwarnings = [
+    "ignore:.*imp module.*:DeprecationWarning"
+]

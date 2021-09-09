@@ -6,29 +6,29 @@ This file describes the router for:
 
 where, `id` may be left out.
 """
+# pylint: disable=import-outside-toplevel
 from fastapi import APIRouter, Depends, Request
 from optimade.models import ToplevelLinks
 from optimade.server.query_params import EntryListingQueryParams
+from optimade.server.routers.utils import meta_values
 from optimade.server.schemas import ERROR_RESPONSES
 
 from optimade_gateway.common.config import CONFIG
-from optimade_gateway.mappers import GatewaysMapper
+from optimade_gateway.common.utils import clean_python_types
 from optimade_gateway.models import (
     GatewayCreate,
-    GatewayResource,
     GatewaysResponse,
     GatewaysResponseSingle,
 )
-from optimade_gateway.mongo.collection import AsyncMongoCollection
+from optimade_gateway.routers.utils import (
+    collection_factory,
+    get_entries,
+    get_valid_resource,
+    resource_factory,
+)
 
 
 ROUTER = APIRouter(redirect_slashes=True)
-
-GATEWAYS_COLLECTION = AsyncMongoCollection(
-    name=CONFIG.gateways_collection,
-    resource_cls=GatewayResource,
-    resource_mapper=GatewaysMapper,
-)
 
 
 @ROUTER.get(
@@ -48,10 +48,8 @@ async def get_gateways(
 
     Return overview of all (active) gateways.
     """
-    from optimade_gateway.routers.utils import get_entries
-
     return await get_entries(
-        collection=GATEWAYS_COLLECTION,
+        collection=await collection_factory(CONFIG.gateways_collection),
         response_cls=GatewaysResponse,
         request=request,
         params=params,
@@ -74,14 +72,10 @@ async def post_gateways(
 
     Create or return existing gateway according to `gateway`.
     """
-    from optimade.server.routers.utils import meta_values
-    from optimade_gateway.common.utils import clean_python_types
-    from optimade_gateway.routers.utils import resource_factory
-
     if gateway.database_ids:
-        from optimade_gateway.routers.databases import DATABASES_COLLECTION
+        databases_collection = await collection_factory(CONFIG.databases_collection)
 
-        databases = await DATABASES_COLLECTION.get_multiple(
+        databases = await databases_collection.get_multiple(
             filter={"id": {"$in": await clean_python_types(gateway.database_ids)}}
         )
 
@@ -94,6 +88,7 @@ async def post_gateways(
         )
 
     result, created = await resource_factory(gateway)
+    collection = await collection_factory(CONFIG.gateways_collection)
 
     return GatewaysResponseSingle(
         links=ToplevelLinks(next=None),
@@ -101,7 +96,7 @@ async def post_gateways(
         meta=meta_values(
             url=request.url,
             data_returned=1,
-            data_available=await GATEWAYS_COLLECTION.count(),
+            data_available=await collection.acount(),
             more_data_available=False,
             **{f"_{CONFIG.provider.prefix}_created": created},
         ),
@@ -122,10 +117,8 @@ async def get_gateway(request: Request, gateway_id: str) -> GatewaysResponseSing
 
     Return a single [`GatewayResource`][optimade_gateway.models.gateways.GatewayResource].
     """
-    from optimade.server.routers.utils import meta_values
-    from optimade_gateway.routers.utils import get_valid_resource
-
-    result = await get_valid_resource(GATEWAYS_COLLECTION, gateway_id)
+    collection = await collection_factory(CONFIG.gateways_collection)
+    result = await get_valid_resource(collection, gateway_id)
 
     return GatewaysResponseSingle(
         links=ToplevelLinks(next=None),
@@ -133,7 +126,7 @@ async def get_gateway(request: Request, gateway_id: str) -> GatewaysResponseSing
         meta=meta_values(
             url=request.url,
             data_returned=1,
-            data_available=await GATEWAYS_COLLECTION.count(),
+            data_available=await collection.acount(),
             more_data_available=False,
         ),
     )
