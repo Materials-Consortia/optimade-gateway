@@ -9,7 +9,7 @@ from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.common.utils import clean_python_types
 from optimade_gateway.routers.utils import collection_factory
 
-if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):
+if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
     # pylint: disable=unused-import,ungrouped-imports
     from typing import Any, Optional
 

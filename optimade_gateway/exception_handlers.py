@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING
 from optimade.models import ErrorSource, OptimadeError
 from optimade.server.exception_handlers import general_exception
 
-if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):
+if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
     # pylint: disable=unused-import
     from fastapi import Request
     from fastapi.exceptions import RequestValidationError

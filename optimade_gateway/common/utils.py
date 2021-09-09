@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 
 from pydantic import BaseModel
 
-if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):
+if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
     # pylint: disable=unused-import
     from typing import Any, Dict, Union
 

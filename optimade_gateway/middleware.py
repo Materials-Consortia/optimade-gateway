@@ -12,7 +12,7 @@ from optimade.server.exceptions import VersionNotSupported
 from optimade.server.routers.utils import BASE_URL_PREFIXES, get_base_url
 from starlette.middleware.base import BaseHTTPMiddleware
 
-if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):
+if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
     # pylint: disable=unused-import,ungrouped-imports
     from fastapi import Request
     from starlette.datastructures import URL

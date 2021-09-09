@@ -11,7 +11,7 @@ from optimade_gateway.common.utils import get_resource_attribute
 from optimade_gateway.queries.utils import update_query
 from optimade_gateway.warnings import OptimadeGatewayWarning
 
-if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):
+if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
     # pylint: disable=unused-import,ungrouped-imports
     from typing import Any, Dict, List, Union
 

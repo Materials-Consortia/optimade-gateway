@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.common.logger import LOGGER
 
-if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):
+if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):  # pragma: no cover
     # pylint: disable=unused-import
     from typing import Any, Callable, Coroutine, Sequence, Tuple, Union
 
@@ -86,7 +86,7 @@ async def load_optimade_providers_databases() -> None:  # pylint: disable=too-ma
         )
         return
 
-    if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):
+    if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):  # pragma: no cover
         providers: "Union[httpx.Response, LinksResponse]"
 
     async with httpx.AsyncClient() as client:

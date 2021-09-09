@@ -7,7 +7,7 @@ from warnings import warn
 
 from optimade_gateway.warnings import OptimadeGatewayWarning
 
-if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):
+if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
     # pylint: disable=unused-import,ungrouped-imports
     from typing import List, Mapping, Union
 

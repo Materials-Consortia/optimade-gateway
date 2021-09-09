@@ -7,7 +7,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.common.logger import LOGGER
 
-if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):
+if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
     # pylint: disable=unused-import
     from pymongo.database import Database
     from pymongo.mongo_client import MongoClient

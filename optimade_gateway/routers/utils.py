@@ -26,7 +26,7 @@ from optimade_gateway.models import (
 )
 from optimade_gateway.mongo.collection import AsyncMongoCollection
 
-if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):
+if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
     # pylint: disable=unused-import,ungrouped-imports
     from typing import Any, Dict, Iterable, Tuple, Union
 
