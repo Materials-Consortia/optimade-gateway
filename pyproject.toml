@@ -10,6 +10,6 @@ allow_redefinition = true
 max-line-length = 90
 disable = [
     "duplicate-code",
-    "no-name-in-module"
+    "no-name-in-module",
+    "import-error"
 ]
-

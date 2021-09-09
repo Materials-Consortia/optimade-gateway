@@ -1,5 +1,5 @@
 """Tests for /queries endpoints"""
-# pylint: disable=import-error,no-name-in-module
+# pylint: disable=no-name-in-module
 import json
 from pathlib import Path
 from typing import Awaitable, Callable

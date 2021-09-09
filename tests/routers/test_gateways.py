@@ -1,5 +1,5 @@
 """Tests for /gateways endpoints"""
-# pylint: disable=import-error,no-name-in-module
+# pylint: disable=no-name-in-module
 from pathlib import Path
 from typing import Awaitable, Callable
 
