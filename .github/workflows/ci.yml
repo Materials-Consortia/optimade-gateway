@@ -33,6 +33,7 @@ jobs:
         done < requirements_dev.txt
 
         pip install ${pre_commit}
+        pip install pylint
 
     - name: Test with pre-commit
       run: pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )

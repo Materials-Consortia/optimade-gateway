@@ -1,3 +1,4 @@
+"""Setup instructions and metadata for `pip install`."""
 from pathlib import Path
 import re
 
@@ -6,7 +7,7 @@ from setuptools import setup, find_packages
 
 TOP_DIR = Path(__file__).parent.resolve()
 
-with open(TOP_DIR / "optimade_gateway/__init__.py", "r") as handle:
+with open(TOP_DIR / "optimade_gateway/__init__.py", "r", encoding="utf8") as handle:
     VERSION = AUTHOR = AUTHOR_EMAIL = None
     for line in handle.readlines():
         VERSION_match = re.match(r'__version__ = "(?P<version>.+)"', line)
@@ -27,27 +28,28 @@ with open(TOP_DIR / "optimade_gateway/__init__.py", "r") as handle:
     }.items():
         if value is None:
             raise RuntimeError(
-                f"Could not determine {info} from {TOP_DIR / 'optimade_gateway/__init__.py'} !"
+                f"Could not determine {info} from "
+                f"{TOP_DIR / 'optimade_gateway/__init__.py'} !"
             )
-    VERSION = VERSION.group("version")
-    AUTHOR = AUTHOR.group("author")
-    AUTHOR_EMAIL = AUTHOR_EMAIL.group("email")
+    VERSION = VERSION.group("version")  # type: ignore[union-attr]
+    AUTHOR = AUTHOR.group("author")  # type: ignore[union-attr]
+    AUTHOR_EMAIL = AUTHOR_EMAIL.group("email")  # type: ignore[union-attr]
 
-with open(TOP_DIR / "requirements.txt", "r") as handle:
+with open(TOP_DIR / "requirements.txt", "r", encoding="utf8") as handle:
     BASE = [
         f"{_.strip()}"
         for _ in handle.readlines()
         if not _.startswith("#") and "git+" not in _
     ]
 
-with open(TOP_DIR / "requirements_docs.txt", "r") as handle:
+with open(TOP_DIR / "requirements_docs.txt", "r", encoding="utf8") as handle:
     DOCS = [
         f"{_.strip()}"
         for _ in handle.readlines()
         if not _.startswith("#") and "git+" not in _
     ]
 
-with open(TOP_DIR / "requirements_dev.txt", "r") as handle:
+with open(TOP_DIR / "requirements_dev.txt", "r", encoding="utf8") as handle:
     DEV = [
         f"{_.strip()}"
         for _ in handle.readlines()
