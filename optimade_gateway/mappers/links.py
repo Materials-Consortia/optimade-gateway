@@ -1,11 +1,20 @@
+# pylint: disable=line-too-long
+"""Replicate of
+[`LinksMapper`](https://www.optimade.org/optimade-python-tools/api_reference/server/mappers/links/#optimade.server.mappers.links.LinksMapper)
+in OPTIMADE Python tools."""
 from optimade.models.links import LinksResource
 
 from optimade_gateway.mappers.base import BaseResourceMapper
 
-__all__ = ("LinksMapper",)
-
 
 class LinksMapper(BaseResourceMapper):
+    """Replicate of
+    [`LinksMapper`](https://www.optimade.org/optimade-python-tools/api_reference/server/mappers/links/#optimade.server.mappers.links.LinksMapper)
+    in OPTIMADE Python tools.
+
+    This is based on the OPTIMADE Gateway
+    [`BaseResourceMapper`][optimade_gateway.mappers.base.BaseResourceMapper] however.
+    """
 
     ENDPOINT = "links"
     ENTRY_RESOURCE_CLASS = LinksResource

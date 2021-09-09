@@ -1,3 +1,4 @@
+"""Simplified function for running the server used in the CLI."""
 import argparse
 import os
 from pathlib import Path
@@ -32,7 +33,8 @@ def run(argv: "Optional[Sequence[Text]]" = None) -> None:
 
     if args.prod:
         print(
-            "Consider running the gateway using Docker or the `uvicorn` CLI directly instead!"
+            "Consider running the gateway using Docker or the `uvicorn` CLI directly "
+            "instead!"
         )
         uvicorn_kwargs.update({"reload": False, "log_level": "info"})
     else:

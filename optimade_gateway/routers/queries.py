@@ -6,6 +6,7 @@ This file describes the router for:
 
 where, `id` may be left out.
 """
+# pylint: disable=import-outside-toplevel
 import asyncio
 
 from fastapi import (
@@ -21,23 +22,23 @@ from optimade.server.routers.utils import meta_values
 from optimade.server.schemas import ERROR_RESPONSES
 
 from optimade_gateway.common.config import CONFIG
-from optimade_gateway.mappers import QueryMapper
 from optimade_gateway.models import (
     QueryCreate,
     QueryResource,
     QueriesResponse,
     QueriesResponseSingle,
 )
-from optimade_gateway.mongo.collection import AsyncMongoCollection
+from optimade_gateway.queries.perform import perform_query
+from optimade_gateway.routers.utils import (
+    collection_factory,
+    get_entries,
+    get_valid_resource,
+    resource_factory,
+    validate_resource,
+)
 
 
 ROUTER = APIRouter(redirect_slashes=True)
-
-QUERIES_COLLECTION = AsyncMongoCollection(
-    name=CONFIG.queries_collection,
-    resource_cls=QueryResource,
-    resource_mapper=QueryMapper,
-)
 
 
 @ROUTER.get(
@@ -57,10 +58,8 @@ async def get_queries(
 
     Return overview of all (active) queries.
     """
-    from optimade_gateway.routers.utils import get_entries
-
     return await get_entries(
-        collection=QUERIES_COLLECTION,
+        collection=await collection_factory(CONFIG.queries_collection),
         response_cls=QueriesResponse,
         request=request,
         params=params,
@@ -85,16 +84,16 @@ async def post_queries(
 
     Create or return existing gateway query according to `query`.
     """
-    from optimade_gateway.queries.perform import perform_query
-    from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
-    from optimade_gateway.routers.utils import resource_factory, validate_resource
-
-    await validate_resource(GATEWAYS_COLLECTION, query.gateway_id)
+    await validate_resource(
+        await collection_factory(CONFIG.gateways_collection), query.gateway_id
+    )
 
     result, created = await resource_factory(query)
 
     if created:
         asyncio.create_task(perform_query(url=request.url, query=result))
+
+    collection = await collection_factory(CONFIG.queries_collection)
 
     return QueriesResponseSingle(
         links=ToplevelLinks(next=None),
@@ -102,7 +101,7 @@ async def post_queries(
         meta=meta_values(
             url=request.url,
             data_returned=1,
-            data_available=await QUERIES_COLLECTION.acount(),
+            data_available=await collection.acount(),
             more_data_available=False,
             **{f"_{CONFIG.provider.prefix}_created": created},
         ),
@@ -127,9 +126,8 @@ async def get_query(
 
     Return a single [`QueryResource`][optimade_gateway.models.queries.QueryResource].
     """
-    from optimade_gateway.routers.utils import get_valid_resource
-
-    query: QueryResource = await get_valid_resource(QUERIES_COLLECTION, query_id)
+    collection = await collection_factory(CONFIG.queries_collection)
+    query: QueryResource = await get_valid_resource(collection, query_id)
 
     if query.attributes.response and query.attributes.response.errors:
         for error in query.attributes.response.errors:
@@ -151,7 +149,7 @@ async def get_query(
         meta=meta_values(
             url=request.url,
             data_returned=1,
-            data_available=await QUERIES_COLLECTION.acount(),
+            data_available=await collection.acount(),
             more_data_available=False,
         ),
     )

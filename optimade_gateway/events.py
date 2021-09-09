@@ -1,3 +1,10 @@
+"""ASGI app events.
+
+These events can be run at application startup or shutdown.
+The specific events are listed in [`EVENTS`][optimade_gateway.events.EVENTS] along with
+their respected proper invocation time.
+"""
+# pylint: disable=import-outside-toplevel
 from typing import TYPE_CHECKING
 
 from optimade_gateway.common.config import CONFIG
@@ -8,16 +15,18 @@ if TYPE_CHECKING:
 
 
 async def ci_dev_startup() -> None:
-    """Function to run at app startup - only relevant for CI or development to add test data"""
+    """Function to run at app startup - only relevant for CI or development to add test
+    data."""
     import os
 
-    if bool(os.getenv("CI", False)):
+    if bool(os.getenv("CI", "")):
         LOGGER.info(
             "CI detected - Will load test gateways (after dropping the collection)!"
         )
     elif os.getenv("OPTIMADE_MONGO_DATABASE", "") == "optimade_gateway_dev":
         LOGGER.info(
-            "Running in development mode - Will load test gateways (after dropping the collection)!"
+            "Running in development mode - Will load test gateways (after dropping the"
+            "collection)!"
         )
     else:
         LOGGER.debug("Not in CI or development mode - will start normally.")
@@ -46,12 +55,12 @@ async def ci_dev_startup() -> None:
             f"Could not find test data file with test gateways at {test_data} !"
         )
 
-    with open(test_data) as handle:
+    with open(test_data, encoding="utf8") as handle:
         data = json.load(handle)
     await MONGO_DB[CONFIG.gateways_collection].insert_many(data)
 
 
-async def load_optimade_providers_databases() -> None:
+async def load_optimade_providers_databases() -> None:  # pylint: disable=too-many-branches,too-many-statements,too-many-locals
     """Load in the providers' OPTIMADE databases from Materials-Consortia
 
     Utilize the Materials-Consortia list of OPTIMADE providers at
@@ -82,13 +91,15 @@ async def load_optimade_providers_databases() -> None:
 
     async with httpx.AsyncClient() as client:
         providers = await client.get(
-            f"https://providers.optimade.org/v{__api_version__.split('.')[0]}/links"
+            f"https://providers.optimade.org/v{__api_version__.split('.', maxsplit=1)[0]}"
+            "/links"
         )
 
     if providers.is_error:
         LOGGER.warning(
-            "Response from Materials-Consortia's list of OPTIMADE providers was not successful "
-            "(status code != 200). No databases will therefore be added at server startup."
+            "Response from Materials-Consortia's list of OPTIMADE providers was not "
+            "successful (status code != 200). No databases will therefore be added at "
+            "server startup."
         )
         return
 
@@ -118,10 +129,10 @@ async def load_optimade_providers_databases() -> None:
 
         valid_providers.append(provider)
 
-    # Run queries to each database using the supported major versioned base URL to get a list of
-    # the provider's databases.
-    # There is no need to use ThreadPoolExecutor here, since we want this to block everything and
-    # then finish, before the server actually starts up.
+    # Run queries to each database using the supported major versioned base URL to get a
+    # list of the provider's databases.
+    # There is no need to use ThreadPoolExecutor here, since we want this to block
+    # everything and then finish, before the server actually starts up.
     provider_queries = [
         asyncio.create_task(
             db_get_all_resources(
@@ -176,11 +187,13 @@ async def load_optimade_providers_databases() -> None:
             async with httpx.AsyncClient() as client:
                 try:
                     db_response = await client.get(
-                        f"{str(get_resource_attribute(database, 'attributes.base_url')).rstrip('/')}{BASE_URL_PREFIXES['major']}/structures",
+                        f"{str(get_resource_attribute(database, 'attributes.base_url')).rstrip('/')}"  # pylint: disable=line-too-long
+                        f"{BASE_URL_PREFIXES['major']}/structures",
                     )
                 except httpx.ReadTimeout:
                     LOGGER.info(
-                        "  - %s (id=%r) - Skipping: Timeout while requesting %s/structures.",
+                        "  - %s (id=%r) - Skipping: Timeout while requesting "
+                        "%s/structures.",
                         get_resource_attribute(database, "attributes.name", "N/A"),
                         get_resource_attribute(database, "id"),
                         BASE_URL_PREFIXES["major"],
@@ -188,7 +201,8 @@ async def load_optimade_providers_databases() -> None:
                     continue
             if db_response.status_code != 200:
                 LOGGER.info(
-                    "  - %s (id=%r) - Skipping: Response from %s/structures is not 200 OK.",
+                    "  - %s (id=%r) - Skipping: Response from %s/structures is not "
+                    "200 OK.",
                     get_resource_attribute(database, "attributes.name", "N/A"),
                     get_resource_attribute(database, "id"),
                     BASE_URL_PREFIXES["major"],
@@ -196,7 +210,8 @@ async def load_optimade_providers_databases() -> None:
                 continue
 
             new_id = (
-                f"{get_resource_attribute(provider, 'id')}/{get_resource_attribute(database, 'id')}"
+                f"{get_resource_attribute(provider, 'id')}"
+                f"/{get_resource_attribute(database, 'id')}"
                 if len(provider_databases) > 1
                 else get_resource_attribute(database, "id")
             )

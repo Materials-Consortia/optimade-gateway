@@ -5,7 +5,9 @@ This file describes the router for:
     /search
 
 """
+# pylint: disable=line-too-long,import-outside-toplevel
 import asyncio
+from time import time
 from typing import Union
 
 from fastapi import (
@@ -44,6 +46,8 @@ from optimade_gateway.models.queries import (
     QueryState,
 )
 from optimade_gateway.queries.params import SearchQueryParams
+from optimade_gateway.queries.perform import perform_query
+from optimade_gateway.routers.utils import collection_factory, resource_factory
 
 
 ROUTER = APIRouter(redirect_slashes=True)
@@ -73,29 +77,24 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
         [`QueriesResponseSingle`][optimade_gateway.models.responses.QueriesResponseSingle]
 
     """
-    from optimade_gateway.queries.perform import perform_query
-    from optimade_gateway.routers.databases import DATABASES_COLLECTION
-    from optimade_gateway.routers.queries import QUERIES_COLLECTION
-    from optimade_gateway.routers.utils import resource_factory
-
-    # NOTE: It may be that the final list of base URLs (`base_urls`) contains the same provider(s),
-    # but with differring base URLS, if, for example, a versioned base URL is supplied.
+    databases_collection = await collection_factory(CONFIG.databases_collection)
+    # NOTE: It may be that the final list of base URLs (`base_urls`) contains the same
+    # provider(s), but with differring base URLS, if, for example, a versioned base URL
+    # is supplied.
     base_urls = set()
 
     if search.database_ids:
-        databases = await DATABASES_COLLECTION.get_multiple(
+        databases = await databases_collection.get_multiple(
             filter={"id": {"$in": await clean_python_types(search.database_ids)}}
         )
-        base_urls |= set(
-            [
-                get_resource_attribute(database, "attributes.base_url")
-                for database in databases
-                if get_resource_attribute(database, "attributes.base_url") is not None
-            ]
-        )
+        base_urls |= {
+            get_resource_attribute(database, "attributes.base_url")
+            for database in databases
+            if get_resource_attribute(database, "attributes.base_url") is not None
+        }
 
     if search.optimade_urls:
-        base_urls |= set([_ for _ in search.optimade_urls if _ is not None])
+        base_urls |= {_ for _ in search.optimade_urls if _ is not None}
 
     if not base_urls:
         msg = "No (valid) OPTIMADE URLs with:"
@@ -109,12 +108,12 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
         raise BadRequest(detail=msg)
 
     # Ensure all URLs are `pydantic.AnyUrl`s
-    if not all([isinstance(_, AnyUrl) for _ in base_urls]):
+    if not all(isinstance(_, AnyUrl) for _ in base_urls):
         raise InternalServerError(
             "Could unexpectedly not validate all base URLs as proper URLs."
         )
 
-    databases = await DATABASES_COLLECTION.get_multiple(
+    databases = await databases_collection.get_multiple(
         filter={"base_url": {"$in": await clean_python_types(base_urls)}}
     )
     if len(databases) == len(base_urls):
@@ -123,12 +122,10 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
         gateway = GatewayCreate(databases=databases)
     elif len(databases) < len(base_urls):
         # There are unregistered databases
-        current_base_urls = set(
-            [
-                get_resource_attribute(database, "attributes.base_url")
-                for database in databases
-            ]
-        )
+        current_base_urls = {
+            get_resource_attribute(database, "attributes.base_url")
+            for database in databases
+        }
         databases.extend(
             [
                 LinksResource(
@@ -155,8 +152,8 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
         )
     else:
         LOGGER.error(
-            "Found more database entries in MongoDB than then number of passed base URLs. "
-            "This suggests ambiguity in the base URLs of databases stored in MongoDB.\n"
+            "Found more database entries in MongoDB than then number of passed base URLs."
+            " This suggests ambiguity in the base URLs of databases stored in MongoDB.\n"
             "  base_urls: %s\n  databases %s",
             base_urls,
             databases,
@@ -181,13 +178,15 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
     if created:
         asyncio.create_task(perform_query(url=request.url, query=query))
 
+    collection = await collection_factory(CONFIG.queries_collection)
+
     return QueriesResponseSingle(
         links=ToplevelLinks(next=None),
         data=query,
         meta=meta_values(
             url=request.url,
             data_returned=1,
-            data_available=await QUERIES_COLLECTION.acount(),
+            data_available=await collection.acount(),
             more_data_available=False,
             **{f"_{CONFIG.provider.prefix}_created": created},
         ),
@@ -213,28 +212,27 @@ async def get_search(
 
     Coordinate a new OPTIMADE query in multiple databases through a gateway:
 
-    1. Create a [`Search`][optimade_gateway.models.search.Search] `POST` data - calling `POST /search`.
+    1. Create a [`Search`][optimade_gateway.models.search.Search] `POST` data - calling
+        `POST /search`.
     1. Wait [`search_params.timeout`][optimade_gateway.queries.params.SearchQueryParams]
         seconds before returning the query, if it has not finished before.
     1. Return query - similar to `GET /queries/{query_id}`.
 
     This endpoint works similarly to `GET /queries/{query_id}`, where one passes the query
-    parameters directly in the URL, instead of first POSTing a query and then going to its URL.
-    Hence, a [`QueryResponseSingle`][optimade_gateway.models.responses.QueriesResponseSingle] is
+    parameters directly in the URL, instead of first POSTing a query and then going to its
+    URL. Hence, a
+    [`QueryResponseSingle`][optimade_gateway.models.responses.QueriesResponseSingle] is
     the standard response model for this endpoint.
 
-    If the timeout time is reached and the query has not yet finished, the user is redirected to the
-    specific URL for the query.
+    If the timeout time is reached and the query has not yet finished, the user is
+    redirected to the specific URL for the query.
 
-    If the `as_optimade` query parameter is `True`, the response will be parseable as a standard
-    OPTIMADE entry listing endpoint like, e.g., `/structures`.
+    If the `as_optimade` query parameter is `True`, the response will be parseable as a
+    standard OPTIMADE entry listing endpoint like, e.g., `/structures`.
     For more information see the
     [OPTIMADE specification](https://github.com/Materials-Consortia/OPTIMADE/blob/master/optimade.rst#entry-listing-endpoints).
 
     """
-    from time import time
-    from optimade_gateway.routers.queries import QUERIES_COLLECTION
-
     try:
         search = Search(
             query_parameters=OptimadeQueryParameters(
@@ -251,10 +249,10 @@ async def get_search(
     except ValidationError as exc:
         raise BadRequest(
             detail=(
-                "A Search object could not be created from the given URL query parameters. "
-                f"Error(s): {exc.errors}"
+                "A Search object could not be created from the given URL query "
+                f"parameters. Error(s): {exc.errors}"
             )
-        )
+        ) from exc
 
     queries_response = await post_search(request, search=search)
 
@@ -263,16 +261,21 @@ async def get_search(
             "QueryResource not found in POST /search response:\n%s", queries_response
         )
         raise RuntimeError(
-            "Expected the response from POST /search to return a QueryResource, it did not"
+            "Expected the response from POST /search to return a QueryResource, it did "
+            "not"
         )
 
     once = True
     start_time = time()
-    while time() < (start_time + search_params.timeout) or once:
+    while (  # pylint: disable=too-many-nested-blocks
+        time() < (start_time + search_params.timeout) or once
+    ):
         # Make sure to run this at least once (e.g., if timeout=0)
         once = False
 
-        query: QueryResource = await QUERIES_COLLECTION.get_one(
+        collection = await collection_factory(CONFIG.queries_collection)
+
+        query: QueryResource = await collection.get_one(
             **{"filter": {"id": queries_response.data.id}}
         )
 
@@ -300,12 +303,13 @@ async def get_search(
                 meta=meta_values(
                     url=request.url,
                     data_returned=1,
-                    data_available=await QUERIES_COLLECTION.acount(),
+                    data_available=await collection.acount(),
                     more_data_available=False,
                 ),
             )
 
         await asyncio.sleep(0.1)
 
-    # The query has not yet succeeded and we're past the timeout time -> Redirect to /queries/<id>
+    # The query has not yet succeeded and we're past the timeout time -> Redirect to
+    # /queries/<id>
     return RedirectResponse(query.links.self)

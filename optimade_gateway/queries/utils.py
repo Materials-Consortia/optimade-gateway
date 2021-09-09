@@ -3,8 +3,10 @@
 from datetime import datetime
 from typing import TYPE_CHECKING
 
+from optimade_gateway.common.config import CONFIG
 from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.common.utils import clean_python_types
+from optimade_gateway.routers.utils import collection_factory
 
 if TYPE_CHECKING:
     from typing import Any, Optional
@@ -44,8 +46,6 @@ async def update_query(  # pylint: disable=too-many-branches
         mongo_kwargs (dict): Further MongoDB update filters.
 
     """
-    from optimade_gateway.routers.queries import QUERIES_COLLECTION
-
     operator = operator or "$set"
 
     if operator and not operator.startswith("$"):
@@ -67,7 +67,8 @@ async def update_query(  # pylint: disable=too-many-branches
             update_kwargs.update({operator: {field: value}})
 
     # MongoDB
-    result: "UpdateResult" = await QUERIES_COLLECTION.collection.update_one(
+    collection = await collection_factory(CONFIG.queries_collection)
+    result: "UpdateResult" = await collection.collection.update_one(
         filter={"id": {"$eq": query.id}},
         update=await clean_python_types(update_kwargs),
     )

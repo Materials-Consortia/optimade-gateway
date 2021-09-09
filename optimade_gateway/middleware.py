@@ -1,3 +1,9 @@
+"""ASGI app middleware.
+
+These are in addition to the middleware available in OPTIMADE Python tools.
+For more information see
+https://www.optimade.org/optimade-python-tools/api_reference/server/middleware/.
+"""
 import re
 from typing import TYPE_CHECKING
 
@@ -37,7 +43,8 @@ class CheckWronglyVersionedBaseUrlsGateways(BaseHTTPMiddleware):
                     detail=(
                         f"The parsed versioned base URL {match.group('version')!r} from "
                         f"{url} is not supported by this implementation. "
-                        f"Supported versioned base URLs are: {', '.join(BASE_URL_PREFIXES.values())}"
+                        "Supported versioned base URLs are: "
+                        f"{', '.join(BASE_URL_PREFIXES.values())}"
                     )
                 )
 

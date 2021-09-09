@@ -1,5 +1,5 @@
 """Perform OPTIMADE queries"""
-# pylint: disable=import-outside-toplevel,cyclic-import
+# pylint: disable=import-outside-toplevel
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 import functools
@@ -20,6 +20,7 @@ from optimade.server.routers.utils import BASE_URL_PREFIXES, meta_values
 # from optimade.server.routers.utils import get_base_url
 from pydantic import ValidationError
 
+from optimade_gateway.common.config import CONFIG
 from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.common.utils import get_resource_attribute
 from optimade_gateway.models import (
@@ -30,6 +31,7 @@ from optimade_gateway.models import (
 from optimade_gateway.queries.prepare import get_query_params, prepare_query_filter
 from optimade_gateway.queries.process import process_db_response
 from optimade_gateway.queries.utils import update_query
+from optimade_gateway.routers.utils import collection_factory, get_valid_resource
 
 if TYPE_CHECKING:
     from typing import Any, Dict, List, Tuple, Union
@@ -60,13 +62,11 @@ async def perform_query(
         [`GatewayQueryResponse`][optimade_gateway.models.queries.GatewayQueryResponse].
 
     """
-    from optimade_gateway.routers.gateways import GATEWAYS_COLLECTION
-    from optimade_gateway.routers.utils import get_valid_resource
-
     await update_query(query, "state", QueryState.STARTED)
 
     gateway: GatewayResource = await get_valid_resource(
-        GATEWAYS_COLLECTION, query.attributes.gateway_id
+        await collection_factory(CONFIG.gateways_collection),
+        query.attributes.gateway_id,
     )
 
     filter_queries = await prepare_query_filter(

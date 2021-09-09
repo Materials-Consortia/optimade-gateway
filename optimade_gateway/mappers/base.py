@@ -1,8 +1,16 @@
+# pylint: disable=line-too-long,import-outside-toplevel
+"""Base resource mapper.
+
+Based on the [`BaseResourceMapper`](https://www.optimade.org/optimade-python-tools/api_reference/server/mappers/entries/#optimade.server.mappers.entries.BaseResourceMapper) in OPTIMADE Python tools.
+"""
 from typing import TYPE_CHECKING
 
 from optimade.server.mappers.entries import (
     BaseResourceMapper as OptimadeBaseResourceMapper,
 )
+from pydantic import AnyUrl
+
+from optimade_gateway.common.config import CONFIG
 
 if TYPE_CHECKING:
     from typing import Iterable, List, Union
@@ -43,7 +51,39 @@ class BaseResourceMapper(OptimadeBaseResourceMapper):
     """
 
     @classmethod
-    async def deserialize(
+    async def adeserialize(
         cls, results: "Union[dict, Iterable[dict]]"
     ) -> "Union[List[EntryResource], EntryResource]":
+        """Asynchronous version of the `deserialize()` class method.
+
+        Parameters:
+            results: A list of or a single dictionary, representing an entry-endpoint
+                resource.
+
+        Returns:
+            The deserialized list of or single pydantic resource model for the input
+            `results`.
+
+        """
         return super(BaseResourceMapper, cls).deserialize(results)
+
+    @classmethod
+    def map_back(cls, doc: dict) -> dict:
+        from optimade.server.routers.utils import BASE_URL_PREFIXES
+
+        if "_id" in doc:
+            _id = str(doc.pop("_id"))
+            if "id" not in doc:
+                doc["id"] = _id
+
+        doc["links"] = {
+            "self": AnyUrl(
+                url=(
+                    f"{CONFIG.base_url.strip('/')}{BASE_URL_PREFIXES['major']}"
+                    f"/{cls.ENDPOINT}/{doc['id']}"
+                ),
+                scheme=CONFIG.base_url.split("://", maxsplit=1)[0],
+                host=CONFIG.base_url.split("://", maxsplit=2)[1].split("/")[0],
+            )
+        }
+        return super().map_back(doc)
