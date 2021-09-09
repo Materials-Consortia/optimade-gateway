@@ -29,10 +29,14 @@ jobs:
         while IFS="" read -r line || [ -n "${line}" ]; do
             if [[ "${line}" =~ ^pre-commit.*$ ]]; then
                 pre_commit="${line}"
+            elif [[ "${line}" =~ ^pylint.*$ ]]; then
+                pylint="${line}"
+            elif [[ "${line}" =~ ^invoke.*$ ]]; then
+                invoke="${line}"
             fi
         done < requirements_dev.txt
 
-        pip install ${pre_commit}
+        pip install ${pre_commit} ${pylint} ${invoke}
 
     - name: Test with pre-commit
       run: SKIP=pylint pre-commit run --all-files --show-diff-on-failure
