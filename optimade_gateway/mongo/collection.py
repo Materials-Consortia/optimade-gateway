@@ -177,6 +177,23 @@ class AsyncMongoCollection(EntryCollection):
     def find(
         self, params: "Union[EntryListingQueryParams, SingleEntryQueryParams]"
     ) -> "Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]":
+        """
+        Fetches results and indicates if more data is available.
+
+        Also gives the total number of data available in the absence of `page_limit`.
+        See
+        [`EntryListingQueryParams`](https://www.optimade.org/optimade-python-tools/api_reference/server/query_params/#optimade.server.query_params.EntryListingQueryParams)
+        for more information.
+
+        Parameters:
+            params: Entry listing URL query params.
+
+        Returns:
+            A tuple of various relevant values:
+            (`results`, `data_returned`, `more_data_available`, `exclude_fields`,
+            `include_fields`).
+
+        """
         raise NotImplementedError(
             "This method cannot be used with this class and is a remnant from the parent "
             "class. Use instead the asynchronous method `afind(params: "
@@ -287,6 +304,25 @@ class AsyncMongoCollection(EntryCollection):
     def handle_query_params(
         self, params: "Union[EntryListingQueryParams, SingleEntryQueryParams]"
     ) -> "Dict[str, Any]":
+        """Parse and interpret the backend-agnostic query parameter models into a
+        dictionary that can be used by the specific backend.
+
+        Note:
+            Currently this method returns the pymongo interpretation of the parameters,
+            which will need modification for modified for other backends.
+
+        Parameters:
+            params: The initialized query parameter model from the server.
+
+        Raises:
+            Forbidden: If too large of a page limit is provided.
+            BadRequest: If an invalid request is made, e.g., with incorrect fields
+                or response format.
+
+        Returns:
+            A dictionary representation of the query parameters.
+
+        """
         raise NotImplementedError(
             "This method cannot be used with this class and is a remnant from the parent "
             "class. Use instead the asynchronous method `ahandle_query_params(params: "

@@ -68,6 +68,8 @@ plugins:
               - "!__json_encoder__$"
               - "!__all__$"
               - "!__config__$"
+              - "!__str__$"
+              - "!__repr__$"
               - "!ValidatorResults$"
             members: true
             inherited_members: false
