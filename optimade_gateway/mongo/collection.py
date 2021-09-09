@@ -272,7 +272,7 @@ class AsyncMongoCollection(EntryCollection):
             )
 
         if results:
-            results = await self.resource_mapper.deserialize(results)
+            results = await self.resource_mapper.adeserialize(results)
 
         return (  # type: ignore[return-value]
             results,
