@@ -23,6 +23,11 @@ def run(argv: "Optional[Sequence[Text]]" = None) -> None:
         action="store_true",
         help="Run as if in production environment.",
     )
+    parser.add_argument(
+        "--load-providers",
+        action="store_true",
+        help="Load providers from providers.optimade.org upon startup.",
+    )
 
     args = parser.parse_args(args=argv)
 
@@ -31,6 +36,10 @@ def run(argv: "Optional[Sequence[Text]]" = None) -> None:
         "reload_dirs": [str(Path(__file__).parent.resolve())],
         "log_level": "debug",
     }
+
+    os.environ["optimade_load_optimade_providers_databases"] = (
+        "True" if args.load_providers else "False"
+    )
 
     if args.prod:
         print(
