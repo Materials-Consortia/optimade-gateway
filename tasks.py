@@ -239,7 +239,7 @@ def update_pytest_reqs(_):
         (
             r"^required_plugins = .*",
             'required_plugins = "'
-            f'{" ".join("%s>=%s" % (name, version) for name, version in plugins.items())}"',  # pylint: disable=line-too-long
+            f'{" ".join(f"{name}>={version}" for name, version in plugins.items())}"',
         ),
     )
     print(
