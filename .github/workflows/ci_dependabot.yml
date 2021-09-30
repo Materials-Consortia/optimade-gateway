@@ -4,7 +4,7 @@ on:
   schedule:
     # At 8:30 every Monday
     # This matches Dependabot, which runs every Monday (pip) and every day (GH Actions) at 7:00
-    - cron: "30 8 * * 1"
+    - cron: "30 8 * * *"
 
 jobs:
 
