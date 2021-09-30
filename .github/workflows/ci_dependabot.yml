@@ -4,7 +4,7 @@ on:
   schedule:
     # At 8:30 every Monday
     # This matches Dependabot, which runs every Monday (pip) and every day (GH Actions) at 7:00
-    - cron: "30 8 * * 1"
+    - cron: "30 8 * * *"
 
 jobs:
 
@@ -21,8 +21,12 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
       with:
-        fetch-depth: 0
-        ref: ${{ env.DEPENDABOT_BRANCH }}
+        ref: main
+
+    - name: Reset to '${{ env.DEPENDABOT_BRANCH }}'
+      run: |
+        git fetch origin ${{ env.DEPENDABOT_BRANCH }}:${{ env.DEPENDABOT_BRANCH }}
+        git reset --hard ${{ env.DEPENDABOT_BRANCH }}
 
     - name: Create PR
       id: cpr
@@ -34,8 +38,6 @@ jobs:
         author: "${{ env.GIT_USER_NAME }} <${{ env.GIT_USER_EMAIL }}>"
         branch: ci/update-dependencies
         delete-branch: true
-        branch-suffix: timestamp
-        base: main
         title: Update dependencies
         body: |
           ### Update dependencies
@@ -47,6 +49,5 @@ jobs:
         labels: CI/CD,dependencies
 
     - name: Information
-      if: env.CREATE_PR
       run: 'echo "${{ steps.cpr.outputs.pull-request-operation }} PR #${{ steps.cpr.outputs.pull-request-number }}: ${{ steps.cpr.outputs.pull-request-url }}"'
 
