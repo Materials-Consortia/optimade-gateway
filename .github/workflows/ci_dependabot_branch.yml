@@ -22,7 +22,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
       with:
-        fetch-depth: 0
         ref: ${{ env.DEPENDABOT_BRANCH }}
 
     - name: Update '${{ env.DEPENDABOT_BRANCH }}'
@@ -30,7 +29,8 @@ jobs:
         git config --global user.name "${{ env.GIT_USER_NAME }}"
         git config --global user.email "${{ env.GIT_USER_EMAIL }}"
 
-        git merge -m "Keep '${{ env.DEPENDABOT_BRANCH }}' up-to-date with 'main'" origin/main
+        git fetch origin main:main
+        git merge -m "Keep '${{ env.DEPENDABOT_BRANCH }}' up-to-date with 'main'" main
 
     - name: Push to GitHub
       uses: ad-m/github-push-action@master
