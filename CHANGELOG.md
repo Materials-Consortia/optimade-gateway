@@ -1,17 +1,5 @@
 # Changelog
 
-## [Unreleased](https://github.com/Materials-Consortia/optimade-gateway/tree/HEAD)
-
-[Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.2.1-dev...HEAD)
-
-**Implemented enhancements:**
-
-- Update to versioned documentation [\#132](https://github.com/Materials-Consortia/optimade-gateway/issues/132)
-
-**Fixed bugs:**
-
-- Allow beta/alpha releases [\#143](https://github.com/Materials-Consortia/optimade-gateway/issues/143)
-
 ## [v0.2.1-dev](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.2.1-dev) (2021-09-30)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.2.0...v0.2.1-dev)
@@ -19,12 +7,15 @@
 **Implemented enhancements:**
 
 - Run keep-up-to-date workflow immediately with push [\#140](https://github.com/Materials-Consortia/optimade-gateway/issues/140)
+- Update to versioned documentation [\#132](https://github.com/Materials-Consortia/optimade-gateway/issues/132)
 - Use `bandit`, `pylint`, `safety`, and `mypy` [\#119](https://github.com/Materials-Consortia/optimade-gateway/pull/119) ([CasperWA](https://github.com/CasperWA))
 
 **Fixed bugs:**
 
+- Allow beta/alpha releases [\#143](https://github.com/Materials-Consortia/optimade-gateway/issues/143)
 - Use protected-push action for keep-up-to-date workflow [\#138](https://github.com/Materials-Consortia/optimade-gateway/issues/138)
 - Workflow not working [\#133](https://github.com/Materials-Consortia/optimade-gateway/issues/133)
+- Set git config before `mike deploy` [\#144](https://github.com/Materials-Consortia/optimade-gateway/pull/144) ([CasperWA](https://github.com/CasperWA))
 - Use `git push` instead of action [\#136](https://github.com/Materials-Consortia/optimade-gateway/pull/136) ([CasperWA](https://github.com/CasperWA))
 
 **Merged pull requests:**
