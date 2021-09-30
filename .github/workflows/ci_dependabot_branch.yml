@@ -1,0 +1,38 @@
+name: CI - Keep dependabot branch up-to-date
+
+on:
+  push:
+    branches: [main]
+
+env:
+  DEPENDABOT_BRANCH: ci/dependabot-updates
+  GIT_USER_NAME: OPTIMADE Developers
+  GIT_USER_EMAIL: "dev@optimade.org"
+
+
+jobs:
+
+  update-dependabot-branch:
+    name: Update '${{ env.DEPENDABOT_BRANCH }}' branch
+    if: github.repository_owner == 'Materials-Consortia'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        ref: ${{ env.DEPENDABOT_BRANCH }}
+
+    - name: Update '${{ env.DEPENDABOT_BRANCH }}'
+      run: |
+        git config --global user.name "${{ env.GIT_USER_NAME }}"
+        git config --global user.email "${{ env.GIT_USER_EMAIL }}"
+
+        git merge -m "Keep '${{ env.DEPENDABOT_BRANCH }}' up-to-date with 'main'" origin/main
+
+    - name: Push to GitHub
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ env.DEPENDABOT_BRANCH }}

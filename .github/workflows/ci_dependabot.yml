@@ -1,0 +1,52 @@
+name: CI - Single Dependabot PR
+
+on:
+  schedule:
+    # At 8:30 every Monday
+    # This matches Dependabot, which runs every Monday (pip) and every day (GH Actions) at 7:00
+    - cron: "30 8 * * 1"
+
+jobs:
+
+  create-collected-pr:
+    name: Single dependabot PR
+    if: github.repository_owner == 'Materials-Consortia'
+    runs-on: ubuntu-latest
+    env:
+      DEPENDABOT_BRANCH: ci/dependabot-updates
+      GIT_USER_NAME: OPTIMADE Developers
+      GIT_USER_EMAIL: "dev@optimade.org"
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        ref: ${{ env.DEPENDABOT_BRANCH }}
+
+    - name: Create PR
+      id: cpr
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ secrets.RELEASE_PAT_CASPER }}
+        commit-message: New @dependabot-fueled updates
+        committer: "${{ env.GIT_USER_NAME }} <${{ env.GIT_USER_EMAIL }}>"
+        author: "${{ env.GIT_USER_NAME }} <${{ env.GIT_USER_EMAIL }}>"
+        branch: ci/update-dependencies
+        delete-branch: true
+        branch-suffix: timestamp
+        base: main
+        title: Update dependencies
+        body: |
+          ### Update dependencies
+
+          Automatically created PR from [`${{ env.DEPENDABOT_BRANCH }}`](https://github.com/Materials-Consortia/optimade-gateway/tree/${{ env.DEPENDABOT_BRANCH }}).
+          It should be automagically merged into `main` upon CI success.
+
+          For more information see the ["Dependabot updates" workflow](https://github.com/Materials-Consortia/optimade-gateway/blob/main/.github/workflows/ci_dependabot.yml).
+        labels: CI/CD,dependencies
+
+    - name: Information
+      if: env.CREATE_PR
+      run: 'echo "${{ steps.cpr.outputs.pull-request-operation }} PR #${{ steps.cpr.outputs.pull-request-number }}: ${{ steps.cpr.outputs.pull-request-url }}"'
+
