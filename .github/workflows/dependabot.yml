@@ -12,7 +12,7 @@ on:
 jobs:
 
   create-collected-pr:
-    name: Create a single PR for all updates
+    name: Single dependabot PR
     runs-on: ubuntu-latest
 
     steps:
@@ -23,7 +23,7 @@ jobs:
 
     - name: Check for dependabot PRs
       run: |
-        DEPENDABOT_BRANCHES=($(git branch -rl --format='%(refname:lstrip=3)' | grep -E "^dependabot/(pip|github_actions)/.*$" || echo ""))
+        DEPENDABOT_BRANCHES=($(git branch -rl --format='%(refname:lstrip=3)' | grep -E "^dependabot/(test|github_actions)/.*$" || echo ""))
 
         echo "NO_OF_BRANCHES=${#DEPENDABOT_BRANCHES[@]}" >> $GITHUB_ENV
         echo "DEPENDABOT_BRANCHES=${DEPENDABOT_BRANCHES[@]}" >> $GITHUB_ENV
