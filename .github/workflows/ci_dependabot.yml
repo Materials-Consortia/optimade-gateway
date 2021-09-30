@@ -10,6 +10,7 @@ jobs:
 
   create-collected-pr:
     name: Single dependabot PR
+    if: github.repository_owner == 'Materials-Consortia'
     runs-on: ubuntu-latest
     env:
       DEPENDABOT_BRANCH: ci/dependabot-updates

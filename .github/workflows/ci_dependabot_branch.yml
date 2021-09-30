@@ -14,6 +14,7 @@ jobs:
 
   update-dependabot-branch:
     name: Update '${{ env.DEPENDABOT_BRANCH }}' branch
+    if: github.repository_owner == 'Materials-Consortia'
     runs-on: ubuntu-latest
 
     steps:
