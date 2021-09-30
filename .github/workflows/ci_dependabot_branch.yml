@@ -1,14 +1,15 @@
 name: CI - Keep dependabot branch up-to-date
 
 on:
-  push:
+  workflow_run:
+    workflows: ["CI - Tests"]
     branches: [main]
+    types: [completed]
 
 env:
   DEPENDABOT_BRANCH: ci/dependabot-updates
   GIT_USER_NAME: OPTIMADE Developers
   GIT_USER_EMAIL: "dev@optimade.org"
-
 
 jobs:
 
