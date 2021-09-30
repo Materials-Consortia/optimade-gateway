@@ -4,6 +4,8 @@ updates:
   directory: "/"
   schedule:
     interval: weekly
+    day: monday
+    time: "07:00"
   # Should be bigger than or equal to the total number of dependencies (currently 9)
   open-pull-requests-limit: 15
   target-branch: main
@@ -13,6 +15,7 @@ updates:
   directory: "/"
   schedule:
     interval: daily
+    time: "07:00"
   target-branch: main
   labels:
   - "CI/CD"
