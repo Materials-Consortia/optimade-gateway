@@ -27,14 +27,18 @@ jobs:
         pip install -U setuptools
 
         while IFS="" read -r line || [ -n "${line}" ]; do
-            if [[ "${line}" =~ ^pre-commit.*$ ]]; then
-                pre_commit="${line}"
-            elif [[ "${line}" =~ ^pylint.*$ ]]; then
-                pylint="${line}"
-            elif [[ "${line}" =~ ^invoke.*$ ]]; then
-                invoke="${line}"
-            fi
+          if [[ "${line}" =~ ^pre-commit.*$ ]]; then
+            pre_commit="${line}"
+          elif [[ "${line}" =~ ^pylint.*$ ]]; then
+            pylint="${line}"
+          fi
         done < requirements_dev.txt
+
+        while IFS="" read -r line || [ -n "${line}" ]; do
+          if [[ "${line}" =~ ^invoke.*$ ]]; then
+            invoke="${line}"
+          fi
+        done < requirements_docs.txt
 
         pip install ${pre_commit} ${pylint} ${invoke}
 
@@ -161,14 +165,6 @@ jobs:
         python -m pip install -U pip
         pip install -U setuptools
         pip install -e .[docs]
-
-        while IFS="" read -r line || [ -n "${line}" ]; do
-            if [[ "${line}" =~ ^invoke.*$ ]]; then
-                invoke="${line}"
-            fi
-        done < requirements_dev.txt
-
-        pip install ${invoke}
 
     - name: Build
       run: |
