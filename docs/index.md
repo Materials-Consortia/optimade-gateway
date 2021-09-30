@@ -1,6 +1,6 @@
 # OPTIMADE Gateway
 
-[![codecov](https://codecov.io/gh/Materials-Consortia/optimade-gateway/branch/main/graph/badge.svg?token=94aa7IhlUD)](https://codecov.io/gh/Materials-Consortia/optimade-gateway) [![CI Status](https://github.com/Materials-Consortia/optimade-gateway/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Materials-Consortia/optimade-gateway/actions?query=branch%3Amain) [![Last Commit](https://img.shields.io/github/last-commit/Materials-Consortia/optimade-gateway/main?logo=github)](https://github.com/Materials-Consortia/optimade-gateway/pulse)
+[![codecov](https://codecov.io/gh/Materials-Consortia/optimade-gateway/branch/main/graph/badge.svg?token=94aa7IhlUD)](https://codecov.io/gh/Materials-Consortia/optimade-gateway) [![CI Status](https://github.com/Materials-Consortia/optimade-gateway/actions/workflows/ci_tests.yml/badge.svg?branch=main)](https://github.com/Materials-Consortia/optimade-gateway/actions?query=branch%3Amain) [![Last Commit](https://img.shields.io/github/last-commit/Materials-Consortia/optimade-gateway/main?logo=github)](https://github.com/Materials-Consortia/optimade-gateway/pulse)
 
 A REST API server acting as a gateway for databases with an OPTIMADE API, handling the distribution and collection of a single query to several different OPTIMADE databases.
 
