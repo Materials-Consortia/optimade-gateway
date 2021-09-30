@@ -41,7 +41,6 @@ jobs:
         author: "${{ env.GIT_USER_NAME }} <${{ env.GIT_USER_EMAIL }}>"
         branch: ci/update-dependencies
         delete-branch: true
-        branch-suffix: timestamp
         title: Update dependencies
         body: |
           ### Update dependencies
