@@ -15,7 +15,7 @@ jobs:
     name: Single dependabot PR
     runs-on: ubuntu-latest
     env:
-      DEPENDABOT_BRANCH: dependabot_updates
+      DEPENDABOT_BRANCH: ci/dependabot_updates
       GIT_USER_NAME: OPTIMADE Developers
       GIT_USER_EMAIL: "dev@optimade.org"
 
