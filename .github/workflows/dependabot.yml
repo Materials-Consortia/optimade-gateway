@@ -29,8 +29,14 @@ jobs:
           echo No dependabot branches found
           exit 0
         fi
-        exit 0
+        # echo "FOUND_BRANCHES=${#DEPENDABOT_BRANCHES[@]}" >> $GITHUB_ENV
+        echo "FOUND_BRANCHES=0" >> $GITHUB_ENV
 
     - name: Test
+      if: env.FOUND_BRANCHES > 0
       run: |
-        echo This shouldn't run
+        echo "This shouldn't run"
+
+    - name: Test2
+      run: |
+        echo "This also shouldn't run"
