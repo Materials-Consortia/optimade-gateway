@@ -125,11 +125,5 @@ jobs:
         pip install -U setuptools
         pip install -U -e .[docs]
 
-    - name: Build docs
-      run: mkdocs build
-
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./site
+    - name: Deploy documentation
+      run: mike deploy --push --remote origin --branch test-mike --update-aliases --config-file mkdocs.yml ${GITHUB_REF#refs/tags/v} stable
