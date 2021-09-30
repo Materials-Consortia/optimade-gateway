@@ -14,42 +14,51 @@ jobs:
   create-collected-pr:
     name: Single dependabot PR
     runs-on: ubuntu-latest
+    env:
+      DEPENDABOT_BRANCH: dependabot_updates
+      GIT_USER_NAME: OPTIMADE Developers
+      GIT_USER_EMAIL: "dev@optimade.org"
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
+        ref: ${{ env.DEPENDABOT_BRANCH }}
 
     - name: Setup git config
       run: |
-        git config --global user.name "OPTIMADE Developers"
-        git config --global user.email "dev@optimade.org"
+        git config --global user.name "${{ env.GIT_USER_NAME }}"
+        git config --global user.email "${{ env.GIT_USER_EMAIL }}"
 
-    - name: Check for dependabot PRs
+    - name: Prepare PR creation
       run: |
-        DEPENDABOT_BRANCHES=($(git branch -rl --format='%(refname:lstrip=2)' | grep -E "^dependabot/(pip|github_actions)/.*$" || echo ""))
+        git checkout -b update-dependencies
+        git reset --hard origin/${{ env.DEPENDABOT_BRANCH }}
 
-        echo "NUMBER_OF_BRANCHES=${#DEPENDABOT_BRANCHES[@]}" >> $GITHUB_ENV
-        echo "DEPENDABOT_BRANCHES=${DEPENDABOT_BRANCHES[@]}" >> $GITHUB_ENV
+    - name: Create PR
+      id: cpr
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ secrets.RELEASE_PAT_CASPER }}
+        commit-message: New @dependabot-fueled updates
+        committer: "${{ env.GIT_USER_NAME }} <${{ env.GIT_USER_EMAIL }}>"
+        author: "${{ env.GIT_USER_NAME }} <${{ env.GIT_USER_EMAIL }}>"
+        branch: update-dependencies
+        delete-branch: true
+        branch-suffix: timestamp
+        base: main
+        title: Update dependencies
+        body: |
+          ### Update dependencies
 
-        if [ ! ${#DEPENDABOT_BRANCHES[@]} ]; then
-          echo "No dependabot branches found, stopping."
-        fi
+          Automatically created PR from [`${{ env.DEPENDABOT_BRANCH }}`](https://github.com/Materials-Consortia/optimade-gateway/tree/${{ env.DEPENDABOT_BRANCH }}).
+          It should be automagically merged into `main` upon CI success.
 
-    - name: Create single branch with updates
-      if: env.NUMBER_OF_BRANCHES > 0
-      run: |
-        DEPENDABOT_BRANCHES=(${{ env.DEPENDABOT_BRANCHES }})
+          For more information see the ["Dependabot updates" workflow](https://github.com/Materials-Consortia/optimade-gateway/blob/main/.github/workflows/dependabot.yml).
+        labels: CI/CD,dependencies
 
-        git checkout -b single_dependabot_pr
-        git merge -m "Octopus merge dependencies" "${DEPENDABOT_BRANCHES[@]}"
+    - name: Information
+      if: env.CREATE_PR
+      run: 'echo "${{ steps.cpr.outputs.pull-request-operation }} PR #${{ steps.cpr.outputs.pull-request-number }}: ${{ steps.cpr.outputs.pull-request-url }}"'
 
-        if [ $? ]; then
-          # Unsuccessful octopus merge
-          git merge --abort
-        fi
-
-        for branch in "${DEPENDABOT_BRANCHES[@]}"; do
-          echo $branch
-        done
