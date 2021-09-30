@@ -1,15 +1,8 @@
 name: CI - Keep dependabot branch up-to-date
 
 on:
-  workflow_run:
-    workflows: ["CI - Tests"]
+  push:
     branches: [main]
-    types: [completed]
-
-env:
-  DEPENDABOT_BRANCH: ci/dependabot-updates
-  GIT_USER_NAME: OPTIMADE Developers
-  GIT_USER_EMAIL: "dev@optimade.org"
 
 jobs:
 
@@ -17,6 +10,11 @@ jobs:
     name: Update permanent dependabot branch
     if: github.repository_owner == 'Materials-Consortia'
     runs-on: ubuntu-latest
+
+    env:
+      DEPENDABOT_BRANCH: ci/dependabot-updates
+      GIT_USER_NAME: OPTIMADE Developers
+      GIT_USER_EMAIL: "dev@optimade.org"
 
     steps:
     - name: Checkout repository
