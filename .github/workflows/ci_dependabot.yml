@@ -55,7 +55,7 @@ jobs:
           Automatically created PR from [`${{ env.DEPENDABOT_BRANCH }}`](https://github.com/Materials-Consortia/optimade-gateway/tree/${{ env.DEPENDABOT_BRANCH }}).
           It should be automagically merged into `main` upon CI success.
 
-          For more information see the ["Dependabot updates" workflow](https://github.com/Materials-Consortia/optimade-gateway/blob/main/.github/workflows/dependabot.yml).
+          For more information see the ["Dependabot updates" workflow](https://github.com/Materials-Consortia/optimade-gateway/blob/main/.github/workflows/ci_dependabot.yml).
         labels: CI/CD,dependencies
 
     - name: Information
