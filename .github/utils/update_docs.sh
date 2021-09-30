@@ -14,7 +14,7 @@ invoke create-docs-index
 echo -e "\n-o- Commit update - Documentation -o-"
 git add docs/api_reference
 git add docs/index.md
-if [ -n "$(git status --porcelain --untracked-files=no --ignored=no docs)" ]; then
+if [ -n "$(git status --porcelain docs/api_reference docs/index.md)" ]; then
     # Only commit if there's something to commit (git will return non-zero otherwise)
     git commit -m "Release ${GITHUB_REF#refs/tags/} - Documentation"
 fi
