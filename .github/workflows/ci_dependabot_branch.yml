@@ -13,7 +13,7 @@ env:
 jobs:
 
   update-dependabot-branch:
-    name: Update '${{ env.DEPENDABOT_BRANCH }}' branch
+    name: Update permanent dependabot branch
     if: github.repository_owner == 'Materials-Consortia'
     runs-on: ubuntu-latest
 
