@@ -1,4 +1,4 @@
-name: Dependabot updates
+name: CI - Keep dependabot branch up-to-date
 
 on:
   push:

@@ -1,4 +1,4 @@
-name: Dependabot updates
+name: CI - Single Dependabot PR
 
 on:
   schedule:
