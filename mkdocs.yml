@@ -30,6 +30,9 @@ extra:
     - icon: fontawesome/brands/slack
       link: https://optimade.slack.com
       name: OPTIMADE on Slack
+  version:
+    provider: mike
+    default: latest
 
 extra_css:
   - css/reference.css
