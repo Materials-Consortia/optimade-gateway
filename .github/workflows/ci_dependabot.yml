@@ -26,16 +26,6 @@ jobs:
         fetch-depth: 0
         ref: ${{ env.DEPENDABOT_BRANCH }}
 
-    - name: Setup git config
-      run: |
-        git config --global user.name "${{ env.GIT_USER_NAME }}"
-        git config --global user.email "${{ env.GIT_USER_EMAIL }}"
-
-    - name: Prepare PR creation
-      run: |
-        git checkout -b update-dependencies
-        git reset --hard origin/${{ env.DEPENDABOT_BRANCH }}
-
     - name: Create PR
       id: cpr
       uses: peter-evans/create-pull-request@v3
@@ -44,7 +34,7 @@ jobs:
         commit-message: New @dependabot-fueled updates
         committer: "${{ env.GIT_USER_NAME }} <${{ env.GIT_USER_EMAIL }}>"
         author: "${{ env.GIT_USER_NAME }} <${{ env.GIT_USER_EMAIL }}>"
-        branch: update-dependencies
+        branch: ci/update-dependencies
         delete-branch: true
         branch-suffix: timestamp
         base: main
