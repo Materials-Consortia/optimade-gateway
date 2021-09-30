@@ -246,3 +246,6 @@ def update_pytest_reqs(_):
         f"Successfully updated pytest config plugins:\n        {plugins}\n  (was: "
         f"{original_versions})"
     )
+
+
+print("test of workflow")
