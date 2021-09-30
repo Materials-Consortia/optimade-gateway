@@ -23,14 +23,16 @@ jobs:
 
     - name: Check for dependabot PRs
       run: |
-        DEPENDABOT_BRANCHES=($(git branch -rl --format='%(refname:lstrip=3)' | grep -E "^dependabot/(test|github_actions)/.*$" || echo ""))
+        DEPENDABOT_BRANCHES=($(git branch -rl --format='%(refname:lstrip=3)' | grep -E "^dependabot/(pip|github_actions)/.*$" || echo ""))
 
-        echo "NO_OF_BRANCHES=${#DEPENDABOT_BRANCHES[@]}" >> $GITHUB_ENV
+        echo "NUMBER_OF_BRANCHES=${#DEPENDABOT_BRANCHES[@]}" >> $GITHUB_ENV
         echo "DEPENDABOT_BRANCHES=${DEPENDABOT_BRANCHES[@]}" >> $GITHUB_ENV
 
     - name: Test
+      if: env.NUMBER_OF_BRANCHES > 0
+      env:
+        DEPENDABOT_BRANCHES: (${{ env.DEPENDABOT_BRANCHES }})
       run: |
-        DEPENDABOT_BRANCHES=(${{ env.DEPENDABOT_BRANCHES }})
         for branch in "${DEPENDABOT_BRANCHES[@]}"; do
           echo $branch
         done
