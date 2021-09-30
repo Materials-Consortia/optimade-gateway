@@ -7,6 +7,8 @@ on:
 
 env:
   PUBLISH_UPDATE_BRANCH: main
+  GIT_USER_NAME: OPTIMADE Developers
+  GIT_USER_EMAIL: "dev@optimade.org"
 
 jobs:
 
@@ -14,9 +16,6 @@ jobs:
     name: Update CHANGELOG and documentation
     runs-on: ubuntu-latest
     if: github.repository == 'Materials-Consortia/optimade-gateway' && startsWith(github.ref, 'refs/tags/v')
-    env:
-      GIT_USER_NAME: OPTIMADE Developers
-      GIT_USER_EMAIL: "dev@optimade.org"
 
     steps:
     - name: Checkout repository
@@ -102,7 +101,7 @@ jobs:
   #       password: ${{ secrets.PYPI_TOKEN }}
 
   docs:
-    name: Build and deploy documentation
+    name: Deploy release documentation
     # needs: publish
     needs: update-repo-and-release
     runs-on: ubuntu-latest
@@ -124,6 +123,11 @@ jobs:
         python -m pip install -U pip
         pip install -U setuptools
         pip install -U -e .[docs]
+
+    - name: Set git config
+      run: |
+        git config --global user.name "${{ env.GIT_USER_NAME }}"
+        git config --global user.email "${{ env.GIT_USER_EMAIL }}"
 
     - name: Deploy documentation
       run: mike deploy --push --remote origin --branch test-mike --update-aliases --config-file mkdocs.yml ${GITHUB_REF#refs/tags/v} stable
