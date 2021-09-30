@@ -21,18 +21,35 @@ jobs:
       with:
         fetch-depth: 0
 
+    - name: Setup git config
+      run: |
+        git config --global user.name "OPTIMADE Developers"
+        git config --global user.email "dev@optimade.org"
+
     - name: Check for dependabot PRs
       run: |
-        DEPENDABOT_BRANCHES=($(git branch -rl --format='%(refname:lstrip=3)' | grep -E "^dependabot/(pip|github_actions)/.*$" || echo ""))
+        DEPENDABOT_BRANCHES=($(git branch -rl --format='%(refname:lstrip=2)' | grep -E "^dependabot/(pip|github_actions)/.*$" || echo ""))
 
         echo "NUMBER_OF_BRANCHES=${#DEPENDABOT_BRANCHES[@]}" >> $GITHUB_ENV
         echo "DEPENDABOT_BRANCHES=${DEPENDABOT_BRANCHES[@]}" >> $GITHUB_ENV
 
-    - name: Test
+        if [ ! ${#DEPENDABOT_BRANCHES[@]} ]; then
+          echo "No dependabot branches found, stopping."
+        fi
+
+    - name: Create single branch with updates
       if: env.NUMBER_OF_BRANCHES > 0
-      env:
-        DEPENDABOT_BRANCHES: (${{ env.DEPENDABOT_BRANCHES }})
       run: |
+        DEPENDABOT_BRANCHES=(${{ env.DEPENDABOT_BRANCHES }})
+
+        git checkout -b single_dependabot_pr
+        git merge -m "Octopus merge dependencies" "${DEPENDABOT_BRANCHES[@]}"
+
+        if [ $? ]; then
+          # Unsuccessful octopus merge
+          git merge --abort
+        fi
+
         for branch in "${DEPENDABOT_BRANCHES[@]}"; do
           echo $branch
         done
