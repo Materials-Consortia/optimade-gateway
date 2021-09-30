@@ -25,18 +25,12 @@ jobs:
       run: |
         DEPENDABOT_BRANCHES=($(git branch -rl --format='%(refname:lstrip=3)' | grep -E "^dependabot/(pip|github_actions)/.*$" || echo ""))
 
-        if [ ! ${#DEPENDABOT_BRANCHES[@]} ]; then
-          echo No dependabot branches found
-          exit 0
-        fi
-        # echo "FOUND_BRANCHES=${#DEPENDABOT_BRANCHES[@]}" >> $GITHUB_ENV
-        echo "FOUND_BRANCHES=0" >> $GITHUB_ENV
+        echo "NO_OF_BRANCHES=${#DEPENDABOT_BRANCHES[@]}" >> $GITHUB_ENV
+        echo "DEPENDABOT_BRANCHES=${DEPENDABOT_BRANCHES[@]}" >> $GITHUB_ENV
 
     - name: Test
-      if: env.FOUND_BRANCHES > 0
       run: |
-        echo "This shouldn't run"
-
-    - name: Test2
-      run: |
-        echo "This also shouldn't run"
+        DEPENDABOT_BRANCHES=(${{ env.DEPENDABOT_BRANCHES }})
+        for branch in "${DEPENDABOT_BRANCHES[@]}"; do
+          echo $branch
+        done
