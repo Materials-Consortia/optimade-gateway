@@ -34,8 +34,4 @@ jobs:
         git checkout ${{ env.DEPENDABOT_BRANCH }}
         git merge -m "Keep '${{ env.DEPENDABOT_BRANCH }}' up-to-date with 'main'" origin/main
 
-    - name: Push to GitHub
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: ${{ env.DEPENDABOT_BRANCH }}
+        git push
