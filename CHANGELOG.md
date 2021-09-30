@@ -2,11 +2,44 @@
 
 ## [Unreleased](https://github.com/Materials-Consortia/optimade-gateway/tree/HEAD)
 
-[Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.2.0...HEAD)
+[Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.2.1-dev...HEAD)
+
+**Implemented enhancements:**
+
+- Update to versioned documentation [\#132](https://github.com/Materials-Consortia/optimade-gateway/issues/132)
 
 **Fixed bugs:**
 
-- Fix CD - remnants from \#82 [\#117](https://github.com/Materials-Consortia/optimade-gateway/issues/117)
+- Allow beta/alpha releases [\#143](https://github.com/Materials-Consortia/optimade-gateway/issues/143)
+
+## [v0.2.1-dev](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.2.1-dev) (2021-09-30)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.2.0...v0.2.1-dev)
+
+**Implemented enhancements:**
+
+- Run keep-up-to-date workflow immediately with push [\#140](https://github.com/Materials-Consortia/optimade-gateway/issues/140)
+- Use `bandit`, `pylint`, `safety`, and `mypy` [\#119](https://github.com/Materials-Consortia/optimade-gateway/pull/119) ([CasperWA](https://github.com/CasperWA))
+
+**Fixed bugs:**
+
+- Use protected-push action for keep-up-to-date workflow [\#138](https://github.com/Materials-Consortia/optimade-gateway/issues/138)
+- Workflow not working [\#133](https://github.com/Materials-Consortia/optimade-gateway/issues/133)
+- Use `git push` instead of action [\#136](https://github.com/Materials-Consortia/optimade-gateway/pull/136) ([CasperWA](https://github.com/CasperWA))
+
+**Merged pull requests:**
+
+- Run up-to-date workflow immediately upon push [\#141](https://github.com/Materials-Consortia/optimade-gateway/pull/141) ([CasperWA](https://github.com/CasperWA))
+- Push via CasperWA/push-protected action [\#139](https://github.com/Materials-Consortia/optimade-gateway/pull/139) ([CasperWA](https://github.com/CasperWA))
+- Use versioned documentation [\#137](https://github.com/Materials-Consortia/optimade-gateway/pull/137) ([CasperWA](https://github.com/CasperWA))
+- Fetch everything and ensure correct checkout [\#135](https://github.com/Materials-Consortia/optimade-gateway/pull/135) ([CasperWA](https://github.com/CasperWA))
+- Attempt to fix workflow [\#134](https://github.com/Materials-Consortia/optimade-gateway/pull/134) ([CasperWA](https://github.com/CasperWA))
+- Run dependabot workflow more often [\#130](https://github.com/Materials-Consortia/optimade-gateway/pull/130) ([CasperWA](https://github.com/CasperWA))
+- Only update permanent dependabot branch after CI [\#127](https://github.com/Materials-Consortia/optimade-gateway/pull/127) ([CasperWA](https://github.com/CasperWA))
+- Don't use `env` outside of usable scope [\#126](https://github.com/Materials-Consortia/optimade-gateway/pull/126) ([CasperWA](https://github.com/CasperWA))
+- Setup dependabot automation [\#125](https://github.com/Materials-Consortia/optimade-gateway/pull/125) ([CasperWA](https://github.com/CasperWA))
+- Don't load providers on startup by default [\#121](https://github.com/Materials-Consortia/optimade-gateway/pull/121) ([CasperWA](https://github.com/CasperWA))
+- Update pylint requirement from ~=2.10 to ~=2.11 [\#120](https://github.com/Materials-Consortia/optimade-gateway/pull/120) ([dependabot[bot]](https://github.com/apps/dependabot))
 
 ## [v0.2.0](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.2.0) (2021-09-07)
 
@@ -15,6 +48,10 @@
 **Implemented enhancements:**
 
 - Minor re-design [\#82](https://github.com/Materials-Consortia/optimade-gateway/pull/82) ([CasperWA](https://github.com/CasperWA))
+
+**Fixed bugs:**
+
+- Fix CD - remnants from \#82 [\#117](https://github.com/Materials-Consortia/optimade-gateway/issues/117)
 
 **Merged pull requests:**
 
