@@ -61,12 +61,13 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
         since_tag: "${{ env.PREVIOUS_VERSION }}"
-        output: "release_msg.md"
+        output: "release_changelog.md"
 
-    - name: Update release description with changelog
-      uses: softprops/action-gh-release@v1
-      with:
-        body_path: "release_msg.md"
+    - name: Append changelog to release body
+      run: |
+        gh api /repos/${{ github.repository }}/releases/${{ github.event.release.id }} --jq '.body' > release_body.md
+        cat release_changelog.md >> release_body.md
+        gh api /repos/${{ github.repository }}/releases/${{ github.event.release.id }} -X PATCH -F body='@release_body.md'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
