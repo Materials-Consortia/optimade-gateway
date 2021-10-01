@@ -132,5 +132,5 @@ jobs:
 
     - name: Deploy documentation
       run: |
-        mike deploy --push --remote origin --branch test-mike --update-aliases --config-file mkdocs.yml ${GITHUB_REF#refs/tags/v} stable
-        mike deploy --push --remote origin --branch test-mike --update-aliases --config-file mkdocs.yml latest main
+        mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml ${GITHUB_REF#refs/tags/v} stable
+        mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest main
