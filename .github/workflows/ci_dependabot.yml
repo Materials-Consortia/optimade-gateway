@@ -2,9 +2,10 @@ name: CI - Single Dependabot PR
 
 on:
   schedule:
-    # At 8:30 every Monday
-    # This matches Dependabot, which runs every Monday (pip) and every day (GH Actions) at 7:00
-    - cron: "30 6 * * *"
+    # At 8:30 every Monday (6:30 UTC)
+    # This matches Dependabot, which runs once a week (every Monday) (pip)
+    # and every day (GH Actions) at 7:00 (5:00 UTC)
+    - cron: "30 6 * * 1"
 
 jobs:
 
