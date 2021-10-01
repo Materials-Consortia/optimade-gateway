@@ -44,28 +44,43 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Release check
+      run: |
+        COMMIT_MSG="$(gh api /repos/${{ github.repository}}/commits/main --jq '.commit.message')"
+        if [[ "${COMMIT_MSG}" =~ ^Release\ v.*\ -\ Changelog$ ]]; then
+          # In a release - do not run this job !
+          echo "RELEASE_RUN=true" >> $GITHUB_ENV
+        else
+          echo "RELEASE_RUN=false" >> $GITHUB_ENV
+        fi
+
     - name: Checkout repository
+      if: "! env.RELEASE_RUN"
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
 
     - name: Set up Python 3.8
+      if: "! env.RELEASE_RUN"
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
 
     - name: Install dependencies
+      if: "! env.RELEASE_RUN"
       run: |
         python -m pip install --upgrade pip
         pip install -U setuptools wheel
         pip install -U -e .[docs]
 
     - name: Set up git user
+      if: "! env.RELEASE_RUN"
       run: |
         git config --global user.name "OPTIMADE Developers"
         git config --global user.email "dev@optimade.org"
 
     - name: Check API Reference and landing page
+      if: "! env.RELEASE_RUN"
       run: |
         invoke create-api-reference-docs --pre-clean
         invoke create-docs-index
@@ -77,4 +92,5 @@ jobs:
         fi
 
     - name: Deploy documentation
+      if: "! env.RELEASE_RUN"
       run: mike deploy --push --remote origin --branch test-mike --update-aliases --config-file mkdocs.yml latest main
