@@ -131,9 +131,9 @@ jobs:
 
     - name: Deploy documentation
       run: |
-        git fetch origin
+        git fetch origin -ftpP
 
         mike deploy --push --remote origin --branch test-mike --update-aliases --config-file mkdocs.yml ${GITHUB_REF#refs/tags/v} stable
 
-        git fetch origin
+        git fetch origin -ftpP
         mike deploy --push --remote origin --branch test-mike --update-aliases --config-file mkdocs.yml latest main
