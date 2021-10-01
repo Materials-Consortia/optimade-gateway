@@ -35,7 +35,7 @@ jobs:
         pip install -U -e .[dev]
 
     - name: Update changelog
-      uses: CharMixer/auto-changelog-action@v1.4
+      uses: CharMixer/auto-changelog-action@v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
@@ -56,7 +56,7 @@ jobs:
       run: echo "PREVIOUS_VERSION=$(git tag -l --sort -version:refname | sed -n 2p)" >> $GITHUB_ENV
 
     - name: Create release-specific changelog
-      uses: CharMixer/auto-changelog-action@v1.4
+      uses: CharMixer/auto-changelog-action@v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
