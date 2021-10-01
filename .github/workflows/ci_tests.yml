@@ -171,3 +171,22 @@ jobs:
         invoke create-api-reference-docs --pre-clean
         invoke create-docs-index
         mkdocs build --strict --verbose
+
+    - name: TEMPORARY - create env
+      run: echo "TEST=false" >> $GITHUB_ENV
+
+    - name: TEMPORARY - run if TEST is bool(false)
+      if: ${{ ! env.TEST }}
+      run: echo "TEST is ${{ env.TEST }}"
+
+    - name: TEMPORARY - run if TEST is bool(true)
+      if: ${{ env.TEST }}
+      run: echo "TEST is ${{ env.TEST }}"
+
+    - name: TEMPORARY - run if TEST is == "true"
+      if: env.TEST == "true"
+      run: echo "TEST is ${{ env.TEST }}"
+
+    - name: TEMPORARY - run if TEST is == "false"
+      if: env.TEST == "false"
+      run: echo "TEST is ${{ env.TEST }}"
