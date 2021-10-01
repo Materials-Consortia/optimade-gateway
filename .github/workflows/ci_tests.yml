@@ -184,9 +184,9 @@ jobs:
       run: echo "TEST is ${{ env.TEST }}"
 
     - name: TEMPORARY - run if TEST is == "true"
-      if: env.TEST == "true"
+      if: env.TEST == 'true'
       run: echo "TEST is ${{ env.TEST }}"
 
     - name: TEMPORARY - run if TEST is == "false"
-      if: env.TEST == "false"
+      if: env.TEST == 'false'
       run: echo "TEST is ${{ env.TEST }}"
