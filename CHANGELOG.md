@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.2.1-dev1](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.2.1-dev1) (2021-10-01)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.2.1-dev...v0.2.1-dev1)
+
 ## [v0.2.1-dev](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.2.1-dev) (2021-10-01)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.2.0...v0.2.1-dev)
