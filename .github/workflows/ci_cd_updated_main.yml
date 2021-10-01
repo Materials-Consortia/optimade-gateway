@@ -96,4 +96,4 @@ jobs:
 
     - name: Deploy documentation
       if: env.RELEASE_RUN == 'false'
-      run: mike deploy --push --remote origin --branch test-mike --update-aliases --config-file mkdocs.yml latest main
+      run: mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest main
