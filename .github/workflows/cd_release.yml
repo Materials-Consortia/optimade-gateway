@@ -110,7 +110,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
       with:
-        fetch-depth: 2
+        fetch-depth: 0
         ref: ${{ env.PUBLISH_UPDATE_BRANCH }}
 
     - name: Set up Python 3.8
@@ -131,5 +131,9 @@ jobs:
 
     - name: Deploy documentation
       run: |
+        git fetch origin -ftpP
+
         mike deploy --push --remote origin --branch test-mike --update-aliases --config-file mkdocs.yml ${GITHUB_REF#refs/tags/v} stable
+
+        git fetch origin -ftpP
         mike deploy --push --remote origin --branch test-mike --update-aliases --config-file mkdocs.yml latest main
