@@ -1,6 +1,14 @@
 # Changelog
 
-## [v0.2.1-dev](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.2.1-dev) (2021-09-30)
+## [Unreleased](https://github.com/Materials-Consortia/optimade-gateway/tree/HEAD)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.2.1-dev...HEAD)
+
+**Fixed bugs:**
+
+- Fix condition in `main` docs deployment [\#152](https://github.com/Materials-Consortia/optimade-gateway/issues/152)
+
+## [v0.2.1-dev](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.2.1-dev) (2021-10-01)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.2.0...v0.2.1-dev)
 
@@ -12,14 +20,25 @@
 
 **Fixed bugs:**
 
+- Properly authenticate the use of `gh api` in workflow [\#150](https://github.com/Materials-Consortia/optimade-gateway/issues/150)
+- Double documentation deploy during release [\#145](https://github.com/Materials-Consortia/optimade-gateway/issues/145)
 - Allow beta/alpha releases [\#143](https://github.com/Materials-Consortia/optimade-gateway/issues/143)
 - Use protected-push action for keep-up-to-date workflow [\#138](https://github.com/Materials-Consortia/optimade-gateway/issues/138)
 - Workflow not working [\#133](https://github.com/Materials-Consortia/optimade-gateway/issues/133)
 - Set git config before `mike deploy` [\#144](https://github.com/Materials-Consortia/optimade-gateway/pull/144) ([CasperWA](https://github.com/CasperWA))
 - Use `git push` instead of action [\#136](https://github.com/Materials-Consortia/optimade-gateway/pull/136) ([CasperWA](https://github.com/CasperWA))
 
+**Closed issues:**
+
+- Update cron timings for dependency workflows [\#147](https://github.com/Materials-Consortia/optimade-gateway/issues/147)
+
 **Merged pull requests:**
 
+- Fix conditional docs `main` build [\#153](https://github.com/Materials-Consortia/optimade-gateway/pull/153) ([CasperWA](https://github.com/CasperWA))
+- Add GITHUB\_TOKEN env var to authenticate gh CLI [\#151](https://github.com/Materials-Consortia/optimade-gateway/pull/151) ([CasperWA](https://github.com/CasperWA))
+- Fix double docs deployment on release [\#149](https://github.com/Materials-Consortia/optimade-gateway/pull/149) ([CasperWA](https://github.com/CasperWA))
+- Update cron times [\#148](https://github.com/Materials-Consortia/optimade-gateway/pull/148) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#146](https://github.com/Materials-Consortia/optimade-gateway/pull/146) ([CasperWA](https://github.com/CasperWA))
 - Run up-to-date workflow immediately upon push [\#141](https://github.com/Materials-Consortia/optimade-gateway/pull/141) ([CasperWA](https://github.com/CasperWA))
 - Push via CasperWA/push-protected action [\#139](https://github.com/Materials-Consortia/optimade-gateway/pull/139) ([CasperWA](https://github.com/CasperWA))
 - Use versioned documentation [\#137](https://github.com/Materials-Consortia/optimade-gateway/pull/137) ([CasperWA](https://github.com/CasperWA))
