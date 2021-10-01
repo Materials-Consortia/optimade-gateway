@@ -1,5 +1,21 @@
 # Changelog
 
+## [Unreleased](https://github.com/Materials-Consortia/optimade-gateway/tree/HEAD)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.2.1-dev2...HEAD)
+
+**Fixed bugs:**
+
+- GH Release action overwrites release description [\#155](https://github.com/Materials-Consortia/optimade-gateway/issues/155)
+
+## [v0.2.1-dev2](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.2.1-dev2) (2021-10-01)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.2.1-dev1...v0.2.1-dev2)
+
+**Merged pull requests:**
+
+- Use GH CLI instead of release action [\#156](https://github.com/Materials-Consortia/optimade-gateway/pull/156) ([CasperWA](https://github.com/CasperWA))
+
 ## [v0.2.1-dev1](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.2.1-dev1) (2021-10-01)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.2.1-dev...v0.2.1-dev1)
