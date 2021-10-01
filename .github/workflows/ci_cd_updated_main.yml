@@ -53,6 +53,8 @@ jobs:
         else
           echo "RELEASE_RUN=false" >> $GITHUB_ENV
         fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Checkout repository
       if: "! env.RELEASE_RUN"
