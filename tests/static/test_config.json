@@ -8,7 +8,7 @@
     "base_url": "http://example.org",
     "implementation": {
         "name": "OPTIMADE Gateway",
-        "version": "0.2.1-dev2",
+        "version": "0.2.1",
         "source_url": "https://github.com/Materials-Consortia/optimade-gateway",
         "maintainer": {"email": "casper.andersen@epfl.ch"}
     },

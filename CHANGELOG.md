@@ -1,28 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/Materials-Consortia/optimade-gateway/tree/HEAD)
+## [v0.2.1](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.2.1) (2021-10-04)
 
-[Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.2.1-dev2...HEAD)
-
-**Fixed bugs:**
-
-- GH Release action overwrites release description [\#155](https://github.com/Materials-Consortia/optimade-gateway/issues/155)
-
-## [v0.2.1-dev2](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.2.1-dev2) (2021-10-01)
-
-[Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.2.1-dev1...v0.2.1-dev2)
-
-**Merged pull requests:**
-
-- Use GH CLI instead of release action [\#156](https://github.com/Materials-Consortia/optimade-gateway/pull/156) ([CasperWA](https://github.com/CasperWA))
-
-## [v0.2.1-dev1](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.2.1-dev1) (2021-10-01)
-
-[Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.2.1-dev...v0.2.1-dev1)
-
-## [v0.2.1-dev](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.2.1-dev) (2021-10-01)
-
-[Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.2.0...v0.2.1-dev)
+[Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.2.0...v0.2.1)
 
 **Implemented enhancements:**
 
@@ -32,6 +12,7 @@
 
 **Fixed bugs:**
 
+- GH Release action overwrites release description [\#155](https://github.com/Materials-Consortia/optimade-gateway/issues/155)
 - Fix condition in `main` docs deployment [\#152](https://github.com/Materials-Consortia/optimade-gateway/issues/152)
 - Properly authenticate the use of `gh api` in workflow [\#150](https://github.com/Materials-Consortia/optimade-gateway/issues/150)
 - Double documentation deploy during release [\#145](https://github.com/Materials-Consortia/optimade-gateway/issues/145)
@@ -45,9 +26,13 @@
 **Closed issues:**
 
 - Update cron timings for dependency workflows [\#147](https://github.com/Materials-Consortia/optimade-gateway/issues/147)
+- Use `gh-pages` in documentation deploy workflows [\#142](https://github.com/Materials-Consortia/optimade-gateway/issues/142)
 
 **Merged pull requests:**
 
+- Update dependencies [\#159](https://github.com/Materials-Consortia/optimade-gateway/pull/159) ([CasperWA](https://github.com/CasperWA))
+- Deploy docs to `gh-pages` branch [\#157](https://github.com/Materials-Consortia/optimade-gateway/pull/157) ([CasperWA](https://github.com/CasperWA))
+- Use GH CLI instead of release action [\#156](https://github.com/Materials-Consortia/optimade-gateway/pull/156) ([CasperWA](https://github.com/CasperWA))
 - Fix conditional docs `main` build [\#153](https://github.com/Materials-Consortia/optimade-gateway/pull/153) ([CasperWA](https://github.com/CasperWA))
 - Add GITHUB\_TOKEN env var to authenticate gh CLI [\#151](https://github.com/Materials-Consortia/optimade-gateway/pull/151) ([CasperWA](https://github.com/CasperWA))
 - Fix double docs deployment on release [\#149](https://github.com/Materials-Consortia/optimade-gateway/pull/149) ([CasperWA](https://github.com/CasperWA))
