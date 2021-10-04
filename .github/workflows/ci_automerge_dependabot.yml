@@ -57,11 +57,6 @@ jobs:
           git push origin/${{ github.head_ref }}
         fi
 
-    - name: Accepting review
-      run: |
-        export GITHUB_TOKEN="${{ secrets.RELEASE_PAT_CASPER }}"
-        gh api /repos/{owner}/{repo}/pulls/${{ github.event.pull_request.number }}/reviews -f event=APPROVE
-
     - name: Activate auto-merge
       run: |
         PR_ID="$(gh api graphql -F owner='{owner}' -F name='{repo}' -f query='query($owner: String!, $name: String!) {repository(owner: $owner, name: $name) {pullRequest(number: ${{ github.event.pull_request.number }}) {id}}}' --jq '.data.repository.pullRequest.id')"
