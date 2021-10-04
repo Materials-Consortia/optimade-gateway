@@ -62,6 +62,6 @@ jobs:
     - name: Activate auto-merge
       run: |
         PR_ID="$(gh api graphql -F owner='{owner}' -F name='{repo}' -f query='query($owner: String!, $name: String!) {repository(owner: $owner, name: $name) {pullRequest(number: ${{ guthub.event.pull_request.number }}) {id}}}' --jq '.data.repository.pullRequest.id')"
-        gh api graphql -f mutation='mutation {enablePullRequestAutoMerge(input:{mergeMethod:SQUASH,pullRequestId:"${PR_ID}"}) {}}'
+        gh api graphql -f query='mutation {enablePullRequestAutoMerge(input:{mergeMethod:SQUASH,pullRequestId:"${PR_ID}"}) {}}'
       env:
         GITHUB_TOKEN: ${{ secrets.RELEASE_PAT_CASPER }}
