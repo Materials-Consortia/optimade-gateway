@@ -23,13 +23,28 @@ jobs:
         ref: ${{ env.DEPENDABOT_BRANCH }}
         fetch-depth: 0
 
-    - name: Update '${{ env.DEPENDABOT_BRANCH }}'
+    - name: Set up git config
       run: |
         git config --global user.name "${{ env.GIT_USER_NAME }}"
         git config --global user.email "${{ env.GIT_USER_EMAIL }}"
 
+    - name: Update '${{ env.DEPENDABOT_BRANCH }}'
+      run: |
         git fetch origin
-        git merge -m "Keep '${{ env.DEPENDABOT_BRANCH }}' up-to-date with 'main'" origin/main
+
+        LATEST_PR_BODY="$(gh api /repos/${{ github.repository}}/pulls -X GET -f state=closed -f per_page=1 -f sort=updated -f direction=desc --jq '.[].body')"
+        if [ "${LATEST_PR_BODY}" == "$(cat .github/utils/single_dependency_pr_body.txt)" ]; then
+          # The dependency branch has just been merged into `main`
+          # The dependency branch should be reset to `main`
+          git reset --hard origin/main
+          echo "FORCE_PUSH=yes" >> $GITHUB_ENV
+        else
+          # Normal procedure: Merge `main` into `ci/dependabot-updates`
+          git merge -m "Keep '${{ env.DEPENDABOT_BRANCH }}' up-to-date with 'main'" origin/main
+          echo "FORCE_PUSH=no" >> $GITHUB_ENV
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Push to '${{ env.DEPENDABOT_BRANCH }}'
       uses: CasperWA/push-protected@v2
@@ -37,6 +52,7 @@ jobs:
         token: ${{ secrets.RELEASE_PAT_CASPER }}
         branch: ${{ env.DEPENDABOT_BRANCH }}
         sleep: 15
+        force: ${{ env.FORCE_PUSH }}
 
   deploy-docs:
     name: Deploy `latest` documentation
