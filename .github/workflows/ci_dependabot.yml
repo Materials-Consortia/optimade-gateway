@@ -29,6 +29,9 @@ jobs:
         git fetch origin ${{ env.DEPENDABOT_BRANCH }}:${{ env.DEPENDABOT_BRANCH }}
         git reset --hard ${{ env.DEPENDABOT_BRANCH }}
 
+    - name: Fetch PR body
+      run: echo "PR_BODY=$(cat .github/utils/single_dependency_pr_body.txt)" >> $GITHUB_ENV
+
     - name: Create PR
       id: cpr
       uses: peter-evans/create-pull-request@v3
@@ -40,13 +43,7 @@ jobs:
         branch: ci/update-dependencies
         delete-branch: true
         title: Update dependencies
-        body: |
-          ### Update dependencies
-
-          Automatically created PR from [`${{ env.DEPENDABOT_BRANCH }}`](https://github.com/Materials-Consortia/optimade-gateway/tree/${{ env.DEPENDABOT_BRANCH }}).
-          It should be automagically merged into `main` upon CI success.
-
-          For more information see the ["Dependabot updates" workflow](https://github.com/Materials-Consortia/optimade-gateway/blob/main/.github/workflows/ci_dependabot.yml).
+        body: "${{ env.PR_BODY }}"
         labels: CI/CD,dependencies
 
     - name: Information
