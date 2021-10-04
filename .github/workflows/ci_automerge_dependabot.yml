@@ -2,14 +2,13 @@ name: CI - Activate auto-merging for Dependabot PRs
 
 on:
   pull_request:
-    branches:
-      - 'dependabot/**'
+    branches: [ci/dependabot-updates]
 
 jobs:
 
   update-dependabot-branch:
     name: Update permanent dependabot branch
-    if: github.repository_owner == 'Materials-Consortia'
+    if: github.repository_owner == 'Materials-Consortia' && startsWith(github.head_ref, 'refs/heads/dependabot/')
     runs-on: ubuntu-latest
 
     env:
