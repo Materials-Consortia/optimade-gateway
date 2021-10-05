@@ -1,5 +1,25 @@
 # Changelog
 
+## [v0.2.2](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.2.2) (2021-10-05)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.2.1...v0.2.2)
+
+**Fixed bugs:**
+
+- Fix auto-merge workflow to actually run [\#165](https://github.com/Materials-Consortia/optimade-gateway/issues/165)
+- Reset `ci/dependabot-updates` after merging `ci/update-dependencies` [\#131](https://github.com/Materials-Consortia/optimade-gateway/issues/131)
+
+**Closed issues:**
+
+- Activate auto-merge for Dependabot PRs [\#162](https://github.com/Materials-Consortia/optimade-gateway/issues/162)
+- Move automatic `ci/update-dependencies` PR to Tuesday or Friday [\#160](https://github.com/Materials-Consortia/optimade-gateway/issues/160)
+
+**Merged pull requests:**
+
+- Move check for dependabot head branch to job [\#166](https://github.com/Materials-Consortia/optimade-gateway/pull/166) ([CasperWA](https://github.com/CasperWA))
+- New auto-merge CI for dependabot PRs [\#163](https://github.com/Materials-Consortia/optimade-gateway/pull/163) ([CasperWA](https://github.com/CasperWA))
+- Reset `ci/dependabot-updates` branch upon merge to `main` [\#161](https://github.com/Materials-Consortia/optimade-gateway/pull/161) ([CasperWA](https://github.com/CasperWA))
+
 ## [v0.2.1](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.2.1) (2021-10-04)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.2.0...v0.2.1)
