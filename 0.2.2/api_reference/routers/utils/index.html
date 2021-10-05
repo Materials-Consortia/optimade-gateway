@@ -1,0 +1,1938 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the OPTIMADE Gateway">
+      
+      
+      
+      
+        <link rel="canonical" href="https://www.optimade.org/optimade-gateway/0.2.2/api_reference/routers/utils/">
+      
+      <link rel="icon" href="../../../images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.3.1">
+    
+    
+      
+        <title>utils - OPTIMADE Gateway</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.1c75ef36.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#7e56c2">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../../css/reference.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="deep-orange">
+  
+    
+    <script>function __prefix(e){return new URL("../../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#utils" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="OPTIMADE Gateway" class="md-header__button md-logo" aria-label="OPTIMADE Gateway" data-md-component="logo">
+      
+  <img src="../../../images/optimade_logo_180x180.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OPTIMADE Gateway
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              utils
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/Materials-Consortia/optimade-gateway" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    optimade-gateway
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="OPTIMADE Gateway" class="md-nav__button md-logo" aria-label="OPTIMADE Gateway" data-md-component="logo">
+      
+  <img src="../../../images/optimade_logo_180x180.svg" alt="logo">
+
+    </a>
+    OPTIMADE Gateway
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/Materials-Consortia/optimade-gateway" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    optimade-gateway
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        OPTIMADE Gateway
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../design/" class="md-nav__link">
+        Design of the OPTIMADE gateway
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CHANGELOG/" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LICENSE/" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          API Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          API Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../events/" class="md-nav__link">
+        events
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../exception_handlers/" class="md-nav__link">
+        exception_handlers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../main/" class="md-nav__link">
+        main
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../middleware/" class="md-nav__link">
+        middleware
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../warnings/" class="md-nav__link">
+        warnings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_6" type="checkbox" id="__nav_5_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_6">
+          common
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="common" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_6">
+          <span class="md-nav__icon md-icon"></span>
+          common
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../common/config/" class="md-nav__link">
+        config
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../common/exceptions/" class="md-nav__link">
+        exceptions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../common/logger/" class="md-nav__link">
+        logger
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../common/utils/" class="md-nav__link">
+        utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_7" type="checkbox" id="__nav_5_7" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_7">
+          mappers
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="mappers" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_7">
+          <span class="md-nav__icon md-icon"></span>
+          mappers
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mappers/base/" class="md-nav__link">
+        base
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mappers/databases/" class="md-nav__link">
+        databases
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mappers/gateways/" class="md-nav__link">
+        gateways
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mappers/links/" class="md-nav__link">
+        links
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mappers/queries/" class="md-nav__link">
+        queries
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_8" type="checkbox" id="__nav_5_8" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_8">
+          models
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="models" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_8">
+          <span class="md-nav__icon md-icon"></span>
+          models
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/databases/" class="md-nav__link">
+        databases
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/gateways/" class="md-nav__link">
+        gateways
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/queries/" class="md-nav__link">
+        queries
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/resources/" class="md-nav__link">
+        resources
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/responses/" class="md-nav__link">
+        responses
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/search/" class="md-nav__link">
+        search
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_9" type="checkbox" id="__nav_5_9" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_9">
+          mongo
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="mongo" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_9">
+          <span class="md-nav__icon md-icon"></span>
+          mongo
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongo/collection/" class="md-nav__link">
+        collection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongo/database/" class="md-nav__link">
+        database
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_10" type="checkbox" id="__nav_5_10" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_10">
+          queries
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="queries" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_10">
+          <span class="md-nav__icon md-icon"></span>
+          queries
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../queries/params/" class="md-nav__link">
+        params
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../queries/perform/" class="md-nav__link">
+        perform
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../queries/prepare/" class="md-nav__link">
+        prepare
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../queries/process/" class="md-nav__link">
+        process
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../queries/utils/" class="md-nav__link">
+        utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_11" type="checkbox" id="__nav_5_11" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_11">
+          routers
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="routers" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_11">
+          <span class="md-nav__icon md-icon"></span>
+          routers
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../databases/" class="md-nav__link">
+        databases
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gateways/" class="md-nav__link">
+        gateways
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../info/" class="md-nav__link">
+        info
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../links/" class="md-nav__link">
+        links
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../queries/" class="md-nav__link">
+        queries
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../search/" class="md-nav__link">
+        search
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          utils
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        utils
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.routers.utils" class="md-nav__link">
+    optimade_gateway.routers.utils
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.routers.utils.COLLECTIONS" class="md-nav__link">
+    COLLECTIONS
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.routers.utils.aretrieve_queryable_properties" class="md-nav__link">
+    aretrieve_queryable_properties()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.routers.utils.collection_factory" class="md-nav__link">
+    collection_factory()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.routers.utils.get_entries" class="md-nav__link">
+    get_entries()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.routers.utils.get_valid_resource" class="md-nav__link">
+    get_valid_resource()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.routers.utils.resource_factory" class="md-nav__link">
+    resource_factory()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.routers.utils.validate_resource" class="md-nav__link">
+    validate_resource()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.routers.utils" class="md-nav__link">
+    optimade_gateway.routers.utils
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.routers.utils.COLLECTIONS" class="md-nav__link">
+    COLLECTIONS
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.routers.utils.aretrieve_queryable_properties" class="md-nav__link">
+    aretrieve_queryable_properties()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.routers.utils.collection_factory" class="md-nav__link">
+    collection_factory()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.routers.utils.get_entries" class="md-nav__link">
+    get_entries()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.routers.utils.get_valid_resource" class="md-nav__link">
+    get_valid_resource()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.routers.utils.resource_factory" class="md-nav__link">
+    resource_factory()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.routers.utils.validate_resource" class="md-nav__link">
+    validate_resource()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="utils">utils<a class="headerlink" href="#utils" title="Permanent link">&para;</a></h1>
+
+
+  <div class="doc doc-object doc-module">
+
+<a id="optimade_gateway.routers.utils"></a>
+    <div class="doc doc-contents first">
+
+      <p>Utility functions for all routers.</p>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="optimade_gateway.routers.utils.COLLECTIONS" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">COLLECTIONS</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">optimade_gateway</span><span class="o">.</span><span class="n">mongo</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">AsyncMongoCollection</span><span class="p">]</span></code>
+
+
+<a href="#optimade_gateway.routers.utils.COLLECTIONS" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>A lazy-loaded dictionary of asynchronous MongoDB entry-endpoint collections.</p>
+    </div>
+
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="optimade_gateway.routers.utils.aretrieve_queryable_properties" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">aretrieve_queryable_properties</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">queryable_properties</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#optimade_gateway.routers.utils.aretrieve_queryable_properties" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Asynchronous implementation of <code>retrieve_queryable_properties()</code> from <code>optimade</code></p>
+<p>Reference to the function in the <code>optimade</code> API documentation:
+<a href="https://www.optimade.org/optimade-python-tools/api_reference/server/schemas/#optimade.server.schemas.retrieve_queryable_properties"><code>retrieve_queryable_properties()</code></a>.</p>
+<p>Recursively loops through the schema of a pydantic model and resolves all references,
+returning a dictionary of all the OPTIMADE-queryable properties of that model.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>schema</code></td>
+        <td><code>Dict[str, Any]</code></td>
+        <td><p>The schema of the pydantic model.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>queryable_properties</code></td>
+        <td><code>Iterable</code></td>
+        <td><p>The list of properties to find in the schema.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>dict</code></td>
+      <td><p>A flat dictionary with properties as keys, containing the field description, unit,
+sortability, support level, queryability and type, where provided.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">aretrieve_queryable_properties</span><span class="p">(</span>
+    <span class="n">schema</span><span class="p">:</span> <span class="s2">&quot;Dict[str, Any]&quot;</span><span class="p">,</span> <span class="n">queryable_properties</span><span class="p">:</span> <span class="s2">&quot;Iterable&quot;</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Asynchronous implementation of `retrieve_queryable_properties()` from `optimade`</span>
+
+<span class="sd">    Reference to the function in the `optimade` API documentation:</span>
+<span class="sd">    [`retrieve_queryable_properties()`](https://www.optimade.org/optimade-python-tools/api_reference/server/schemas/#optimade.server.schemas.retrieve_queryable_properties).</span>
+
+<span class="sd">    Recursively loops through the schema of a pydantic model and resolves all references,</span>
+<span class="sd">    returning a dictionary of all the OPTIMADE-queryable properties of that model.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        schema: The schema of the pydantic model.</span>
+<span class="sd">        queryable_properties: The list of properties to find in the schema.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A flat dictionary with properties as keys, containing the field description, unit,</span>
+<span class="sd">        sortability, support level, queryability and type, where provided.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">retrieve_queryable_properties</span><span class="p">(</span>
+        <span class="n">schema</span><span class="o">=</span><span class="n">schema</span><span class="p">,</span>
+        <span class="n">queryable_properties</span><span class="o">=</span><span class="n">queryable_properties</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="optimade_gateway.routers.utils.collection_factory" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">collection_factory</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#optimade_gateway.routers.utils.collection_factory" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Get or initiate an entry-endpoint resource collection.</p>
+<p>This factory utilizes the global dictionary
+<a href="#optimade_gateway.routers.utils.COLLECTIONS"><code>COLLECTIONS</code></a>.
+It lazily instantiates the collections and then caches them in the dictionary.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>name</code></td>
+        <td><code>str</code></td>
+        <td><p>The configured name for the entry-endpoint resource collection.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>The OPTIMADE Gateway asynchronous implementation of the
+[`MongoCollection`](https</code></td>
+      <td><p>//www.optimade.org/optimade-python-tools/api_reference/server/entry_collections/mongo/#optimade.server.entry_collections.mongo.MongoCollection).</p></td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>ValueError</code></td>
+        <td><p>If the supplied <code>name</code> is not one of the configured valid collection
+names.</p></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">collection_factory</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncMongoCollection</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get or initiate an entry-endpoint resource collection.</span>
+
+<span class="sd">    This factory utilizes the global dictionary</span>
+<span class="sd">    [`COLLECTIONS`][optimade_gateway.routers.utils.COLLECTIONS].</span>
+<span class="sd">    It lazily instantiates the collections and then caches them in the dictionary.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        name: The configured name for the entry-endpoint resource collection.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The OPTIMADE Gateway asynchronous implementation of the</span>
+<span class="sd">        [`MongoCollection`](https://www.optimade.org/optimade-python-tools/api_reference/server/entry_collections/mongo/#optimade.server.entry_collections.mongo.MongoCollection).</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If the supplied `name` is not one of the configured valid collection</span>
+<span class="sd">            names.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">COLLECTIONS</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">COLLECTIONS</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">databases_collection</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">optimade_gateway.mappers.databases</span> <span class="kn">import</span> <span class="n">DatabasesMapper</span> <span class="k">as</span> <span class="n">ResourceMapper</span>  <span class="c1"># type: ignore[no-redef]</span>
+    <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">gateways_collection</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">optimade_gateway.mappers.gateways</span> <span class="kn">import</span> <span class="n">GatewaysMapper</span> <span class="k">as</span> <span class="n">ResourceMapper</span>  <span class="c1"># type: ignore[no-redef]</span>
+    <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">queries_collection</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">optimade_gateway.mappers.queries</span> <span class="kn">import</span> <span class="n">QueryMapper</span> <span class="k">as</span> <span class="n">ResourceMapper</span>  <span class="c1"># type: ignore[no-redef]</span>
+    <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">links_collection</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">optimade_gateway.mappers.links</span> <span class="kn">import</span> <span class="n">LinksMapper</span> <span class="k">as</span> <span class="n">ResourceMapper</span>  <span class="c1"># type: ignore[no-redef]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> is not a valid entry-endpoint resource collection name. Configured&quot;</span>
+            <span class="s2">&quot; valid names: &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">(</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">databases_collection</span><span class="p">,</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">gateways_collection</span><span class="p">,</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">queries_collection</span><span class="p">,</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">links_collection</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">COLLECTIONS</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">AsyncMongoCollection</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">resource_cls</span><span class="o">=</span><span class="n">ResourceMapper</span><span class="o">.</span><span class="n">ENTRY_RESOURCE_CLASS</span><span class="p">,</span>
+        <span class="n">resource_mapper</span><span class="o">=</span><span class="n">ResourceMapper</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">COLLECTIONS</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="optimade_gateway.routers.utils.get_entries" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_entries</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">response_cls</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#optimade_gateway.routers.utils.get_entries" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Generalized <code>/{entries}</code> endpoint getter</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_entries</span><span class="p">(</span>
+    <span class="n">collection</span><span class="p">:</span> <span class="n">AsyncMongoCollection</span><span class="p">,</span>
+    <span class="n">response_cls</span><span class="p">:</span> <span class="s2">&quot;EntryResponseMany&quot;</span><span class="p">,</span>
+    <span class="n">request</span><span class="p">:</span> <span class="s2">&quot;Request&quot;</span><span class="p">,</span>
+    <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;EntryListingQueryParams&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;EntryResponseMany&quot;</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Generalized `/{entries}` endpoint getter&quot;&quot;&quot;</span>
+    <span class="p">(</span>
+        <span class="n">results</span><span class="p">,</span>
+        <span class="n">data_returned</span><span class="p">,</span>
+        <span class="n">more_data_available</span><span class="p">,</span>
+        <span class="n">fields</span><span class="p">,</span>
+        <span class="n">include_fields</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">=</span> <span class="k">await</span> <span class="n">collection</span><span class="o">.</span><span class="n">afind</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">more_data_available</span><span class="p">:</span>
+        <span class="c1"># Deduce the `next` link from the current request</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">parse_qs</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>
+        <span class="n">query</span><span class="p">[</span><span class="s2">&quot;page_offset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;page_offset&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)]</span>  <span class="c1"># type: ignore[list-item, arg-type]</span>
+        <span class="n">urlencoded</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlencode</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">doseq</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">base_url</span> <span class="o">=</span> <span class="n">get_base_url</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+
+        <span class="n">links</span> <span class="o">=</span> <span class="n">ToplevelLinks</span><span class="p">(</span><span class="nb">next</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}{</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">?</span><span class="si">{</span><span class="n">urlencoded</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">links</span> <span class="o">=</span> <span class="n">ToplevelLinks</span><span class="p">(</span><span class="nb">next</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">fields</span> <span class="ow">or</span> <span class="n">include_fields</span><span class="p">:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">handle_response_fields</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">include_fields</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">response_cls</span><span class="p">(</span>
+        <span class="n">links</span><span class="o">=</span><span class="n">links</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">results</span><span class="p">,</span>
+        <span class="n">meta</span><span class="o">=</span><span class="n">meta_values</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">data_returned</span><span class="o">=</span><span class="n">data_returned</span><span class="p">,</span>
+            <span class="n">data_available</span><span class="o">=</span><span class="k">await</span> <span class="n">collection</span><span class="o">.</span><span class="n">acount</span><span class="p">(),</span>
+            <span class="n">more_data_available</span><span class="o">=</span><span class="n">more_data_available</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="optimade_gateway.routers.utils.get_valid_resource" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_valid_resource</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">entry_id</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#optimade_gateway.routers.utils.get_valid_resource" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Validate and retrieve a resource</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_valid_resource</span><span class="p">(</span>
+    <span class="n">collection</span><span class="p">:</span> <span class="n">AsyncMongoCollection</span><span class="p">,</span> <span class="n">entry_id</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;EntryResource&quot;</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Validate and retrieve a resource&quot;&quot;&quot;</span>
+    <span class="k">await</span> <span class="n">validate_resource</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">entry_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="k">await</span> <span class="n">collection</span><span class="o">.</span><span class="n">get_one</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">entry_id</span><span class="p">})</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="optimade_gateway.routers.utils.resource_factory" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">resource_factory</span><span class="p">(</span><span class="n">create_resource</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#optimade_gateway.routers.utils.resource_factory" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Get or create a resource</p>
+<p>Currently supported resources:</p>
+<ul>
+<li><code>"databases"</code> (<a href="../../models/databases/#optimade_gateway.models.databases.DatabaseCreate"><code>DatabaseCreate</code></a>
+    -&gt;
+    <a href="https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResource"><code>LinksResource</code></a>)</li>
+<li><code>"gateways"</code> (<a href="../../models/gateways/#optimade_gateway.models.gateways.GatewayCreate"><code>GatewayCreate</code></a> -&gt;
+    <a href="../../models/gateways/#optimade_gateway.models.gateways.GatewayResource"><code>GatewayResource</code></a>)</li>
+<li><code>"queries"</code> (<a href="../../models/queries/#optimade_gateway.models.queries.QueryCreate"><code>QueryCreate</code></a> -&gt;
+    <a href="../../models/queries/#optimade_gateway.models.queries.QueryResource"><code>QueryResource</code></a>)</li>
+</ul>
+<p>For each of the resources, "uniqueness" is determined in the following way:</p>
+<div class="tabbed-set" data-tabs="1:3"><input checked="checked" id="optimade_gateway.routers.utils.resource_factory--__tabbed_1_1" name="optimade_gateway.routers.utils.resource_factory--__tabbed_1" type="radio" /><label for="optimade_gateway.routers.utils.resource_factory--__tabbed_1_1">Databases</label><div class="tabbed-content">
+<p>The <code>base_url</code> field is considered unique across all databases.</p>
+<p>If a <code>base_url</code> is provided via a
+<a href="https://www.optimade.org/optimade-python-tools/api_reference/models/jsonapi/#optimade.models.jsonapi.Link"><code>Link</code></a>
+model, the <code>base_url.href</code> value is used to query the MongoDB.</p>
+</div>
+<input id="optimade_gateway.routers.utils.resource_factory--__tabbed_1_2" name="optimade_gateway.routers.utils.resource_factory--__tabbed_1" type="radio" /><label for="optimade_gateway.routers.utils.resource_factory--__tabbed_1_2">Gateways</label><div class="tabbed-content">
+<p>The collected list of <code>databases.attributes.base_url</code> values is considered unique
+across all gateways.</p>
+<p>In the database, the search is done as a combination of the length/size of the
+<code>databases</code>' Python list/MongoDB array and a match on all (using the MongoDB
+<code>$all</code> operator) of the
+<a href="https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResourceAttributes.base_url"><code>databases.attributes.base_url</code></a>
+element values, when compared with the <code>create_resource</code>.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The <code>database_ids</code> attribute <strong>must not</strong> contain values that are not also
+included in the <code>databases</code> attribute, in the form of the IDs for the
+individual databases. If this should be the case an
+<a href="../../common/exceptions/#optimade_gateway.common.exceptions.OptimadeGatewayError"><code>OptimadeGatewayError</code></a>
+will be thrown.</p>
+</div>
+</div>
+<input id="optimade_gateway.routers.utils.resource_factory--__tabbed_1_3" name="optimade_gateway.routers.utils.resource_factory--__tabbed_1" type="radio" /><label for="optimade_gateway.routers.utils.resource_factory--__tabbed_1_3">Queries</label><div class="tabbed-content">
+<p>The <code>gateway_id</code>, <code>query_parameters</code>, and <code>endpoint</code> fields are collectively
+considered to define uniqueness for a
+<a href="../../models/queries/#optimade_gateway.models.queries.QueryResource"><code>QueryResource</code></a> in the MongoDB
+collection.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Only the <code>/structures</code> entry endpoint can be queried with multiple expected
+responses.</p>
+<p>This means the <code>endpoint</code> field defaults to <code>"structures"</code>, i.e., the
+<a href="https://www.optimade.org/optimade-python-tools/all_models/#optimade.models.structures.StructureResource"><code>StructureResource</code></a>
+resource model.</p>
+</div>
+</div>
+</div>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>create_resource</code></td>
+        <td><code>Union[DatabaseCreate, GatewayCreate, QueryCreate]</code></td>
+        <td><p>The resource to be retrieved or created anew.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Two things in a tuple</code></td>
+      <td><ul>
+<li>Either a <a href="../../models/gateways/#optimade_gateway.models.gateways.GatewayResource"><code>GatewayResource</code></a>;
+    a <a href="../../models/queries/#optimade_gateway.models.queries.QueryResource"><code>QueryResource</code></a>; or a
+    <a href="https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResource"><code>LinksResource</code></a>
+    and</li>
+<li>whether or not the resource was newly created.</li>
+</ul></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">resource_factory</span><span class="p">(</span>  <span class="c1"># pylint: disable=too-many-branches</span>
+    <span class="n">create_resource</span><span class="p">:</span> <span class="s2">&quot;Union[DatabaseCreate, GatewayCreate, QueryCreate]&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Tuple[Union[LinksResource, GatewayResource, QueryResource], bool]&quot;</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get or create a resource</span>
+
+<span class="sd">    Currently supported resources:</span>
+
+<span class="sd">    - `&quot;databases&quot;` ([`DatabaseCreate`][optimade_gateway.models.databases.DatabaseCreate]</span>
+<span class="sd">        -&gt;</span>
+<span class="sd">        [`LinksResource`](https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResource))</span>
+<span class="sd">    - `&quot;gateways&quot;` ([`GatewayCreate`][optimade_gateway.models.gateways.GatewayCreate] -&gt;</span>
+<span class="sd">        [`GatewayResource`][optimade_gateway.models.gateways.GatewayResource])</span>
+<span class="sd">    - `&quot;queries&quot;` ([`QueryCreate`][optimade_gateway.models.queries.QueryCreate] -&gt;</span>
+<span class="sd">        [`QueryResource`][optimade_gateway.models.queries.QueryResource])</span>
+
+<span class="sd">    For each of the resources, &quot;uniqueness&quot; is determined in the following way:</span>
+
+<span class="sd">    === &quot;Databases&quot;</span>
+<span class="sd">        The `base_url` field is considered unique across all databases.</span>
+
+<span class="sd">        If a `base_url` is provided via a</span>
+<span class="sd">        [`Link`](https://www.optimade.org/optimade-python-tools/api_reference/models/jsonapi/#optimade.models.jsonapi.Link)</span>
+<span class="sd">        model, the `base_url.href` value is used to query the MongoDB.</span>
+
+<span class="sd">    === &quot;Gateways&quot;</span>
+<span class="sd">        The collected list of `databases.attributes.base_url` values is considered unique</span>
+<span class="sd">        across all gateways.</span>
+
+<span class="sd">        In the database, the search is done as a combination of the length/size of the</span>
+<span class="sd">        `databases`&#39; Python list/MongoDB array and a match on all (using the MongoDB</span>
+<span class="sd">        `$all` operator) of the</span>
+<span class="sd">        [`databases.attributes.base_url`](https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResourceAttributes.base_url)</span>
+<span class="sd">        element values, when compared with the `create_resource`.</span>
+
+<span class="sd">        !!! important</span>
+<span class="sd">            The `database_ids` attribute **must not** contain values that are not also</span>
+<span class="sd">            included in the `databases` attribute, in the form of the IDs for the</span>
+<span class="sd">            individual databases. If this should be the case an</span>
+<span class="sd">            [`OptimadeGatewayError`][optimade_gateway.common.exceptions.OptimadeGatewayError]</span>
+<span class="sd">            will be thrown.</span>
+
+<span class="sd">    === &quot;Queries&quot;</span>
+<span class="sd">        The `gateway_id`, `query_parameters`, and `endpoint` fields are collectively</span>
+<span class="sd">        considered to define uniqueness for a</span>
+<span class="sd">        [`QueryResource`][optimade_gateway.models.queries.QueryResource] in the MongoDB</span>
+<span class="sd">        collection.</span>
+
+<span class="sd">        !!! attention</span>
+<span class="sd">            Only the `/structures` entry endpoint can be queried with multiple expected</span>
+<span class="sd">            responses.</span>
+
+<span class="sd">            This means the `endpoint` field defaults to `&quot;structures&quot;`, i.e., the</span>
+<span class="sd">            [`StructureResource`](https://www.optimade.org/optimade-python-tools/all_models/#optimade.models.structures.StructureResource)</span>
+<span class="sd">            resource model.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        create_resource: The resource to be retrieved or created anew.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Two things in a tuple:</span>
+
+<span class="sd">        - Either a [`GatewayResource`][optimade_gateway.models.gateways.GatewayResource];</span>
+<span class="sd">            a [`QueryResource`][optimade_gateway.models.queries.QueryResource]; or a</span>
+<span class="sd">            [`LinksResource`](https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResource)</span>
+<span class="sd">            and</span>
+<span class="sd">        - whether or not the resource was newly created.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">created</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">create_resource</span><span class="p">,</span> <span class="n">DatabaseCreate</span><span class="p">):</span>
+        <span class="n">collection_name</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">databases_collection</span>
+
+        <span class="n">base_url</span> <span class="o">=</span> <span class="n">get_resource_attribute</span><span class="p">(</span><span class="n">create_resource</span><span class="p">,</span> <span class="s2">&quot;base_url&quot;</span><span class="p">)</span>
+
+        <span class="n">mongo_query</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;$or&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span><span class="s2">&quot;base_url&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$eq&quot;</span><span class="p">:</span> <span class="n">base_url</span><span class="p">}},</span>
+                <span class="p">{</span><span class="s2">&quot;base_url.href&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$eq&quot;</span><span class="p">:</span> <span class="n">base_url</span><span class="p">}},</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">create_resource</span><span class="p">,</span> <span class="n">GatewayCreate</span><span class="p">):</span>
+        <span class="n">collection_name</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">gateways_collection</span>
+
+        <span class="c1"># One MUST have taken care of database_ids prior to calling `resource_factory()`</span>
+        <span class="n">database_attr_ids</span> <span class="o">=</span> <span class="p">{</span><span class="n">_</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">create_resource</span><span class="o">.</span><span class="n">databases</span> <span class="ow">or</span> <span class="p">[]}</span>
+        <span class="n">unknown_ids</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">database_id</span>
+            <span class="k">for</span> <span class="n">database_id</span> <span class="ow">in</span> <span class="n">create_resource</span><span class="o">.</span><span class="n">database_ids</span> <span class="ow">or</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="n">database_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">database_attr_ids</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">unknown_ids</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">OptimadeGatewayError</span><span class="p">(</span>
+                <span class="s2">&quot;When using `resource_factory()` for `GatewayCreate`, `database_ids` MUST&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot; not include unknown IDs. Passed unknown IDs: </span><span class="si">{</span><span class="n">unknown_ids</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">mongo_query</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;databases&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$size&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">create_resource</span><span class="o">.</span><span class="n">databases</span><span class="p">)},</span>
+            <span class="s2">&quot;databases.attributes.base_url&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;$all&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">_</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">base_url</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">create_resource</span><span class="o">.</span><span class="n">databases</span> <span class="ow">or</span> <span class="p">[]]</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">create_resource</span><span class="p">,</span> <span class="n">QueryCreate</span><span class="p">):</span>
+        <span class="n">collection_name</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">queries_collection</span>
+
+        <span class="c1"># Currently only /structures entry endpoints can be queried with multiple</span>
+        <span class="c1"># expected responses.</span>
+        <span class="n">create_resource</span><span class="o">.</span><span class="n">endpoint</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">create_resource</span><span class="o">.</span><span class="n">endpoint</span> <span class="k">if</span> <span class="n">create_resource</span><span class="o">.</span><span class="n">endpoint</span> <span class="k">else</span> <span class="s2">&quot;structures&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">mongo_query</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;gateway_id&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$eq&quot;</span><span class="p">:</span> <span class="n">create_resource</span><span class="o">.</span><span class="n">gateway_id</span><span class="p">},</span>
+            <span class="s2">&quot;query_parameters&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$eq&quot;</span><span class="p">:</span> <span class="n">create_resource</span><span class="o">.</span><span class="n">query_parameters</span><span class="p">},</span>
+            <span class="s2">&quot;endpoint&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$eq&quot;</span><span class="p">:</span> <span class="n">create_resource</span><span class="o">.</span><span class="n">endpoint</span><span class="p">},</span>
+        <span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="s2">&quot;create_resource must be either a GatewayCreate or QueryCreate object not &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">create_resource</span><span class="p">)</span><span class="si">!r}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">collection</span> <span class="o">=</span> <span class="k">await</span> <span class="n">collection_factory</span><span class="p">(</span><span class="n">collection_name</span><span class="p">)</span>
+    <span class="n">result</span><span class="p">,</span> <span class="n">data_returned</span><span class="p">,</span> <span class="n">more_data_available</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="k">await</span> <span class="n">collection</span><span class="o">.</span><span class="n">afind</span><span class="p">(</span>
+        <span class="n">criteria</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;filter&quot;</span><span class="p">:</span> <span class="k">await</span> <span class="n">clean_python_types</span><span class="p">(</span><span class="n">mongo_query</span><span class="p">)}</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">more_data_available</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">OptimadeGatewayError</span><span class="p">(</span>
+            <span class="s2">&quot;more_data_available MUST be False for a single entry response, however it &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;is </span><span class="si">{</span><span class="n">more_data_available</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">data_returned</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">OptimadeGatewayError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;More than one </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2"> were found. IDs of found &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="p">[</span><span class="n">_</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">result</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">create_resource</span><span class="p">,</span> <span class="n">DatabaseCreate</span><span class="p">):</span>
+            <span class="c1"># Set required `LinksResourceAttributes` values if not set</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">create_resource</span><span class="o">.</span><span class="n">description</span><span class="p">:</span>
+                <span class="n">create_resource</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">create_resource</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> created by OPTIMADE gateway database &quot;</span>
+                    <span class="s2">&quot;registration.&quot;</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">create_resource</span><span class="o">.</span><span class="n">link_type</span><span class="p">:</span>
+                <span class="n">create_resource</span><span class="o">.</span><span class="n">link_type</span> <span class="o">=</span> <span class="n">LinkType</span><span class="o">.</span><span class="n">EXTERNAL</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">create_resource</span><span class="o">.</span><span class="n">homepage</span><span class="p">:</span>
+                <span class="n">create_resource</span><span class="o">.</span><span class="n">homepage</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">create_resource</span><span class="p">,</span> <span class="n">GatewayCreate</span><span class="p">):</span>
+            <span class="c1"># Do not store `database_ids`</span>
+            <span class="k">if</span> <span class="s2">&quot;database_ids&quot;</span> <span class="ow">in</span> <span class="n">create_resource</span><span class="o">.</span><span class="n">__fields_set__</span><span class="p">:</span>
+                <span class="n">create_resource</span><span class="o">.</span><span class="n">database_ids</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">create_resource</span><span class="o">.</span><span class="n">__fields_set__</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;database_ids&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">create_resource</span><span class="p">,</span> <span class="n">QueryCreate</span><span class="p">):</span>
+            <span class="n">create_resource</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">QueryState</span><span class="o">.</span><span class="n">CREATED</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">collection</span><span class="o">.</span><span class="n">create_one</span><span class="p">(</span><span class="n">create_resource</span><span class="p">)</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Created new </span><span class="si">%s</span><span class="s2">: </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+        <span class="n">created</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="n">result</span><span class="p">,</span> <span class="n">created</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="optimade_gateway.routers.utils.validate_resource" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">validate_resource</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">entry_id</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#optimade_gateway.routers.utils.validate_resource" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Validate whether a resource exists in a collection</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">validate_resource</span><span class="p">(</span><span class="n">collection</span><span class="p">:</span> <span class="n">AsyncMongoCollection</span><span class="p">,</span> <span class="n">entry_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Validate whether a resource exists in a collection&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="k">await</span> <span class="n">collection</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">entry_id</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">NotFound</span><span class="p">(</span>
+            <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Resource &lt;id=</span><span class="si">{</span><span class="n">entry_id</span><span class="si">}</span><span class="s2">&gt; not found in </span><span class="si">{</span><span class="n">collection</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" data-md-state="hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../search/" class="md-footer__link md-footer__link--prev" aria-label="Previous: search" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              search
+            </div>
+          </div>
+        </a>
+      
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2021 Casper Welzel Andersen & THEOS, EPFL
+          </div>
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+      <a href="https://github.com/Materials-Consortia" target="_blank" rel="noopener" title="OPTIMADE on GitHub" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+      
+      
+      <a href="https://optimade.slack.com" target="_blank" rel="noopener" title="OPTIMADE on Slack" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M94.12 315.1c0 25.9-21.16 47.06-47.06 47.06S0 341 0 315.1c0-25.9 21.16-47.06 47.06-47.06h47.06v47.06zm23.72 0c0-25.9 21.16-47.06 47.06-47.06s47.06 21.16 47.06 47.06v117.84c0 25.9-21.16 47.06-47.06 47.06s-47.06-21.16-47.06-47.06V315.1zm47.06-188.98c-25.9 0-47.06-21.16-47.06-47.06S139 32 164.9 32s47.06 21.16 47.06 47.06v47.06H164.9zm0 23.72c25.9 0 47.06 21.16 47.06 47.06s-21.16 47.06-47.06 47.06H47.06C21.16 243.96 0 222.8 0 196.9s21.16-47.06 47.06-47.06H164.9zm188.98 47.06c0-25.9 21.16-47.06 47.06-47.06 25.9 0 47.06 21.16 47.06 47.06s-21.16 47.06-47.06 47.06h-47.06V196.9zm-23.72 0c0 25.9-21.16 47.06-47.06 47.06-25.9 0-47.06-21.16-47.06-47.06V79.06c0-25.9 21.16-47.06 47.06-47.06 25.9 0 47.06 21.16 47.06 47.06V196.9zM283.1 385.88c25.9 0 47.06 21.16 47.06 47.06 0 25.9-21.16 47.06-47.06 47.06-25.9 0-47.06-21.16-47.06-47.06v-47.06h47.06zm0-23.72c-25.9 0-47.06-21.16-47.06-47.06 0-25.9 21.16-47.06 47.06-47.06h117.84c25.9 0 47.06 21.16 47.06 47.06 0 25.9-21.16 47.06-47.06 47.06H283.1z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.e99e714c.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.c7d1b464.min.js"></script>
+      
+    
+  </body>
+</html>

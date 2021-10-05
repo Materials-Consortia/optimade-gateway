@@ -1,0 +1,2993 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the OPTIMADE Gateway">
+      
+      
+      
+      
+        <link rel="canonical" href="https://www.optimade.org/optimade-gateway/0.2.2/api_reference/models/queries/">
+      
+      <link rel="icon" href="../../../images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.3.1">
+    
+    
+      
+        <title>queries - OPTIMADE Gateway</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.1c75ef36.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#7e56c2">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../../css/reference.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="deep-orange">
+  
+    
+    <script>function __prefix(e){return new URL("../../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#queries" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="OPTIMADE Gateway" class="md-header__button md-logo" aria-label="OPTIMADE Gateway" data-md-component="logo">
+      
+  <img src="../../../images/optimade_logo_180x180.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            OPTIMADE Gateway
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              queries
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/Materials-Consortia/optimade-gateway" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    optimade-gateway
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="OPTIMADE Gateway" class="md-nav__button md-logo" aria-label="OPTIMADE Gateway" data-md-component="logo">
+      
+  <img src="../../../images/optimade_logo_180x180.svg" alt="logo">
+
+    </a>
+    OPTIMADE Gateway
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/Materials-Consortia/optimade-gateway" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    optimade-gateway
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        OPTIMADE Gateway
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../design/" class="md-nav__link">
+        Design of the OPTIMADE gateway
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CHANGELOG/" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LICENSE/" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          API Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          API Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../events/" class="md-nav__link">
+        events
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../exception_handlers/" class="md-nav__link">
+        exception_handlers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../main/" class="md-nav__link">
+        main
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../middleware/" class="md-nav__link">
+        middleware
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../warnings/" class="md-nav__link">
+        warnings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_6" type="checkbox" id="__nav_5_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_6">
+          common
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="common" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_6">
+          <span class="md-nav__icon md-icon"></span>
+          common
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../common/config/" class="md-nav__link">
+        config
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../common/exceptions/" class="md-nav__link">
+        exceptions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../common/logger/" class="md-nav__link">
+        logger
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../common/utils/" class="md-nav__link">
+        utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_7" type="checkbox" id="__nav_5_7" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_7">
+          mappers
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="mappers" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_7">
+          <span class="md-nav__icon md-icon"></span>
+          mappers
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mappers/base/" class="md-nav__link">
+        base
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mappers/databases/" class="md-nav__link">
+        databases
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mappers/gateways/" class="md-nav__link">
+        gateways
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mappers/links/" class="md-nav__link">
+        links
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mappers/queries/" class="md-nav__link">
+        queries
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_8" type="checkbox" id="__nav_5_8" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_8">
+          models
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="models" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_8">
+          <span class="md-nav__icon md-icon"></span>
+          models
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../databases/" class="md-nav__link">
+        databases
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gateways/" class="md-nav__link">
+        gateways
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          queries
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        queries
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries" class="md-nav__link">
+    optimade_gateway.models.queries
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QUERY_PARAMETERS" class="md-nav__link">
+    QUERY_PARAMETERS
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.EndpointEntryType" class="md-nav__link">
+    EndpointEntryType
+  </a>
+  
+    <nav class="md-nav" aria-label="EndpointEntryType">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.EndpointEntryType.REFERENCES" class="md-nav__link">
+    REFERENCES
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.EndpointEntryType.STRUCTURES" class="md-nav__link">
+    STRUCTURES
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.EntryResource" class="md-nav__link">
+    EntryResource
+  </a>
+  
+    <nav class="md-nav" aria-label="EntryResource">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.EntryResource.ensure_non_naive_datetime" class="md-nav__link">
+    ensure_non_naive_datetime()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.GatewayQueryResponse" class="md-nav__link">
+    GatewayQueryResponse
+  </a>
+  
+    <nav class="md-nav" aria-label="GatewayQueryResponse">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.GatewayQueryResponse.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.OptimadeQueryParameters" class="md-nav__link">
+    OptimadeQueryParameters
+  </a>
+  
+    <nav class="md-nav" aria-label="OptimadeQueryParameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.OptimadeQueryParameters.email_address" class="md-nav__link">
+    email_address
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.OptimadeQueryParameters.filter" class="md-nav__link">
+    filter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.OptimadeQueryParameters.include" class="md-nav__link">
+    include
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.OptimadeQueryParameters.page_above" class="md-nav__link">
+    page_above
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.OptimadeQueryParameters.page_below" class="md-nav__link">
+    page_below
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.OptimadeQueryParameters.page_cursor" class="md-nav__link">
+    page_cursor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.OptimadeQueryParameters.page_limit" class="md-nav__link">
+    page_limit
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.OptimadeQueryParameters.page_number" class="md-nav__link">
+    page_number
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.OptimadeQueryParameters.page_offset" class="md-nav__link">
+    page_offset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.OptimadeQueryParameters.response_fields" class="md-nav__link">
+    response_fields
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.OptimadeQueryParameters.response_format" class="md-nav__link">
+    response_format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.OptimadeQueryParameters.sort" class="md-nav__link">
+    sort
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryCreate" class="md-nav__link">
+    QueryCreate
+  </a>
+  
+    <nav class="md-nav" aria-label="QueryCreate">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryCreate.sort_not_supported" class="md-nav__link">
+    sort_not_supported()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryResource" class="md-nav__link">
+    QueryResource
+  </a>
+  
+    <nav class="md-nav" aria-label="QueryResource">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryResource.response_as_optimade" class="md-nav__link">
+    response_as_optimade()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryResourceAttributes" class="md-nav__link">
+    QueryResourceAttributes
+  </a>
+  
+    <nav class="md-nav" aria-label="QueryResourceAttributes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryResourceAttributes.endpoint" class="md-nav__link">
+    endpoint
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryResourceAttributes.gateway_id" class="md-nav__link">
+    gateway_id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryResourceAttributes.query_parameters" class="md-nav__link">
+    query_parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryResourceAttributes.response" class="md-nav__link">
+    response
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryResourceAttributes.state" class="md-nav__link">
+    state
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryResourceAttributes.only_allow_structures" class="md-nav__link">
+    only_allow_structures()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryState" class="md-nav__link">
+    QueryState
+  </a>
+  
+    <nav class="md-nav" aria-label="QueryState">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryState.CREATED" class="md-nav__link">
+    CREATED
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryState.FINISHED" class="md-nav__link">
+    FINISHED
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryState.IN_PROGRESS" class="md-nav__link">
+    IN_PROGRESS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryState.STARTED" class="md-nav__link">
+    STARTED
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/" class="md-nav__link">
+        resources
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../responses/" class="md-nav__link">
+        responses
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../search/" class="md-nav__link">
+        search
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_9" type="checkbox" id="__nav_5_9" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_9">
+          mongo
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="mongo" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_9">
+          <span class="md-nav__icon md-icon"></span>
+          mongo
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongo/collection/" class="md-nav__link">
+        collection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mongo/database/" class="md-nav__link">
+        database
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_10" type="checkbox" id="__nav_5_10" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_10">
+          queries
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="queries" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_10">
+          <span class="md-nav__icon md-icon"></span>
+          queries
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../queries/params/" class="md-nav__link">
+        params
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../queries/perform/" class="md-nav__link">
+        perform
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../queries/prepare/" class="md-nav__link">
+        prepare
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../queries/process/" class="md-nav__link">
+        process
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../queries/utils/" class="md-nav__link">
+        utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_11" type="checkbox" id="__nav_5_11" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_11">
+          routers
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="routers" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_11">
+          <span class="md-nav__icon md-icon"></span>
+          routers
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../routers/databases/" class="md-nav__link">
+        databases
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../routers/gateways/" class="md-nav__link">
+        gateways
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../routers/info/" class="md-nav__link">
+        info
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../routers/links/" class="md-nav__link">
+        links
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../routers/queries/" class="md-nav__link">
+        queries
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../routers/search/" class="md-nav__link">
+        search
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../routers/utils/" class="md-nav__link">
+        utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries" class="md-nav__link">
+    optimade_gateway.models.queries
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QUERY_PARAMETERS" class="md-nav__link">
+    QUERY_PARAMETERS
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.EndpointEntryType" class="md-nav__link">
+    EndpointEntryType
+  </a>
+  
+    <nav class="md-nav" aria-label="EndpointEntryType">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.EndpointEntryType.REFERENCES" class="md-nav__link">
+    REFERENCES
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.EndpointEntryType.STRUCTURES" class="md-nav__link">
+    STRUCTURES
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.EntryResource" class="md-nav__link">
+    EntryResource
+  </a>
+  
+    <nav class="md-nav" aria-label="EntryResource">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.EntryResource.ensure_non_naive_datetime" class="md-nav__link">
+    ensure_non_naive_datetime()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.GatewayQueryResponse" class="md-nav__link">
+    GatewayQueryResponse
+  </a>
+  
+    <nav class="md-nav" aria-label="GatewayQueryResponse">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.GatewayQueryResponse.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.OptimadeQueryParameters" class="md-nav__link">
+    OptimadeQueryParameters
+  </a>
+  
+    <nav class="md-nav" aria-label="OptimadeQueryParameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.OptimadeQueryParameters.email_address" class="md-nav__link">
+    email_address
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.OptimadeQueryParameters.filter" class="md-nav__link">
+    filter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.OptimadeQueryParameters.include" class="md-nav__link">
+    include
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.OptimadeQueryParameters.page_above" class="md-nav__link">
+    page_above
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.OptimadeQueryParameters.page_below" class="md-nav__link">
+    page_below
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.OptimadeQueryParameters.page_cursor" class="md-nav__link">
+    page_cursor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.OptimadeQueryParameters.page_limit" class="md-nav__link">
+    page_limit
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.OptimadeQueryParameters.page_number" class="md-nav__link">
+    page_number
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.OptimadeQueryParameters.page_offset" class="md-nav__link">
+    page_offset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.OptimadeQueryParameters.response_fields" class="md-nav__link">
+    response_fields
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.OptimadeQueryParameters.response_format" class="md-nav__link">
+    response_format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.OptimadeQueryParameters.sort" class="md-nav__link">
+    sort
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryCreate" class="md-nav__link">
+    QueryCreate
+  </a>
+  
+    <nav class="md-nav" aria-label="QueryCreate">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryCreate.sort_not_supported" class="md-nav__link">
+    sort_not_supported()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryResource" class="md-nav__link">
+    QueryResource
+  </a>
+  
+    <nav class="md-nav" aria-label="QueryResource">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryResource.response_as_optimade" class="md-nav__link">
+    response_as_optimade()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryResourceAttributes" class="md-nav__link">
+    QueryResourceAttributes
+  </a>
+  
+    <nav class="md-nav" aria-label="QueryResourceAttributes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryResourceAttributes.endpoint" class="md-nav__link">
+    endpoint
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryResourceAttributes.gateway_id" class="md-nav__link">
+    gateway_id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryResourceAttributes.query_parameters" class="md-nav__link">
+    query_parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryResourceAttributes.response" class="md-nav__link">
+    response
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryResourceAttributes.state" class="md-nav__link">
+    state
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryResourceAttributes.only_allow_structures" class="md-nav__link">
+    only_allow_structures()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryState" class="md-nav__link">
+    QueryState
+  </a>
+  
+    <nav class="md-nav" aria-label="QueryState">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryState.CREATED" class="md-nav__link">
+    CREATED
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryState.FINISHED" class="md-nav__link">
+    FINISHED
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryState.IN_PROGRESS" class="md-nav__link">
+    IN_PROGRESS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.queries.QueryState.STARTED" class="md-nav__link">
+    STARTED
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="queries">queries<a class="headerlink" href="#queries" title="Permanent link">&para;</a></h1>
+
+
+  <div class="doc doc-object doc-module">
+
+<a id="optimade_gateway.models.queries"></a>
+    <div class="doc doc-contents first">
+
+      <p>Pydantic models/schemas for the Queries resource.</p>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="optimade_gateway.models.queries.QUERY_PARAMETERS" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">QUERY_PARAMETERS</span></code>
+
+
+<a href="#optimade_gateway.models.queries.QUERY_PARAMETERS" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Entry listing URL query parameters from the <code>optimade</code> package
+(<a href="https://www.optimade.org/optimade-python-tools/api_reference/server/query_params/#optimade.server.query_params.EntryListingQueryParams"><code>EntryListingQueryParams</code></a>).</p>
+    </div>
+
+  </div>
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade_gateway.models.queries.EndpointEntryType" class="doc doc-heading">
+        <code>
+EndpointEntryType            (<span title="enum.Enum">Enum</span>)
+        </code>
+
+
+
+<a href="#optimade_gateway.models.queries.EndpointEntryType" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Entry endpoint resource types, mapping to their pydantic models from the
+<code>optimade</code> package.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade_gateway.models.queries.EndpointEntryType.REFERENCES" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">REFERENCES</span></code>
+
+
+<a href="#optimade_gateway.models.queries.EndpointEntryType.REFERENCES" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade_gateway.models.queries.EndpointEntryType.STRUCTURES" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">STRUCTURES</span></code>
+
+
+<a href="#optimade_gateway.models.queries.EndpointEntryType.STRUCTURES" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade_gateway.models.queries.EntryResource" class="doc doc-heading">
+        <code>
+EntryResource            (<span title="optimade.models.entries.EntryResource">EntryResource</span>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.EntryResource" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Entry Resource ensuring datetimes are not naive.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade_gateway.models.queries.EntryResource.ensure_non_naive_datetime" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">ensure_non_naive_datetime</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.EntryResource.ensure_non_naive_datetime" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Set timezone to UTC if datetime is naive.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;attributes&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">ensure_non_naive_datetime</span><span class="p">(</span>
+    <span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">EntryResourceAttributes</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EntryResourceAttributes</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Set timezone to UTC if datetime is naive.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">last_modified</span> <span class="ow">and</span> <span class="n">value</span><span class="o">.</span><span class="n">last_modified</span><span class="o">.</span><span class="n">tzinfo</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">value</span><span class="o">.</span><span class="n">last_modified</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">last_modified</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">value</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade_gateway.models.queries.GatewayQueryResponse" class="doc doc-heading">
+        <code>
+GatewayQueryResponse            (<span title="optimade.models.jsonapi.Response">Response</span>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.GatewayQueryResponse" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Response from a Gateway Query.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade_gateway.models.queries.GatewayQueryResponse.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.GatewayQueryResponse.__init__" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Remove root_validator <code>either_data_meta_or_errors_must_be_set</code>.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Remove root_validator `either_data_meta_or_errors_must_be_set`.&quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_remove_pre_root_validators</span><span class="p">()</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade_gateway.models.queries.OptimadeQueryParameters" class="doc doc-heading">
+        <code>
+OptimadeQueryParameters            (<span title="pydantic.main.BaseModel">BaseModel</span>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.OptimadeQueryParameters" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Common OPTIMADE entry listing endpoint query parameters.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade_gateway.models.queries.OptimadeQueryParameters.email_address" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">email_address</span><span class="p">:</span> <span class="n">EmailStr</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.OptimadeQueryParameters.email_address" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>An email address of the user making the request.
+The email SHOULD be that of a person and not an automatic system.
+Example: <code>http://example.com/v1/structures?email_address=user@example.com</code></p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade_gateway.models.queries.OptimadeQueryParameters.filter" class="doc doc-heading">
+<code class="highlight language-python"><span class="nb">filter</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.OptimadeQueryParameters.filter" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>A filter string, in the format described in section API Filtering Format Specification of the specification.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade_gateway.models.queries.OptimadeQueryParameters.include" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">include</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.OptimadeQueryParameters.include" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>A server MAY implement the JSON API concept of returning <a href="https://jsonapi.org/format/1.0/#document-compound-documents">compound documents</a> by utilizing the <code>include</code> query parameter as specified by <a href="https://jsonapi.org/format/1.0/#fetching-includes">JSON API 1.0</a>.</p>
+<p>All related resource objects MUST be returned as part of an array value for the top-level <code>included</code> field, see the section JSON Response Schema: Common Fields.</p>
+<p>The value of <code>include</code> MUST be a comma-separated list of "relationship paths", as defined in the <a href="https://jsonapi.org/format/1.0/#fetching-includes">JSON API</a>.
+If relationship paths are not supported, or a server is unable to identify a relationship path a <code>400 Bad Request</code> response MUST be made.</p>
+<p>The <strong>default value</strong> for <code>include</code> is <code>references</code>.
+This means <code>references</code> entries MUST always be included under the top-level field <code>included</code> as default, since a server assumes if <code>include</code> is not specified by a client in the request, it is still specified as <code>include=references</code>.
+Note, if a client explicitly specifies <code>include</code> and leaves out <code>references</code>, <code>references</code> resource objects MUST NOT be included under the top-level field <code>included</code>, as per the definition of <code>included</code>, see section JSON Response Schema: Common Fields.</p>
+<blockquote>
+<p><strong>Note</strong>: A query with the parameter <code>include</code> set to the empty string means no related resource objects are to be returned under the top-level field <code>included</code>.</p>
+</blockquote>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade_gateway.models.queries.OptimadeQueryParameters.page_above" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">page_above</span><span class="p">:</span> <span class="n">ConstrainedIntValue</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.OptimadeQueryParameters.page_above" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>RECOMMENDED for use with <em>value-based</em> pagination: using <code>page_above</code>/<code>page_below</code> and <code>page_limit</code> is RECOMMENDED.
+Example: Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by increasing <code>id</code>, so <code>page_above</code> value refers to an <code>id</code> value): <code>/structures?page_above=4000&amp;page_limit=100</code>.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade_gateway.models.queries.OptimadeQueryParameters.page_below" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">page_below</span><span class="p">:</span> <span class="n">ConstrainedIntValue</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.OptimadeQueryParameters.page_below" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>RECOMMENDED for use with <em>value-based</em> pagination: using <code>page_above</code>/<code>page_below</code> and <code>page_limit</code> is RECOMMENDED.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade_gateway.models.queries.OptimadeQueryParameters.page_cursor" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">page_cursor</span><span class="p">:</span> <span class="n">ConstrainedIntValue</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.OptimadeQueryParameters.page_cursor" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>RECOMMENDED for use with <em>cursor-based</em> pagination: using <code>page_cursor</code> and <code>page_limit</code> is RECOMMENDED.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade_gateway.models.queries.OptimadeQueryParameters.page_limit" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">page_limit</span><span class="p">:</span> <span class="n">ConstrainedIntValue</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.OptimadeQueryParameters.page_limit" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Sets a numerical limit on the number of entries returned.
+See <a href="https://jsonapi.org/format/1.0/#fetching-pagination">JSON API 1.0</a>.
+The API implementation MUST return no more than the number specified.
+It MAY return fewer.
+The database MAY have a maximum limit and not accept larger numbers (in which case an error code -- 403 Forbidden -- MUST be returned).
+The default limit value is up to the API implementation to decide.
+Example: <code>http://example.com/optimade/v1/structures?page_limit=100</code></p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade_gateway.models.queries.OptimadeQueryParameters.page_number" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">page_number</span><span class="p">:</span> <span class="n">ConstrainedIntValue</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.OptimadeQueryParameters.page_number" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>RECOMMENDED for use with <em>page-based</em> pagination: using <code>page_number</code> and <code>page_limit</code> is RECOMMENDED.
+It is RECOMMENDED that the first page has number 1, i.e., that <code>page_number</code> is 1-based.
+Example: Fetch page 2 of up to 50 structures per page: <code>/structures?page_number=2&amp;page_limit=50</code>.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade_gateway.models.queries.OptimadeQueryParameters.page_offset" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">page_offset</span><span class="p">:</span> <span class="n">ConstrainedIntValue</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.OptimadeQueryParameters.page_offset" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>RECOMMENDED for use with <em>offset-based</em> pagination: using <code>page_offset</code> and <code>page_limit</code> is RECOMMENDED.
+Example: Skip 50 structures and fetch up to 100: <code>/structures?page_offset=50&amp;page_limit=100</code>.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade_gateway.models.queries.OptimadeQueryParameters.response_fields" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">response_fields</span><span class="p">:</span> <span class="n">ConstrainedStrValue</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.OptimadeQueryParameters.response_fields" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>A comma-delimited set of fields to be provided in the output.
+If provided, these fields MUST be returned along with the REQUIRED fields.
+Other OPTIONAL fields MUST NOT be returned when this parameter is present.
+Example: <code>http://example.com/v1/structures?response_fields=last_modified,nsites</code></p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade_gateway.models.queries.OptimadeQueryParameters.response_format" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">response_format</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.OptimadeQueryParameters.response_format" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>The output format requested (see section Response Format).
+Defaults to the format string 'json', which specifies the standard output format described in this specification.
+Example: <code>http://example.com/v1/structures?response_format=xml</code></p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade_gateway.models.queries.OptimadeQueryParameters.sort" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">sort</span><span class="p">:</span> <span class="n">ConstrainedStrValue</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.OptimadeQueryParameters.sort" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>If supporting sortable queries, an implementation MUST use the <code>sort</code> query parameter with format as specified by <a href="https://jsonapi.org/format/1.0/#fetching-sorting">JSON API 1.0</a>.</p>
+<p>An implementation MAY support multiple sort fields for a single query.
+If it does, it again MUST conform to the JSON API 1.0 specification.</p>
+<p>If an implementation supports sorting for an entry listing endpoint, then the <code>/info/&lt;entries&gt;</code> endpoint MUST include, for each field name <code>&lt;fieldname&gt;</code> in its <code>data.properties.&lt;fieldname&gt;</code> response value that can be used for sorting, the key <code>sortable</code> with value <code>true</code>.
+If a field name under an entry listing endpoint supporting sorting cannot be used for sorting, the server MUST either leave out the <code>sortable</code> key or set it equal to <code>false</code> for the specific field name.
+The set of field names, with <code>sortable</code> equal to <code>true</code> are allowed to be used in the "sort fields" list according to its definition in the JSON API 1.0 specification.
+The field <code>sortable</code> is in addition to each property description and other OPTIONAL fields.
+An example is shown in the section Entry Listing Info Endpoints.</p>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade_gateway.models.queries.QueryCreate" class="doc doc-heading">
+        <code>
+QueryCreate            (<a title="optimade_gateway.models.resources.EntryResourceCreate" href="../resources/#optimade_gateway.models.resources.EntryResourceCreate">EntryResourceCreate</a>, <a title="optimade_gateway.models.queries.QueryResourceAttributes" href="#optimade_gateway.models.queries.QueryResourceAttributes">QueryResourceAttributes</a>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.QueryCreate" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Model for creating new Query resources in the MongoDB</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade_gateway.models.queries.QueryCreate.sort_not_supported" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">sort_not_supported</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.QueryCreate.sort_not_supported" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Warn and reset value if <code>sort</code> is supplied.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;query_parameters&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">sort_not_supported</span><span class="p">(</span>
+    <span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">OptimadeQueryParameters</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OptimadeQueryParameters</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Warn and reset value if `sort` is supplied.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">sort</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">SortNotSupported</span><span class="p">())</span>
+        <span class="n">value</span><span class="o">.</span><span class="n">sort</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">value</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade_gateway.models.queries.QueryResource" class="doc doc-heading">
+        <code>
+QueryResource            (<a title="optimade_gateway.models.queries.EntryResource" href="#optimade_gateway.models.queries.EntryResource">EntryResource</a>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.QueryResource" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>OPTIMADE query resource for a gateway</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade_gateway.models.queries.QueryResource.response_as_optimade" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">response_as_optimade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.QueryResource.response_as_optimade" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Return <code>attributes.response</code> as a valid OPTIMADE entry listing response.</p>
+<p>Note, this method disregards the state of the query and will simply return the
+query results as they currently are (if there are any at all).</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>url</code></td>
+        <td><code>Union[urllib.parse.ParseResult, urllib.parse.SplitResult, starlette.datastructures.URL, str]</code></td>
+        <td><p>Optionally, update the <code>meta.query.representation</code> value with this.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>A valid OPTIMADE entry-listing response according to the
+[OPTIMADE specification](https</code></td>
+      <td><p>//github.com/Materials-Consortia/OPTIMADE/blob/master/optimade.rst#entry-listing-endpoints)
+or an error response, if errors were returned or occurred during the query.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">response_as_optimade</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+        <span class="n">Union</span><span class="p">[</span><span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">ParseResult</span><span class="p">,</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">SplitResult</span><span class="p">,</span> <span class="n">StarletteURL</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryResponseMany</span><span class="p">,</span> <span class="n">ErrorResponse</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Return `attributes.response` as a valid OPTIMADE entry listing response.</span>
+
+<span class="sd">    Note, this method disregards the state of the query and will simply return the</span>
+<span class="sd">    query results as they currently are (if there are any at all).</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        url: Optionally, update the `meta.query.representation` value with this.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A valid OPTIMADE entry-listing response according to the</span>
+<span class="sd">        [OPTIMADE specification](https://github.com/Materials-Consortia/OPTIMADE/blob/master/optimade.rst#entry-listing-endpoints)</span>
+<span class="sd">        or an error response, if errors were returned or occurred during the query.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">optimade.server.routers.utils</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># pylint: disable=import-outside-toplevel</span>
+        <span class="n">meta_values</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_update_id</span><span class="p">(</span>
+        <span class="n">entry_</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">database_provider_</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;Internal utility function to prepend the entries&#39; `id` with</span>
+<span class="sd">        `provider/database/`.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            entry_: The entry as a model or a dictionary.</span>
+<span class="sd">            database_provider_: `provider/database` string.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The entry with an updated `id` value.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">entry_</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">_entry</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">entry_</span><span class="p">)</span>
+            <span class="n">_entry</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">database_provider_</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">entry_</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">_entry</span> <span class="o">=</span> <span class="n">entry_</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">_entry</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">database_provider_</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">entry_</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span>  <span class="c1"># type: ignore[union-attr]</span>
+        <span class="k">return</span> <span class="n">_entry</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">response</span><span class="p">:</span>
+        <span class="c1"># The query has not yet been initiated</span>
+        <span class="k">return</span> <span class="n">ErrorResponse</span><span class="p">(</span>
+            <span class="n">errors</span><span class="o">=</span><span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;detail&quot;</span><span class="p">:</span> <span class="p">(</span>
+                        <span class="s2">&quot;Can not return as a valid OPTIMADE response as the query has&quot;</span>
+                        <span class="s2">&quot; not yet been initialized.&quot;</span>
+                    <span class="p">),</span>
+                    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;OPTIMADE_GATEWAY_QUERY_NOT_INITIALIZED&quot;</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="p">],</span>
+            <span class="n">meta</span><span class="o">=</span><span class="n">meta_values</span><span class="p">(</span>
+                <span class="n">url</span><span class="o">=</span><span class="n">url</span> <span class="ow">or</span> <span class="sa">f</span><span class="s2">&quot;/queries/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">?&quot;</span><span class="p">,</span>
+                <span class="n">data_returned</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">data_available</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">more_data_available</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="n">meta_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">meta</span>
+    <span class="k">if</span> <span class="n">url</span><span class="p">:</span>
+        <span class="n">meta_</span> <span class="o">=</span> <span class="n">meta_</span><span class="o">.</span><span class="n">dict</span><span class="p">(</span><span class="n">exclude_unset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">repeated_key</span> <span class="ow">in</span> <span class="p">(</span>
+            <span class="s2">&quot;query&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;api_version&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;time_stamp&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;provider&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;implementation&quot;</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="n">meta_</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">repeated_key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">meta_</span> <span class="o">=</span> <span class="n">meta_values</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">meta_</span><span class="p">)</span>
+
+    <span class="c1"># Error response</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">errors</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ErrorResponse</span><span class="p">(</span>
+            <span class="n">errors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span>
+            <span class="n">meta</span><span class="o">=</span><span class="n">meta_</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Data response</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">database_provider</span><span class="p">,</span> <span class="n">entries</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+            <span class="p">[</span><span class="k">await</span> <span class="n">_update_id</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">database_provider</span><span class="p">)</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">]</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">endpoint</span><span class="o">.</span><span class="n">get_response_model</span><span class="p">()(</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">results</span><span class="p">,</span>
+        <span class="n">meta</span><span class="o">=</span><span class="n">meta_</span><span class="p">,</span>
+        <span class="n">links</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">links</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade_gateway.models.queries.QueryResourceAttributes" class="doc doc-heading">
+        <code>
+QueryResourceAttributes            (<span title="optimade.models.entries.EntryResourceAttributes">EntryResourceAttributes</span>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.QueryResourceAttributes" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Attributes for an OPTIMADE gateway query.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade_gateway.models.queries.QueryResourceAttributes.endpoint" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">endpoint</span><span class="p">:</span> <span class="n">EndpointEntryType</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.QueryResourceAttributes.endpoint" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>The entry endpoint queried, e.g., 'structures'.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade_gateway.models.queries.QueryResourceAttributes.gateway_id" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">gateway_id</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+      <small class="doc doc-property doc-property-required"><code>required</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.QueryResourceAttributes.gateway_id" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>The OPTIMADE gateway ID for this query.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade_gateway.models.queries.QueryResourceAttributes.query_parameters" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">query_parameters</span><span class="p">:</span> <span class="n">OptimadeQueryParameters</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+      <small class="doc doc-property doc-property-required"><code>required</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.QueryResourceAttributes.query_parameters" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>OPTIMADE query parameters for entry listing endpoints used for this query.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade_gateway.models.queries.QueryResourceAttributes.response" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">response</span><span class="p">:</span> <span class="n">GatewayQueryResponse</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.QueryResourceAttributes.response" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Response from gateway query.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade_gateway.models.queries.QueryResourceAttributes.state" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">state</span><span class="p">:</span> <span class="n">QueryState</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.QueryResourceAttributes.state" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Current state of Gateway Query.</p>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade_gateway.models.queries.QueryResourceAttributes.only_allow_structures" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">only_allow_structures</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.queries.QueryResourceAttributes.only_allow_structures" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Temporarily only allow queries to "structures" endpoints.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;endpoint&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">only_allow_structures</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">EndpointEntryType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EndpointEntryType</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Temporarily only allow queries to &quot;structures&quot; endpoints.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="n">EndpointEntryType</span><span class="o">.</span><span class="n">STRUCTURES</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="s1">&#39;OPTIMADE Gateway temporarily only supports queries to &quot;structures&quot; &#39;</span>
+            <span class="s1">&#39;endpoints, i.e.: endpoint=&quot;structures&quot;&#39;</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">value</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="optimade_gateway.models.queries.QueryState" class="doc doc-heading">
+        <code>
+QueryState            (<span title="enum.Enum">Enum</span>)
+        </code>
+
+
+
+<a href="#optimade_gateway.models.queries.QueryState" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Enumeration of possible states for a Gateway Query.</p>
+<p>The states are enumerated here in the expected evolvement.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade_gateway.models.queries.QueryState.CREATED" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">CREATED</span></code>
+
+
+<a href="#optimade_gateway.models.queries.QueryState.CREATED" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade_gateway.models.queries.QueryState.FINISHED" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">FINISHED</span></code>
+
+
+<a href="#optimade_gateway.models.queries.QueryState.FINISHED" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade_gateway.models.queries.QueryState.IN_PROGRESS" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">IN_PROGRESS</span></code>
+
+
+<a href="#optimade_gateway.models.queries.QueryState.IN_PROGRESS" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade_gateway.models.queries.QueryState.STARTED" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">STARTED</span></code>
+
+
+<a href="#optimade_gateway.models.queries.QueryState.STARTED" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" data-md-state="hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../gateways/" class="md-footer__link md-footer__link--prev" aria-label="Previous: gateways" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              gateways
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../resources/" class="md-footer__link md-footer__link--next" aria-label="Next: resources" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              resources
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2021 Casper Welzel Andersen & THEOS, EPFL
+          </div>
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+      <a href="https://github.com/Materials-Consortia" target="_blank" rel="noopener" title="OPTIMADE on GitHub" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+      
+      
+      <a href="https://optimade.slack.com" target="_blank" rel="noopener" title="OPTIMADE on Slack" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M94.12 315.1c0 25.9-21.16 47.06-47.06 47.06S0 341 0 315.1c0-25.9 21.16-47.06 47.06-47.06h47.06v47.06zm23.72 0c0-25.9 21.16-47.06 47.06-47.06s47.06 21.16 47.06 47.06v117.84c0 25.9-21.16 47.06-47.06 47.06s-47.06-21.16-47.06-47.06V315.1zm47.06-188.98c-25.9 0-47.06-21.16-47.06-47.06S139 32 164.9 32s47.06 21.16 47.06 47.06v47.06H164.9zm0 23.72c25.9 0 47.06 21.16 47.06 47.06s-21.16 47.06-47.06 47.06H47.06C21.16 243.96 0 222.8 0 196.9s21.16-47.06 47.06-47.06H164.9zm188.98 47.06c0-25.9 21.16-47.06 47.06-47.06 25.9 0 47.06 21.16 47.06 47.06s-21.16 47.06-47.06 47.06h-47.06V196.9zm-23.72 0c0 25.9-21.16 47.06-47.06 47.06-25.9 0-47.06-21.16-47.06-47.06V79.06c0-25.9 21.16-47.06 47.06-47.06 25.9 0 47.06 21.16 47.06 47.06V196.9zM283.1 385.88c25.9 0 47.06 21.16 47.06 47.06 0 25.9-21.16 47.06-47.06 47.06-25.9 0-47.06-21.16-47.06-47.06v-47.06h47.06zm0-23.72c-25.9 0-47.06-21.16-47.06-47.06 0-25.9 21.16-47.06 47.06-47.06h117.84c25.9 0 47.06 21.16 47.06 47.06 0 25.9-21.16 47.06-47.06 47.06H283.1z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.e99e714c.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.c7d1b464.min.js"></script>
+      
+    
+  </body>
+</html>
