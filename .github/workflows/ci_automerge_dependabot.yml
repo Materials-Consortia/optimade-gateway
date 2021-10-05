@@ -54,7 +54,7 @@ jobs:
         if [ -n "$(git status --porcelain pyproject.toml)" ]; then
           # Only commit if there's something to commit (git will return non-zero otherwise)
           git commit -m "Update pytest dependency config"
-          git push origin/${{ github.head_ref }}
+          git push origin/${{ github.event.pull_request.head.ref }}
         fi
 
     - name: Activate auto-merge
