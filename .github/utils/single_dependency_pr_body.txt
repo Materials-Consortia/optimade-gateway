@@ -1,6 +1,6 @@
 ### Update dependencies
 
-Automatically created PR from [ci/dependabot-updates](https://github.com/Materials-Consortia/optimade-gateway/tree/ci/dependabot-updates).
-It should be automagically merged into main upon CI success.
+Automatically created PR from [`ci/dependabot-updates`](https://github.com/Materials-Consortia/optimade-gateway/tree/ci/dependabot-updates).
+It should be automagically merged into `main` upon CI success.
 
-For more information see the [Dependabot updates workflow](https://github.com/Materials-Consortia/optimade-gateway/blob/main/.github/workflows/ci_dependabot.yml).
+For more information see the ["Dependabot updates" workflow](https://github.com/Materials-Consortia/optimade-gateway/blob/main/.github/workflows/ci_dependabot.yml).
