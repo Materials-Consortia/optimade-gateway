@@ -6,6 +6,7 @@ on:
     # Dependabot runs once a week (every Monday) (pip)
     # and every day (GH Actions) at 7:00 (5:00 UTC)
     - cron: "30 6 * * 3"
+  pull_request:
 
 jobs:
 
