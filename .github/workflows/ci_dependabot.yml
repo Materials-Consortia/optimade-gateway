@@ -15,7 +15,7 @@ jobs:
     if: github.repository_owner == 'Materials-Consortia'
     runs-on: ubuntu-latest
     env:
-      DEPENDABOT_BRANCH: ci/dependabot-updates
+      DEPENDABOT_BRANCH: fix-167-single-dependabot-pr
       GIT_USER_NAME: OPTIMADE Developers
       GIT_USER_EMAIL: "dev@optimade.org"
 
