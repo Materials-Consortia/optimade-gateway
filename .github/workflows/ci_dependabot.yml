@@ -33,12 +33,12 @@ jobs:
     - name: Fetch PR body
       id: pr_body
       run: |
-        PR_BDOY=$(cat .github/utils/single_dependency_pr_body.txt)
-        PR_BODY="${PR_BODY//'%'/'%25'}"
-        PR_BODY="${PR_BODY//$'\n'/'%0A'}"
-        PR_BODY="${PR_BODY//$'\r'/'%0D'}"
-        echo ::set-output name=PR_BODY::$PR_BODY
+        PR_BDOY='$(cat .github/utils/single_dependency_pr_body.txt)'
+        PR_BODY='${PR_BODY//"%"/"%25"}'
+        PR_BODY='${PR_BODY//$"\n"/"%0A"}'
+        PR_BODY='${PR_BODY//$"\r"/"%0D"}'
         echo $PR_BODY
+        echo ::set-output name=PR_BODY::$PR_BODY
 
     - name: Create PR
       id: cpr
