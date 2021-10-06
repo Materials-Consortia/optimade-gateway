@@ -31,13 +31,14 @@ jobs:
         git reset --hard ${{ env.DEPENDABOT_BRANCH }}
 
     - name: Fetch PR body
-      id: pr-body
+      id: pr_body
       run: |
         PR_BDOY=$(cat .github/utils/single_dependency_pr_body.txt)
         PR_BODY="${PR_BODY//'%'/'%25'}"
         PR_BODY="${PR_BODY//$'\n'/'%0A'}"
         PR_BODY="${PR_BODY//$'\r'/'%0D'}"
         echo ::set-output name=PR_BODY::$PR_BODY
+        echo $PR_BODY
 
     - name: Create PR
       id: cpr
@@ -50,7 +51,7 @@ jobs:
         branch: ci/update-dependencies
         delete-branch: true
         title: Update dependencies
-        body: "${{ steps.pr-body.outputs.PR_BODY }}"
+        body: ${{ steps.pr_body.outputs.PR_BODY }}
         labels: CI/CD,dependencies
 
     - name: Information
