@@ -6,7 +6,6 @@ on:
     # Dependabot runs once a week (every Monday) (pip)
     # and every day (GH Actions) at 7:00 (5:00 UTC)
     - cron: "30 6 * * 3"
-  pull_request:
 
 jobs:
 
@@ -15,7 +14,7 @@ jobs:
     if: github.repository_owner == 'Materials-Consortia'
     runs-on: ubuntu-latest
     env:
-      DEPENDABOT_BRANCH: fix-167-single-dependabot-pr
+      DEPENDABOT_BRANCH: ci/dependabot-updates
       GIT_USER_NAME: OPTIMADE Developers
       GIT_USER_EMAIL: "dev@optimade.org"
 
