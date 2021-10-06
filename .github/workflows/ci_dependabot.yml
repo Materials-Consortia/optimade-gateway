@@ -31,9 +31,7 @@ jobs:
         git reset --hard ${{ env.DEPENDABOT_BRANCH }}
 
     - name: Fetch PR body
-      run: |
-        PR_BODY="$(cat .github/utils/single_dependency_pr_body.txt)"
-        echo "PR_BDOY=${PR_BODY}" >> $GITHUB_ENV
+      run: echo "PR_BDOY=$(cat .github/utils/single_dependency_pr_body.txt)" >> $GITHUB_ENV
 
     - name: Create PR
       id: cpr
