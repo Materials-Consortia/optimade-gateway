@@ -27,6 +27,7 @@ jobs:
       with:
         fetch-depth: 0
         ref: ${{ github.event.pull_request.head.ref }}
+        persist-credentials: false
 
     - name: Setup Python 3.8
       uses: actions/setup-python@v2
@@ -50,12 +51,20 @@ jobs:
       run: |
         invoke update-pytest-reqs
 
+        echo "PUSH_BACK_TO_BRANCH=false" >> $GITHUB_ENV
         git add pyproject.toml
         if [ -n "$(git status --porcelain pyproject.toml)" ]; then
           # Only commit if there's something to commit (git will return non-zero otherwise)
           git commit -m "Update pytest dependency config"
-          git push origin/${{ github.event.pull_request.head.ref }}
+          echo "PUSH_BACK_TO_BRANCH=true" >> $GITHUB_ENV
         fi
+
+    - name: Update Dependabot branch
+      if: env.PUSH_BACK_TO_BRANCH == 'true'
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.event.pull_request.head.ref }}
 
     - name: Activate auto-merge
       run: |
