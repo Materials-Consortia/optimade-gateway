@@ -24,10 +24,60 @@ jobs:
       with:
         ref: main
 
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install `pre-commit` and dependencies
+      run: |
+        python -m pip install -U pip
+        pip install -U setuptools wheel
+
+        while IFS="" read -r line || [ -n "${line}" ]; do
+          if [[ "${line}" =~ ^pre-commit.*$ ]]; then
+            pre_commit="${line}"
+          fi
+        done < requirements_dev.txt
+
+        while IFS="" read -r line || [ -n "${line}" ]; do
+          if [[ "${line}" =~ ^invoke.*$ ]]; then
+            invoke="${line}"
+          fi
+        done < requirements_docs.txt
+
+        pip install ${pre_commit} ${invoke}
+
+    - name: Set up git user info
+      run: |
+        git config --global user.name "${{ env.GIT_USER_NAME }}"
+        git config --global user.email "${{ env.GIT_USER_EMAIL }}"
+
     - name: Reset to '${{ env.DEPENDABOT_BRANCH }}'
       run: |
         git fetch origin ${{ env.DEPENDABOT_BRANCH }}:${{ env.DEPENDABOT_BRANCH }}
         git reset --hard ${{ env.DEPENDABOT_BRANCH }}
+
+    - name: Auto-update `pre-commit` hooks
+      run: |
+        pre-commit autoupdate
+
+        echo "UPDATED_PRE_COMMIT_HOOKS=false" >> $GITHUB_ENV
+        if [ -n "$(git status --porcelain .pre-commit-config.yaml)" ]; then
+          # Set environment variable notifying next steps that the hooks changed
+          echo "UPDATED_PRE_COMMIT_HOOKS=true" >> $GITHUB_ENV
+        fi
+
+    - name: Possibly run `pre-commit` with updated hooks
+      if: env.UPDATED_PRE_COMMIT_HOOKS == 'true'
+      continue-on-error: true  # Still create the PR if this step fails
+      run: SKIP=pylint pre-commit run --all-files
+
+    - name: Possibly commit changes and updates
+      if: env.UPDATED_PRE_COMMIT_HOOKS == 'true'
+      run: |
+        git add .
+        git commit -m "Update \`pre-commit\` hooks"
 
     - name: Fetch PR body
       id: pr_body
