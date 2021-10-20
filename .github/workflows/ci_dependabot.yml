@@ -62,10 +62,13 @@ jobs:
       run: |
         pre-commit autoupdate
 
-        echo "UPDATED_PRE_COMMIT_HOOKS=false" >> $GITHUB_ENV
         if [ -n "$(git status --porcelain .pre-commit-config.yaml)" ]; then
           # Set environment variable notifying next steps that the hooks changed
+          echo "Pre-commit hooks have been updated !"
           echo "UPDATED_PRE_COMMIT_HOOKS=true" >> $GITHUB_ENV
+        else
+          echo "No pre-commit hooks have been updated."
+          echo "UPDATED_PRE_COMMIT_HOOKS=false" >> $GITHUB_ENV
         fi
 
     - name: Possibly run `pre-commit` with updated hooks

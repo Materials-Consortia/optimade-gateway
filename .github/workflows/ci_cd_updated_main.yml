@@ -36,10 +36,12 @@ jobs:
         if [ "${LATEST_PR_BODY}" == "$(cat .github/utils/single_dependency_pr_body.txt)" ]; then
           # The dependency branch has just been merged into `main`
           # The dependency branch should be reset to `main`
+          echo "The dependencies have just been updated! Reset to main."
           git reset --hard origin/main
           echo "FORCE_PUSH=yes" >> $GITHUB_ENV
         else
           # Normal procedure: Merge `main` into `ci/dependabot-updates`
+          echo "Merge new updates to main into ${DEPENDABOT_BRANCH}"
           git merge -m "Keep '${{ env.DEPENDABOT_BRANCH }}' up-to-date with 'main'" origin/main
           echo "FORCE_PUSH=no" >> $GITHUB_ENV
         fi
