@@ -1,27 +1,30 @@
 """Tests for /databases endpoints"""
 # pylint: disable=no-name-in-module
-from pathlib import Path
-from typing import Awaitable, Callable
+from typing import TYPE_CHECKING
 
-try:
-    from typing import Literal
-except ImportError:
-    from typing_extensions import Literal
-
-from fastapi import FastAPI
-import httpx
 import pytest
+
+if TYPE_CHECKING:
+    from pathlib import Path
+    from typing import Awaitable, Callable
+
+    try:
+        from typing import Literal
+    except ImportError:
+        from typing_extensions import Literal
+
+    from fastapi import FastAPI
+    from httpx import Response
 
 
 pytestmark = pytest.mark.asyncio
 
 
 async def test_get_databases(
-    client: Callable[
-        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-        Awaitable[httpx.Response],
-    ],
-    top_dir: Path,
+    client: (
+        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
+    ),
+    top_dir: "Path",
 ):
     """Test GET /databases"""
     import json
@@ -44,10 +47,9 @@ async def test_get_databases(
 
 @pytest.mark.usefixtures("reset_db_after")
 async def test_post_databases(
-    client: Callable[
-        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-        Awaitable[httpx.Response],
-    ]
+    client: (
+        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
+    ),
 ):
     """Test POST /databases"""
     from bson.objectid import ObjectId
@@ -98,11 +100,10 @@ async def test_post_databases(
 
 
 async def test_get_single_database(
-    client: Callable[
-        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-        Awaitable[httpx.Response],
-    ],
-    top_dir: Path,
+    client: (
+        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
+    ),
+    top_dir: "Path",
 ):
     """Test GET /databases/{id}"""
     import json

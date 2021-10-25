@@ -1,24 +1,27 @@
 """Tests for /links endpoint"""
-from typing import Awaitable, Callable
+from typing import TYPE_CHECKING
 
-try:
-    from typing import Literal
-except ImportError:
-    from typing_extensions import Literal
-
-from fastapi import FastAPI
-import httpx
 import pytest
+
+if TYPE_CHECKING:
+    from typing import Awaitable, Callable
+
+    try:
+        from typing import Literal
+    except ImportError:
+        from typing_extensions import Literal
+
+    from fastapi import FastAPI
+    from httpx import Response
 
 
 pytestmark = pytest.mark.asyncio
 
 
 async def test_get_links(
-    client: Callable[
-        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-        Awaitable[httpx.Response],
-    ]
+    client: (
+        'Callable[ [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
+    ),
 ):
     """Test GET /links"""
     from optimade.models import LinksResponse

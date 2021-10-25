@@ -1,28 +1,31 @@
 """Tests for /queries endpoints"""
 # pylint: disable=no-name-in-module
 import json
-from pathlib import Path
-from typing import Awaitable, Callable
+from typing import TYPE_CHECKING
 
-try:
-    from typing import Literal
-except ImportError:
-    from typing_extensions import Literal
-
-from fastapi import FastAPI
-import httpx
 import pytest
+
+if TYPE_CHECKING:
+    from typing import Awaitable, Callable
+    from pathlib import Path
+
+    try:
+        from typing import Literal
+    except ImportError:
+        from typing_extensions import Literal
+
+    from fastapi import FastAPI
+    from httpx import Response
 
 
 pytestmark = pytest.mark.asyncio
 
 
 async def test_get_queries(
-    client: Callable[
-        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-        Awaitable[httpx.Response],
-    ],
-    top_dir: Path,
+    client: (
+        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
+    ),
+    top_dir: "Path",
 ):
     """Test GET /queries"""
     from optimade_gateway.models.responses import QueriesResponse
@@ -43,12 +46,11 @@ async def test_get_queries(
 
 @pytest.mark.usefixtures("reset_db_after")
 async def test_post_queries(
-    client: Callable[
-        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-        Awaitable[httpx.Response],
-    ],
-    mock_gateway_responses: Callable[[dict], None],
-    get_gateway: Callable[[str], Awaitable[dict]],
+    client: (
+        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
+    ),
+    mock_gateway_responses: "Callable[[dict], None]",
+    get_gateway: "Callable[[str], Awaitable[dict]]",
 ):
     """Test POST /queries"""
     import asyncio
@@ -109,10 +111,9 @@ async def test_post_queries(
 
 @pytest.mark.usefixtures("reset_db_after")
 async def test_post_queries_bad_data(
-    client: Callable[
-        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-        Awaitable[httpx.Response],
-    ]
+    client: (
+        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
+    ),
 ):
     """Test POST /queries with bad data"""
     from optimade.models import ErrorResponse, OptimadeError
@@ -150,12 +151,11 @@ async def test_post_queries_bad_data(
 
 @pytest.mark.usefixtures("reset_db_after")
 async def test_query_results(
-    client: Callable[
-        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-        Awaitable[httpx.Response],
-    ],
-    mock_gateway_responses: Callable[[dict], None],
-    get_gateway: Callable[[str], Awaitable[dict]],
+    client: (
+        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
+    ),
+    mock_gateway_responses: "Callable[[dict], None]",
+    get_gateway: "Callable[[str], Awaitable[dict]]",
 ):
     """Test POST /queries and GET /queries/{id}"""
     import asyncio
@@ -200,12 +200,11 @@ async def test_query_results(
 
 @pytest.mark.usefixtures("reset_db_after")
 async def test_errored_query_results(
-    client: Callable[
-        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-        Awaitable[httpx.Response],
-    ],
-    mock_gateway_responses: Callable[[dict], None],
-    get_gateway: Callable[[str], Awaitable[dict]],
+    client: (
+        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
+    ),
+    mock_gateway_responses: "Callable[[dict], None]",
+    get_gateway: "Callable[[str], Awaitable[dict]]",
 ):
     """Test POST /queries and GET /queries/{id} with an erroneous response"""
     import asyncio
@@ -238,12 +237,11 @@ async def test_errored_query_results(
 
 @pytest.mark.usefixtures("reset_db_after")
 async def test_sort_no_effect(
-    client: Callable[
-        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-        Awaitable[httpx.Response],
-    ],
-    get_gateway: Callable[[str], Awaitable[dict]],
-    mock_gateway_responses: Callable[[dict], None],
+    client: (
+        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
+    ),
+    get_gateway: "Callable[[str], Awaitable[dict]]",
+    mock_gateway_responses: "Callable[[dict], None]",
 ):
     """Test POST /queries with the `sort` query parameter
 

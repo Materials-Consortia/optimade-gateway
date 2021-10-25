@@ -1,13 +1,17 @@
 """Test queries/perform.py"""
+from typing import TYPE_CHECKING
+
 import pytest
-from pytest_httpx import HTTPXMock
+
+if TYPE_CHECKING:
+    from pytest_httpx import HTTPXMock
 
 
 pytestmark = pytest.mark.asyncio
 
 
 async def test_db_get_all_resources_recursivity(
-    httpx_mock: HTTPXMock, generic_meta: dict
+    httpx_mock: "HTTPXMock", generic_meta: dict
 ):
     """Test the recursivity of db_get_all_resources()"""
     import re
@@ -72,7 +76,7 @@ async def test_db_get_all_resources_recursivity(
 
 
 async def test_db_get_all_resources_error_response(
-    httpx_mock: HTTPXMock, caplog: pytest.LogCaptureFixture, generic_meta: dict
+    httpx_mock: "HTTPXMock", caplog: pytest.LogCaptureFixture, generic_meta: dict
 ):
     """Test db_get_all_resources when an ErrorResponse is received"""
     import re
