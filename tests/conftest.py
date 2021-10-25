@@ -4,24 +4,29 @@ import json
 import os
 from pathlib import Path
 import re
-from typing import Awaitable, Callable, Union
+from typing import TYPE_CHECKING
 
-from fastapi import FastAPI
-import httpx
 import pytest
-from pytest_httpx import HTTPXMock, to_response
-from pytest_httpx._httpx_internals import Response as MockResponse
+from pytest_httpx import to_response
 
-try:
-    from typing import Literal
-except ImportError:
-    from typing_extensions import Literal
+
+if TYPE_CHECKING:
+    from typing import Awaitable, Callable, Union
+
+    try:
+        from typing import Literal
+    except ImportError:
+        from typing_extensions import Literal
+
+    from fastapi import FastAPI
+    from httpx import Request, Response
+    from pytest_httpx import HTTPXMock
 
 
 # UTILITY FUNCTIONS
 
 
-async def setup_db_utility(top_dir: Union[Path, str]) -> None:
+async def setup_db_utility(top_dir: "Union[Path, str]") -> None:
     """Utility function for setting up/resetting the MongoDB
 
     Parameters:
@@ -83,20 +88,19 @@ async def setup_db(top_dir: Path) -> None:
 
 
 @pytest.fixture
-def client() -> Callable[
-    [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-    Awaitable[httpx.Response],
-]:
+def client() -> (
+    'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
+):
     """Return function to make HTTP requests with async httpx client"""
     from httpx import AsyncClient
 
     async def _client(
         request: str,
-        app: FastAPI = None,
+        app: "FastAPI" = None,
         base_url: str = None,
-        method: Literal["get", "post", "put", "delete", "patch"] = None,
+        method: 'Literal["get", "post", "put", "delete", "patch"]' = None,
         **kwargs,
-    ) -> httpx.Response:
+    ) -> "Response":
         """Perform async HTTP request
 
         Parameters:
@@ -119,7 +123,7 @@ def client() -> Callable[
 
 
 @pytest.fixture
-def get_gateway() -> Callable[[str], Awaitable[dict]]:
+def get_gateway() -> "Callable[[str], Awaitable[dict]]":
     """Return function to find a single gateway in the current MongoDB"""
 
     async def _get_gateway(id: str) -> dict:
@@ -156,8 +160,8 @@ async def reset_db_after(top_dir: Path) -> None:
 
 @pytest.fixture
 def mock_gateway_responses(
-    httpx_mock: HTTPXMock, top_dir: Path
-) -> Callable[[dict], None]:
+    httpx_mock: "HTTPXMock", top_dir: Path
+) -> "Callable[[dict], None]":
     """Add mock responses for gateway databases
 
     (Successful) mock responses are loaded from local JSON files and returned according to the
@@ -185,7 +189,7 @@ def mock_gateway_responses(
                     top_dir
                     / f"tests/static/db_responses/{''.join(database['id'].split('/')[1:])}.json"
                 ) as handle:
-                    data = json.load(handle)
+                    data: "Union[dict, list]" = json.load(handle)
 
                 if data.get("errors", []):
                     for error in data.get("errors", []):
@@ -203,7 +207,7 @@ def mock_gateway_responses(
                     status_code=status_code,
                 )
 
-    def sleep_response(request: httpx.Request, extensions: dict) -> MockResponse:
+    def sleep_response(request: "Request", extensions: dict) -> "Response":
         """A mock response from an external OPTIMADE DB URL
 
         This response sleeps for X seconds, where X is derived from the database ID.

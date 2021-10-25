@@ -1,27 +1,30 @@
 """Tests for /gateways endpoints"""
 # pylint: disable=no-name-in-module
-from pathlib import Path
-from typing import Awaitable, Callable
+from typing import TYPE_CHECKING
 
-try:
-    from typing import Literal
-except ImportError:
-    from typing_extensions import Literal
-
-from fastapi import FastAPI
-import httpx
 import pytest
+
+if TYPE_CHECKING:
+    from pathlib import Path
+    from typing import Awaitable, Callable
+
+    try:
+        from typing import Literal
+    except ImportError:
+        from typing_extensions import Literal
+
+    from fastapi import FastAPI
+    from httpx import Response
 
 
 pytestmark = pytest.mark.asyncio
 
 
 async def test_get_gateways(
-    client: Callable[
-        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-        Awaitable[httpx.Response],
-    ],
-    top_dir: Path,
+    client: (
+        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
+    ),
+    top_dir: "Path",
 ):
     """Test GET /gateways"""
     import json
@@ -44,10 +47,9 @@ async def test_get_gateways(
 
 @pytest.mark.usefixtures("reset_db_after")
 async def test_post_gateways(
-    client: Callable[
-        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-        Awaitable[httpx.Response],
-    ]
+    client: (
+        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
+    ),
 ):
     """Test POST /gateways"""
     from bson.objectid import ObjectId
@@ -109,11 +111,10 @@ async def test_post_gateways(
 
 
 async def test_path_id_raises(
-    client: Callable[
-        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-        Awaitable[httpx.Response],
-    ],
-    top_dir: Path,
+    client: (
+        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
+    ),
+    top_dir: "Path",
 ):
     """Ensure a suggested gateway id with a forward slash gives an error"""
     import json
@@ -140,10 +141,9 @@ async def test_path_id_raises(
 
 
 async def test_post_gateways_database_ids(
-    client: Callable[
-        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-        Awaitable[httpx.Response],
-    ]
+    client: (
+        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
+    ),
 ):
     """Test POST /gateways with `database_ids` specified"""
     from optimade.server.routers.utils import BASE_URL_PREFIXES
@@ -192,10 +192,9 @@ async def test_post_gateways_database_ids(
 
 @pytest.mark.usefixtures("reset_db_after")
 async def test_post_gateways_create_with_db_ids(
-    client: Callable[
-        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-        Awaitable[httpx.Response],
-    ]
+    client: (
+        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
+    ),
 ):
     """Test POST /gateways with `database_ids`, while creating gateway"""
     from optimade.server.routers.utils import BASE_URL_PREFIXES
@@ -256,12 +255,11 @@ async def test_post_gateways_create_with_db_ids(
 
 
 async def test_get_single_gateway(
-    client: Callable[
-        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-        Awaitable[httpx.Response],
-    ],
+    client: (
+        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
+    ),
     random_gateway: str,
-    top_dir: Path,
+    top_dir: "Path",
 ):
     """Test GET /gateways/{gateway_id}"""
     import json

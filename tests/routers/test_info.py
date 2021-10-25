@@ -1,24 +1,27 @@
 """Tests for /info endpoint"""
-from typing import Awaitable, Callable
+from typing import TYPE_CHECKING
 
-try:
-    from typing import Literal
-except ImportError:
-    from typing_extensions import Literal
-
-from fastapi import FastAPI
-import httpx
 import pytest
+
+if TYPE_CHECKING:
+    from typing import Awaitable, Callable
+
+    try:
+        from typing import Literal
+    except ImportError:
+        from typing_extensions import Literal
+
+    from fastapi import FastAPI
+    from httpx import Response
 
 
 pytestmark = pytest.mark.asyncio
 
 
 async def test_get_info(
-    client: Callable[
-        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-        Awaitable[httpx.Response],
-    ]
+    client: (
+        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
+    ),
 ):
     """Test GET /info"""
     from optimade.models import InfoResponse
@@ -56,10 +59,9 @@ async def test_get_info(
 
 
 async def test_get_info_entry(
-    client: Callable[
-        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-        Awaitable[httpx.Response],
-    ]
+    client: (
+        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
+    ),
 ):
     """Test GET /info/{entry}"""
     from optimade.models import EntryInfoResponse
