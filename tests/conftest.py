@@ -7,7 +7,6 @@ import re
 from typing import TYPE_CHECKING
 
 import pytest
-from pytest_httpx import to_response
 
 
 if TYPE_CHECKING:
@@ -114,7 +113,9 @@ def client() -> (
         base_url = base_url if base_url is not None else CONFIG.base_url
         method = method if method is not None else "get"
 
-        async with AsyncClient(app=app, base_url=base_url) as aclient:
+        async with AsyncClient(
+            app=app, base_url=base_url, follow_redirects=True
+        ) as aclient:
             response = await getattr(aclient, method)(request, **kwargs)
 
         return response
@@ -215,13 +216,20 @@ def mock_gateway_responses(
         from concurrent.futures import ThreadPoolExecutor
         import time
 
+        from httpx import Response
+
+        std_response_params = {
+            "status_code": 200,
+            "extensions": {"http_version": "HTTP/1.1".encode("ascii")},
+        }
+
         sleep_arg = int(request.url.host.split("-")[-1])
 
         with ThreadPoolExecutor(max_workers=1) as executor:
             executor.map(time.sleep, [sleep_arg])
         with open(top_dir / "tests/static/db_responses/optimade-sample.json") as handle:
             data = json.load(handle)
-        return to_response(json=data)
+        return Response(json=data, **std_response_params)
 
     return _mock_response
 
