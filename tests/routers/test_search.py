@@ -1,15 +1,19 @@
 """Tests for the /search endpoint"""
-from pathlib import Path
-from typing import Awaitable, Callable
+from typing import TYPE_CHECKING
 
-try:
-    from typing import Literal
-except ImportError:
-    from typing_extensions import Literal
-
-from fastapi import FastAPI
-import httpx
 import pytest
+
+if TYPE_CHECKING:
+    from pathlib import Path
+    from typing import Awaitable, Callable
+
+    try:
+        from typing import Literal
+    except ImportError:
+        from typing_extensions import Literal
+
+    from fastapi import FastAPI
+    from httpx import Response
 
 
 pytestmark = [pytest.mark.asyncio]
@@ -17,12 +21,11 @@ pytestmark = [pytest.mark.asyncio]
 
 @pytest.mark.usefixtures("reset_db_after")
 async def test_get_search(
-    client: Callable[
-        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-        Awaitable[httpx.Response],
-    ],
-    mock_gateway_responses: Callable[[dict], None],
-    get_gateway: Callable[[str], Awaitable[dict]],
+    client: (
+        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
+    ),
+    mock_gateway_responses: "Callable[[dict], None]",
+    get_gateway: "Callable[[str], Awaitable[dict]]",
     caplog: pytest.LogCaptureFixture,
 ):
     """Test GET /search
@@ -60,12 +63,11 @@ async def test_get_search(
 
 
 async def test_get_search_existing_gateway(
-    client: Callable[
-        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-        Awaitable[httpx.Response],
-    ],
-    mock_gateway_responses: Callable[[dict], None],
-    get_gateway: Callable[[str], Awaitable[dict]],
+    client: (
+        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
+    ),
+    mock_gateway_responses: "Callable[[dict], None]",
+    get_gateway: "Callable[[str], Awaitable[dict]]",
     caplog: pytest.LogCaptureFixture,
 ):
     """Test GET /search for base URLs matching an existing gateway"""
@@ -121,12 +123,11 @@ async def test_get_search_existing_gateway(
 
 
 async def test_get_search_not_finishing(
-    client: Callable[
-        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-        Awaitable[httpx.Response],
-    ],
-    mock_gateway_responses: Callable[[dict], None],
-    get_gateway: Callable[[str], Awaitable[dict]],
+    client: (
+        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
+    ),
+    mock_gateway_responses: "Callable[[dict], None]",
+    get_gateway: "Callable[[str], Awaitable[dict]]",
     caplog: pytest.LogCaptureFixture,
 ):
     """Test GET /search for unfinished query (redirect to query URL)"""
@@ -173,18 +174,18 @@ async def test_get_search_not_finishing(
 
 
 async def test_get_as_optimade(
-    client: Callable[
-        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-        Awaitable[httpx.Response],
-    ],
-    mock_gateway_responses: Callable[[dict], None],
-    get_gateway: Callable[[str], Awaitable[dict]],
+    client: (
+        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
+    ),
+    mock_gateway_responses: "Callable[[dict], None]",
+    get_gateway: "Callable[[str], Awaitable[dict]]",
     caplog: pytest.LogCaptureFixture,
 ):
     """Test GET /search with `as_optimade=True`
 
     This should be equivalent of `GET /gateways/{gateway_id}/structures`.
     """
+    from httpx import get as httpx_get
     from optimade.models import StructureResponseMany
 
     from optimade_gateway.common.config import CONFIG
@@ -219,7 +220,7 @@ async def test_get_as_optimade(
 
     for database in gateway["databases"]:
         url = f"{database['attributes']['base_url']}/structures?page_limit={query_params['page_limit']}"
-        db_response = httpx.get(url)
+        db_response = httpx_get(url)
         assert (
             db_response.status_code == 200
         ), f"Request to {url} failed: {db_response.json()}"
@@ -252,13 +253,12 @@ async def test_get_as_optimade(
 
 @pytest.mark.usefixtures("reset_db_after")
 async def test_post_search(
-    client: Callable[
-        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-        Awaitable[httpx.Response],
-    ],
-    mock_gateway_responses: Callable[[dict], None],
-    get_gateway: Callable[[str], Awaitable[dict]],
-    top_dir: Path,
+    client: (
+        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
+    ),
+    mock_gateway_responses: "Callable[[dict], None]",
+    get_gateway: "Callable[[str], Awaitable[dict]]",
+    top_dir: "Path",
     caplog: pytest.LogCaptureFixture,
 ):
     """Test POST /search
@@ -325,12 +325,11 @@ async def test_post_search(
 
 
 async def test_post_search_existing_gateway(
-    client: Callable[
-        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-        Awaitable[httpx.Response],
-    ],
-    mock_gateway_responses: Callable[[dict], None],
-    get_gateway: Callable[[str], Awaitable[dict]],
+    client: (
+        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
+    ),
+    mock_gateway_responses: "Callable[[dict], None]",
+    get_gateway: "Callable[[str], Awaitable[dict]]",
     caplog: pytest.LogCaptureFixture,
 ):
     """Test POST /search for base URLs matching an existing gateway"""
@@ -402,12 +401,11 @@ async def test_post_search_existing_gateway(
 
 @pytest.mark.usefixtures("reset_db_after")
 async def test_sort_no_effect(
-    client: Callable[
-        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-        Awaitable[httpx.Response],
-    ],
-    get_gateway: Callable[[str], Awaitable[dict]],
-    mock_gateway_responses: Callable[[dict], None],
+    client: (
+        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
+    ),
+    get_gateway: "Callable[[str], Awaitable[dict]]",
+    mock_gateway_responses: "Callable[[dict], None]",
 ):
     """Test GET and POST /search with the `sort` query parameter
 
