@@ -296,7 +296,7 @@ def update_openapi(context, pre_commit=False):
         encoding="utf8",
     )
     (TOP_DIR / "openapi" / "openapi.yml").write_text(
-        yaml.safe_dump(APP.openapi(), indent=2) + "\n",
+        yaml.safe_dump(APP.openapi(), indent=2),
         encoding="utf8",
     )
 
