@@ -24,6 +24,8 @@ repos:
   hooks:
   - id: mypy
     exclude: ^tests/.*$
+    additional_dependencies:
+      - "types-PyYAML"
 
 - repo: local
   hooks:
@@ -60,3 +62,10 @@ repos:
     pass_filenames: false
     files: ^README.md$
     description: Update the landing page for the documentation if the source file (README.md) is changed.
+  - id: openapi
+    name: OpenAPI
+    description: Update OpenAPI specification.
+    entry: invoke
+    args: [update-openapi, --pre-commit]
+    pass_filenames: false
+    language: python

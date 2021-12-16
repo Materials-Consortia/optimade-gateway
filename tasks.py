@@ -272,3 +272,52 @@ def update_pytest_reqs(_):
         f"Successfully updated pytest config plugins:\n        {plugins}\n  (was: "
         f"{original_versions})"
     )
+
+
+@task(
+    help={
+        "pre-commit": (
+            "Whether or not this task is run as a pre-commit hook. If `True`, a list "
+            "of changes will be printed, if any changes were made."
+        ),
+    }
+)
+def update_openapi(context, pre_commit=False):
+    """Update OpenAPI schema in files `openapi.json` and `openapi.yml`."""
+    import json
+    import yaml
+
+    from optimade_gateway.main import APP
+
+    (TOP_DIR / "openapi").mkdir(exist_ok=True)
+
+    (TOP_DIR / "openapi" / "openapi.json").write_text(
+        json.dumps(APP.openapi(), indent=2) + "\n",
+        encoding="utf8",
+    )
+    (TOP_DIR / "openapi" / "openapi.yml").write_text(
+        yaml.safe_dump(APP.openapi(), indent=2) + "\n",
+        encoding="utf8",
+    )
+
+    if pre_commit:
+        # Check if there have been any changes.
+        # List changes if yes.
+        if TYPE_CHECKING:
+            context: "Context" = context
+
+        # NOTE: grep returns an exit code of 1 if it doesn't find anything
+        # (which will be good in this case).
+        # Concerning the weird last grep command see:
+        # http://manpages.ubuntu.com/manpages/precise/en/man1/git-status.1.html
+        result: "Result" = context.run(
+            "git status --porcelain openapi | grep -E '^[? MARC][?MD]' || exit 0",
+            hide=True,
+        )
+        if result.stdout:
+            sys.exit(
+                "The following file(s) have been changed/added, please stage it/them:"
+                f"\n\n{result.stdout}"
+            )
+
+    print("Updated OpenAPI specification.")
