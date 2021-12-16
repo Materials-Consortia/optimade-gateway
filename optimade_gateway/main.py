@@ -12,14 +12,7 @@ from optimade_gateway import __version__
 from optimade_gateway.exception_handlers import request_validation_exception_handler
 from optimade_gateway.middleware import CheckWronglyVersionedBaseUrlsGateways
 from optimade_gateway.events import EVENTS
-from optimade_gateway.routers import (
-    databases,
-    gateways,
-    info,
-    links,
-    queries,
-    search,
-)
+from optimade_gateway.routers import ROUTERS
 
 APP = FastAPI(
     title="OPTIMADE Gateway",
@@ -59,9 +52,9 @@ APP.include_router(versions_router)
 
 # Add endpoints to / and /vMAJOR
 for prefix in list(BASE_URL_PREFIXES.values()) + [""]:
-    for router in (databases, gateways, info, links, queries, search):
+    for router in ROUTERS.routers():
         APP.include_router(
-            router.ROUTER,  # type: ignore[attr-defined]
+            router,
             prefix=prefix,
             include_in_schema=prefix == "",
         )
