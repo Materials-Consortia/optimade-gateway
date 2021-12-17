@@ -28,6 +28,11 @@ def run(argv: "Optional[Sequence[Text]]" = None) -> None:
         action="store_true",
         help="Load providers from providers.optimade.org upon startup.",
     )
+    parser.add_argument(
+        "--atlas",
+        action="store_true",
+        help="Use the MongoDB Atlas 'test' server instead of localhost.",
+    )
 
     args = parser.parse_args(args=argv)
 
@@ -53,8 +58,9 @@ def run(argv: "Optional[Sequence[Text]]" = None) -> None:
         os.environ["OPTIMADE_DEBUG"] = "True"
         os.environ["OPTIMADE_LOG_LEVEL"] = "debug"
 
+    config_file = "config_atlas.yml" if args.atlas else "config.yml"
     os.environ["OPTIMADE_CONFIG_FILE"] = str(
-        Path(__file__).parent.joinpath("config.json").resolve()
+        Path(__file__).resolve().parent / config_file
     )
 
     uvicorn.run("optimade_gateway.main:APP", **uvicorn_kwargs)

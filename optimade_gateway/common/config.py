@@ -3,6 +3,7 @@
 import os
 from pathlib import Path
 import re
+from typing import Optional
 from warnings import warn
 
 if not os.getenv("OPTIMADE_CONFIG_FILE"):
@@ -47,6 +48,9 @@ class ServerConfig(OptimadeServerConfig):
     # MarketPlace-specific
     hydra_application_id: str = Field(
         "", description="The MarketPlace hydra client id."
+    )
+    mongo_atlas_pem: Optional[Path] = Field(
+        None, description="Path to MongoDB Atlas PEM certificate."
     )
 
     @validator("mongo_uri")

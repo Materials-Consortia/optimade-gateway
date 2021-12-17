@@ -13,12 +13,30 @@ if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
     from pymongo.mongo_client import MongoClient
 
 
+client_extras = {
+    "tls": True,
+    "tlsCertificateKeyFile": str(CONFIG.mongo_atlas_pem),
+}
+
+if any(
+    _ in CONFIG.mongo_uri
+    for _ in (
+        getenv("HOST_IP", "THIS SHOULDN'T BE IN"),
+        "localhost",
+        "127.0.0.1",
+    )
+):
+    # Assume we are running locally
+    client_extras = {}
+
+
 MONGO_CLIENT: "MongoClient" = AsyncIOMotorClient(
     CONFIG.mongo_uri,
     appname="optimade-gateway",
     readConcernLevel="majority",
     readPreference="primary",
     w="majority",
+    **client_extras,
 )
 """The MongoDB motor client."""
 
