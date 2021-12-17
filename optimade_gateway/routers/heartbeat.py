@@ -8,8 +8,6 @@ This file describes the router for:
 from fastapi import APIRouter
 from fastapi.responses import PlainTextResponse
 
-from optimade.server.schemas import ERROR_RESPONSES
-
 
 ROUTER = APIRouter(redirect_slashes=True)
 
@@ -18,7 +16,7 @@ ROUTER = APIRouter(redirect_slashes=True)
     "/heartbeat",
     response_class=PlainTextResponse,
     tags=["Heartbeat"],
-    responses=ERROR_RESPONSES,
+    responses={404: {"description": "Not Found"}},
     operation_id="heartbeat",
 )
 async def get_heartbeat() -> PlainTextResponse:

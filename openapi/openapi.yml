@@ -3734,48 +3734,8 @@ paths:
               schema:
                 type: string
           description: Successful Response
-        '400':
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-          description: Bad Request
-        '403':
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-          description: Forbidden
         '404':
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
           description: Not Found
-        '422':
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
-        '500':
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-          description: Internal Server Error
-        '501':
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-          description: Not Implemented
-        '553':
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-          description: Version Not Supported
       summary: Get Heartbeat
       tags:
       - Heartbeat
