@@ -2502,6 +2502,12 @@ info:
   description: A gateway server to query multiple OPTIMADE databases.
   title: OPTIMADE Gateway
   version: 0.2.2
+  x-application-id: ''
+  x-application-name: OPTIMADE Gateway
+  x-external-hostname: http://localhost:8000
+  x-products:
+  - name: OPTIMADE Gateway
+    productId: 22e6e756-7179-47c9-8f37-1ee06c7b38ae
 openapi: 3.0.2
 paths:
   /databases:
@@ -2852,49 +2858,49 @@ paths:
       responses:
         '200':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/DatabasesResponse'
           description: Successful Response
         '400':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Bad Request
         '403':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Forbidden
         '404':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Found
         '422':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
         '500':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Internal Server Error
         '501':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Implemented
         '553':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Version Not Supported
@@ -2920,49 +2926,49 @@ paths:
       responses:
         '200':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/DatabasesResponseSingle'
           description: Successful Response
         '400':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Bad Request
         '403':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Forbidden
         '404':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Found
         '422':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
         '500':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Internal Server Error
         '501':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Implemented
         '553':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Version Not Supported
@@ -3138,49 +3144,49 @@ paths:
       responses:
         '200':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/DatabasesResponseSingle'
           description: Successful Response
         '400':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Bad Request
         '403':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Forbidden
         '404':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Found
         '422':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
         '500':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Internal Server Error
         '501':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Implemented
         '553':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Version Not Supported
@@ -3535,49 +3541,49 @@ paths:
       responses:
         '200':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/GatewaysResponse'
           description: Successful Response
         '400':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Bad Request
         '403':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Forbidden
         '404':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Found
         '422':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
         '500':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Internal Server Error
         '501':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Implemented
         '553':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Version Not Supported
@@ -3599,49 +3605,49 @@ paths:
       responses:
         '200':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/GatewaysResponseSingle'
           description: Successful Response
         '400':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Bad Request
         '403':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Forbidden
         '404':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Found
         '422':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
         '500':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Internal Server Error
         '501':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Implemented
         '553':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Version Not Supported
@@ -3665,49 +3671,49 @@ paths:
       responses:
         '200':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/GatewaysResponseSingle'
           description: Successful Response
         '400':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Bad Request
         '403':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Forbidden
         '404':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Found
         '422':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
         '500':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Internal Server Error
         '501':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Implemented
         '553':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Version Not Supported
@@ -3724,48 +3730,48 @@ paths:
       responses:
         '200':
           content:
-            application/json:
+            application/vnd.api+json:
               schema: {}
           description: Successful Response
         '400':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Bad Request
         '403':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Forbidden
         '404':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Found
         '422':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
         '500':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Internal Server Error
         '501':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Implemented
         '553':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Version Not Supported
@@ -3782,49 +3788,49 @@ paths:
       responses:
         '200':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/InfoResponse'
           description: Successful Response
         '400':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Bad Request
         '403':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Forbidden
         '404':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Found
         '422':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
         '500':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Internal Server Error
         '501':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Implemented
         '553':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Version Not Supported
@@ -3848,49 +3854,49 @@ paths:
       responses:
         '200':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/EntryInfoResponse'
           description: Successful Response
         '400':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Bad Request
         '403':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Forbidden
         '404':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Found
         '422':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
         '500':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Internal Server Error
         '501':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Implemented
         '553':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Version Not Supported
@@ -4245,49 +4251,49 @@ paths:
       responses:
         '200':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/LinksResponse'
           description: Successful Response
         '400':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Bad Request
         '403':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Forbidden
         '404':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Found
         '422':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
         '500':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Internal Server Error
         '501':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Implemented
         '553':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Version Not Supported
@@ -4642,49 +4648,49 @@ paths:
       responses:
         '200':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/QueriesResponse'
           description: Successful Response
         '400':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Bad Request
         '403':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Forbidden
         '404':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Found
         '422':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
         '500':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Internal Server Error
         '501':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Implemented
         '553':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Version Not Supported
@@ -4706,49 +4712,49 @@ paths:
       responses:
         '202':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/QueriesResponseSingle'
           description: Successful Response
         '400':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Bad Request
         '403':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Forbidden
         '404':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Found
         '422':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
         '500':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Internal Server Error
         '501':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Implemented
         '553':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Version Not Supported
@@ -4772,49 +4778,49 @@ paths:
       responses:
         '200':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/QueriesResponseSingle'
           description: Successful Response
         '400':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Bad Request
         '403':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Forbidden
         '404':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Found
         '422':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
         '500':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Internal Server Error
         '501':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Implemented
         '553':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Version Not Supported
@@ -5259,7 +5265,7 @@ paths:
       responses:
         '200':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 anyOf:
                 - $ref: '#/components/schemas/QueriesResponseSingle'
@@ -5269,43 +5275,43 @@ paths:
           description: Successful Response
         '400':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Bad Request
         '403':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Forbidden
         '404':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Found
         '422':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
         '500':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Internal Server Error
         '501':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Implemented
         '553':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Version Not Supported
@@ -5330,49 +5336,49 @@ paths:
       responses:
         '202':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/QueriesResponseSingle'
           description: Successful Response
         '400':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Bad Request
         '403':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Forbidden
         '404':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Found
         '422':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
         '500':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Internal Server Error
         '501':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Implemented
         '553':
           content:
-            application/json:
+            application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Version Not Supported
@@ -5393,3 +5399,5 @@ paths:
       summary: Get Versions
       tags:
       - Versions
+servers:
+- url: http://localhost:8000

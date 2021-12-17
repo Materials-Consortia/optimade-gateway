@@ -1,8 +1,15 @@
 """Configuration of the FastAPI server."""
-# pylint: disable=no-self-use,no-self-argument
+# pylint: disable=no-self-use,no-self-argument,wrong-import-position
 import os
+from pathlib import Path
 import re
 from warnings import warn
+
+if not os.getenv("OPTIMADE_CONFIG_FILE"):
+    # This needs to be done prior to importing from `optimade`.
+    os.environ["OPTIMADE_CONFIG_FILE"] = str(
+        Path(__file__).resolve().parent.parent / "config.yml"
+    )
 
 from optimade.server.config import ServerConfig as OptimadeServerConfig
 from pydantic import Field, validator
@@ -35,6 +42,11 @@ class ServerConfig(OptimadeServerConfig):
             "[Materials-Consortia list of OPTIMADE providers]"
             "(https://providers.optimade.org) on server startup."
         ),
+    )
+
+    # MarketPlace-specific
+    hydra_application_id: str = Field(
+        "", description="The MarketPlace hydra client id."
     )
 
     @validator("mongo_uri")

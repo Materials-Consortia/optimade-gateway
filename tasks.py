@@ -55,12 +55,12 @@ def setver(_, ver=""):
         (r'__version__ = ".*"', f'__version__ = "{ver}"'),
     )
     update_file(
-        TOP_DIR / "optimade_gateway/config.json",
-        (r'"version": ".*",', f'"version": "{ver}",'),
+        TOP_DIR / "optimade_gateway/config.yml",
+        (r'version: ("|\').*("|\')', f'version: "{ver}"'),
     )
     update_file(
-        TOP_DIR / "tests/static/test_config.json",
-        (r'"version": ".*",', f'"version": "{ver}",'),
+        TOP_DIR / "tests/static/test_config.yml",
+        (r'version: ("|\').*("|\')', f'version: "{ver}"'),
     )
 
     print(f"Bumped version to {ver}")
@@ -296,7 +296,11 @@ def update_openapi(context, pre_commit=False):
         encoding="utf8",
     )
     (TOP_DIR / "openapi" / "openapi.yml").write_text(
-        yaml.safe_dump(APP.openapi(), indent=2),
+        yaml.safe_dump(
+            json.loads(
+                (TOP_DIR / "openapi" / "openapi.json").read_text(encoding="utf8")
+            )
+        ),
         encoding="utf8",
     )
 

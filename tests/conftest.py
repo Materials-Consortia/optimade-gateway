@@ -10,7 +10,7 @@ import pytest
 
 
 if TYPE_CHECKING:
-    from typing import Awaitable, Callable, Union
+    from typing import Any, Awaitable, Callable, Dict, Union
 
     try:
         from typing import Literal
@@ -32,12 +32,15 @@ async def setup_db_utility(top_dir: "Union[Path, str]") -> None:
         top_dir: Path to the repository's directory.
 
     """
+    import yaml
+
     from optimade_gateway.mongo.database import MONGO_DB
 
     top_dir = Path(top_dir).resolve()
 
-    with open(top_dir.joinpath("tests/static/test_config.json")) as handle:
-        test_config = json.load(handle)
+    test_config: "Dict[str, Any]" = yaml.safe_load(
+        (top_dir / "tests" / "static" / "test_config.yml").read_text(encoding="utf8")
+    )
     assert (
         MONGO_DB.name == test_config["mongo_database"]
     ), "Test DB has not been loaded!"
@@ -63,7 +66,7 @@ async def setup_db_utility(top_dir: "Union[Path, str]") -> None:
 def pytest_configure(config):
     """Method that runs before pytest collects tests so no modules are imported"""
     cwd = Path(__file__).parent.resolve()
-    os.environ["OPTIMADE_CONFIG_FILE"] = str(cwd / "static/test_config.json")
+    os.environ["OPTIMADE_CONFIG_FILE"] = str(cwd / "static" / "test_config.yml")
 
 
 @pytest.fixture(scope="session")
