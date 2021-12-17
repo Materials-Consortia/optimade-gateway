@@ -92,7 +92,8 @@ async def load_optimade_providers_databases() -> None:  # pylint: disable=too-ma
     async with httpx.AsyncClient() as client:
         providers = await client.get(
             f"https://providers.optimade.org/v{__api_version__.split('.', maxsplit=1)[0]}"
-            "/links"
+            "/links",
+            follow_redirects=True,
         )
 
     if providers.is_error:
@@ -189,6 +190,7 @@ async def load_optimade_providers_databases() -> None:  # pylint: disable=too-ma
                     db_response = await client.get(
                         f"{str(get_resource_attribute(database, 'attributes.base_url')).rstrip('/')}"  # pylint: disable=line-too-long
                         f"{BASE_URL_PREFIXES['major']}/structures",
+                        follow_redirects=True,
                     )
                 except httpx.ReadTimeout:
                     LOGGER.info(

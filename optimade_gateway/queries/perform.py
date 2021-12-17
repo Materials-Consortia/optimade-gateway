@@ -189,7 +189,7 @@ def db_find(
             f"{str(get_resource_attribute(database, 'attributes.base_url')).strip('/')}"
             f"{BASE_URL_PREFIXES['major']}/{endpoint.strip('/')}?{query_params}"
         )
-    response = httpx.get(url, timeout=60)
+    response = httpx.get(url, timeout=60, follow_redirects=True)
 
     try:
         response = response.json()
