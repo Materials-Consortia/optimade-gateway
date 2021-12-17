@@ -285,9 +285,16 @@ def update_pytest_reqs(_):
 def update_openapi(context, pre_commit=False):
     """Update OpenAPI schema in files `openapi.json` and `openapi.yml`."""
     import json
+    import warnings
+
     import yaml
 
-    from optimade_gateway.main import APP
+    from optimade_gateway.common.logger import disable_logging
+
+    with disable_logging(), warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+
+        from optimade_gateway.main import APP
 
     (TOP_DIR / "openapi").mkdir(exist_ok=True)
 
@@ -295,6 +302,7 @@ def update_openapi(context, pre_commit=False):
         json.dumps(APP.openapi(), indent=2) + "\n",
         encoding="utf8",
     )
+
     (TOP_DIR / "openapi" / "openapi.yml").write_text(
         yaml.safe_dump(
             json.loads(
