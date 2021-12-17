@@ -14,7 +14,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        CONFIG_FILE: "optimade_gateway/config.json"
+        CONFIG_FILE: "optimade_gateway/config.yml"
     restart: on-failure
     environment:
       CI:

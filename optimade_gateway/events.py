@@ -37,9 +37,7 @@ async def ci_dev_startup() -> None:
     from optimade_gateway.mongo.database import MONGO_DB
     from pathlib import Path
 
-    test_data = (
-        Path(__file__).parent.parent.joinpath(".ci/test_gateways.json").resolve()
-    )
+    test_data = Path(__file__).resolve().parent.parent / ".ci" / "test_gateways.json"
 
     await MONGO_DB[CONFIG.gateways_collection].drop()
 
@@ -55,8 +53,7 @@ async def ci_dev_startup() -> None:
             f"Could not find test data file with test gateways at {test_data} !"
         )
 
-    with open(test_data, encoding="utf8") as handle:
-        data = json.load(handle)
+    data = json.loads(test_data.read_text(encoding="utf8"))
     await MONGO_DB[CONFIG.gateways_collection].insert_many(data)
 
 
