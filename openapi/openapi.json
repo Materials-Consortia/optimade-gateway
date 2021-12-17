@@ -1043,15 +1043,17 @@
           "200": {
             "description": "Successful Response",
             "content": {
-              "application/vnd.api+json": {
-                "schema": {}
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
           "400": {
             "description": "Bad Request",
             "content": {
-              "application/vnd.api+json": {
+              "text/plain": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1061,7 +1063,7 @@
           "403": {
             "description": "Forbidden",
             "content": {
-              "application/vnd.api+json": {
+              "text/plain": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1071,7 +1073,7 @@
           "404": {
             "description": "Not Found",
             "content": {
-              "application/vnd.api+json": {
+              "text/plain": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1081,7 +1083,7 @@
           "422": {
             "description": "Unprocessable Entity",
             "content": {
-              "application/vnd.api+json": {
+              "text/plain": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1091,7 +1093,7 @@
           "500": {
             "description": "Internal Server Error",
             "content": {
-              "application/vnd.api+json": {
+              "text/plain": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1101,7 +1103,7 @@
           "501": {
             "description": "Not Implemented",
             "content": {
-              "application/vnd.api+json": {
+              "text/plain": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
@@ -1111,7 +1113,7 @@
           "553": {
             "description": "Version Not Supported",
             "content": {
-              "application/vnd.api+json": {
+              "text/plain": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }

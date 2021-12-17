@@ -16,6 +16,7 @@ ROUTER = APIRouter(redirect_slashes=True)
 
 @ROUTER.get(
     "/heartbeat",
+    response_class=PlainTextResponse,
     tags=["Heartbeat"],
     responses=ERROR_RESPONSES,
     operation_id="heartbeat",

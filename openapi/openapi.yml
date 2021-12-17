@@ -3730,48 +3730,49 @@ paths:
       responses:
         '200':
           content:
-            application/vnd.api+json:
-              schema: {}
+            text/plain:
+              schema:
+                type: string
           description: Successful Response
         '400':
           content:
-            application/vnd.api+json:
+            text/plain:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Bad Request
         '403':
           content:
-            application/vnd.api+json:
+            text/plain:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Forbidden
         '404':
           content:
-            application/vnd.api+json:
+            text/plain:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Found
         '422':
           content:
-            application/vnd.api+json:
+            text/plain:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
         '500':
           content:
-            application/vnd.api+json:
+            text/plain:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Internal Server Error
         '501':
           content:
-            application/vnd.api+json:
+            text/plain:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Not Implemented
         '553':
           content:
-            application/vnd.api+json:
+            text/plain:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Version Not Supported
