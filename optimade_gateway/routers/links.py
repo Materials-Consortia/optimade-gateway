@@ -9,7 +9,7 @@ from fastapi import APIRouter, Depends, Request
 
 from optimade.models import LinksResponse
 from optimade.server.query_params import EntryListingQueryParams
-from optimade.server.schemas import ERROR_RESPONSES
+from optimade_gateway.common.exceptions import ERROR_RESPONSES
 
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.routers.utils import collection_factory, get_entries

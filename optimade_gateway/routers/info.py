@@ -19,7 +19,7 @@ from optimade.models import (
 )
 from optimade.server.exceptions import NotFound
 from optimade.server.routers.utils import get_base_url, meta_values
-from optimade.server.schemas import ERROR_RESPONSES
+from optimade_gateway.common.exceptions import ERROR_RESPONSES
 
 from optimade_gateway.models import GatewayResource, QueryResource
 from optimade_gateway.routers.utils import aretrieve_queryable_properties

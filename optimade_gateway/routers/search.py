@@ -28,10 +28,10 @@ from optimade.models import (
 from optimade.models.links import LinkType
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import meta_values
-from optimade.server.schemas import ERROR_RESPONSES
 from pydantic import AnyUrl, ValidationError
 
 from optimade_gateway.common.config import CONFIG
+from optimade_gateway.common.exceptions import ERROR_RESPONSES
 from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.common.utils import clean_python_types, get_resource_attribute
 from optimade_gateway.models import (

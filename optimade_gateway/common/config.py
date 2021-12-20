@@ -1,9 +1,10 @@
 """Configuration of the FastAPI server."""
 # pylint: disable=no-self-use,no-self-argument,wrong-import-position
+from enum import Enum
 import os
 from pathlib import Path
 import re
-from typing import Optional
+from typing import List, Optional
 from warnings import warn
 
 if not os.getenv("OPTIMADE_CONFIG_FILE"):
@@ -16,6 +17,25 @@ from optimade.server.config import ServerConfig as OptimadeServerConfig
 from pydantic import Field, validator
 
 from optimade_gateway.warnings import OptimadeGatewayWarning
+
+
+class MarketPlaceHost(Enum):
+    """The available MarketPlace host domains."""
+
+    PRODUCTION = "the-marketplace.eu"
+    STAGING = "staging.the-marketplace.eu"
+    LOCAL = "lvh.me"
+
+
+class AvailableOAuthScopes(Enum):
+    """Available OAuth2 scopes for the MarketPlace."""
+
+    OPENID = "openid"
+    PROFILE = "profile"
+    EMAIL = "email"
+    ADDRESS = "address"
+    PHONE = "phone"
+    OFFLINE_ACCESS = "offline_access"
 
 
 class ServerConfig(OptimadeServerConfig):
@@ -49,8 +69,18 @@ class ServerConfig(OptimadeServerConfig):
     hydra_application_id: str = Field(
         "", description="The MarketPlace hydra client id."
     )
+    hydra_scopes: List[AvailableOAuthScopes] = Field(
+        [AvailableOAuthScopes.OPENID, AvailableOAuthScopes.EMAIL],
+        description="The list of OAuth2 scopes requested by the application.",
+    )
     mongo_atlas_pem: Optional[Path] = Field(
         None, description="Path to MongoDB Atlas PEM certificate."
+    )
+    marketplace_host: MarketPlaceHost = Field(
+        MarketPlaceHost.STAGING,
+        description=(
+            "An enumeration of the available recognized MarketPlace domain host."
+        ),
     )
 
     @validator("mongo_uri")

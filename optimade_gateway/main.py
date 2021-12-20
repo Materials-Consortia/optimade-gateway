@@ -1,9 +1,10 @@
 """The initialization of the ASGI FastAPI application."""
 from typing import TYPE_CHECKING
-from fastapi import FastAPI, Request
+from fastapi import Depends, FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.openapi.utils import get_openapi
 from fastapi.responses import RedirectResponse
+from fastapi.security import OAuth2AuthorizationCodeBearer
 
 from optimade.server.exception_handlers import OPTIMADE_EXCEPTIONS
 from optimade.server.middleware import OPTIMADE_MIDDLEWARE
@@ -21,14 +22,13 @@ from optimade_gateway.routers import ROUTERS
 if TYPE_CHECKING:
     from typing import Any, Dict
 
-
 APP = FastAPI(
     title="OPTIMADE Gateway",
     description="A gateway server to query multiple OPTIMADE databases.",
     version=__version__,
     root_path=CONFIG.root_path,
     default_response_class=JSONAPIResponse,
-    servers=[{"url": CONFIG.base_url}],
+    servers=[{"url": CONFIG.base_url or ""}],
     **{
         "x-application-name": "OPTIMADE Gateway",
         "x-application-id": CONFIG.hydra_application_id,
@@ -40,8 +40,20 @@ APP = FastAPI(
             },
         ],
     },
+    swagger_ui_init_oauth={
+        "usePkceWithAuthorizationCodeGrant": True,
+        "clientId": CONFIG.hydra_application_id,
+        "scopes": [_.value for _ in CONFIG.hydra_scopes],
+    },
 )
 """The FastAPI ASGI application."""
+
+
+OAUTH2_SCHEME = OAuth2AuthorizationCodeBearer(
+    authorizationUrl=f"https://{CONFIG.marketplace_host.value}/oauth/oauth2/auth",
+    tokenUrl=f"https://{CONFIG.marketplace_host.value}/oauth/oauth2/token",
+    auto_error=True,
+)
 
 
 @APP.get("/", include_in_schema=False)
@@ -100,6 +112,7 @@ for prefix in list(BASE_URL_PREFIXES.values()) + [""]:
             router,
             prefix=prefix,
             include_in_schema=prefix == "",
+            dependencies=[Depends(OAUTH2_SCHEME)],
         )
 
 for event, func in EVENTS:

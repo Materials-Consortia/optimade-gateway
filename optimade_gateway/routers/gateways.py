@@ -11,7 +11,7 @@ from fastapi import APIRouter, Depends, Request
 from optimade.models import ToplevelLinks
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import meta_values
-from optimade.server.schemas import ERROR_RESPONSES
+from optimade_gateway.common.exceptions import ERROR_RESPONSES
 
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.common.utils import clean_python_types
