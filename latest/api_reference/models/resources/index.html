@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-gateway/latest/api_reference/models/resources/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.2">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.4">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.f7951f6f.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.bb3983ee.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -1204,6 +1204,37 @@ EntryResourceCreate            (<span title="optimade.models.entries.EntryResour
 
       <p>Generic model for creating new entry resources in the MongoDB</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/models/resources.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">EntryResourceCreate</span><span class="p">(</span><span class="n">EntryResourceAttributes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generic model for creating new entry resources in the MongoDB&quot;&quot;&quot;</span>
+
+    <span class="n">last_modified</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span>
+
+    <span class="nb">id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+
+    <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Silently discard extra initiation keys.&quot;&quot;&quot;</span>
+
+        <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;ignore&quot;</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_remove_pre_root_validators</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Remove `check_illegal_attributes_fields` pre root_validators.&quot;&quot;&quot;</span>
+        <span class="n">pre_root_validators</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">validator</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__pre_root_validators__</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">str</span><span class="p">(</span><span class="n">validator</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span>
+                <span class="s2">&quot;&lt;function Attributes.check_illegal_attributes_fields&quot;</span>
+            <span class="p">):</span>
+                <span class="n">pre_root_validators</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">validator</span><span class="p">)</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">__pre_root_validators__</span> <span class="o">=</span> <span class="n">pre_root_validators</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Remove root_validator `check_illegal_attributes_fields`.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_remove_pre_root_validators</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1252,6 +1283,14 @@ Config        </code>
 
       <p>Silently discard extra initiation keys.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/models/resources.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Silently discard extra initiation keys.&quot;&quot;&quot;</span>
+
+    <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;ignore&quot;</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1435,10 +1474,10 @@ Config        </code>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.0bbba5b5.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.361d90f1.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.649a939e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.289a2a4b.min.js"></script>
       
     
   </body>

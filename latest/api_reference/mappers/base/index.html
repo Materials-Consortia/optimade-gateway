@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-gateway/latest/api_reference/mappers/base/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.2">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.4">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.f7951f6f.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.bb3983ee.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -1233,6 +1233,79 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
       </tr>
   </tbody>
 </table>
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/mappers/base.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BaseResourceMapper</span><span class="p">(</span><span class="n">OptimadeBaseResourceMapper</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generic Resource Mapper that defines and performs the mapping</span>
+<span class="sd">    between objects in the database and the resource objects defined by</span>
+<span class="sd">    the specification.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        This is a &quot;wrapped&quot; sub-class to make certain methods asynchronous.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        ALIASES: a tuple of aliases between</span>
+<span class="sd">            OPTIMADE field names and the field names in the database ,</span>
+<span class="sd">            e.g. `((&quot;elements&quot;, &quot;custom_elements_field&quot;))`.</span>
+<span class="sd">        LENGTH_ALIASES: a tuple of aliases between</span>
+<span class="sd">            a field name and another field that defines its length, to be used</span>
+<span class="sd">            when querying, e.g. `((&quot;elements&quot;, &quot;nelements&quot;))`.</span>
+<span class="sd">            e.g. `((&quot;elements&quot;, &quot;custom_elements_field&quot;))`.</span>
+<span class="sd">        ENTRY_RESOURCE_CLASS: The entry type that this mapper corresponds to.</span>
+<span class="sd">        PROVIDER_FIELDS: a tuple of extra field names that this</span>
+<span class="sd">            mapper should support when querying with the database prefix.</span>
+<span class="sd">        TOP_LEVEL_NON_ATTRIBUTES_FIELDS: the set of top-level</span>
+<span class="sd">            field names common to all endpoints.</span>
+<span class="sd">        SUPPORTED_PREFIXES: The set of prefixes registered by this mapper.</span>
+<span class="sd">        ALL_ATTRIBUTES: The set of attributes defined across the entry</span>
+<span class="sd">            resource class and the server configuration.</span>
+<span class="sd">        ENTRY_RESOURCE_ATTRIBUTES: A dictionary of attributes and their definitions</span>
+<span class="sd">            defined by the schema of the entry resource class.</span>
+<span class="sd">        ENDPOINT: The expected endpoint name for this resource, as defined by</span>
+<span class="sd">            the `type` in the schema of the entry resource class.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">adeserialize</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">results</span><span class="p">:</span> <span class="s2">&quot;Union[dict, Iterable[dict]]&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Union[List[EntryResource], EntryResource]&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Asynchronous version of the `deserialize()` class method.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            results: A list of or a single dictionary, representing an entry-endpoint</span>
+<span class="sd">                resource.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The deserialized list of or single pydantic resource model for the input</span>
+<span class="sd">            `results`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">BaseResourceMapper</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">map_back</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">optimade.server.routers.utils</span> <span class="kn">import</span> <span class="n">BASE_URL_PREFIXES</span>
+
+        <span class="k">if</span> <span class="s2">&quot;_id&quot;</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+            <span class="n">_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;_id&quot;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="s2">&quot;id&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+                <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_id</span>
+
+        <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;links&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;self&quot;</span><span class="p">:</span> <span class="n">AnyUrl</span><span class="p">(</span>
+                <span class="n">url</span><span class="o">=</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">base_url</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="si">}{</span><span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s1">&#39;major&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">ENDPOINT</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">doc</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">),</span>
+                <span class="n">scheme</span><span class="o">=</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">base_url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;://&quot;</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">host</span><span class="o">=</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">base_url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;://&quot;</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">2</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="p">)</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">map_back</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1521,10 +1594,10 @@ Finally, the <code>type</code> is given the value of the specified <code>cls.END
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.0bbba5b5.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.361d90f1.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.649a939e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.289a2a4b.min.js"></script>
       
     
   </body>

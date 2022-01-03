@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-gateway/latest/api_reference/queries/params/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.2">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.4">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.f7951f6f.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.bb3983ee.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -1176,6 +1176,104 @@ model.</p></td>
       </tr>
   </tbody>
 </table>
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/queries/params.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">SearchQueryParams</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;URL query parameters for `GET /search`</span>
+
+<span class="sd">    This is an extension of the</span>
+<span class="sd">    [`EntryListingQueryParams`](https://www.optimade.org/optimade-python-tools/api_reference/server/query_params/#optimade.server.query_params.EntryListingQueryParams)</span>
+<span class="sd">    class in `optimade´, which defines the standard entry listing endpoint query</span>
+<span class="sd">    parameters.</span>
+
+<span class="sd">    The extra query parameters are as follows.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        database_ids (Set[str]): List of possible database IDs that are already known by</span>
+<span class="sd">            the gateway. To be known they need to be registered with the gateway</span>
+<span class="sd">            (currently not possible).</span>
+
+<span class="sd">        optimade_urls (Set[AnyUrl]): A list of OPTIMADE base URLs. If a versioned base</span>
+<span class="sd">            URL is supplied it will be used as is, as long as it represents a supported</span>
+<span class="sd">            version. If an un-versioned base URL, standard version negotiation will be</span>
+<span class="sd">            conducted to get the versioned base URL, which will be used as long as it</span>
+<span class="sd">            represents a supported version.</span>
+
+<span class="sd">            **Example**: `http://example.org/optimade/v1/search?optimade_urls=&quot;https://example.org/optimade_db/v1&quot;,&quot;https://optimade.herokuapp.com&quot;`</span>
+
+<span class="sd">        endpoint (str): The entry endpoint queried. According to the OPTIMADE</span>
+<span class="sd">            specification, this is the same as the resource&#39;s type.</span>
+
+<span class="sd">            **Example**: `structures`</span>
+
+<span class="sd">        timeout (int): Timeout time (in seconds) to wait for a query to finish before</span>
+<span class="sd">            redirecting (*after* starting the query). Note, if the query has not finished</span>
+<span class="sd">            after the timeout time, a redirection will still be performed, but to a</span>
+<span class="sd">            zero-results page, which can be refreshed to get the finished query (once it</span>
+<span class="sd">            has finished).</span>
+
+<span class="sd">        as_optimade (bool): Return the response as a standard OPTIMADE entry listing</span>
+<span class="sd">            endpoint response. Otherwise, the response will be based on the</span>
+<span class="sd">            [`QueriesResponseSingle`][optimade_gateway.models.responses.QueriesResponseSingle]</span>
+<span class="sd">            model.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">database_ids</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
+            <span class="nb">set</span><span class="p">(),</span>
+            <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+                <span class="s2">&quot;Unique list of possible database IDs that are already known by the &quot;</span>
+                <span class="s2">&quot;gateway. To be known they need to be registered with the gateway &quot;</span>
+                <span class="s2">&quot;(currently not possible).&quot;</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">optimade_urls</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">]</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
+            <span class="nb">set</span><span class="p">(),</span>
+            <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+                <span class="s2">&quot;A unique list of OPTIMADE base URLs. If a versioned base URL is &quot;</span>
+                <span class="s2">&quot;supplied it will be used as is, as long as it represents a supported &quot;</span>
+                <span class="s2">&quot;version. If an un-versioned base URL, standard version negotiation will&quot;</span>
+                <span class="s2">&quot; be conducted to get the versioned base URL, which will be used as long&quot;</span>
+                <span class="s2">&quot; as it represents a supported version.&quot;</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
+            <span class="s2">&quot;structures&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+                <span class="s2">&quot;The entry endpoint queried. According to the OPTIMADE specification, &quot;</span>
+                <span class="s2">&quot;this is the same as the resource&#39;s type.&quot;</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
+            <span class="mi">15</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+                <span class="s2">&quot;Timeout time (in seconds) to wait for a query to finish before &quot;</span>
+                <span class="s2">&quot;redirecting (*after* starting the query). Note, if the query has not &quot;</span>
+                <span class="s2">&quot;finished after the timeout time, a redirection will still be performed,&quot;</span>
+                <span class="s2">&quot; but to a zero-results page, which can be refreshed to get the finished&quot;</span>
+                <span class="s2">&quot; query (once it has finished).&quot;</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">as_optimade</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
+            <span class="kc">False</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+                <span class="s2">&quot;Return the response as a standard OPTIMADE entry listing endpoint &quot;</span>
+                <span class="s2">&quot;response. Otherwise, the response will be based on the &quot;</span>
+                <span class="s2">&quot;[`QueriesResponseSingle`][optimade_gateway.models.responses.QueriesResponseSingle]&quot;</span>
+                <span class="s2">&quot; model.&quot;</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">database_ids</span> <span class="o">=</span> <span class="n">database_ids</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimade_urls</span> <span class="o">=</span> <span class="n">optimade_urls</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span> <span class="o">=</span> <span class="n">endpoint</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">as_optimade</span> <span class="o">=</span> <span class="n">as_optimade</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1299,10 +1397,10 @@ model.</p></td>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.0bbba5b5.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.361d90f1.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.649a939e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.289a2a4b.min.js"></script>
       
     
   </body>

@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-gateway/latest/api_reference/models/databases/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.2">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.4">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.f7951f6f.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.bb3983ee.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -1162,6 +1162,63 @@ model:</p>
 <li><code>link_type</code></li>
 </ul>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/models/databases.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DatabaseCreate</span><span class="p">(</span><span class="n">EntryResourceCreate</span><span class="p">,</span> <span class="n">LinksResourceAttributes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Model for creating new LinksResources representing `/databases` resources in the</span>
+<span class="sd">    MongoDB.</span>
+
+<span class="sd">    Required fields:</span>
+
+<span class="sd">    - `name`</span>
+<span class="sd">    - `base_url`</span>
+
+<span class="sd">    Original required fields for a</span>
+<span class="sd">    [`LinksResourceAttributes`](https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResourceAttributes)</span>
+<span class="sd">    model:</span>
+
+<span class="sd">    - `name`</span>
+<span class="sd">    - `description`</span>
+<span class="sd">    - `link_type`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">base_url</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Link</span><span class="p">]</span>
+    <span class="n">homepage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;JSON API links object, pointing to a homepage URL for this implementation.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">link_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">LinkType</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Link Type&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;The type of the linked relation.</span><span class="se">\n</span><span class="s2">MUST be one of these values: &#39;child&#39;, &quot;</span>
+            <span class="s2">&quot;&#39;root&#39;, &#39;external&#39;, &#39;providers&#39;.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;link_type&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">ensure_database_link_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">LinkType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LinkType</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Ensure databases are not index meta-database-only types</span>
+
+<span class="sd">        I.e., ensure they&#39;re not of type `&quot;root&quot;` or `&quot;providers&quot;`.</span>
+
+<span class="sd">        !!! note</span>
+<span class="sd">            Both `&quot;external&quot;` and `&quot;child&quot;` can still represent index meta-dbs,</span>
+<span class="sd">            but `&quot;root&quot;` and `&quot;providers&quot;` can not represent &quot;regular&quot; dbs.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">(</span><span class="n">LinkType</span><span class="o">.</span><span class="n">ROOT</span><span class="p">,</span> <span class="n">LinkType</span><span class="o">.</span><span class="n">PROVIDERS</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Databases with &#39;root&#39; or &#39;providers&#39; link_type is not allowed for &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;gateway-usable database resources. Given link_type: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">value</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1334,10 +1391,10 @@ but <code>"root"</code> and <code>"providers"</code> can not represent "regular"
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.0bbba5b5.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.361d90f1.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.649a939e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.289a2a4b.min.js"></script>
       
     
   </body>

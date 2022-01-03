@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-gateway/latest/api_reference/models/gateways/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.2">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.4">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.f7951f6f.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.bb3983ee.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -1244,6 +1244,51 @@ GatewayCreate            (<a title="optimade_gateway.models.resources.EntryResou
 
       <p>Model for creating new Gateway resources in the MongoDB</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/models/gateways.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">GatewayCreate</span><span class="p">(</span><span class="n">EntryResourceCreate</span><span class="p">,</span> <span class="n">GatewayResourceAttributes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Model for creating new Gateway resources in the MongoDB&quot;&quot;&quot;</span>
+
+    <span class="nb">id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;An entry&#39;s ID as defined in section Definition of Terms.</span>
+
+<span class="s2">- **Type**: string.</span>
+
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.</span>
+<span class="s2">    - **Query**: MUST be a queryable property with support for all mandatory filter</span>
+<span class="s2">      features.</span>
+<span class="s2">    - **Response**: REQUIRED in the response.</span>
+<span class="s2">    - **Gateway-specific**: MUST NOT contain a forward slash (`/`).</span>
+
+<span class="s2">- **Examples**:</span>
+<span class="s2">    - `&quot;db_1234567&quot;`</span>
+<span class="s2">    - `&quot;cod_2000000&quot;`</span>
+<span class="s2">    - `&quot;cod_2000000@1234567&quot;`</span>
+<span class="s2">    - `&quot;nomad_L1234567890&quot;`</span>
+<span class="s2">    - `&quot;42&quot;`&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+        <span class="n">regex</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;^[^/]*$&quot;</span><span class="p">,</span>  <span class="c1"># This regex is the special addition</span>
+    <span class="p">)</span>
+
+    <span class="n">database_ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A unique list of database IDs for registered databases.&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">databases</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">]]</span>  <span class="c1"># type: ignore</span>
+
+    <span class="nd">@root_validator</span>
+    <span class="k">def</span> <span class="nf">specify_databases</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Either `database_ids` or `databases` must be non-empty.</span>
+<span class="sd">        Both together is also fine.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;database_ids&quot;</span><span class="p">,</span> <span class="s2">&quot;databases&quot;</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Either &#39;database_ids&#39; or &#39;databases&#39; MUST be specified&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">values</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1349,6 +1394,49 @@ The gateway can be treated as any other OPTIMADE gateway, but the entries are an
 aggregate of multiple databases. The <code>id</code> of each aggregated resource will reflect
 the originating database.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/models/gateways.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">GatewayResource</span><span class="p">(</span><span class="n">EntryResource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;OPTIMADE gateway</span>
+
+<span class="sd">    A resource representing a dynamic collection of OPTIMADE databases.</span>
+<span class="sd">    The gateway can be treated as any other OPTIMADE gateway, but the entries are an</span>
+<span class="sd">    aggregate of multiple databases. The `id` of each aggregated resource will reflect</span>
+<span class="sd">    the originating database.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;An entry&#39;s ID as defined in section Definition of Terms.</span>
+
+<span class="s2">- **Type**: string.</span>
+
+<span class="s2">- **Requirements/Conventions**:</span>
+<span class="s2">    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.</span>
+<span class="s2">    - **Query**: MUST be a queryable property with support for all mandatory filter</span>
+<span class="s2">      features.</span>
+<span class="s2">    - **Response**: REQUIRED in the response.</span>
+<span class="s2">    - **Gateway-specific**: MUST NOT contain a forward slash (`/`).</span>
+
+<span class="s2">- **Examples**:</span>
+<span class="s2">    - `&quot;db_1234567&quot;`</span>
+<span class="s2">    - `&quot;cod_2000000&quot;`</span>
+<span class="s2">    - `&quot;cod_2000000@1234567&quot;`</span>
+<span class="s2">    - `&quot;nomad_L1234567890&quot;`</span>
+<span class="s2">    - `&quot;42&quot;`&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
+        <span class="n">regex</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;^[^/]*$&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="s2">&quot;gateways&quot;</span><span class="p">,</span>
+        <span class="n">const</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The name of the type of an entry.&quot;</span><span class="p">,</span>
+        <span class="n">regex</span><span class="o">=</span><span class="s2">&quot;^gateways$&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">attributes</span><span class="p">:</span> <span class="n">GatewayResourceAttributes</span>
+</code></pre></div>
+        </details>
 
 
     </div>
@@ -1377,6 +1465,63 @@ GatewayResourceAttributes            (<span title="optimade.models.entries.Entry
 
       <p>Attributes for an OPTIMADE gateway</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/models/gateways.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">GatewayResourceAttributes</span><span class="p">(</span><span class="n">EntryResourceAttributes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Attributes for an OPTIMADE gateway&quot;&quot;&quot;</span>
+
+    <span class="n">databases</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of databases (OPTIMADE &#39;links&#39;) to be queried in this gateway.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;databases&quot;</span><span class="p">,</span> <span class="n">each_item</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">no_index_databases</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">LinksResource</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LinksResource</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Ensure databases are not of type `&quot;root&quot;` or `&quot;providers&quot;`</span>
+
+<span class="sd">        !!! note</span>
+<span class="sd">            Both `&quot;external&quot;` and `&quot;child&quot;` can still represent index meta-dbs,</span>
+<span class="sd">            but `&quot;root&quot;` and `&quot;providers&quot;` can not represent &quot;regular&quot; dbs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">link_type</span> <span class="ow">in</span> <span class="p">(</span><span class="n">LinkType</span><span class="o">.</span><span class="n">ROOT</span><span class="p">,</span> <span class="n">LinkType</span><span class="o">.</span><span class="n">PROVIDERS</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Databases with &#39;root&#39; or &#39;providers&#39; link_type is not allowed for &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;gateway resources. Given database: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">value</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;databases&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">unique_base_urls</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Remove extra entries with repeated base_urls&quot;&quot;&quot;</span>
+        <span class="n">db_base_urls</span> <span class="o">=</span> <span class="p">[</span><span class="n">_</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">base_url</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
+        <span class="n">unique_base_urls</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">db_base_urls</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">db_base_urls</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_base_urls</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">value</span>
+
+        <span class="n">repeated_base_urls</span> <span class="o">=</span> <span class="p">[</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">unique_base_urls</span> <span class="k">if</span> <span class="n">db_base_urls</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">_</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">new_databases</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">value</span> <span class="k">if</span> <span class="n">_</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">base_url</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">repeated_base_urls</span>
+        <span class="p">]</span>
+        <span class="k">for</span> <span class="n">base_url</span> <span class="ow">in</span> <span class="n">repeated_base_urls</span><span class="p">:</span>
+            <span class="n">new_databases</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">value</span> <span class="k">if</span> <span class="n">_</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">base_url</span> <span class="o">==</span> <span class="n">base_url</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;Removed extra database entries for a gateway, because the base_url was &quot;</span>
+            <span class="s2">&quot;repeated. The first found database entry was kept, while the others were &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;removed. Original number of databases: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">. New number of &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;databases: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">new_databases</span><span class="p">)</span><span class="si">}</span><span class="s2"> Repeated base_urls (number of repeats): &quot;</span>
+            <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">db_base_urls</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+                    <span class="k">for</span> <span class="n">base_url</span> <span class="ow">in</span> <span class="n">repeated_base_urls</span>
+                <span class="p">]</span>
+            <span class="p">),</span>
+            <span class="n">OptimadeGatewayWarning</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_databases</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1625,10 +1770,10 @@ but <code>"root"</code> and <code>"providers"</code> can not represent "regular"
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.0bbba5b5.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.361d90f1.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.649a939e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.289a2a4b.min.js"></script>
       
     
   </body>

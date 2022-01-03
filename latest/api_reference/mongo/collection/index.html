@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-gateway/latest/api_reference/mongo/collection/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.2">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.4">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.f7951f6f.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.bb3983ee.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -1318,6 +1318,514 @@ AsyncMongoCollection            (<span title="optimade.server.entry_collections.
 <p>The asynchronicity is implemented using <a href="https://motor.readthedocs.io"><code>motor</code></a> and
 <a href="https://asyncio.readthedocs.io/"><code>asyncio</code></a>.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">AsyncMongoCollection</span><span class="p">(</span><span class="n">EntryCollection</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;MongoDB Collection for use with `asyncio`</span>
+
+<span class="sd">    The asynchronicity is implemented using [`motor`](https://motor.readthedocs.io) and</span>
+<span class="sd">    [`asyncio`](https://asyncio.readthedocs.io/).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">resource_cls</span><span class="p">:</span> <span class="s2">&quot;EntryResource&quot;</span><span class="p">,</span>
+        <span class="n">resource_mapper</span><span class="p">:</span> <span class="s2">&quot;BaseResourceMapper&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the AsyncMongoCollection for the given parameters.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            name: The name of the collection.</span>
+<span class="sd">            resource_cls: The `EntryResource` model that is stored by the collection.</span>
+<span class="sd">            resource_mapper: A resource mapper object that handles aliases and format</span>
+<span class="sd">                changes between deserialization and response.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">optimade_gateway.mongo.database</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># pylint: disable=import-outside-toplevel</span>
+            <span class="n">MONGO_DB</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">resource_cls</span><span class="o">=</span><span class="n">resource_cls</span><span class="p">,</span>
+            <span class="n">resource_mapper</span><span class="o">=</span><span class="n">resource_mapper</span><span class="p">,</span>
+            <span class="n">transformer</span><span class="o">=</span><span class="n">MongoTransformer</span><span class="p">(</span><span class="n">mapper</span><span class="o">=</span><span class="n">resource_mapper</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">LarkParser</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">variant</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="p">:</span> <span class="n">MongoCollection</span> <span class="o">=</span> <span class="n">MONGO_DB</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+
+        <span class="c1"># Check aliases do not clash with mongo operators</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_aliases</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">all_aliases</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_aliases</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">all_length_aliases</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Standard printing result for an instance.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: resource=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;endpoint(mapper)=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">ENDPOINT</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;DB_collection=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&gt;&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Representation of instance.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(name=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;resource_cls=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_cls</span><span class="si">!r}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;resource_mapper=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="si">!r}</span><span class="s2">)&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">warn</span><span class="p">(</span>
+            <span class="n">OptimadeGatewayWarning</span><span class="p">(</span>
+                <span class="n">detail</span><span class="o">=</span><span class="p">(</span>
+                    <span class="s2">&quot;Cannot calculate length of collection using `len()`. Use `count()` &quot;</span>
+                    <span class="s2">&quot;instead.&quot;</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="s2">&quot;List[EntryResource]&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="s2">&quot;This method cannot be used with this class and is a remnant from the parent &quot;</span>
+            <span class="s2">&quot;class. Use instead the asynchronous method `ainsert(data: &quot;</span>
+            <span class="s2">&quot;List[EntryResource])`.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">ainsert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="s2">&quot;List[EntryResource]&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Add the given entries to the underlying database.</span>
+
+<span class="sd">        This is the asynchronous version of the parent class method named `insert()`.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            data: The entry resource objects to add to the database.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">insert_many</span><span class="p">(</span><span class="k">await</span> <span class="n">clean_python_types</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="s2">&quot;This method cannot be used with this class and is a remnant from the parent &quot;</span>
+            <span class="s2">&quot;class. Use instead the asynchronous method `acount(params: &quot;</span>
+            <span class="s2">&quot;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]], &quot;</span>
+            <span class="s2">&quot;**kwargs)`.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">acount</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Count documents in Collection.</span>
+
+<span class="sd">        This is the asynchronous version of the parent class method named `count()`.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            params: URL query parameters, either from a general entry endpoint or a</span>
+<span class="sd">                single-entry endpoint.</span>
+<span class="sd">            kwargs (dict): Query parameters as keyword arguments. Valid keys will be passed</span>
+<span class="sd">                to the</span>
+<span class="sd">                [`AsyncIOMotorCollection.count_documents`](https://motor.readthedocs.io/en/stable/api-asyncio/asyncio_motor_collection.html#motor.motor_asyncio.AsyncIOMotorCollection.count_documents)</span>
+<span class="sd">                method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: The number of entries matching the query specified by the keyword</span>
+<span class="sd">                arguments.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;When &#39;params&#39; is supplied, no other parameters can be supplied.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">ahandle_query_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="n">valid_method_keys</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;filter&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;skip&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;limit&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;hint&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;maxTimeMS&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;collation&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;session&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">criteria</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">valid_method_keys</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">criteria</span><span class="p">[</span><span class="s2">&quot;filter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">count_documents</span><span class="p">(</span><span class="o">**</span><span class="n">criteria</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;Union[EntryListingQueryParams, SingleEntryQueryParams]&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fetches results and indicates if more data is available.</span>
+
+<span class="sd">        Also gives the total number of data available in the absence of `page_limit`.</span>
+<span class="sd">        See</span>
+<span class="sd">        [`EntryListingQueryParams`](https://www.optimade.org/optimade-python-tools/api_reference/server/query_params/#optimade.server.query_params.EntryListingQueryParams)</span>
+<span class="sd">        for more information.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            params: Entry listing URL query params.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A tuple of various relevant values:</span>
+<span class="sd">            (`results`, `data_returned`, `more_data_available`, `exclude_fields`,</span>
+<span class="sd">            `include_fields`).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="s2">&quot;This method cannot be used with this class and is a remnant from the parent &quot;</span>
+            <span class="s2">&quot;class. Use instead the asynchronous method `afind(params: &quot;</span>
+            <span class="s2">&quot;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]], criteria: &quot;</span>
+            <span class="s2">&quot;Optional[Dict[str, Any]])`.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">afind</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">criteria</span><span class="p">:</span> <span class="s2">&quot;Optional[Dict[str, Any]]&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Perform the query on the underlying MongoDB Collection, handling projection</span>
+<span class="sd">        and pagination of the output.</span>
+
+<span class="sd">        This is the asynchronous version of the parent class method named `count()`.</span>
+
+<span class="sd">        Either provide `params` or `criteria`. Not both, but at least one.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            params: URL query parameters, either from a general entry endpoint or a</span>
+<span class="sd">                single-entry endpoint.</span>
+<span class="sd">            criteria: Already handled/parsed URL query parameters.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A list of entry resource objects, how much data was returned for the query,</span>
+<span class="sd">            whether more data is available with pagination, and fields (excluded,</span>
+<span class="sd">            included).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">params</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">criteria</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+            <span class="n">params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">criteria</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Exacly one of either `params` and `criteria` must be specified.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Set single_entry to False, this is done since if criteria is defined,</span>
+        <span class="c1"># this is an unknown factor - better to then get a list of results.</span>
+        <span class="n">single_entry</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">criteria</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">criteria</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">ahandle_query_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">single_entry</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">SingleEntryQueryParams</span><span class="p">)</span>
+
+        <span class="n">response_fields</span> <span class="o">=</span> <span class="n">criteria</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;fields&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_fields</span><span class="p">)</span>
+
+        <span class="n">results</span><span class="p">,</span> <span class="n">data_returned</span><span class="p">,</span> <span class="n">more_data_available</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arun_db_query</span><span class="p">(</span>
+            <span class="n">criteria</span><span class="o">=</span><span class="n">criteria</span><span class="p">,</span>
+            <span class="n">single_entry</span><span class="o">=</span><span class="n">single_entry</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">single_entry</span><span class="p">:</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">results</span> <span class="k">else</span> <span class="kc">None</span>  <span class="c1"># type: ignore[assignment]</span>
+
+            <span class="k">if</span> <span class="n">data_returned</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">NotFound</span><span class="p">(</span>
+                    <span class="n">detail</span><span class="o">=</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Instead of a single entry, </span><span class="si">{</span><span class="n">data_returned</span><span class="si">}</span><span class="s2"> entries were found&quot;</span>
+                    <span class="p">),</span>
+                <span class="p">)</span>
+
+        <span class="n">include_fields</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">response_fields</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">TOP_LEVEL_NON_ATTRIBUTES_FIELDS</span>
+        <span class="p">)</span>
+        <span class="n">bad_optimade_fields</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">bad_provider_fields</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">include_fields</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">ALL_ATTRIBUTES</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
+                        <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_&quot;</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">SUPPORTED_PREFIXES</span>
+                    <span class="p">):</span>
+                        <span class="n">bad_provider_fields</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">bad_optimade_fields</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">bad_provider_fields</span><span class="p">:</span>
+            <span class="n">warn</span><span class="p">(</span>
+                <span class="n">UnknownProviderProperty</span><span class="p">(</span>
+                    <span class="n">detail</span><span class="o">=</span><span class="p">(</span>
+                        <span class="s2">&quot;Unrecognised field(s) for this provider requested in &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;`response_fields`: </span><span class="si">{</span><span class="n">bad_provider_fields</span><span class="si">}</span><span class="s2">.&quot;</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">bad_optimade_fields</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BadRequest</span><span class="p">(</span>
+                <span class="n">detail</span><span class="o">=</span><span class="p">(</span>
+                    <span class="s2">&quot;Unrecognised OPTIMADE field(s) in requested `response_fields`: &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">bad_optimade_fields</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">results</span><span class="p">:</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">adeserialize</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span>  <span class="c1"># type: ignore[return-value]</span>
+            <span class="n">results</span><span class="p">,</span>
+            <span class="n">data_returned</span><span class="p">,</span>
+            <span class="n">more_data_available</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">all_fields</span> <span class="o">-</span> <span class="n">response_fields</span><span class="p">,</span>
+            <span class="n">include_fields</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">handle_query_params</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;Union[EntryListingQueryParams, SingleEntryQueryParams]&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Dict[str, Any]&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Parse and interpret the backend-agnostic query parameter models into a</span>
+<span class="sd">        dictionary that can be used by the specific backend.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Currently this method returns the pymongo interpretation of the parameters,</span>
+<span class="sd">            which will need modification for modified for other backends.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            params: The initialized query parameter model from the server.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            Forbidden: If too large of a page limit is provided.</span>
+<span class="sd">            BadRequest: If an invalid request is made, e.g., with incorrect fields</span>
+<span class="sd">                or response format.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A dictionary representation of the query parameters.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="s2">&quot;This method cannot be used with this class and is a remnant from the parent &quot;</span>
+            <span class="s2">&quot;class. Use instead the asynchronous method `ahandle_query_params(params: &quot;</span>
+            <span class="s2">&quot;Union[EntryListingQueryParams, SingleEntryQueryParams])`.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">ahandle_query_params</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;Union[EntryListingQueryParams, SingleEntryQueryParams]&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Dict[str, Any]&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Parse and interpret the backend-agnostic query parameter models into a</span>
+<span class="sd">        dictionary that can be used by the specific backend.</span>
+
+<span class="sd">        This is the asynchronous version of the parent class method named</span>
+<span class="sd">        `handle_query_params()`.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Currently this method returns the pymongo interpretation of the parameters,</span>
+<span class="sd">            which will need modification for modified for other backends.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            params: The initialized query parameter model from the server.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            Forbidden: If too large of a page limit is provided.</span>
+<span class="sd">            BadRequest: If an invalid request is made, e.g., with incorrect fields or</span>
+<span class="sd">                response format.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A dictionary representation of the query parameters.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">handle_query_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_run_db_query</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">criteria</span><span class="p">:</span> <span class="s2">&quot;Dict[str, Any]&quot;</span><span class="p">,</span> <span class="n">single_entry</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Tuple[List[Dict[str, Any]], int, bool]&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="s2">&quot;This method cannot be used with this class and is a remnant from the parent &quot;</span>
+            <span class="s2">&quot;class. Use instead the asynchronous method `_arun_db_query(criteria: &quot;</span>
+            <span class="s2">&quot;Dict[str, Any], single_entry: bool)`.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_arun_db_query</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">criteria</span><span class="p">:</span> <span class="s2">&quot;Dict[str, Any]&quot;</span><span class="p">,</span> <span class="n">single_entry</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Tuple[List[Dict[str, Any]], int, bool]&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Run the query on the backend and collect the results.</span>
+
+<span class="sd">        This is the asynchronous version of the parent class method named `count()`.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            criteria: A dictionary representation of the query parameters.</span>
+<span class="sd">            single_entry: Whether or not the caller is expecting a single entry response.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The list of entries from the database (without any re-mapping), the total</span>
+<span class="sd">            number of entries matching the query and a boolean for whether or not there</span>
+<span class="sd">            is more data available.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">document</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_valid_find_keys</span><span class="p">(</span><span class="o">**</span><span class="n">criteria</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;projection&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_id&quot;</span><span class="p">):</span>
+                <span class="n">document</span><span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">document</span><span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">])</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">single_entry</span><span class="p">:</span>
+            <span class="n">data_returned</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+            <span class="n">more_data_available</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">criteria_nolimit</span> <span class="o">=</span> <span class="n">criteria</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">criteria_nolimit</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;limit&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">data_returned</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">acount</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">criteria_nolimit</span><span class="p">)</span>
+            <span class="n">more_data_available</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">data_returned</span>
+
+        <span class="k">return</span> <span class="n">results</span><span class="p">,</span> <span class="n">data_returned</span><span class="p">,</span> <span class="n">more_data_available</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_check_aliases</span><span class="p">(</span><span class="n">aliases</span><span class="p">:</span> <span class="s2">&quot;Tuple[Tuple[str, str]]&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Check that aliases do not clash with mongo keywords.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            aliases: Tuple of tuple of aliases to be checked.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            RuntimeError: If any alias starts with the dollar (`$`) character.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
+            <span class="n">alias</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">alias</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">aliases</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot define an alias starting with a &#39;$&#39;: </span><span class="si">{</span><span class="n">aliases</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">criteria</span><span class="p">:</span> <span class="s2">&quot;Dict[str, Any]&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;EntryResource&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get one resource based on criteria</span>
+
+<span class="sd">        Warning:</span>
+<span class="sd">            This is not to be used for creating a REST API response,</span>
+<span class="sd">            but is rather a utility function to easily retrieve a single resource.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            criteria: Already handled/parsed URL query parameters.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A single resource from the MongoDB (mapped to pydantic models).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">criteria</span> <span class="o">=</span> <span class="n">criteria</span> <span class="ow">or</span> <span class="p">{}</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_cls</span><span class="p">(</span>
+            <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">map_back</span><span class="p">(</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">find_one</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_valid_find_keys</span><span class="p">(</span><span class="o">**</span><span class="n">criteria</span><span class="p">))</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_multiple</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">criteria</span><span class="p">:</span> <span class="s2">&quot;Dict[str, Any]&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;List[EntryResource]&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get a list of resources based on criteria</span>
+
+<span class="sd">        Warning:</span>
+<span class="sd">            This is not to be used for creating a REST API response,</span>
+<span class="sd">            but is rather a utility function to easily retrieve a list of resources.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            criteria: Already handled/parsed URL query parameters.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A list of resources from the MongoDB (mapped to pydantic models).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">criteria</span> <span class="o">=</span> <span class="n">criteria</span> <span class="ow">or</span> <span class="p">{}</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">document</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_valid_find_keys</span><span class="p">(</span><span class="o">**</span><span class="n">criteria</span><span class="p">)):</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_cls</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">map_back</span><span class="p">(</span><span class="n">document</span><span class="p">)))</span>
+
+        <span class="k">return</span> <span class="n">results</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">create_one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">:</span> <span class="s2">&quot;EntryResourceCreate&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;EntryResource&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a new document in the MongoDB collection based on query parameters.</span>
+
+<span class="sd">        Update the newly created document with an `&quot;id&quot;` field.</span>
+<span class="sd">        The value will be the string representation of the `&quot;_id&quot;` field.</span>
+<span class="sd">        This will only be done if `&quot;id&quot;` is not already present in `resource`.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            resource: The resource to be created.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The newly created document as a pydantic model entry resource.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">resource</span><span class="o">.</span><span class="n">last_modified</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">insert_one</span><span class="p">(</span>
+            <span class="k">await</span> <span class="n">clean_python_types</span><span class="p">(</span><span class="n">resource</span><span class="o">.</span><span class="n">dict</span><span class="p">(</span><span class="n">exclude_unset</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="p">)</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="s2">&quot;Inserted resource </span><span class="si">%r</span><span class="s2"> in DB collection </span><span class="si">%s</span><span class="s2"> with ID </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">resource</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">inserted_id</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">resource</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Updating resource with an `id` field equal to str(id_).&quot;</span><span class="p">)</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">update_one</span><span class="p">(</span>
+                <span class="p">{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">inserted_id</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;$set&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">inserted_id</span><span class="p">)}}</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_cls</span><span class="p">(</span>
+            <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">map_back</span><span class="p">(</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">find_one</span><span class="p">({</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">inserted_id</span><span class="p">})</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Assert whether entry_id exists in the collection (value of `&quot;id&quot;`)</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            entry_id: The `&quot;id&quot;` value of the entry.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">count_documents</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">entry_id</span><span class="p">}))</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_valid_find_keys</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="s2">&quot;Dict[str, Any]&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Dict[str, Any]&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return valid MongoDB find() keys with values from kwargs</span>
+
+<span class="sd">        Note, not including deprecated flags</span>
+<span class="sd">        (see https://pymongo.readthedocs.io/en/3.11.0/api/pymongo/collection.html#pymongo.collection.Collection.find).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">valid_method_keys</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;filter&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;projection&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;session&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;skip&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;limit&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;no_cursor_timeout&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cursor_type&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;sort&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;allow_partial_results&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;batch_size&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;collation&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;return_key&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;show_record_id&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;hint&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;max_time_ms&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;min&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;max&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;comment&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;allow_disk_use&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">criteria</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">valid_method_keys</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Ensure documents are included in the result set</span>
+            <span class="n">criteria</span><span class="p">[</span><span class="s2">&quot;filter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">return</span> <span class="n">criteria</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -2621,10 +3129,10 @@ or response format.</p></td>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.0bbba5b5.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.361d90f1.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.649a939e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.289a2a4b.min.js"></script>
       
     
   </body>

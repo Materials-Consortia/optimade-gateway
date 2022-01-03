@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-gateway/latest/api_reference/models/responses/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.2">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.4">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.f7951f6f.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.bb3983ee.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -1195,6 +1195,27 @@ DatabasesResponse            (<span title="optimade.models.responses.EntryRespon
 <a href="https://www.optimade.org/optimade-python-tools/api_reference/models/responses/#optimade.models.responses.LinksResponse"><code>LinksResponse</code></a>
 with the exception of the `data´ field's description.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/models/responses.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DatabasesResponse</span><span class="p">(</span><span class="n">EntryResponseMany</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Successful response for `GET /databases`</span>
+
+<span class="sd">    This model is essentially equal to</span>
+<span class="sd">    [`LinksResponse`](https://www.optimade.org/optimade-python-tools/api_reference/models/responses/#optimade.models.responses.LinksResponse)</span>
+<span class="sd">    with the exception of the `data´ field&#39;s description.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;List of unique OPTIMADE links resource objects.</span><span class="se">\n</span><span class="s2">These links resource &quot;</span>
+            <span class="s2">&quot;objects represents OPTIMADE databases that can be used for queries in &quot;</span>
+            <span class="s2">&quot;gateways.&quot;</span>
+        <span class="p">),</span>
+        <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
     </div>
@@ -1223,6 +1244,22 @@ DatabasesResponseSingle            (<span title="optimade.models.responses.Entry
 
       <p>Successful response for <code>POST /databases</code> and <code>GET /databases/{database_id}</code></p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/models/responses.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DatabasesResponseSingle</span><span class="p">(</span><span class="n">EntryResponseOne</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Successful response for `POST /databases` and `GET /databases/{database_id}`&quot;&quot;&quot;</span>
+
+    <span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;A unique OPTIMADE links resource object.</span><span class="se">\n</span><span class="s2">The OPTIMADE links resource object&quot;</span>
+            <span class="s2">&quot; has just been created or found according to the specific query parameter(s)&quot;</span>
+            <span class="s2">&quot; or URL id.</span><span class="se">\n</span><span class="s2">It represents an OPTIMADE database that can be used for queries&quot;</span>
+            <span class="s2">&quot; in gateways.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
     </div>
@@ -1251,6 +1288,18 @@ GatewaysResponse            (<span title="optimade.models.responses.EntryRespons
 
       <p>Successful response for <code>GET /gateways</code></p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/models/responses.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">GatewaysResponse</span><span class="p">(</span><span class="n">EntryResponseMany</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Successful response for `GET /gateways`&quot;&quot;&quot;</span>
+
+    <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">GatewayResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;List of unique OPTIMADE gateway resource objects.&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
     </div>
@@ -1279,6 +1328,21 @@ GatewaysResponseSingle            (<span title="optimade.models.responses.EntryR
 
       <p>Successful response for <code>POST /gateways</code> and <code>GET /gateways/{gateway_id}</code>.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/models/responses.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">GatewaysResponseSingle</span><span class="p">(</span><span class="n">EntryResponseOne</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Successful response for `POST /gateways` and `GET /gateways/{gateway_id}`.&quot;&quot;&quot;</span>
+
+    <span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">GatewayResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;A unique OPTIMADE gateway resource object.</span><span class="se">\n</span><span class="s2">The OPTIMADE gateway resource &quot;</span>
+            <span class="s2">&quot;object has just been created or found according to the specific query &quot;</span>
+            <span class="s2">&quot;parameter(s) or URL id.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
     </div>
@@ -1307,6 +1371,18 @@ QueriesResponse            (<span title="optimade.models.responses.EntryResponse
 
       <p>Successful response for <code>GET /gateways/{gateway_ID}/queries</code>.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/models/responses.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">QueriesResponse</span><span class="p">(</span><span class="n">EntryResponseMany</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Successful response for `GET /gateways/{gateway_ID}/queries`.&quot;&quot;&quot;</span>
+
+    <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">QueryResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of unique OPTIMADE gateway query resource objects.&quot;</span><span class="p">,</span>
+        <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
     </div>
@@ -1336,6 +1412,22 @@ QueriesResponseSingle            (<span title="optimade.models.responses.EntryRe
       <p>Successful response for <code>POST /gateways/{gateway_ID}/queries</code>
 and <code>GET /gateways/{gateway_ID}/queries/{query_id}</code>.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/models/responses.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">QueriesResponseSingle</span><span class="p">(</span><span class="n">EntryResponseOne</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Successful response for `POST /gateways/{gateway_ID}/queries`</span>
+<span class="sd">    and `GET /gateways/{gateway_ID}/queries/{query_id}`.&quot;&quot;&quot;</span>
+
+    <span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">QueryResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;A unique OPTIMADE gateway query resource object.</span><span class="se">\n</span><span class="s2">The OPTIMADE gateway query&quot;</span>
+            <span class="s2">&quot; resource object has just been created or found according to the specific &quot;</span>
+            <span class="s2">&quot;query parameter(s) or URL id.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
     </div>
@@ -1443,10 +1535,10 @@ and <code>GET /gateways/{gateway_ID}/queries/{query_id}</code>.</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.0bbba5b5.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.361d90f1.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.649a939e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.289a2a4b.min.js"></script>
       
     
   </body>

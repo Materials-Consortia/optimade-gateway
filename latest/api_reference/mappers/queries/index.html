@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-gateway/latest/api_reference/mappers/queries/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.2">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.4">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.f7951f6f.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.bb3983ee.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -1172,6 +1172,15 @@ QueryMapper            (<a title="optimade_gateway.mappers.base.BaseResourceMapp
 
       <p><a href="../../models/queries/#optimade_gateway.models.queries.QueryResource"><code>QueryResource</code></a> mapper.</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/mappers/queries.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">QueryMapper</span><span class="p">(</span><span class="n">BaseResourceMapper</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;[`QueryResource`][optimade_gateway.models.queries.QueryResource] mapper.&quot;&quot;&quot;</span>
+
+    <span class="n">ENDPOINT</span> <span class="o">=</span> <span class="s2">&quot;queries&quot;</span>
+    <span class="n">ENTRY_RESOURCE_CLASS</span> <span class="o">=</span> <span class="n">QueryResource</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1204,6 +1213,119 @@ ENTRY_RESOURCE_CLASS            (<a title="optimade_gateway.models.queries.Entry
 
       <p>OPTIMADE query resource for a gateway</p>
 
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/mappers/queries.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">QueryResource</span><span class="p">(</span><span class="n">EntryResource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;OPTIMADE query resource for a gateway&quot;&quot;&quot;</span>
+
+    <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="s2">&quot;queries&quot;</span><span class="p">,</span>
+        <span class="n">const</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The name of the type of an entry.&quot;</span><span class="p">,</span>
+        <span class="n">regex</span><span class="o">=</span><span class="s2">&quot;^queries$&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">attributes</span><span class="p">:</span> <span class="n">QueryResourceAttributes</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">response_as_optimade</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+            <span class="n">Union</span><span class="p">[</span><span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">ParseResult</span><span class="p">,</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">SplitResult</span><span class="p">,</span> <span class="n">StarletteURL</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryResponseMany</span><span class="p">,</span> <span class="n">ErrorResponse</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Return `attributes.response` as a valid OPTIMADE entry listing response.</span>
+
+<span class="sd">        Note, this method disregards the state of the query and will simply return the</span>
+<span class="sd">        query results as they currently are (if there are any at all).</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            url: Optionally, update the `meta.query.representation` value with this.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A valid OPTIMADE entry-listing response according to the</span>
+<span class="sd">            [OPTIMADE specification](https://github.com/Materials-Consortia/OPTIMADE/blob/master/optimade.rst#entry-listing-endpoints)</span>
+<span class="sd">            or an error response, if errors were returned or occurred during the query.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">optimade.server.routers.utils</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># pylint: disable=import-outside-toplevel</span>
+            <span class="n">meta_values</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">async</span> <span class="k">def</span> <span class="nf">_update_id</span><span class="p">(</span>
+            <span class="n">entry_</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">database_provider_</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+            <span class="sd">&quot;&quot;&quot;Internal utility function to prepend the entries&#39; `id` with</span>
+<span class="sd">            `provider/database/`.</span>
+
+<span class="sd">            Parameters:</span>
+<span class="sd">                entry_: The entry as a model or a dictionary.</span>
+<span class="sd">                database_provider_: `provider/database` string.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                The entry with an updated `id` value.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">entry_</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">_entry</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">entry_</span><span class="p">)</span>
+                <span class="n">_entry</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">database_provider_</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">entry_</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">_entry</span> <span class="o">=</span> <span class="n">entry_</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">_entry</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">database_provider_</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">entry_</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span>  <span class="c1"># type: ignore[union-attr]</span>
+            <span class="k">return</span> <span class="n">_entry</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">response</span><span class="p">:</span>
+            <span class="c1"># The query has not yet been initiated</span>
+            <span class="k">return</span> <span class="n">ErrorResponse</span><span class="p">(</span>
+                <span class="n">errors</span><span class="o">=</span><span class="p">[</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;detail&quot;</span><span class="p">:</span> <span class="p">(</span>
+                            <span class="s2">&quot;Can not return as a valid OPTIMADE response as the query has&quot;</span>
+                            <span class="s2">&quot; not yet been initialized.&quot;</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;OPTIMADE_GATEWAY_QUERY_NOT_INITIALIZED&quot;</span><span class="p">,</span>
+                    <span class="p">}</span>
+                <span class="p">],</span>
+                <span class="n">meta</span><span class="o">=</span><span class="n">meta_values</span><span class="p">(</span>
+                    <span class="n">url</span><span class="o">=</span><span class="n">url</span> <span class="ow">or</span> <span class="sa">f</span><span class="s2">&quot;/queries/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">?&quot;</span><span class="p">,</span>
+                    <span class="n">data_returned</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">data_available</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">more_data_available</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+
+        <span class="n">meta_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">meta</span>
+        <span class="k">if</span> <span class="n">url</span><span class="p">:</span>
+            <span class="n">meta_</span> <span class="o">=</span> <span class="n">meta_</span><span class="o">.</span><span class="n">dict</span><span class="p">(</span><span class="n">exclude_unset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">repeated_key</span> <span class="ow">in</span> <span class="p">(</span>
+                <span class="s2">&quot;query&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;api_version&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;time_stamp&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;provider&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;implementation&quot;</span><span class="p">,</span>
+            <span class="p">):</span>
+                <span class="n">meta_</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">repeated_key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">meta_</span> <span class="o">=</span> <span class="n">meta_values</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">meta_</span><span class="p">)</span>
+
+        <span class="c1"># Error response</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">errors</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ErrorResponse</span><span class="p">(</span>
+                <span class="n">errors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span>
+                <span class="n">meta</span><span class="o">=</span><span class="n">meta_</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Data response</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">database_provider</span><span class="p">,</span> <span class="n">entries</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                <span class="p">[</span><span class="k">await</span> <span class="n">_update_id</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">database_provider</span><span class="p">)</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">]</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">endpoint</span><span class="o">.</span><span class="n">get_response_model</span><span class="p">()(</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">results</span><span class="p">,</span>
+            <span class="n">meta</span><span class="o">=</span><span class="n">meta_</span><span class="p">,</span>
+            <span class="n">links</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">links</span><span class="p">,</span>
+        <span class="p">)</span>
+</code></pre></div>
+        </details>
 
 
 
@@ -1501,10 +1623,10 @@ or an error response, if errors were returned or occurred during the query.</p><
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.0bbba5b5.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.361d90f1.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.649a939e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.289a2a4b.min.js"></script>
       
     
   </body>
