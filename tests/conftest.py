@@ -208,7 +208,7 @@ def mock_gateway_responses(
                     status_code=status_code,
                 )
 
-    def sleep_response(request: "Request", extensions: dict) -> "Response":
+    def sleep_response(request: "Request") -> "Response":
         """A mock response from an external OPTIMADE DB URL
 
         This response sleeps for X seconds, where X is derived from the database ID.
