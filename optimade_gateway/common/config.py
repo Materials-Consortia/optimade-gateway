@@ -4,7 +4,7 @@ from enum import Enum
 import os
 from pathlib import Path
 import re
-from typing import List, Optional
+from typing import List, Optional, TYPE_CHECKING
 from warnings import warn
 
 if not os.getenv("OPTIMADE_CONFIG_FILE"):
@@ -14,9 +14,12 @@ if not os.getenv("OPTIMADE_CONFIG_FILE"):
     )
 
 from optimade.server.config import ServerConfig as OptimadeServerConfig
-from pydantic import Field, validator
+from pydantic import Field, SecretStr, root_validator, validator
 
 from optimade_gateway.warnings import OptimadeGatewayWarning
+
+if TYPE_CHECKING:
+    from typing import Any, Dict
 
 
 class MarketPlaceHost(Enum):
@@ -76,6 +79,10 @@ class ServerConfig(OptimadeServerConfig):
     mongo_atlas_pem: Optional[Path] = Field(
         None, description="Path to MongoDB Atlas PEM certificate."
     )
+    mongo_atlas_pem_content: Optional[SecretStr] = Field(
+        None,
+        description="Content of the MongoDB Atlas PEM certificate.",
+    )
     marketplace_host: MarketPlaceHost = Field(
         MarketPlaceHost.STAGING,
         description=(
@@ -104,6 +111,24 @@ class ServerConfig(OptimadeServerConfig):
                     )
                 )
         return res
+
+    @root_validator
+    def create_pem_file(cls, values: "Dict[str, Any]") -> "Dict[str, Any]":
+        """Create PEM file from content, if no PEM file value is set."""
+        if values.get("mongo_atlas_pem", None) is None:
+            if values.get("mongo_atlas_pem_content", None) is None:
+                # Neither is set - just return
+                return values
+            # Create PEM file and set it
+            new_pem = (
+                Path(__file__).resolve().parent.parent.parent / "MongoDB_atlas.pem"
+            ).resolve()
+            new_pem.write_text(
+                values.get("mongo_atlas_pem_content", SecretStr("")).get_secret_value(),
+                encoding="utf8",
+            )
+            values["mongo_atlas_pem"] = new_pem
+        return values
 
 
 CONFIG = ServerConfig()

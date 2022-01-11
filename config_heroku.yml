@@ -1,0 +1,25 @@
+debug: true
+mongo_uri: "mongodb+srv://optimade.6zqxq.mongodb.net/myFirstDatabase?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority"
+mongo_database: optimade_gateway_dev
+database_backend: mongodb
+page_limit: 20
+page_limit_max: 500
+base_url: "https://optimade-gateway.heroku.com"
+implementation:
+  name: OPTIMADE Gateway
+  version: "0.2.2"
+  source_url: "https://github.com/Materials-Consortia/optimade-gateway"
+  maintainer:
+    email: "casper.w.andersen@sintef.no"
+  issue_tracker: "https://github.com/Materials-Consortia/optimade-gateway/issues"
+index_base_url: null
+provider:
+  name: OPTIMADE Gateway
+  description: A gateway server to query multiple OPTIMADE databases.
+  prefix: gateway
+  homepage: "https://github.com/Materials-Consortia/optimade-gateway"
+provider_fields: {}
+aliases: {}
+length_aliases: {}
+log_level: debug
+log_dir: "./logs/"
