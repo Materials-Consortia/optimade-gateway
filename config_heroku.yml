@@ -22,4 +22,4 @@ provider_fields: {}
 aliases: {}
 length_aliases: {}
 log_level: debug
-log_dir: "./logs/"
+log_dir: "/var/log/"
