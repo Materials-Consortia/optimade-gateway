@@ -1,1 +1,1 @@
-web: uvicorn --port $PORT --reload --log-level debug optimade_gateway.main:APP
+web: uvicorn --port $PORT --log-level debug optimade_gateway.main:APP
