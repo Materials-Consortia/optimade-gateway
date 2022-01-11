@@ -33,6 +33,12 @@ def run(argv: "Optional[Sequence[Text]]" = None) -> None:
         action="store_true",
         help="Use the MongoDB Atlas 'test' server instead of localhost.",
     )
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=8000,
+        help="Port to serve the server at.",
+    )
 
     args = parser.parse_args(args=argv)
 
@@ -40,6 +46,7 @@ def run(argv: "Optional[Sequence[Text]]" = None) -> None:
         "reload": True,
         "reload_dirs": [str(Path(__file__).parent.resolve())],
         "log_level": "debug",
+        "port": args.port,
     }
 
     os.environ["optimade_load_optimade_providers_databases"] = (
