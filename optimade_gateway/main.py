@@ -53,6 +53,7 @@ APP = FastAPI(
         "clientId": CONFIG.hydra_application_id,
         "clientSecret": CONFIG.hydra_client_secret,
         "scopes": [_.value for _ in CONFIG.hydra_scopes],
+        "usePkceWithAuthorizationCodeGrant": True,
     },
     swagger_ui_oauth2_redirect_url="/callback",
 )
@@ -99,8 +100,8 @@ APP.openapi = marketplace_openapi  # type: ignore[assignment]
 #     cors_origins.append("*")
 APP.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_headers=["Content-Type", "api_key", "Authorization"],
+    allow_origins=[CONFIG.base_url, f"https://{CONFIG.marketplace_host.value}"],
+    allow_headers=["api_key", "Authorization"],
     allow_methods=["*"],
 )
 
