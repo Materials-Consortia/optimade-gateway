@@ -1,26 +1,22 @@
 """OAuth2 functionality."""
-from typing import TYPE_CHECKING
-
 from fastapi import Depends
 from fastapi.security import OAuth2AuthorizationCodeBearer
 import httpx
 from pydantic import EmailStr
 
-from optimade_gateway.common.config import CONFIG
+from optimade_gateway.common.config import CONFIG, AvailableOAuthScopes
 from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.models.security import (
     OpenIDUserInfoErrorResponse,
     OpenIDUserInfoResponse,
 )
 
-if TYPE_CHECKING:
-    from typing import Optional
-
 
 OAUTH2_SCHEME = OAuth2AuthorizationCodeBearer(
     authorizationUrl=f"https://{CONFIG.marketplace_host.value}/oauth/oauth2/auth",
     tokenUrl=f"https://{CONFIG.marketplace_host.value}/oauth/oauth2/token",
     auto_error=False,
+    scopes={_.value: _.name for _ in AvailableOAuthScopes},
 )
 
 USER_INFO_URL = f"https://{CONFIG.marketplace_host.value}/user-service/userinfo"

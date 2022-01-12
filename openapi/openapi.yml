@@ -2503,7 +2503,13 @@ components:
       flows:
         authorizationCode:
           authorizationUrl: https://staging.the-marketplace.eu/oauth/oauth2/auth
-          scopes: {}
+          scopes:
+            address: ADDRESS
+            email: EMAIL
+            offline_access: OFFLINE_ACCESS
+            openid: OPENID
+            phone: PHONE
+            profile: PROFILE
           tokenUrl: https://staging.the-marketplace.eu/oauth/oauth2/token
       type: oauth2
 info:

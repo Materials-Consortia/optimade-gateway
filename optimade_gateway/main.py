@@ -46,9 +46,8 @@ APP = FastAPI(
         ],
     },
     swagger_ui_init_oauth={
-        "grant_type": "authorization_code",
-        "client_id": CONFIG.hydra_application_id,
-        "client_secret": CONFIG.hydra_client_secret,
+        "clientId": CONFIG.hydra_application_id,
+        "clientSecret": CONFIG.hydra_client_secret,
         "scopes": [_.value for _ in CONFIG.hydra_scopes],
     },
     swagger_ui_oauth2_redirect_url="/callback",

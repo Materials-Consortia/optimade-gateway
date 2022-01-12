@@ -5509,7 +5509,14 @@
         "type": "oauth2",
         "flows": {
           "authorizationCode": {
-            "scopes": {},
+            "scopes": {
+              "openid": "OPENID",
+              "profile": "PROFILE",
+              "email": "EMAIL",
+              "address": "ADDRESS",
+              "phone": "PHONE",
+              "offline_access": "OFFLINE_ACCESS"
+            },
             "authorizationUrl": "https://staging.the-marketplace.eu/oauth/oauth2/auth",
             "tokenUrl": "https://staging.the-marketplace.eu/oauth/oauth2/token"
           }
