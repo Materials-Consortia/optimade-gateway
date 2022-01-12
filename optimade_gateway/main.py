@@ -94,10 +94,15 @@ def marketplace_openapi() -> "Dict[str, Any]":
 APP.openapi = marketplace_openapi  # type: ignore[assignment]
 
 # Add CORS middleware first
-cors_origins = [f"https://{CONFIG.marketplace_host.value}"]
-if CONFIG.debug:
-    cors_origins.append("*")
-APP.add_middleware(CORSMiddleware, allow_origins=cors_origins)
+# cors_origins = [f"https://{CONFIG.marketplace_host.value}"]
+# if CONFIG.debug:
+#     cors_origins.append("*")
+APP.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_headers=["Content-Type", "api_key", "Authorization"],
+    allow_methods=["*"],
+)
 
 # Add middleware
 APP.add_middleware(CheckWronglyVersionedBaseUrlsGateways)
