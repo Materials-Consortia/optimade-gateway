@@ -13,10 +13,7 @@ from optimade_gateway.models.security import (
 
 
 OAUTH2_SCHEME = OAuth2AuthorizationCodeBearer(
-    authorizationUrl=(
-        f"https://cors-anywhere.herokuapp.com/https://{CONFIG.marketplace_host.value}"
-        "/oauth/oauth2/auth"
-    ),
+    authorizationUrl=f"https://{CONFIG.marketplace_host.value}/oauth/oauth2/auth",
     tokenUrl=(
         f"https://cors-anywhere.herokuapp.com/https://{CONFIG.marketplace_host.value}"
         "/oauth/oauth2/token"
