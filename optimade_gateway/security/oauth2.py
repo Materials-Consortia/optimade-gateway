@@ -37,7 +37,7 @@ async def get_marketplace_user(token: str = Depends(OAUTH2_SCHEME)) -> None:
     ) as client:
         user_info_response = await client.get(USER_INFO_URL)
 
-    if user_info_response.is_success():
+    if user_info_response.is_success:
         user_info = OpenIDUserInfoResponse(**user_info_response.json())
         if user_info.email:
             CONFIG.marketplace_user = EmailStr(user_info.email)
