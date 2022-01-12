@@ -2510,7 +2510,7 @@ components:
             openid: OPENID
             phone: PHONE
             profile: PROFILE
-          tokenUrl: https://cors-anywhere.herokuapp.com/https://staging.the-marketplace.eu/oauth/oauth2/token
+          tokenUrl: https://staging.the-marketplace.eu/oauth/oauth2/token
       type: oauth2
 info:
   description: A gateway server to query multiple OPTIMADE databases.
