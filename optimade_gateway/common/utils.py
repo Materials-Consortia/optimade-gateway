@@ -4,14 +4,19 @@ These functions may be used in general throughout the OPTIMADE Gateway Python co
 """
 # pylint: disable=line-too-long
 from enum import Enum
+import json
 from os import getenv
 from typing import TYPE_CHECKING
 
+from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
+from starlette.responses import HTMLResponse
+
+from optimade_gateway.common.config import CONFIG
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
     # pylint: disable=unused-import
-    from typing import Any, Dict, Union
+    from typing import Any, Dict, Optional, Union
 
 
 async def clean_python_types(data: "Any") -> "Any":
@@ -103,3 +108,64 @@ def get_resource_attribute(
                 value = _get_attr(value, "href", default)
 
     return value
+
+
+def gateway_get_swagger_ui_html(
+    *,
+    openapi_url: str,
+    title: str,
+    swagger_js_url: str = "https://cdn.jsdelivr.net/npm/swagger-ui-dist@3/swagger-ui-bundle.js",
+    swagger_css_url: str = "https://cdn.jsdelivr.net/npm/swagger-ui-dist@3/swagger-ui.css",
+    swagger_favicon_url: str = "https://fastapi.tiangolo.com/img/favicon.png",
+    oauth2_redirect_url: "Optional[str]" = None,
+    init_oauth: "Optional[Dict[str, Any]]" = None,
+) -> HTMLResponse:
+    """A copy of `fastapi.openapi.docs.get_swagger_ui_html()`.
+
+    Redone here to ensure a correct `oauth2RedirectUrl`.
+    """
+
+    html = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <link type="text/css" rel="stylesheet" href="{swagger_css_url}">
+    <link rel="shortcut icon" href="{swagger_favicon_url}">
+    <title>{title}</title>
+    </head>
+    <body>
+    <div id="swagger-ui">
+    </div>
+    <script src="{swagger_js_url}"></script>
+    <!-- `SwaggerUIBundle` is now available on the page -->
+    <script>
+    const ui = SwaggerUIBundle({{
+        url: '{openapi_url}',
+    """
+
+    if oauth2_redirect_url:
+        html += f"oauth2RedirectUrl: '{CONFIG.base_url}{oauth2_redirect_url}',"
+
+    html += """
+        dom_id: '#swagger-ui',
+        presets: [
+        SwaggerUIBundle.presets.apis,
+        SwaggerUIBundle.SwaggerUIStandalonePreset
+        ],
+        layout: "BaseLayout",
+        deepLinking: true,
+        showExtensions: true,
+        showCommonExtensions: true
+    })"""
+
+    if init_oauth:
+        html += f"""
+        ui.initOAuth({json.dumps(jsonable_encoder(init_oauth))})
+        """
+
+    html += """
+    </script>
+    </body>
+    </html>
+    """
+    return HTMLResponse(html)

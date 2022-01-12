@@ -1,5 +1,7 @@
 """The initialization of the ASGI FastAPI application."""
 from typing import TYPE_CHECKING
+
+import fastapi.applications
 from fastapi import Depends, FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -13,6 +15,7 @@ from optimade.server.routers.versions import router as versions_router
 
 from optimade_gateway import __version__
 from optimade_gateway.common.config import CONFIG
+from optimade_gateway.common.utils import gateway_get_swagger_ui_html
 from optimade_gateway.exception_handlers import request_validation_exception_handler
 from optimade_gateway.middleware import CheckWronglyVersionedBaseUrlsGateways
 from optimade_gateway.events import EVENTS
@@ -23,6 +26,7 @@ from optimade_gateway.security.oauth2 import get_marketplace_user
 if TYPE_CHECKING:
     from typing import Any, Dict
 
+fastapi.applications.get_swagger_ui_html = gateway_get_swagger_ui_html
 APP = FastAPI(
     title="OPTIMADE Gateway",
     description="A gateway server to query multiple OPTIMADE databases.",
