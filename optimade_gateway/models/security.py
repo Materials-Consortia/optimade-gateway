@@ -1,6 +1,6 @@
 """Security-related models."""
 # pylint: disable=too-few-public-methods
-from typing import Optional
+from typing import Optional, Union
 
 from pydantic import AnyUrl, BaseModel, EmailStr, Field
 
@@ -33,7 +33,7 @@ class OpenIDUserInfoResponse(BaseModel):
             "this factor into account to correctly process the dates."
         ),
     )
-    email: Optional[EmailStr] = Field(
+    email: Optional[Union[EmailStr, str]] = Field(
         None,
         description=(
             "End-User's preferred e-mail address. Its value MUST conform to the RFC "
