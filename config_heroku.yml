@@ -4,7 +4,7 @@ mongo_database: optimade_gateway
 database_backend: mongodb
 page_limit: 20
 page_limit_max: 500
-base_url: "https://optimade-gateway.heroku.com"
+base_url: "https://optimade-gateway.herokuapp.com"
 implementation:
   name: OPTIMADE Gateway
   version: "0.2.2"
@@ -23,3 +23,5 @@ aliases: {}
 length_aliases: {}
 log_level: debug
 log_dir: "/app/logs/"
+hydra_application_id: a9642943-32ae-46f6-8166-dccb59a8d6f3
+hydra_scopes: ["openid", "email"]

@@ -62,7 +62,8 @@ ROUTER = APIRouter(redirect_slashes=True)
     tags=["Search"],
     status_code=status.HTTP_202_ACCEPTED,
     responses=ERROR_RESPONSES,
-)
+    operation_id="postQueryCollection",
+)  # pylint: disable=too-many-branches
 async def post_search(request: Request, search: Search) -> QueriesResponseSingle:
     """`POST /search`
 
@@ -167,6 +168,9 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
         LOGGER.debug("A new gateway was created for a query (id=%r)", gateway.id)
     else:
         LOGGER.debug("A gateway was found and reused for a query (id=%r)", gateway.id)
+
+    if not search.query_parameters.email_address and CONFIG.marketplace_user:
+        search.query_parameters.email_address = CONFIG.marketplace_user
 
     query = QueryCreate(
         endpoint=search.endpoint,

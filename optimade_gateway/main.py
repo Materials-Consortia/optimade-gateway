@@ -2,9 +2,9 @@
 from typing import TYPE_CHECKING
 from fastapi import Depends, FastAPI, Request
 from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
 from fastapi.responses import RedirectResponse
-from fastapi.security import OAuth2AuthorizationCodeBearer
 
 from optimade.server.exception_handlers import OPTIMADE_EXCEPTIONS
 from optimade.server.middleware import OPTIMADE_MIDDLEWARE
@@ -17,6 +17,7 @@ from optimade_gateway.exception_handlers import request_validation_exception_han
 from optimade_gateway.middleware import CheckWronglyVersionedBaseUrlsGateways
 from optimade_gateway.events import EVENTS
 from optimade_gateway.routers import ROUTERS
+from optimade_gateway.security.oauth2 import get_marketplace_user
 
 
 if TYPE_CHECKING:
@@ -33,6 +34,10 @@ APP = FastAPI(
         "x-application-name": "OPTIMADE Gateway",
         "x-application-id": CONFIG.hydra_application_id,
         "x-external-hostname": CONFIG.base_url,
+        "x-image": (
+            "https://raw.githubusercontent.com/Materials-Consortia"
+            "/optimade-python-tools/master/images/optimade_logo_180x180.svg"
+        ),
         "x-products": [
             {
                 "name": "OPTIMADE Gateway",
@@ -41,19 +46,14 @@ APP = FastAPI(
         ],
     },
     swagger_ui_init_oauth={
-        "usePkceWithAuthorizationCodeGrant": True,
-        "clientId": CONFIG.hydra_application_id,
+        "grant_type": "authorization_code",
+        "client_id": CONFIG.hydra_application_id,
+        "client_secret": CONFIG.hydra_client_secret,
         "scopes": [_.value for _ in CONFIG.hydra_scopes],
     },
+    swagger_ui_oauth2_redirect_url="/callback",
 )
 """The FastAPI ASGI application."""
-
-
-OAUTH2_SCHEME = OAuth2AuthorizationCodeBearer(
-    authorizationUrl=f"https://{CONFIG.marketplace_host.value}/oauth/oauth2/auth",
-    tokenUrl=f"https://{CONFIG.marketplace_host.value}/oauth/oauth2/token",
-    auto_error=True,
-)
 
 
 @APP.get("/", include_in_schema=False)
@@ -63,11 +63,11 @@ async def get_root(request: Request) -> RedirectResponse:
     Introspective overview of gateway server.
 
     !!! note
-        Redirecting to `GET /docs`.
+        Redirecting to `GET /redoc`.
 
     """
     return RedirectResponse(
-        request.url.replace(path=f"{request.url.path.strip('/')}/docs")
+        request.url.replace(path=f"{request.url.path.strip('/')}/redoc")
     )
 
 
@@ -90,6 +90,11 @@ def marketplace_openapi() -> "Dict[str, Any]":
 
 APP.openapi = marketplace_openapi  # type: ignore[assignment]
 
+# Add CORS middleware first
+cors_origins = [f"https://{CONFIG.marketplace_host.value}"]
+if CONFIG.debug:
+    cors_origins.append("*")
+APP.add_middleware(CORSMiddleware, allow_origins=cors_origins)
 
 # Add middleware
 APP.add_middleware(CheckWronglyVersionedBaseUrlsGateways)
@@ -112,7 +117,7 @@ for prefix in list(BASE_URL_PREFIXES.values()) + [""]:
             router,
             prefix=prefix,
             include_in_schema=prefix == "",
-            dependencies=[Depends(OAUTH2_SCHEME)],
+            dependencies=[Depends(get_marketplace_user)],
         )
 
 for event, func in EVENTS:

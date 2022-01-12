@@ -16,7 +16,7 @@ class Routers:
     The class also implements a method to return the routers of each submodule lazily.
     """
 
-    NON_ROUTER_SUBMODULES = ("utils", "__init__")
+    NON_ROUTER_SUBMODULES = ("utils", "__init__", "callback")
 
     _submodules: "Set[str]" = set()
 

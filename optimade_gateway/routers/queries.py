@@ -88,6 +88,9 @@ async def post_queries(
         await collection_factory(CONFIG.gateways_collection), query.gateway_id
     )
 
+    if not query.query_parameters.email_address and CONFIG.marketplace_user:
+        query.query_parameters.email_address = CONFIG.marketplace_user
+
     result, created = await resource_factory(query)
 
     if created:

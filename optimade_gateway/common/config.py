@@ -14,7 +14,7 @@ if not os.getenv("OPTIMADE_CONFIG_FILE"):
     )
 
 from optimade.server.config import ServerConfig as OptimadeServerConfig
-from pydantic import Field, SecretStr, root_validator, validator
+from pydantic import EmailStr, Field, SecretStr, root_validator, validator
 
 from optimade_gateway.warnings import OptimadeGatewayWarning
 
@@ -70,7 +70,8 @@ class ServerConfig(OptimadeServerConfig):
 
     # MarketPlace-specific
     hydra_application_id: str = Field(
-        "", description="The MarketPlace hydra client id."
+        "",
+        description="The MarketPlace hydra client id.",
     )
     hydra_scopes: List[AvailableOAuthScopes] = Field(
         [AvailableOAuthScopes.OPENID, AvailableOAuthScopes.EMAIL],
@@ -87,6 +88,17 @@ class ServerConfig(OptimadeServerConfig):
         MarketPlaceHost.STAGING,
         description=(
             "An enumeration of the available recognized MarketPlace domain host."
+        ),
+    )
+    hydra_client_secret: SecretStr = Field(
+        "",
+        description="The MarketPlace hydra client secret",
+    )
+    marketplace_user: Optional[EmailStr] = Field(
+        None,
+        description=(
+            "The email representing a MarketPlace user. This email is used for the "
+            "value of the `email_address` in every OPTIMADE query."
         ),
     )
 
