@@ -23,5 +23,5 @@ aliases: {}
 length_aliases: {}
 log_level: debug
 log_dir: "/app/logs/"
-hydra_application_id: a9642943-32ae-46f6-8166-dccb59a8d6f3
+hydra_application_id: ca26c19b-1e31-4ac1-b79a-177ed815bfa6
 hydra_scopes: ["openid", "email"]
