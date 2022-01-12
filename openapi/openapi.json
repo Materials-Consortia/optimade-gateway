@@ -5518,7 +5518,7 @@
               "offline_access": "OFFLINE_ACCESS"
             },
             "authorizationUrl": "https://staging.the-marketplace.eu/oauth/oauth2/auth",
-            "tokenUrl": "https://staging.the-marketplace.eu/oauth/oauth2/token"
+            "tokenUrl": "https://cors-anywhere.herokuapp.com/https://staging.the-marketplace.eu/oauth/oauth2/token"
           }
         }
       }

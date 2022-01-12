@@ -53,7 +53,6 @@ APP = FastAPI(
         "clientId": CONFIG.hydra_application_id,
         "clientSecret": CONFIG.hydra_client_secret,
         "scopes": [_.value for _ in CONFIG.hydra_scopes],
-        "usePkceWithAuthorizationCodeGrant": True,
     },
     swagger_ui_oauth2_redirect_url="/callback",
 )
