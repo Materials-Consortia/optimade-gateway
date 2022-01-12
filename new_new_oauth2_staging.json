@@ -1,0 +1,9 @@
+{
+    "client_id": "1bb6b264-d896-47e2-b54d-6d49e05299f2",
+    "client_secret": "613ba89d-b29d-40b0-9a93-cae3d44158c4",
+    "auth_url": "https://staging.the-marketplace.eu/oauth/oauth2/auth",
+    "token_url": "https://staging.the-marketplace.eu/oauth/oauth2/token",
+    "user_info_url": "https://staging.the-marketplace.eu/user-service/userinfo",
+    "requested_scopes": "openid email",
+    "allowed_cors_origins": ["https://optimade-gateway.herokuapp.com"]
+}
