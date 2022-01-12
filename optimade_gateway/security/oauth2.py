@@ -2,7 +2,7 @@
 from fastapi import Depends
 from fastapi.security import OAuth2AuthorizationCodeBearer
 import httpx
-from pydantic import EmailStr
+from pydantic import ValidationError
 
 from optimade_gateway.common.config import CONFIG, AvailableOAuthScopes
 from optimade_gateway.common.logger import LOGGER
@@ -42,9 +42,17 @@ async def get_marketplace_user(token: str = Depends(OAUTH2_SCHEME)) -> None:
         user_info_response = await client.get(USER_INFO_URL)
 
     if user_info_response.is_success:
-        user_info = OpenIDUserInfoResponse(**user_info_response.json())
+        try:
+            user_info = OpenIDUserInfoResponse(**user_info_response.json())
+        except ValidationError as exc:
+            LOGGER.warning(
+                "Failed to parse user's email info as an email address: %r.\n"
+                "Validatation error: %s",
+                user_info_response.json().get("email", ""),
+                exc.json(indent=2),
+            )
         if user_info.email:
-            CONFIG.marketplace_user = EmailStr(user_info.email)
+            CONFIG.marketplace_user = user_info.email
     else:
         user_info_error = OpenIDUserInfoErrorResponse(**user_info_response.json())
         LOGGER.error(
