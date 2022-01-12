@@ -6,6 +6,7 @@ from pydantic import ValidationError
 
 from optimade_gateway.common.config import CONFIG, AvailableOAuthScopes
 from optimade_gateway.common.logger import LOGGER
+from optimade_gateway.common.exceptions import Unauthorized
 from optimade_gateway.models.security import (
     OpenIDUserInfoErrorResponse,
     OpenIDUserInfoResponse,
@@ -14,11 +15,7 @@ from optimade_gateway.models.security import (
 
 OAUTH2_SCHEME = OAuth2AuthorizationCodeBearer(
     authorizationUrl=f"https://{CONFIG.marketplace_host.value}/oauth/oauth2/auth",
-    tokenUrl=(
-        f"https://cors-anywhere.herokuapp.com/https://{CONFIG.marketplace_host.value}"
-        "/oauth/oauth2/token"
-    ),
-    # tokenUrl=f"https://{CONFIG.marketplace_host.value}/oauth/oauth2/token",
+    tokenUrl=f"https://{CONFIG.marketplace_host.value}/oauth/oauth2/token",
     auto_error=False,
     scopes={_.value: _.name for _ in AvailableOAuthScopes},
 )
@@ -31,10 +28,6 @@ async def get_marketplace_user(token: str = Depends(OAUTH2_SCHEME)) -> None:
     if not token:
         LOGGER.warning("No MarketPlace auth token was provided.")
         return None
-        # raise Unauthorized(
-        #     detail="Invalid authentication credentials",
-        #     headers={"WWW-Authenticate": "Bearer"},
-        # )
 
     async with httpx.AsyncClient(
         headers={"Authorization": f"Bearer {token}"}
@@ -58,4 +51,8 @@ async def get_marketplace_user(token: str = Depends(OAUTH2_SCHEME)) -> None:
         LOGGER.error(
             "Error during retrieving user info data from MarketPlace:\n%s",
             user_info_error.json(indent=2),
+        )
+        raise Unauthorized(
+            detail="Invalid authentication credentials",
+            headers={"WWW-Authenticate": "Bearer"},
         )
