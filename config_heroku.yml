@@ -5,6 +5,7 @@ database_backend: mongodb
 page_limit: 20
 page_limit_max: 500
 base_url: "https://optimade-gateway.herokuapp.com"
+root_path: "https://optimade-gateway.herokuapp.com"
 implementation:
   name: OPTIMADE Gateway
   version: "0.2.2"
