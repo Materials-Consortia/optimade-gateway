@@ -18,7 +18,7 @@ class Search(BaseModel):
     """
 
     query_parameters: OptimadeQueryParameters = Field(
-        {},
+        OptimadeQueryParameters(),
         description=(
             "OPTIMADE query parameters for entry listing endpoints used for this query."
         ),

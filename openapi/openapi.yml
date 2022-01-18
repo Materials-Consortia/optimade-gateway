@@ -2222,7 +2222,19 @@ components:
         query_parameters:
           allOf:
           - $ref: '#/components/schemas/OptimadeQueryParameters'
-          default: {}
+          default:
+            email_address: ''
+            filter: ''
+            include: references
+            page_above: 0
+            page_below: 0
+            page_cursor: 0
+            page_limit: 20
+            page_number: 0
+            page_offset: 0
+            response_fields: ''
+            response_format: json
+            sort: ''
           description: OPTIMADE query parameters for entry listing endpoints used
             for this query.
           title: Query Parameters
