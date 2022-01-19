@@ -17,6 +17,7 @@ theme:
   features:
     - navigation.instant
     - navigation.top
+  custom_dir: docs_overrides
 
 repo_name: optimade-gateway
 repo_url: https://github.com/Materials-Consortia/optimade-gateway
@@ -51,6 +52,10 @@ markdown_extensions:
 plugins:
   - search:
       lang: en
+  - mkdocs-jupyter:
+      include_source: True
+      execute: True
+      execute_ignore: "jupyter/marketplace_proxy.ipynb"
   - mkdocstrings:
       default_handler: python
       handlers:
@@ -85,3 +90,11 @@ plugins:
       watch:
         - optimade_gateway
   - awesome-pages
+
+nav:
+  - index.md
+  - design.md
+  - License: LICENSE.md
+  - ... | jupyter/*.ipynb
+  - Changelog: CHANGELOG.md
+  - ... | api_reference/**
