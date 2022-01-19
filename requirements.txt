@@ -1,5 +1,5 @@
+gunicorn~=20.1
 httpx~=0.21.3
-hypercorn~=0.13.1
 motor~=2.5
 optimade[server]~=0.16.8
 python-multipart~=0.0.5

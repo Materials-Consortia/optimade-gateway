@@ -13,4 +13,10 @@ ARG CONFIG_FILE=optimade_gateway/config.yml
 COPY ${CONFIG_FILE} ./config.yml
 ENV OPTIMADE_CONFIG_FILE /app/config.yml
 
-CMD [ "hypercorn", "--bind", "0.0.0.0:80", "optimade_gateway.main:APP" ]
+CMD [  \
+    "gunicorn",  \
+    "--bind", "0.0.0.0:80",  \
+    "--workers", "1",  \
+    "--worker-class", "uvicorn.workers.UvicornWorker",  \
+    "optimade_gateway.main:APP"  \
+]

@@ -1,9 +1,0 @@
-{
-    "client_id": "29bceba0-ba44-4573-bd7c-b38f102d77b0",
-    "client_secret": "e65c8395-7515-4fff-a08b-b859089db96a",
-    "auth_url": "https://the-marketplace.eu/oauth/oauth2/auth",
-    "token_url": "https://the-marketplace.eu/oauth/oauth2/token",
-    "user_info_url": "https://the-marketplace.eu/user-service/userinfo",
-    "requested_scopes": "openid email",
-    "allowed_cors_origins": []
-}

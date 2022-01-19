@@ -1,9 +1,0 @@
-{
-    "client_id": "ca26c19b-1e31-4ac1-b79a-177ed815bfa6",
-    "client_secret": "1c6e25d6-9a8c-4110-b0f0-2556ab533723",
-    "auth_url": "https://staging.the-marketplace.eu/oauth/oauth2/auth",
-    "token_url": "https://staging.the-marketplace.eu/oauth/oauth2/token",
-    "user_info_url": "https://staging.the-marketplace.eu/user-service/userinfo",
-    "requested_scopes": "openid email",
-    "allowed_cors_origins": []
-}

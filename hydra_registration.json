@@ -1,5 +1,0 @@
-{
-    "callback_url": "https://optimade-gateway.herokuapp.com/callback",
-    "scopes": ["openid", "email"],
-    "allowed_cors_origins": ["https://optimade-gateway.herokuapp.com"]
-}
