@@ -49,12 +49,23 @@ with open(TOP_DIR / "requirements_docs.txt", "r", encoding="utf8") as handle:
         if not _.startswith("#") and "git+" not in _
     ]
 
-with open(TOP_DIR / "requirements_dev.txt", "r", encoding="utf8") as handle:
-    DEV = [
+with open(TOP_DIR / "requirements_jupyter.txt", "r", encoding="utf8") as handle:
+    JUPYTER = [
         f"{_.strip()}"
         for _ in handle.readlines()
         if not _.startswith("#") and "git+" not in _
-    ] + DOCS
+    ]
+
+with open(TOP_DIR / "requirements_dev.txt", "r", encoding="utf8") as handle:
+    DEV = (
+        [
+            f"{_.strip()}"
+            for _ in handle.readlines()
+            if not _.startswith("#") and "git+" not in _
+        ]
+        + DOCS
+        + JUPYTER
+    )
 
 setup(
     name="optimade-gateway",
@@ -69,7 +80,7 @@ setup(
     include_package_data=True,
     python_requires=">=3.7",
     install_requires=BASE,
-    extras_require={"dev": DEV, "docs": DOCS},
+    extras_require={"dev": DEV, "docs": DOCS, "jupyter": JUPYTER},
     entry_points={
         "console_scripts": ["optimade-gateway = optimade_gateway.run:run"],
     },
