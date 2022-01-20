@@ -92,6 +92,7 @@ def create_api_reference_docs(context, pre_clean=False, pre_commit=False):
     docs_api_ref_dir = TOP_DIR / "docs/api_reference"
 
     unwanted_subdirs = ("__pycache__",)
+    unwanted_files = ("__init__.py", "run.py")
 
     pages_template = 'title: "{name}"\n'
     md_template = "# {name}\n\n::: {py_path}\n"
@@ -105,6 +106,11 @@ def create_api_reference_docs(context, pre_clean=False, pre_commit=False):
             sys.exit(f"{docs_api_ref_dir} should have been removed!")
     docs_api_ref_dir.mkdir(exist_ok=True)
 
+    write_file(
+        full_path=docs_api_ref_dir / ".pages",
+        content=pages_template.format(name="API Reference"),
+    )
+
     for dirpath, dirnames, filenames in os.walk(package_dir):
         for unwanted_dir in unwanted_subdirs:
             if unwanted_dir in dirnames:
@@ -113,15 +119,14 @@ def create_api_reference_docs(context, pre_clean=False, pre_commit=False):
 
         relpath = Path(dirpath).relative_to(package_dir)
 
+        if not (package_dir.stem / relpath / "__init__.py").exists():
+            # Avoid paths that are not included in the public Python API
+            continue
+
         # Create `.pages`
         docs_sub_dir = docs_api_ref_dir / relpath
         docs_sub_dir.mkdir(exist_ok=True)
-        if str(relpath) == ".":
-            write_file(
-                full_path=docs_api_ref_dir / ".pages",
-                content=pages_template.format(name="API Reference"),
-            )
-        else:
+        if str(relpath) != ".":
             write_file(
                 full_path=docs_sub_dir / ".pages",
                 content=pages_template.format(
@@ -131,19 +136,16 @@ def create_api_reference_docs(context, pre_clean=False, pre_commit=False):
 
         # Create markdown files
         for filename in filenames:
-            if re.match(r".*\.py$", filename) is None or filename in (
-                "__init__.py",
-                "run.py",
-            ):
+            if re.match(r".*\.py$", filename) is None or filename in unwanted_files:
                 # Not a Python file: We don't care about it!
-                # Or filename is `__init__.py`: We don't want it!
+                # Or filename is in the tuple of unwanted files: We don't want it!
                 continue
 
             basename = filename[: -len(".py")]
             py_path = (
-                f"optimade_gateway/{relpath}/{basename}".replace("/", ".")
+                f"{package_dir.stem}/{relpath}/{basename}".replace("/", ".")
                 if str(relpath) != "."
-                else f"optimade_gateway/{basename}".replace("/", ".")
+                else f"{package_dir.stem}/{basename}".replace("/", ".")
             )
             md_filename = filename.replace(".py", ".md")
 
