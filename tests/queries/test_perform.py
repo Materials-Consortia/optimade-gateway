@@ -55,11 +55,11 @@ async def test_db_get_all_resources_recursivity(
     }
 
     httpx_mock.add_response(
-        url=re.compile(fr"{db_page_one['data'][0]['attributes']['base_url']}.*"),
+        url=re.compile(rf"{db_page_one['data'][0]['attributes']['base_url']}.*"),
         json=db_page_one,
     )
     httpx_mock.add_response(
-        url=re.compile(fr"{db_page_one['links']['next']}.*"),
+        url=re.compile(rf"{db_page_one['links']['next']}.*"),
         json=db_page_two,
     )
 
@@ -102,7 +102,7 @@ async def test_db_get_all_resources_error_response(
     }
 
     httpx_mock.add_response(
-        url=re.compile(fr"{response['data'][0]['attributes']['base_url']}.*"),
+        url=re.compile(rf"{response['data'][0]['attributes']['base_url']}.*"),
         json=response,
     )
 

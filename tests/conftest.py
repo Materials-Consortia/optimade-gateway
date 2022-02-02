@@ -176,7 +176,7 @@ def mock_gateway_responses(
             if database["id"].startswith("sleep"):
                 httpx_mock.add_callback(
                     callback=sleep_response,
-                    url=re.compile(fr"{database['attributes']['base_url']}.*"),
+                    url=re.compile(rf"{database['attributes']['base_url']}.*"),
                 )
             elif (
                 gateway["id"].startswith("single-structure")
@@ -203,7 +203,7 @@ def mock_gateway_responses(
                     status_code = 200
 
                 httpx_mock.add_response(
-                    url=re.compile(fr"{database['attributes']['base_url']}.*"),
+                    url=re.compile(rf"{database['attributes']['base_url']}.*"),
                     json=data,
                     status_code=status_code,
                 )

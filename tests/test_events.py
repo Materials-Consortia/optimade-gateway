@@ -552,25 +552,25 @@ async def test_bad_provider_databases(
     ):
         httpx_mock.add_response(
             url=re.compile(
-                fr"{mock_provider_list['data'][index]['attributes']['base_url']}.*"
+                rf"{mock_provider_list['data'][index]['attributes']['base_url']}.*"
             ),
             json=index_db,
         )
     httpx_mock.add_response(
         url=re.compile(
-            fr"{mock_provider_list['data'][-1]['attributes']['base_url']['href']}.*"
+            rf"{mock_provider_list['data'][-1]['attributes']['base_url']['href']}.*"
         ),
         json=bad_response_database_provider,
     )
     httpx_mock.add_callback(
         callback=raise_timeout,
         url=re.compile(
-            fr"{timeout_database_provider['data'][0]['attributes']['base_url']}.*"
+            rf"{timeout_database_provider['data'][0]['attributes']['base_url']}.*"
         ),
     )
     httpx_mock.add_response(
         url=re.compile(
-            fr"{bad_response_database_provider['data'][0]['attributes']['base_url']['href']}.*"
+            rf"{bad_response_database_provider['data'][0]['attributes']['base_url']['href']}.*"
         ),
         status_code=404,
     )
