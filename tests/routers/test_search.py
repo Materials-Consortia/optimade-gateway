@@ -16,9 +16,6 @@ if TYPE_CHECKING:
     from httpx import Response
 
 
-pytestmark = [pytest.mark.asyncio]
-
-
 @pytest.mark.usefixtures("reset_db_after")
 async def test_get_search(
     client: (

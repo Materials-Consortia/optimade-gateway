@@ -7,9 +7,6 @@ if TYPE_CHECKING:
     from pytest_httpx import HTTPXMock
 
 
-pytestmark = pytest.mark.asyncio
-
-
 async def test_db_get_all_resources_recursivity(
     httpx_mock: "HTTPXMock", generic_meta: dict
 ):

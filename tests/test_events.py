@@ -10,9 +10,6 @@ if TYPE_CHECKING:
     from pytest_httpx import HTTPXMock
 
 
-pytestmark = pytest.mark.asyncio
-
-
 @pytest.mark.usefixtures("reset_db_after")
 async def test_ci_dev_startup_ci(caplog: pytest.LogCaptureFixture, top_dir: "Path"):
     """Test ci_dev_startup() if env var CI=true"""
