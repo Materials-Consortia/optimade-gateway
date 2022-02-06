@@ -236,7 +236,7 @@ def update_pytest_reqs(_):
         for line in handle.readlines():
             for plugin in plugins:
                 dependency = re.match(
-                    fr"^{plugin}~=(?P<version>[0-9]+(\.[0-9]+){{1,2}}).*", line
+                    rf"^{plugin}~=(?P<version>[0-9]+(\.[0-9]+){{1,2}}).*", line
                 )
                 if not dependency:
                     continue

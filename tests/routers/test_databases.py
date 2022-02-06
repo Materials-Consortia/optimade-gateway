@@ -17,9 +17,6 @@ if TYPE_CHECKING:
     from httpx import Response
 
 
-pytestmark = pytest.mark.asyncio
-
-
 async def test_get_databases(
     client: (
         'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
