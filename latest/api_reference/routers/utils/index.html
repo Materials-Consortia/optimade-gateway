@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-gateway/latest/api_reference/routers/utils/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.3">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.5">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.e8d9bf0c.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.2d9f7617.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -35,6 +35,7 @@
     
     
       
+        
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
@@ -1320,7 +1321,7 @@ sortability, support level, queryability and type, where provided.</p></td>
 
       <p>Get or initiate an entry-endpoint resource collection.</p>
 <p>This factory utilizes the global dictionary
-<a href="#optimade_gateway.routers.utils.COLLECTIONS"><code>COLLECTIONS</code></a>.
+<a class="autorefs autorefs-internal" href="#optimade_gateway.routers.utils.COLLECTIONS"><code>COLLECTIONS</code></a>.
 It lazily instantiates the collections and then caches them in the dictionary.</p>
 
 <p><strong>Parameters:</strong></p>
@@ -1545,13 +1546,13 @@ names.</p></td>
       <p>Get or create a resource</p>
 <p>Currently supported resources:</p>
 <ul>
-<li><code>"databases"</code> (<a href="../../models/databases/#optimade_gateway.models.databases.DatabaseCreate"><code>DatabaseCreate</code></a>
+<li><code>"databases"</code> (<a class="autorefs autorefs-internal" href="../../models/databases/#optimade_gateway.models.databases.DatabaseCreate"><code>DatabaseCreate</code></a>
     -&gt;
     <a href="https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResource"><code>LinksResource</code></a>)</li>
-<li><code>"gateways"</code> (<a href="../../models/gateways/#optimade_gateway.models.gateways.GatewayCreate"><code>GatewayCreate</code></a> -&gt;
-    <a href="../../models/gateways/#optimade_gateway.models.gateways.GatewayResource"><code>GatewayResource</code></a>)</li>
-<li><code>"queries"</code> (<a href="../../models/queries/#optimade_gateway.models.queries.QueryCreate"><code>QueryCreate</code></a> -&gt;
-    <a href="../../models/queries/#optimade_gateway.models.queries.QueryResource"><code>QueryResource</code></a>)</li>
+<li><code>"gateways"</code> (<a class="autorefs autorefs-internal" href="../../models/gateways/#optimade_gateway.models.gateways.GatewayCreate"><code>GatewayCreate</code></a> -&gt;
+    <a class="autorefs autorefs-internal" href="../../models/gateways/#optimade_gateway.models.gateways.GatewayResource"><code>GatewayResource</code></a>)</li>
+<li><code>"queries"</code> (<a class="autorefs autorefs-internal" href="../../models/queries/#optimade_gateway.models.queries.QueryCreate"><code>QueryCreate</code></a> -&gt;
+    <a class="autorefs autorefs-internal" href="../../models/queries/#optimade_gateway.models.queries.QueryResource"><code>QueryResource</code></a>)</li>
 </ul>
 <p>For each of the resources, "uniqueness" is determined in the following way:</p>
 <div class="tabbed-set" data-tabs="1:3"><input checked="checked" id="optimade_gateway.routers.utils.resource_factory--__tabbed_1_1" name="optimade_gateway.routers.utils.resource_factory--__tabbed_1" type="radio" /><label for="optimade_gateway.routers.utils.resource_factory--__tabbed_1_1">Databases</label><div class="tabbed-content">
@@ -1573,14 +1574,14 @@ element values, when compared with the <code>create_resource</code>.</p>
 <p>The <code>database_ids</code> attribute <strong>must not</strong> contain values that are not also
 included in the <code>databases</code> attribute, in the form of the IDs for the
 individual databases. If this should be the case an
-<a href="../../common/exceptions/#optimade_gateway.common.exceptions.OptimadeGatewayError"><code>OptimadeGatewayError</code></a>
+<a class="autorefs autorefs-internal" href="../../common/exceptions/#optimade_gateway.common.exceptions.OptimadeGatewayError"><code>OptimadeGatewayError</code></a>
 will be thrown.</p>
 </div>
 </div>
 <input id="optimade_gateway.routers.utils.resource_factory--__tabbed_1_3" name="optimade_gateway.routers.utils.resource_factory--__tabbed_1" type="radio" /><label for="optimade_gateway.routers.utils.resource_factory--__tabbed_1_3">Queries</label><div class="tabbed-content">
 <p>The <code>gateway_id</code>, <code>query_parameters</code>, and <code>endpoint</code> fields are collectively
 considered to define uniqueness for a
-<a href="../../models/queries/#optimade_gateway.models.queries.QueryResource"><code>QueryResource</code></a> in the MongoDB
+<a class="autorefs autorefs-internal" href="../../models/queries/#optimade_gateway.models.queries.QueryResource"><code>QueryResource</code></a> in the MongoDB
 collection.</p>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
@@ -1624,8 +1625,8 @@ resource model.</p>
     <tr>
       <td><code>Two things in a tuple</code></td>
       <td><ul>
-<li>Either a <a href="../../models/gateways/#optimade_gateway.models.gateways.GatewayResource"><code>GatewayResource</code></a>;
-    a <a href="../../models/queries/#optimade_gateway.models.queries.QueryResource"><code>QueryResource</code></a>; or a
+<li>Either a <a class="autorefs autorefs-internal" href="../../models/gateways/#optimade_gateway.models.gateways.GatewayResource"><code>GatewayResource</code></a>;
+    a <a class="autorefs autorefs-internal" href="../../models/queries/#optimade_gateway.models.queries.QueryResource"><code>QueryResource</code></a>; or a
     <a href="https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResource"><code>LinksResource</code></a>
     and</li>
 <li>whether or not the resource was newly created.</li>
@@ -1928,7 +1929,7 @@ resource model.</p>
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.bd0b6b67.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.b88e97c5.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.467223ff.min.js"></script>
       
     
   </body>

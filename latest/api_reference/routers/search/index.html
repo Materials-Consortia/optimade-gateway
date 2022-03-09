@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-gateway/latest/api_reference/routers/search/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.3">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.5">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.e8d9bf0c.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.2d9f7617.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -35,6 +35,7 @@
     
     
       
+        
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
@@ -1140,16 +1141,16 @@
       <p><code>GET /search</code></p>
 <p>Coordinate a new OPTIMADE query in multiple databases through a gateway:</p>
 <ol>
-<li>Create a <a href="../../models/search/#optimade_gateway.models.search.Search"><code>Search</code></a> <code>POST</code> data - calling
+<li>Create a <a class="autorefs autorefs-internal" href="../../models/search/#optimade_gateway.models.search.Search"><code>Search</code></a> <code>POST</code> data - calling
     <code>POST /search</code>.</li>
-<li>Wait <a href="../../queries/params/#optimade_gateway.queries.params.SearchQueryParams"><code>search_params.timeout</code></a>
+<li>Wait <a class="autorefs autorefs-internal" href="../../queries/params/#optimade_gateway.queries.params.SearchQueryParams"><code>search_params.timeout</code></a>
     seconds before returning the query, if it has not finished before.</li>
 <li>Return query - similar to <code>GET /queries/{query_id}</code>.</li>
 </ol>
 <p>This endpoint works similarly to <code>GET /queries/{query_id}</code>, where one passes the query
 parameters directly in the URL, instead of first POSTing a query and then going to its
 URL. Hence, a
-<a href="../../models/responses/#optimade_gateway.models.responses.QueriesResponseSingle"><code>QueryResponseSingle</code></a> is
+<a class="autorefs autorefs-internal" href="../../models/responses/#optimade_gateway.models.responses.QueriesResponseSingle"><code>QueryResponseSingle</code></a> is
 the standard response model for this endpoint.</p>
 <p>If the timeout time is reached and the query has not yet finished, the user is
 redirected to the specific URL for the query.</p>
@@ -1307,12 +1308,12 @@ For more information see the
 <p>Coordinate a new OPTIMADE query in multiple databases through a gateway:</p>
 <ol>
 <li>Search for gateway in DB using <code>optimade_urls</code> and <code>database_ids</code></li>
-<li>Create <a href="../../models/gateways/#optimade_gateway.models.gateways.GatewayCreate"><code>GatewayCreate</code></a> model</li>
+<li>Create <a class="autorefs autorefs-internal" href="../../models/gateways/#optimade_gateway.models.gateways.GatewayCreate"><code>GatewayCreate</code></a> model</li>
 <li><code>POST</code> gateway resource to get ID - using functionality of <code>POST /gateways</code></li>
-<li>Create new <a href="../../models/queries/#optimade_gateway.models.queries.QueryCreate">Query</a> resource</li>
+<li>Create new <a class="autorefs autorefs-internal" href="../../models/queries/#optimade_gateway.models.queries.QueryCreate">Query</a> resource</li>
 <li><code>POST</code> Query resource - using functionality of <code>POST /queries</code></li>
 <li>Return <code>POST /queries</code> response -
-    <a href="../../models/responses/#optimade_gateway.models.responses.QueriesResponseSingle"><code>QueriesResponseSingle</code></a></li>
+    <a class="autorefs autorefs-internal" href="../../models/responses/#optimade_gateway.models.responses.QueriesResponseSingle"><code>QueriesResponseSingle</code></a></li>
 </ol>
 
         <details class="quote">
@@ -1564,7 +1565,7 @@ For more information see the
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.bd0b6b67.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.b88e97c5.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.467223ff.min.js"></script>
       
     
   </body>
