@@ -15,7 +15,7 @@ disable = [
 
 [tool.pytest.ini_options]
 minversion = "7.0"
-required_plugins = "pytest-asyncio>=0.18.2 pytest-cov>=3.0 pytest-httpx>=0.20.0"
+required_plugins = "pytest-asyncio>=0.18.3 pytest-cov>=3.0 pytest-httpx>=0.20.0"
 addopts = "-rs --cov=./optimade_gateway/ --cov-report=term --durations=10"
 filterwarnings = [
     "ignore:.*imp module.*:DeprecationWarning"
