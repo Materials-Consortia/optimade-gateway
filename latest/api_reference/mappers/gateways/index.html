@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-gateway/latest/api_reference/mappers/gateways/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.15">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.3">
     
     
       
@@ -21,15 +21,16 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.c382b1dc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.4a0965b7.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.cc9b2e1e.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.cbb835fc.min.css">
         
           
           
           <meta name="theme-color" content="#7e56c2">
         
+      
       
     
     
@@ -566,19 +567,6 @@
     GatewaysMapper
   </a>
   
-    <nav class="md-nav" aria-label="GatewaysMapper">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#optimade_gateway.mappers.gateways.GatewaysMapper.ENTRY_RESOURCE_CLASS" class="md-nav__link">
-    ENTRY_RESOURCE_CLASS
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
     </ul>
@@ -1081,19 +1069,6 @@
     GatewaysMapper
   </a>
   
-    <nav class="md-nav" aria-label="GatewaysMapper">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#optimade_gateway.mappers.gateways.GatewaysMapper.ENTRY_RESOURCE_CLASS" class="md-nav__link">
-    ENTRY_RESOURCE_CLASS
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
     </ul>
@@ -1136,27 +1111,34 @@
 
 
 <h2 id="optimade_gateway.mappers.gateways.GatewaysMapper" class="doc doc-heading">
-        <code>
-GatewaysMapper            (<a class="autorefs autorefs-internal" title="optimade_gateway.mappers.base.BaseResourceMapper" href="../base/#optimade_gateway.mappers.base.BaseResourceMapper">BaseResourceMapper</a>)
-        </code>
+          <code>GatewaysMapper</code>
 
 
 
 <a href="#optimade_gateway.mappers.gateways.GatewaysMapper" class="headerlink" title="Permanent link">&para;</a></h2>
 
+
     <div class="doc doc-contents ">
+        <p class="doc doc-class-bases">
+          Bases: <code><a class="autorefs autorefs-internal" title="optimade_gateway.mappers.base.BaseResourceMapper" href="../base/#optimade_gateway.mappers.base.BaseResourceMapper">BaseResourceMapper</a></code></p>
+
 
       <p><a class="autorefs autorefs-internal" href="../../models/gateways/#optimade_gateway.models.gateways.GatewayResource"><code>GatewayResource</code></a> mapper.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/mappers/gateways.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">GatewaysMapper</span><span class="p">(</span><span class="n">BaseResourceMapper</span><span class="p">):</span>
+
+          <details class="quote">
+            <summary>Source code in <code>optimade_gateway/mappers/gateways.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">GatewaysMapper</span><span class="p">(</span><span class="n">BaseResourceMapper</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;[`GatewayResource`][optimade_gateway.models.gateways.GatewayResource] mapper.&quot;&quot;&quot;</span>
 
     <span class="n">ENDPOINT</span> <span class="o">=</span> <span class="s2">&quot;gateways&quot;</span>
     <span class="n">ENTRY_RESOURCE_CLASS</span> <span class="o">=</span> <span class="n">GatewayResource</span>
-</code></pre></div>
-        </details>
+</code></pre></div></td></tr></table></div>
+          </details>
 
 
 
@@ -1169,81 +1151,6 @@ GatewaysMapper            (<a class="autorefs autorefs-internal" title="optimade
 
 
 
-  <div class="doc doc-object doc-class">
-
-
-
-<h3 id="optimade_gateway.mappers.gateways.GatewaysMapper.ENTRY_RESOURCE_CLASS" class="doc doc-heading">
-        <code>
-ENTRY_RESOURCE_CLASS            (<span title="optimade.models.entries.EntryResource">EntryResource</span>)
-        </code>
-
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
-  </span>
-
-<a href="#optimade_gateway.mappers.gateways.GatewaysMapper.ENTRY_RESOURCE_CLASS" class="headerlink" title="Permanent link">&para;</a></h3>
-
-    <div class="doc doc-contents ">
-
-      <p>OPTIMADE gateway</p>
-<p>A resource representing a dynamic collection of OPTIMADE databases.
-The gateway can be treated as any other OPTIMADE gateway, but the entries are an
-aggregate of multiple databases. The <code>id</code> of each aggregated resource will reflect
-the originating database.</p>
-
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/mappers/gateways.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">GatewayResource</span><span class="p">(</span><span class="n">EntryResource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;OPTIMADE gateway</span>
-
-<span class="sd">    A resource representing a dynamic collection of OPTIMADE databases.</span>
-<span class="sd">    The gateway can be treated as any other OPTIMADE gateway, but the entries are an</span>
-<span class="sd">    aggregate of multiple databases. The `id` of each aggregated resource will reflect</span>
-<span class="sd">    the originating database.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
-        <span class="o">...</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;An entry&#39;s ID as defined in section Definition of Terms.</span>
-
-<span class="s2">- **Type**: string.</span>
-
-<span class="s2">- **Requirements/Conventions**:</span>
-<span class="s2">    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.</span>
-<span class="s2">    - **Query**: MUST be a queryable property with support for all mandatory filter</span>
-<span class="s2">      features.</span>
-<span class="s2">    - **Response**: REQUIRED in the response.</span>
-<span class="s2">    - **Gateway-specific**: MUST NOT contain a forward slash (`/`).</span>
-
-<span class="s2">- **Examples**:</span>
-<span class="s2">    - `&quot;db_1234567&quot;`</span>
-<span class="s2">    - `&quot;cod_2000000&quot;`</span>
-<span class="s2">    - `&quot;cod_2000000@1234567&quot;`</span>
-<span class="s2">    - `&quot;nomad_L1234567890&quot;`</span>
-<span class="s2">    - `&quot;42&quot;`&quot;&quot;&quot;</span><span class="p">,</span>
-        <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
-        <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
-        <span class="n">regex</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;^[^/]*$&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="s2">&quot;gateways&quot;</span><span class="p">,</span>
-        <span class="n">const</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The name of the type of an entry.&quot;</span><span class="p">,</span>
-        <span class="n">regex</span><span class="o">=</span><span class="s2">&quot;^gateways$&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">attributes</span><span class="p">:</span> <span class="n">GatewayResourceAttributes</span>
-</code></pre></div>
-        </details>
-
-
-    </div>
-
-  </div>
-
-
-
 
 
 
@@ -1253,7 +1160,6 @@ the originating database.</p>
     </div>
 
   </div>
-
 
 
 
@@ -1268,10 +1174,11 @@ the originating database.</p>
 
               
             </article>
+            
           </div>
         </div>
         
-          <a href="#" class="md-top md-icon" data-md-component="top" data-md-state="hidden">
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
             Back to top
           </a>
@@ -1280,7 +1187,8 @@ the originating database.</p>
       
         <footer class="md-footer">
   
-    <nav class="md-footer__inner md-grid" aria-label="Footer">
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
       
         
         <a href="../databases/" class="md-footer__link md-footer__link--prev" aria-label="Previous: databases" rel="prev">
@@ -1355,10 +1263,10 @@ the originating database.</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.b028fd86.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.a6c66575.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.f758a944.min.js"></script>
       
     
   </body>

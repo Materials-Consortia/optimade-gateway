@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-gateway/latest/api_reference/queries/prepare/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.15">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.3">
     
     
       
@@ -21,15 +21,16 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.c382b1dc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.4a0965b7.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.cc9b2e1e.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.cbb835fc.min.css">
         
           
           
           <meta name="theme-color" content="#7e56c2">
         
+      
       
     
     
@@ -1127,10 +1128,11 @@
 <code class="highlight language-python"><span class="n">get_query_params</span><span class="p">(</span><span class="n">query_parameters</span><span class="p">,</span> <span class="n">database_id</span><span class="p">,</span> <span class="n">filter_mapping</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-async"><code>async</code></small>
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.queries.prepare.get_query_params" class="headerlink" title="Permanent link">&para;</a></h2>
+
 
     <div class="doc doc-contents ">
 
@@ -1138,7 +1140,18 @@
 
         <details class="quote">
           <summary>Source code in <code>optimade_gateway/queries/prepare.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_query_params</span><span class="p">(</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_query_params</span><span class="p">(</span>
     <span class="n">query_parameters</span><span class="p">:</span> <span class="s2">&quot;OptimadeQueryParameters&quot;</span><span class="p">,</span>
     <span class="n">database_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">filter_mapping</span><span class="p">:</span> <span class="s2">&quot;Mapping[str, Union[str, None]]&quot;</span><span class="p">,</span>
@@ -1150,7 +1163,7 @@
     <span class="k">if</span> <span class="n">filter_mapping</span><span class="p">[</span><span class="n">database_id</span><span class="p">]:</span>
         <span class="n">query_params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;filter&quot;</span><span class="p">:</span> <span class="n">filter_mapping</span><span class="p">[</span><span class="n">database_id</span><span class="p">]})</span>
     <span class="k">return</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlencode</span><span class="p">(</span><span class="n">query_params</span><span class="p">)</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
     </div>
 
@@ -1166,10 +1179,11 @@
 <code class="highlight language-python"><span class="n">prepare_query_filter</span><span class="p">(</span><span class="n">database_ids</span><span class="p">,</span> <span class="n">filter_query</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-async"><code>async</code></small>
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.queries.prepare.prepare_query_filter" class="headerlink" title="Permanent link">&para;</a></h2>
+
 
     <div class="doc doc-contents ">
 
@@ -1178,51 +1192,116 @@
 If someone searches for a gateway-changed <code>id</code>, it needs to be reverted to be
 database-specific.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>database_ids</code></td>
-        <td><code>List[str]</code></td>
-        <td><p>List of the databases to create updated filter values for.
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>database_ids</code></td>
+          <td>
+                <code>&#39;List[str]&#39;</code>
+          </td>
+          <td><p>List of the databases to create updated filter values for.
 These values are part of the gateway-changed <code>id</code> values and are essential.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>filter_query</code></td>
-        <td><code>Union[str, None]</code></td>
-        <td><p>The submitted <code>filter</code> query parameter value. Can be <code>None</code> if not
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>filter_query</code></td>
+          <td>
+                <code>&#39;Union[str, None]&#39;</code>
+          </td>
+          <td><p>The submitted <code>filter</code> query parameter value. Can be <code>None</code> if not
 supplied.</p></td>
-        <td><em>required</em></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>Mapping[str, Union[str, None]]</code></td>
-      <td><p>A mapping for database IDs to database-specific <code>filter</code> query parameter values.</p></td>
-    </tr>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>&#39;Mapping[str, Union[str, None]]&#39;</code>
+          </td>
+          <td><p>A mapping for database IDs to database-specific <code>filter</code> query parameter values.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
         <details class="quote">
           <summary>Source code in <code>optimade_gateway/queries/prepare.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">prepare_query_filter</span><span class="p">(</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">prepare_query_filter</span><span class="p">(</span>
     <span class="n">database_ids</span><span class="p">:</span> <span class="s2">&quot;List[str]&quot;</span><span class="p">,</span> <span class="n">filter_query</span><span class="p">:</span> <span class="s2">&quot;Union[str, None]&quot;</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Mapping[str, Union[str, None]]&quot;</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Update the query parameter `filter` value to be database-specific</span>
@@ -1276,12 +1355,11 @@ supplied.</p></td>
                 <span class="p">)</span>
             <span class="p">)</span>
     <span class="k">return</span> <span class="n">updated_filter</span>  <span class="c1"># type: ignore[return-value]</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
     </div>
 
   </div>
-
 
 
 
@@ -1295,10 +1373,11 @@ supplied.</p></td>
 
               
             </article>
+            
           </div>
         </div>
         
-          <a href="#" class="md-top md-icon" data-md-component="top" data-md-state="hidden">
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
             Back to top
           </a>
@@ -1307,7 +1386,8 @@ supplied.</p></td>
       
         <footer class="md-footer">
   
-    <nav class="md-footer__inner md-grid" aria-label="Footer">
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
       
         
         <a href="../perform/" class="md-footer__link md-footer__link--prev" aria-label="Previous: perform" rel="prev">
@@ -1382,10 +1462,10 @@ supplied.</p></td>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.b028fd86.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.a6c66575.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.f758a944.min.js"></script>
       
     
   </body>

@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-gateway/latest/api_reference/queries/utils/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.15">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.3">
     
     
       
@@ -21,15 +21,16 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.c382b1dc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.4a0965b7.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.cc9b2e1e.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.cbb835fc.min.css">
         
           
           
           <meta name="theme-color" content="#7e56c2">
         
+      
       
     
     
@@ -1113,10 +1114,11 @@
 <code class="highlight language-python"><span class="n">update_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">operator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">mongo_kwargs</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-async"><code>async</code></small>
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.queries.utils.update_query" class="headerlink" title="Permanent link">&para;</a></h2>
+
 
     <div class="doc doc-contents ">
 
@@ -1133,59 +1135,161 @@ cannot update <code>id</code>, <code>type</code> or any other top-level resource
 <p><code>mongo_kwargs</code> will not be considered for updating the pydantic model instance.</p>
 </div>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>query</code></td>
-        <td><code>QueryResource</code></td>
-        <td><p>The query to be updated.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>field</code></td>
-        <td><code>str</code></td>
-        <td><p>The <code>attributes</code> field (key) to be set.
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>query</code></td>
+          <td>
+                <code>&#39;QueryResource&#39;</code>
+          </td>
+          <td><p>The query to be updated.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>field</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The <code>attributes</code> field (key) to be set.
 This can be a dot-separated key value to signify embedded fields.</p>
 <p><strong>Example</strong>: <code>response.meta</code>.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>value</code></td>
-        <td><code>Any</code></td>
-        <td><p>The (possibly) new value for <code>field</code>.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>operator</code></td>
-        <td><code>Optional[str]</code></td>
-        <td><p>A MongoDB operator to be used for updating <code>field</code> with <code>value</code>.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>mongo_kwargs</code></td>
-        <td><code>dict</code></td>
-        <td><p>Further MongoDB update filters.</p></td>
-        <td><code>{}</code></td>
-      </tr>
-  </tbody>
-</table>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>value</code></td>
+          <td>
+                <code>&#39;Any&#39;</code>
+          </td>
+          <td><p>The (possibly) new value for <code>field</code>.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>operator</code></td>
+          <td>
+                <code>&#39;Optional[str]&#39;</code>
+          </td>
+          <td><p>A MongoDB operator to be used for updating <code>field</code> with <code>value</code>.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>**mongo_kwargs</code></td>
+          <td>
+                <code>&#39;Any&#39;</code>
+          </td>
+          <td><p>Further MongoDB update filters.</p></td>
+          <td>
+                <code>{}</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
         <details class="quote">
           <summary>Source code in <code>optimade_gateway/queries/utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">update_query</span><span class="p">(</span>  <span class="c1"># pylint: disable=too-many-branches</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">update_query</span><span class="p">(</span>  <span class="c1"># pylint: disable=too-many-branches</span>
     <span class="n">query</span><span class="p">:</span> <span class="s2">&quot;QueryResource&quot;</span><span class="p">,</span>
     <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;Any&quot;</span><span class="p">,</span>
     <span class="n">operator</span><span class="p">:</span> <span class="s2">&quot;Optional[str]&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="o">**</span><span class="n">mongo_kwargs</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">mongo_kwargs</span><span class="p">:</span> <span class="s2">&quot;Any&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Update a query&#39;s `field` attribute with `value`.</span>
 
@@ -1207,7 +1311,7 @@ This can be a dot-separated key value to signify embedded fields.</p>
 <span class="sd">            **Example**: `response.meta`.</span>
 <span class="sd">        value: The (possibly) new value for `field`.</span>
 <span class="sd">        operator: A MongoDB operator to be used for updating `field` with `value`.</span>
-<span class="sd">        mongo_kwargs (dict): Further MongoDB update filters.</span>
+<span class="sd">        **mongo_kwargs: Further MongoDB update filters.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">operator</span> <span class="o">=</span> <span class="n">operator</span> <span class="ow">or</span> <span class="s2">&quot;$set&quot;</span>
@@ -1262,12 +1366,11 @@ This can be a dot-separated key value to signify embedded fields.</p>
             <span class="nb">setattr</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">field_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">value</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">attributes</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
     </div>
 
   </div>
-
 
 
 
@@ -1281,10 +1384,11 @@ This can be a dot-separated key value to signify embedded fields.</p>
 
               
             </article>
+            
           </div>
         </div>
         
-          <a href="#" class="md-top md-icon" data-md-component="top" data-md-state="hidden">
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
             Back to top
           </a>
@@ -1293,7 +1397,8 @@ This can be a dot-separated key value to signify embedded fields.</p>
       
         <footer class="md-footer">
   
-    <nav class="md-footer__inner md-grid" aria-label="Footer">
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
       
         
         <a href="../process/" class="md-footer__link md-footer__link--prev" aria-label="Previous: process" rel="prev">
@@ -1368,10 +1473,10 @@ This can be a dot-separated key value to signify embedded fields.</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.b028fd86.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.a6c66575.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.f758a944.min.js"></script>
       
     
   </body>

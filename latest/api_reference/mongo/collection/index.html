@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-gateway/latest/api_reference/mongo/collection/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.15">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.3">
     
     
       
@@ -21,15 +21,16 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.c382b1dc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.4a0965b7.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.cc9b2e1e.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.cbb835fc.min.css">
         
           
           
           <meta name="theme-color" content="#7e56c2">
         
+      
       
     
     
@@ -769,6 +770,41 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.__repr__" class="md-nav__link">
+    __repr__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.__str__" class="md-nav__link">
+    __str__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection._arun_db_query" class="md-nav__link">
+    _arun_db_query()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection._check_aliases" class="md-nav__link">
+    _check_aliases()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection._valid_find_keys" class="md-nav__link">
+    _valid_find_keys()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.acount" class="md-nav__link">
     acount()
   </a>
@@ -792,13 +828,6 @@
           <li class="md-nav__item">
   <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.ainsert" class="md-nav__link">
     ainsert()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.count" class="md-nav__link">
-    count()
   </a>
   
 </li>
@@ -841,13 +870,6 @@
           <li class="md-nav__item">
   <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.handle_query_params" class="md-nav__link">
     handle_query_params()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.insert" class="md-nav__link">
-    insert()
   </a>
   
 </li>
@@ -1176,6 +1198,41 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.__repr__" class="md-nav__link">
+    __repr__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.__str__" class="md-nav__link">
+    __str__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection._arun_db_query" class="md-nav__link">
+    _arun_db_query()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection._check_aliases" class="md-nav__link">
+    _check_aliases()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection._valid_find_keys" class="md-nav__link">
+    _valid_find_keys()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.acount" class="md-nav__link">
     acount()
   </a>
@@ -1199,13 +1256,6 @@
           <li class="md-nav__item">
   <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.ainsert" class="md-nav__link">
     ainsert()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.count" class="md-nav__link">
-    count()
   </a>
   
 </li>
@@ -1252,13 +1302,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.insert" class="md-nav__link">
-    insert()
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -1301,28 +1344,535 @@ represents an asynchronous version of the equivalent MongoDB collection in <code
 
 
 
+
   <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade_gateway.mongo.collection.AsyncMongoCollection" class="doc doc-heading">
-        <code>
-AsyncMongoCollection            (<span title="optimade.server.entry_collections.entry_collections.EntryCollection">EntryCollection</span>)
-        </code>
+          <code>AsyncMongoCollection</code>
 
 
 
 <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection" class="headerlink" title="Permanent link">&para;</a></h2>
 
+
     <div class="doc doc-contents ">
+        <p class="doc doc-class-bases">
+          Bases: <code><span title="optimade.server.entry_collections.entry_collections.EntryCollection">EntryCollection</span></code></p>
+
 
       <p>MongoDB Collection for use with <code>asyncio</code></p>
 <p>The asynchronicity is implemented using <a href="https://motor.readthedocs.io"><code>motor</code></a> and
 <a href="https://asyncio.readthedocs.io/"><code>asyncio</code></a>.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">AsyncMongoCollection</span><span class="p">(</span><span class="n">EntryCollection</span><span class="p">):</span>
+
+          <details class="quote">
+            <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span>
+<span class="normal">381</span>
+<span class="normal">382</span>
+<span class="normal">383</span>
+<span class="normal">384</span>
+<span class="normal">385</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span>
+<span class="normal">393</span>
+<span class="normal">394</span>
+<span class="normal">395</span>
+<span class="normal">396</span>
+<span class="normal">397</span>
+<span class="normal">398</span>
+<span class="normal">399</span>
+<span class="normal">400</span>
+<span class="normal">401</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span>
+<span class="normal">405</span>
+<span class="normal">406</span>
+<span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span>
+<span class="normal">426</span>
+<span class="normal">427</span>
+<span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span>
+<span class="normal">431</span>
+<span class="normal">432</span>
+<span class="normal">433</span>
+<span class="normal">434</span>
+<span class="normal">435</span>
+<span class="normal">436</span>
+<span class="normal">437</span>
+<span class="normal">438</span>
+<span class="normal">439</span>
+<span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span>
+<span class="normal">443</span>
+<span class="normal">444</span>
+<span class="normal">445</span>
+<span class="normal">446</span>
+<span class="normal">447</span>
+<span class="normal">448</span>
+<span class="normal">449</span>
+<span class="normal">450</span>
+<span class="normal">451</span>
+<span class="normal">452</span>
+<span class="normal">453</span>
+<span class="normal">454</span>
+<span class="normal">455</span>
+<span class="normal">456</span>
+<span class="normal">457</span>
+<span class="normal">458</span>
+<span class="normal">459</span>
+<span class="normal">460</span>
+<span class="normal">461</span>
+<span class="normal">462</span>
+<span class="normal">463</span>
+<span class="normal">464</span>
+<span class="normal">465</span>
+<span class="normal">466</span>
+<span class="normal">467</span>
+<span class="normal">468</span>
+<span class="normal">469</span>
+<span class="normal">470</span>
+<span class="normal">471</span>
+<span class="normal">472</span>
+<span class="normal">473</span>
+<span class="normal">474</span>
+<span class="normal">475</span>
+<span class="normal">476</span>
+<span class="normal">477</span>
+<span class="normal">478</span>
+<span class="normal">479</span>
+<span class="normal">480</span>
+<span class="normal">481</span>
+<span class="normal">482</span>
+<span class="normal">483</span>
+<span class="normal">484</span>
+<span class="normal">485</span>
+<span class="normal">486</span>
+<span class="normal">487</span>
+<span class="normal">488</span>
+<span class="normal">489</span>
+<span class="normal">490</span>
+<span class="normal">491</span>
+<span class="normal">492</span>
+<span class="normal">493</span>
+<span class="normal">494</span>
+<span class="normal">495</span>
+<span class="normal">496</span>
+<span class="normal">497</span>
+<span class="normal">498</span>
+<span class="normal">499</span>
+<span class="normal">500</span>
+<span class="normal">501</span>
+<span class="normal">502</span>
+<span class="normal">503</span>
+<span class="normal">504</span>
+<span class="normal">505</span>
+<span class="normal">506</span>
+<span class="normal">507</span>
+<span class="normal">508</span>
+<span class="normal">509</span>
+<span class="normal">510</span>
+<span class="normal">511</span>
+<span class="normal">512</span>
+<span class="normal">513</span>
+<span class="normal">514</span>
+<span class="normal">515</span>
+<span class="normal">516</span>
+<span class="normal">517</span>
+<span class="normal">518</span>
+<span class="normal">519</span>
+<span class="normal">520</span>
+<span class="normal">521</span>
+<span class="normal">522</span>
+<span class="normal">523</span>
+<span class="normal">524</span>
+<span class="normal">525</span>
+<span class="normal">526</span>
+<span class="normal">527</span>
+<span class="normal">528</span>
+<span class="normal">529</span>
+<span class="normal">530</span>
+<span class="normal">531</span>
+<span class="normal">532</span>
+<span class="normal">533</span>
+<span class="normal">534</span>
+<span class="normal">535</span>
+<span class="normal">536</span>
+<span class="normal">537</span>
+<span class="normal">538</span>
+<span class="normal">539</span>
+<span class="normal">540</span>
+<span class="normal">541</span>
+<span class="normal">542</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">AsyncMongoCollection</span><span class="p">(</span><span class="n">EntryCollection</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;MongoDB Collection for use with `asyncio`</span>
 
 <span class="sd">    The asynchronicity is implemented using [`motor`](https://motor.readthedocs.io) and</span>
@@ -1417,7 +1967,7 @@ AsyncMongoCollection            (<span title="optimade.server.entry_collections.
     <span class="k">async</span> <span class="k">def</span> <span class="nf">acount</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="s2">&quot;Any&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Count documents in Collection.</span>
 
@@ -1426,7 +1976,7 @@ AsyncMongoCollection            (<span title="optimade.server.entry_collections.
 <span class="sd">        Parameters:</span>
 <span class="sd">            params: URL query parameters, either from a general entry endpoint or a</span>
 <span class="sd">                single-entry endpoint.</span>
-<span class="sd">            kwargs (dict): Query parameters as keyword arguments. Valid keys will be passed</span>
+<span class="sd">            **kwargs: Query parameters as keyword arguments. Valid keys will be passed</span>
 <span class="sd">                to the</span>
 <span class="sd">                [`AsyncIOMotorCollection.count_documents`](https://motor.readthedocs.io/en/stable/api-asyncio/asyncio_motor_collection.html#motor.motor_asyncio.AsyncIOMotorCollection.count_documents)</span>
 <span class="sd">                method.</span>
@@ -1701,7 +2251,7 @@ AsyncMongoCollection            (<span title="optimade.server.entry_collections.
         <span class="p">):</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot define an alias starting with a &#39;$&#39;: </span><span class="si">{</span><span class="n">aliases</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">criteria</span><span class="p">:</span> <span class="s2">&quot;Dict[str, Any]&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;EntryResource&quot;</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">criteria</span><span class="p">:</span> <span class="s2">&quot;Any&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;EntryResource&quot;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Get one resource based on criteria</span>
 
 <span class="sd">        Warning:</span>
@@ -1709,7 +2259,7 @@ AsyncMongoCollection            (<span title="optimade.server.entry_collections.
 <span class="sd">            but is rather a utility function to easily retrieve a single resource.</span>
 
 <span class="sd">        Parameters:</span>
-<span class="sd">            criteria: Already handled/parsed URL query parameters.</span>
+<span class="sd">            **criteria: Already handled/parsed URL query parameters.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A single resource from the MongoDB (mapped to pydantic models).</span>
@@ -1723,7 +2273,7 @@ AsyncMongoCollection            (<span title="optimade.server.entry_collections.
             <span class="p">)</span>
         <span class="p">)</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_multiple</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">criteria</span><span class="p">:</span> <span class="s2">&quot;Dict[str, Any]&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;List[EntryResource]&quot;</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_multiple</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">criteria</span><span class="p">:</span> <span class="s2">&quot;Any&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;List[EntryResource]&quot;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Get a list of resources based on criteria</span>
 
 <span class="sd">        Warning:</span>
@@ -1731,7 +2281,7 @@ AsyncMongoCollection            (<span title="optimade.server.entry_collections.
 <span class="sd">            but is rather a utility function to easily retrieve a list of resources.</span>
 
 <span class="sd">        Parameters:</span>
-<span class="sd">            criteria: Already handled/parsed URL query parameters.</span>
+<span class="sd">            **criteria: Already handled/parsed URL query parameters.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A list of resources from the MongoDB (mapped to pydantic models).</span>
@@ -1826,8 +2376,8 @@ AsyncMongoCollection            (<span title="optimade.server.entry_collections.
             <span class="n">criteria</span><span class="p">[</span><span class="s2">&quot;filter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">return</span> <span class="n">criteria</span>
-</code></pre></div>
-        </details>
+</code></pre></div></td></tr></table></div>
+          </details>
 
 
 
@@ -1841,58 +2391,100 @@ AsyncMongoCollection            (<span title="optimade.server.entry_collections.
 
 
 
-  <div class="doc doc-object doc-method">
+
+  <div class="doc doc-object doc-function">
 
 
 
 <h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">resource_cls</span><span class="p">,</span> <span class="n">resource_mapper</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">resource_cls</span><span class="p">,</span> <span class="n">resource_mapper</span><span class="p">)</span></code>
 
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-special"><code>special</code></small>
-  </span>
 
 <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.__init__" class="headerlink" title="Permanent link">&para;</a></h3>
+
 
     <div class="doc doc-contents ">
 
       <p>Initialize the AsyncMongoCollection for the given parameters.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>name</code></td>
-        <td><code>str</code></td>
-        <td><p>The name of the collection.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>resource_cls</code></td>
-        <td><code>EntryResource</code></td>
-        <td><p>The <code>EntryResource</code> model that is stored by the collection.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>resource_mapper</code></td>
-        <td><code>BaseResourceMapper</code></td>
-        <td><p>A resource mapper object that handles aliases and format
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>name</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The name of the collection.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>resource_cls</code></td>
+          <td>
+                <code>&#39;EntryResource&#39;</code>
+          </td>
+          <td><p>The <code>EntryResource</code> model that is stored by the collection.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>resource_mapper</code></td>
+          <td>
+                <code>&#39;BaseResourceMapper&#39;</code>
+          </td>
+          <td><p>A resource mapper object that handles aliases and format
 changes between deserialization and response.</p></td>
-        <td><em>required</em></td>
-      </tr>
-  </tbody>
-</table>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
         <details class="quote">
           <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">resource_cls</span><span class="p">:</span> <span class="s2">&quot;EntryResource&quot;</span><span class="p">,</span>
@@ -1923,7 +2515,7 @@ changes between deserialization and response.</p></td>
     <span class="c1"># Check aliases do not clash with mongo operators</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_check_aliases</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">all_aliases</span><span class="p">())</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_check_aliases</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">all_length_aliases</span><span class="p">())</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
     </div>
 
@@ -1932,75 +2524,565 @@ changes between deserialization and response.</p></td>
 
 
 
-  <div class="doc doc-object doc-method">
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection.__repr__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__repr__</span><span class="p">()</span></code>
+
+
+<a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.__repr__" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Representation of instance.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Representation of instance.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(name=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">, &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;resource_cls=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_cls</span><span class="si">!r}</span><span class="s2">, &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;resource_mapper=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="si">!r}</span><span class="s2">)&quot;</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection.__str__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__str__</span><span class="p">()</span></code>
+
+
+<a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.__str__" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Standard printing result for an instance.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Standard printing result for an instance.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: resource=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;endpoint(mapper)=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">ENDPOINT</span><span class="si">}</span><span class="s2"> &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;DB_collection=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&gt;&quot;</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection._arun_db_query" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">_arun_db_query</span><span class="p">(</span><span class="n">criteria</span><span class="p">,</span> <span class="n">single_entry</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+<a href="#optimade_gateway.mongo.collection.AsyncMongoCollection._arun_db_query" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Run the query on the backend and collect the results.</p>
+<p>This is the asynchronous version of the parent class method named <code>count()</code>.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>criteria</code></td>
+          <td>
+                <code>&#39;Dict[str, Any]&#39;</code>
+          </td>
+          <td><p>A dictionary representation of the query parameters.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>single_entry</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Whether or not the caller is expecting a single entry response.</p></td>
+          <td>
+                <code>False</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>&#39;Tuple[List[Dict[str, Any]], int, bool]&#39;</code>
+          </td>
+          <td><p>The list of entries from the database (without any re-mapping), the total</p></td>
+        </tr>
+        <tr>
+          <td>
+                <code>&#39;Tuple[List[Dict[str, Any]], int, bool]&#39;</code>
+          </td>
+          <td><p>number of entries matching the query and a boolean for whether or not there</p></td>
+        </tr>
+        <tr>
+          <td>
+                <code>&#39;Tuple[List[Dict[str, Any]], int, bool]&#39;</code>
+          </td>
+          <td><p>is more data available.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span>
+<span class="normal">381</span>
+<span class="normal">382</span>
+<span class="normal">383</span>
+<span class="normal">384</span>
+<span class="normal">385</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span>
+<span class="normal">393</span>
+<span class="normal">394</span>
+<span class="normal">395</span>
+<span class="normal">396</span>
+<span class="normal">397</span>
+<span class="normal">398</span>
+<span class="normal">399</span>
+<span class="normal">400</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">_arun_db_query</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">criteria</span><span class="p">:</span> <span class="s2">&quot;Dict[str, Any]&quot;</span><span class="p">,</span> <span class="n">single_entry</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Tuple[List[Dict[str, Any]], int, bool]&quot;</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Run the query on the backend and collect the results.</span>
+
+<span class="sd">    This is the asynchronous version of the parent class method named `count()`.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        criteria: A dictionary representation of the query parameters.</span>
+<span class="sd">        single_entry: Whether or not the caller is expecting a single entry response.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The list of entries from the database (without any re-mapping), the total</span>
+<span class="sd">        number of entries matching the query and a boolean for whether or not there</span>
+<span class="sd">        is more data available.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">async</span> <span class="k">for</span> <span class="n">document</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_valid_find_keys</span><span class="p">(</span><span class="o">**</span><span class="n">criteria</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;projection&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_id&quot;</span><span class="p">):</span>
+            <span class="n">document</span><span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">document</span><span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">])</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">single_entry</span><span class="p">:</span>
+        <span class="n">data_returned</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+        <span class="n">more_data_available</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">criteria_nolimit</span> <span class="o">=</span> <span class="n">criteria</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">criteria_nolimit</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;limit&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">data_returned</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">acount</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">criteria_nolimit</span><span class="p">)</span>
+        <span class="n">more_data_available</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">data_returned</span>
+
+    <span class="k">return</span> <span class="n">results</span><span class="p">,</span> <span class="n">data_returned</span><span class="p">,</span> <span class="n">more_data_available</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection._check_aliases" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">_check_aliases</span><span class="p">(</span><span class="n">aliases</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+<a href="#optimade_gateway.mongo.collection.AsyncMongoCollection._check_aliases" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Check that aliases do not clash with mongo keywords.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>aliases</code></td>
+          <td>
+                <code>&#39;Tuple[Tuple[str, str]]&#39;</code>
+          </td>
+          <td><p>Tuple of tuple of aliases to be checked.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Raises:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>RuntimeError</code>
+          </td>
+          <td><p>If any alias starts with the dollar (<code>$</code>) character.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span>
+<span class="normal">405</span>
+<span class="normal">406</span>
+<span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">_check_aliases</span><span class="p">(</span><span class="n">aliases</span><span class="p">:</span> <span class="s2">&quot;Tuple[Tuple[str, str]]&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Check that aliases do not clash with mongo keywords.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        aliases: Tuple of tuple of aliases to be checked.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        RuntimeError: If any alias starts with the dollar (`$`) character.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
+        <span class="n">alias</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">alias</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">aliases</span>
+    <span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot define an alias starting with a &#39;$&#39;: </span><span class="si">{</span><span class="n">aliases</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection._valid_find_keys" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">_valid_find_keys</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+<a href="#optimade_gateway.mongo.collection.AsyncMongoCollection._valid_find_keys" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Return valid MongoDB find() keys with values from kwargs</p>
+<p>Note, not including deprecated flags
+(see https://pymongo.readthedocs.io/en/3.11.0/api/pymongo/collection.html#pymongo.collection.Collection.find).</p>
+
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">508</span>
+<span class="normal">509</span>
+<span class="normal">510</span>
+<span class="normal">511</span>
+<span class="normal">512</span>
+<span class="normal">513</span>
+<span class="normal">514</span>
+<span class="normal">515</span>
+<span class="normal">516</span>
+<span class="normal">517</span>
+<span class="normal">518</span>
+<span class="normal">519</span>
+<span class="normal">520</span>
+<span class="normal">521</span>
+<span class="normal">522</span>
+<span class="normal">523</span>
+<span class="normal">524</span>
+<span class="normal">525</span>
+<span class="normal">526</span>
+<span class="normal">527</span>
+<span class="normal">528</span>
+<span class="normal">529</span>
+<span class="normal">530</span>
+<span class="normal">531</span>
+<span class="normal">532</span>
+<span class="normal">533</span>
+<span class="normal">534</span>
+<span class="normal">535</span>
+<span class="normal">536</span>
+<span class="normal">537</span>
+<span class="normal">538</span>
+<span class="normal">539</span>
+<span class="normal">540</span>
+<span class="normal">541</span>
+<span class="normal">542</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">_valid_find_keys</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="s2">&quot;Dict[str, Any]&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Dict[str, Any]&quot;</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Return valid MongoDB find() keys with values from kwargs</span>
+
+<span class="sd">    Note, not including deprecated flags</span>
+<span class="sd">    (see https://pymongo.readthedocs.io/en/3.11.0/api/pymongo/collection.html#pymongo.collection.Collection.find).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">valid_method_keys</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;filter&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;projection&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;session&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;skip&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;limit&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;no_cursor_timeout&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;cursor_type&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sort&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;allow_partial_results&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;batch_size&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;collation&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;return_key&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;show_record_id&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;hint&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;max_time_ms&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;min&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;max&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;comment&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;allow_disk_use&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">criteria</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">valid_method_keys</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Ensure documents are included in the result set</span>
+        <span class="n">criteria</span><span class="p">[</span><span class="s2">&quot;filter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">return</span> <span class="n">criteria</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
 
 
 
 <h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection.acount" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">acount</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">acount</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-async"><code>async</code></small>
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.acount" class="headerlink" title="Permanent link">&para;</a></h3>
+
 
     <div class="doc doc-contents ">
 
       <p>Count documents in Collection.</p>
 <p>This is the asynchronous version of the parent class method named <code>count()</code>.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>params</code></td>
-        <td><code>Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]</code></td>
-        <td><p>URL query parameters, either from a general entry endpoint or a
-single-entry endpoint.</p></td>
-        <td><code>None</code></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>kwargs</code></td>
-        <td><code>dict</code></td>
-        <td><p>Query parameters as keyword arguments. Valid keys will be passed
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>params</code></td>
+          <td>
+                <code>&#39;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]&#39;</code>
+          </td>
+          <td><p>URL query parameters, either from a general entry endpoint or a
+single-entry endpoint.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>**kwargs</code></td>
+          <td>
+                <code>&#39;Any&#39;</code>
+          </td>
+          <td><p>Query parameters as keyword arguments. Valid keys will be passed
 to the
 <a href="https://motor.readthedocs.io/en/stable/api-asyncio/asyncio_motor_collection.html#motor.motor_asyncio.AsyncIOMotorCollection.count_documents"><code>AsyncIOMotorCollection.count_documents</code></a>
 method.</p></td>
-        <td><code>{}</code></td>
+          <td>
+                <code>{}</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>int</code></td>
-      <td><p>The number of entries matching the query specified by the keyword
-    arguments.</p></td>
-    </tr>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>int</code></td>          <td>
+                <code>int</code>
+          </td>
+          <td><p>The number of entries matching the query specified by the keyword
+arguments.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
         <details class="quote">
           <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">acount</span><span class="p">(</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">acount</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="s2">&quot;Any&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Count documents in Collection.</span>
 
@@ -2009,7 +3091,7 @@ method.</p></td>
 <span class="sd">    Parameters:</span>
 <span class="sd">        params: URL query parameters, either from a general entry endpoint or a</span>
 <span class="sd">            single-entry endpoint.</span>
-<span class="sd">        kwargs (dict): Query parameters as keyword arguments. Valid keys will be passed</span>
+<span class="sd">        **kwargs: Query parameters as keyword arguments. Valid keys will be passed</span>
 <span class="sd">            to the</span>
 <span class="sd">            [`AsyncIOMotorCollection.count_documents`](https://motor.readthedocs.io/en/stable/api-asyncio/asyncio_motor_collection.html#motor.motor_asyncio.AsyncIOMotorCollection.count_documents)</span>
 <span class="sd">            method.</span>
@@ -2042,7 +3124,7 @@ method.</p></td>
         <span class="n">criteria</span><span class="p">[</span><span class="s2">&quot;filter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">count_documents</span><span class="p">(</span><span class="o">**</span><span class="n">criteria</span><span class="p">)</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
     </div>
 
@@ -2050,18 +3132,19 @@ method.</p></td>
 
 
 
-  <div class="doc doc-object doc-method">
+  <div class="doc doc-object doc-function">
 
 
 
 <h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection.afind" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">afind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">criteria</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">afind</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">criteria</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-async"><code>async</code></small>
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.afind" class="headerlink" title="Permanent link">&para;</a></h3>
+
 
     <div class="doc doc-contents ">
 
@@ -2070,52 +3153,172 @@ and pagination of the output.</p>
 <p>This is the asynchronous version of the parent class method named <code>count()</code>.</p>
 <p>Either provide <code>params</code> or <code>criteria</code>. Not both, but at least one.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>params</code></td>
-        <td><code>Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]</code></td>
-        <td><p>URL query parameters, either from a general entry endpoint or a
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>params</code></td>
+          <td>
+                <code>&#39;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]&#39;</code>
+          </td>
+          <td><p>URL query parameters, either from a general entry endpoint or a
 single-entry endpoint.</p></td>
-        <td><code>None</code></td>
-      </tr>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>criteria</code></td>
+          <td>
+                <code>&#39;Optional[Dict[str, Any]]&#39;</code>
+          </td>
+          <td><p>Already handled/parsed URL query parameters.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>criteria</code></td>
-        <td><code>Optional[Dict[str, Any]]</code></td>
-        <td><p>Already handled/parsed URL query parameters.</p></td>
-        <td><code>None</code></td>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]</code></td>
-      <td><p>A list of entry resource objects, how much data was returned for the query,
-whether more data is available with pagination, and fields (excluded,
-included).</p></td>
-    </tr>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>&#39;Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]&#39;</code>
+          </td>
+          <td><p>A list of entry resource objects, how much data was returned for the query,</p></td>
+        </tr>
+        <tr>
+          <td>
+                <code>&#39;Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]&#39;</code>
+          </td>
+          <td><p>whether more data is available with pagination, and fields (excluded,</p></td>
+        </tr>
+        <tr>
+          <td>
+                <code>&#39;Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]&#39;</code>
+          </td>
+          <td><p>included).</p></td>
+        </tr>
+    </tbody>
+  </table>
+
         <details class="quote">
           <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">afind</span><span class="p">(</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">afind</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">criteria</span><span class="p">:</span> <span class="s2">&quot;Optional[Dict[str, Any]]&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2214,7 +3417,7 @@ included).</p></td>
         <span class="bp">self</span><span class="o">.</span><span class="n">all_fields</span> <span class="o">-</span> <span class="n">response_fields</span><span class="p">,</span>
         <span class="n">include_fields</span><span class="p">,</span>
     <span class="p">)</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
     </div>
 
@@ -2222,18 +3425,19 @@ included).</p></td>
 
 
 
-  <div class="doc doc-object doc-method">
+  <div class="doc doc-object doc-function">
 
 
 
 <h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection.ahandle_query_params" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">ahandle_query_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">ahandle_query_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-async"><code>async</code></small>
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.ahandle_query_params" class="headerlink" title="Permanent link">&para;</a></h3>
+
 
     <div class="doc doc-contents ">
 
@@ -2241,69 +3445,107 @@ included).</p></td>
 dictionary that can be used by the specific backend.</p>
 <p>This is the asynchronous version of the parent class method named
 <code>handle_query_params()</code>.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Currently this method returns the pymongo interpretation of the parameters,
-which will need modification for modified for other backends.</p>
-</div>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+<details class="note">
+  <summary>Note</summary>
+  <p>Currently this method returns the pymongo interpretation of the parameters,
+which will need modification for modified for other backends.</p>
+</details>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>params</code></td>
-        <td><code>Union[EntryListingQueryParams, SingleEntryQueryParams]</code></td>
-        <td><p>The initialized query parameter model from the server.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Exceptions:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>params</code></td>
+          <td>
+                <code>&#39;Union[EntryListingQueryParams, SingleEntryQueryParams]&#39;</code>
+          </td>
+          <td><p>The initialized query parameter model from the server.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Raises:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>Forbidden</code></td>
-        <td><p>If too large of a page limit is provided.</p></td>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
-      <tr>
-        <td><code>BadRequest</code></td>
-        <td><p>If an invalid request is made, e.g., with incorrect fields or
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>Forbidden</code>
+          </td>
+          <td><p>If too large of a page limit is provided.</p></td>
+        </tr>
+        <tr>
+          <td>
+                <code><span title="optimade.server.exceptions.BadRequest">BadRequest</span></code>
+          </td>
+          <td><p>If an invalid request is made, e.g., with incorrect fields or
 response format.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>Dict[str, Any]</code></td>
-      <td><p>A dictionary representation of the query parameters.</p></td>
-    </tr>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>&#39;Dict[str, Any]&#39;</code>
+          </td>
+          <td><p>A dictionary representation of the query parameters.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
         <details class="quote">
           <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">ahandle_query_params</span><span class="p">(</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">ahandle_query_params</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;Union[EntryListingQueryParams, SingleEntryQueryParams]&quot;</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Dict[str, Any]&quot;</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Parse and interpret the backend-agnostic query parameter models into a</span>
@@ -2329,7 +3571,7 @@ response format.</p></td>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">handle_query_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
     </div>
 
@@ -2337,46 +3579,61 @@ response format.</p></td>
 
 
 
-  <div class="doc doc-object doc-method">
+  <div class="doc doc-object doc-function">
 
 
 
 <h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection.ainsert" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">ainsert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">ainsert</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-async"><code>async</code></small>
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.ainsert" class="headerlink" title="Permanent link">&para;</a></h3>
+
 
     <div class="doc doc-contents ">
 
       <p>Add the given entries to the underlying database.</p>
 <p>This is the asynchronous version of the parent class method named <code>insert()</code>.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>data</code></td>
-        <td><code>List[EntryResource]</code></td>
-        <td><p>The entry resource objects to add to the database.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>data</code></td>
+          <td>
+                <code>&#39;List[EntryResource]&#39;</code>
+          </td>
+          <td><p>The entry resource objects to add to the database.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
         <details class="quote">
           <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">ainsert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="s2">&quot;List[EntryResource]&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">ainsert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="s2">&quot;List[EntryResource]&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Add the given entries to the underlying database.</span>
 
 <span class="sd">    This is the asynchronous version of the parent class method named `insert()`.</span>
@@ -2386,7 +3643,7 @@ response format.</p></td>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">insert_many</span><span class="p">(</span><span class="k">await</span> <span class="n">clean_python_types</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
     </div>
 
@@ -2394,69 +3651,20 @@ response format.</p></td>
 
 
 
-  <div class="doc doc-object doc-method">
 
-
-
-<h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection.count" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
-
-
-<a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.count" class="headerlink" title="Permanent link">&para;</a></h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Returns the number of entries matching the query specified
-by the keyword arguments.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>kwargs</code></td>
-        <td><code>dict</code></td>
-        <td><p>Query parameters as keyword arguments.</p></td>
-        <td><code>{}</code></td>
-      </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-        <span class="s2">&quot;This method cannot be used with this class and is a remnant from the parent &quot;</span>
-        <span class="s2">&quot;class. Use instead the asynchronous method `acount(params: &quot;</span>
-        <span class="s2">&quot;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]], &quot;</span>
-        <span class="s2">&quot;**kwargs)`.&quot;</span>
-    <span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-method">
+  <div class="doc doc-object doc-function">
 
 
 
 <h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection.create_one" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">create_one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">create_one</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-async"><code>async</code></small>
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.create_one" class="headerlink" title="Permanent link">&para;</a></h3>
+
 
     <div class="doc doc-contents ">
 
@@ -2465,43 +3673,86 @@ by the keyword arguments.</p>
 The value will be the string representation of the <code>"_id"</code> field.
 This will only be done if <code>"id"</code> is not already present in <code>resource</code>.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>resource</code></td>
-        <td><code>EntryResourceCreate</code></td>
-        <td><p>The resource to be created.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>EntryResource</code></td>
-      <td><p>The newly created document as a pydantic model entry resource.</p></td>
-    </tr>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>resource</code></td>
+          <td>
+                <code>&#39;EntryResourceCreate&#39;</code>
+          </td>
+          <td><p>The resource to be created.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>&#39;EntryResource&#39;</code>
+          </td>
+          <td><p>The newly created document as a pydantic model entry resource.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
         <details class="quote">
           <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">create_one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">:</span> <span class="s2">&quot;EntryResourceCreate&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;EntryResource&quot;</span><span class="p">:</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">462</span>
+<span class="normal">463</span>
+<span class="normal">464</span>
+<span class="normal">465</span>
+<span class="normal">466</span>
+<span class="normal">467</span>
+<span class="normal">468</span>
+<span class="normal">469</span>
+<span class="normal">470</span>
+<span class="normal">471</span>
+<span class="normal">472</span>
+<span class="normal">473</span>
+<span class="normal">474</span>
+<span class="normal">475</span>
+<span class="normal">476</span>
+<span class="normal">477</span>
+<span class="normal">478</span>
+<span class="normal">479</span>
+<span class="normal">480</span>
+<span class="normal">481</span>
+<span class="normal">482</span>
+<span class="normal">483</span>
+<span class="normal">484</span>
+<span class="normal">485</span>
+<span class="normal">486</span>
+<span class="normal">487</span>
+<span class="normal">488</span>
+<span class="normal">489</span>
+<span class="normal">490</span>
+<span class="normal">491</span>
+<span class="normal">492</span>
+<span class="normal">493</span>
+<span class="normal">494</span>
+<span class="normal">495</span>
+<span class="normal">496</span>
+<span class="normal">497</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">create_one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">:</span> <span class="s2">&quot;EntryResourceCreate&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;EntryResource&quot;</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Create a new document in the MongoDB collection based on query parameters.</span>
 
 <span class="sd">    Update the newly created document with an `&quot;id&quot;` field.</span>
@@ -2537,7 +3788,7 @@ This will only be done if <code>"id"</code> is not already present in <code>reso
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">find_one</span><span class="p">({</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">inserted_id</span><span class="p">})</span>
         <span class="p">)</span>
     <span class="p">)</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
     </div>
 
@@ -2545,45 +3796,58 @@ This will only be done if <code>"id"</code> is not already present in <code>reso
 
 
 
-  <div class="doc doc-object doc-method">
+  <div class="doc doc-object doc-function">
 
 
 
 <h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection.exists" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry_id</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">exists</span><span class="p">(</span><span class="n">entry_id</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-async"><code>async</code></small>
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.exists" class="headerlink" title="Permanent link">&para;</a></h3>
+
 
     <div class="doc doc-contents ">
 
       <p>Assert whether entry_id exists in the collection (value of <code>"id"</code>)</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>entry_id</code></td>
-        <td><code>str</code></td>
-        <td><p>The <code>"id"</code> value of the entry.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>entry_id</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The <code>"id"</code> value of the entry.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
         <details class="quote">
           <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">499</span>
+<span class="normal">500</span>
+<span class="normal">501</span>
+<span class="normal">502</span>
+<span class="normal">503</span>
+<span class="normal">504</span>
+<span class="normal">505</span>
+<span class="normal">506</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Assert whether entry_id exists in the collection (value of `&quot;id&quot;`)</span>
 
 <span class="sd">    Parameters:</span>
@@ -2591,7 +3855,7 @@ This will only be done if <code>"id"</code> is not already present in <code>reso
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">count_documents</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">entry_id</span><span class="p">}))</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
     </div>
 
@@ -2599,15 +3863,16 @@ This will only be done if <code>"id"</code> is not already present in <code>reso
 
 
 
-  <div class="doc doc-object doc-method">
+  <div class="doc doc-object doc-function">
 
 
 
 <h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection.find" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="p">)</span></code>
 
 
 <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.find" class="headerlink" title="Permanent link">&para;</a></h3>
+
 
     <div class="doc doc-contents ">
 
@@ -2617,44 +3882,88 @@ See
 <a href="https://www.optimade.org/optimade-python-tools/api_reference/server/query_params/#optimade.server.query_params.EntryListingQueryParams"><code>EntryListingQueryParams</code></a>
 for more information.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>params</code></td>
-        <td><code>Union[EntryListingQueryParams, SingleEntryQueryParams]</code></td>
-        <td><p>Entry listing URL query params.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>A tuple of various relevant values</code></td>
-      <td><p>(<code>results</code>, <code>data_returned</code>, <code>more_data_available</code>, <code>exclude_fields</code>,
-<code>include_fields</code>).</p></td>
-    </tr>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>params</code></td>
+          <td>
+                <code>&#39;Union[EntryListingQueryParams, SingleEntryQueryParams]&#39;</code>
+          </td>
+          <td><p>Entry listing URL query params.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>&#39;Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]&#39;</code>
+          </td>
+          <td><p>A tuple of various relevant values:</p></td>
+        </tr>
+        <tr>
+          <td>
+                <code>&#39;Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]&#39;</code>
+          </td>
+          <td><p>(<code>results</code>, <code>data_returned</code>, <code>more_data_available</code>, <code>exclude_fields</code>,</p></td>
+        </tr>
+        <tr>
+          <td>
+                <code>&#39;Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]&#39;</code>
+          </td>
+          <td><p><code>include_fields</code>).</p></td>
+        </tr>
+    </tbody>
+  </table>
+
         <details class="quote">
           <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">find</span><span class="p">(</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">find</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;Union[EntryListingQueryParams, SingleEntryQueryParams]&quot;</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]&quot;</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -2680,7 +3989,7 @@ for more information.</p>
         <span class="s2">&quot;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]], criteria: &quot;</span>
         <span class="s2">&quot;Optional[Dict[str, Any]])`.&quot;</span>
     <span class="p">)</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
     </div>
 
@@ -2688,65 +3997,94 @@ for more information.</p>
 
 
 
-  <div class="doc doc-object doc-method">
+  <div class="doc doc-object doc-function">
 
 
 
 <h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection.get_multiple" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_multiple</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">criteria</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">get_multiple</span><span class="p">(</span><span class="o">**</span><span class="n">criteria</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-async"><code>async</code></small>
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.get_multiple" class="headerlink" title="Permanent link">&para;</a></h3>
 
+
     <div class="doc doc-contents ">
 
       <p>Get a list of resources based on criteria</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This is not to be used for creating a REST API response,
-but is rather a utility function to easily retrieve a list of resources.</p>
-</div>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+<details class="warning">
+  <summary>Warning</summary>
+  <p>This is not to be used for creating a REST API response,
+but is rather a utility function to easily retrieve a list of resources.</p>
+</details>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>criteria</code></td>
-        <td><code>Dict[str, Any]</code></td>
-        <td><p>Already handled/parsed URL query parameters.</p></td>
-        <td><code>{}</code></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>List[EntryResource]</code></td>
-      <td><p>A list of resources from the MongoDB (mapped to pydantic models).</p></td>
-    </tr>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>**criteria</code></td>
+          <td>
+                <code>&#39;Any&#39;</code>
+          </td>
+          <td><p>Already handled/parsed URL query parameters.</p></td>
+          <td>
+                <code>{}</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>&#39;List[EntryResource]&#39;</code>
+          </td>
+          <td><p>A list of resources from the MongoDB (mapped to pydantic models).</p></td>
+        </tr>
+    </tbody>
+  </table>
+
         <details class="quote">
           <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_multiple</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">criteria</span><span class="p">:</span> <span class="s2">&quot;Dict[str, Any]&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;List[EntryResource]&quot;</span><span class="p">:</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span>
+<span class="normal">443</span>
+<span class="normal">444</span>
+<span class="normal">445</span>
+<span class="normal">446</span>
+<span class="normal">447</span>
+<span class="normal">448</span>
+<span class="normal">449</span>
+<span class="normal">450</span>
+<span class="normal">451</span>
+<span class="normal">452</span>
+<span class="normal">453</span>
+<span class="normal">454</span>
+<span class="normal">455</span>
+<span class="normal">456</span>
+<span class="normal">457</span>
+<span class="normal">458</span>
+<span class="normal">459</span>
+<span class="normal">460</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_multiple</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">criteria</span><span class="p">:</span> <span class="s2">&quot;Any&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;List[EntryResource]&quot;</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Get a list of resources based on criteria</span>
 
 <span class="sd">    Warning:</span>
@@ -2754,7 +4092,7 @@ but is rather a utility function to easily retrieve a list of resources.</p>
 <span class="sd">        but is rather a utility function to easily retrieve a list of resources.</span>
 
 <span class="sd">    Parameters:</span>
-<span class="sd">        criteria: Already handled/parsed URL query parameters.</span>
+<span class="sd">        **criteria: Already handled/parsed URL query parameters.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A list of resources from the MongoDB (mapped to pydantic models).</span>
@@ -2767,7 +4105,7 @@ but is rather a utility function to easily retrieve a list of resources.</p>
         <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_cls</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">map_back</span><span class="p">(</span><span class="n">document</span><span class="p">)))</span>
 
     <span class="k">return</span> <span class="n">results</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
     </div>
 
@@ -2775,65 +4113,94 @@ but is rather a utility function to easily retrieve a list of resources.</p>
 
 
 
-  <div class="doc doc-object doc-method">
+  <div class="doc doc-object doc-function">
 
 
 
 <h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection.get_one" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">criteria</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">get_one</span><span class="p">(</span><span class="o">**</span><span class="n">criteria</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-async"><code>async</code></small>
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.get_one" class="headerlink" title="Permanent link">&para;</a></h3>
 
+
     <div class="doc doc-contents ">
 
       <p>Get one resource based on criteria</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This is not to be used for creating a REST API response,
-but is rather a utility function to easily retrieve a single resource.</p>
-</div>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+<details class="warning">
+  <summary>Warning</summary>
+  <p>This is not to be used for creating a REST API response,
+but is rather a utility function to easily retrieve a single resource.</p>
+</details>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>criteria</code></td>
-        <td><code>Dict[str, Any]</code></td>
-        <td><p>Already handled/parsed URL query parameters.</p></td>
-        <td><code>{}</code></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>EntryResource</code></td>
-      <td><p>A single resource from the MongoDB (mapped to pydantic models).</p></td>
-    </tr>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>**criteria</code></td>
+          <td>
+                <code>&#39;Any&#39;</code>
+          </td>
+          <td><p>Already handled/parsed URL query parameters.</p></td>
+          <td>
+                <code>{}</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>&#39;EntryResource&#39;</code>
+          </td>
+          <td><p>A single resource from the MongoDB (mapped to pydantic models).</p></td>
+        </tr>
+    </tbody>
+  </table>
+
         <details class="quote">
           <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">criteria</span><span class="p">:</span> <span class="s2">&quot;Dict[str, Any]&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;EntryResource&quot;</span><span class="p">:</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span>
+<span class="normal">426</span>
+<span class="normal">427</span>
+<span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span>
+<span class="normal">431</span>
+<span class="normal">432</span>
+<span class="normal">433</span>
+<span class="normal">434</span>
+<span class="normal">435</span>
+<span class="normal">436</span>
+<span class="normal">437</span>
+<span class="normal">438</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">criteria</span><span class="p">:</span> <span class="s2">&quot;Any&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;EntryResource&quot;</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Get one resource based on criteria</span>
 
 <span class="sd">    Warning:</span>
@@ -2841,7 +4208,7 @@ but is rather a utility function to easily retrieve a single resource.</p>
 <span class="sd">        but is rather a utility function to easily retrieve a single resource.</span>
 
 <span class="sd">    Parameters:</span>
-<span class="sd">        criteria: Already handled/parsed URL query parameters.</span>
+<span class="sd">        **criteria: Already handled/parsed URL query parameters.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A single resource from the MongoDB (mapped to pydantic models).</span>
@@ -2854,7 +4221,7 @@ but is rather a utility function to easily retrieve a single resource.</p>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">find_one</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_valid_find_keys</span><span class="p">(</span><span class="o">**</span><span class="n">criteria</span><span class="p">))</span>
         <span class="p">)</span>
     <span class="p">)</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
     </div>
 
@@ -2862,83 +4229,123 @@ but is rather a utility function to easily retrieve a single resource.</p>
 
 
 
-  <div class="doc doc-object doc-method">
+  <div class="doc doc-object doc-function">
 
 
 
 <h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection.handle_query_params" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">handle_query_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">handle_query_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span></code>
 
 
 <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.handle_query_params" class="headerlink" title="Permanent link">&para;</a></h3>
+
 
     <div class="doc doc-contents ">
 
       <p>Parse and interpret the backend-agnostic query parameter models into a
 dictionary that can be used by the specific backend.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Currently this method returns the pymongo interpretation of the parameters,
-which will need modification for modified for other backends.</p>
-</div>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+<details class="note">
+  <summary>Note</summary>
+  <p>Currently this method returns the pymongo interpretation of the parameters,
+which will need modification for modified for other backends.</p>
+</details>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>params</code></td>
-        <td><code>Union[EntryListingQueryParams, SingleEntryQueryParams]</code></td>
-        <td><p>The initialized query parameter model from the server.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Exceptions:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>params</code></td>
+          <td>
+                <code>&#39;Union[EntryListingQueryParams, SingleEntryQueryParams]&#39;</code>
+          </td>
+          <td><p>The initialized query parameter model from the server.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Raises:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>Forbidden</code></td>
-        <td><p>If too large of a page limit is provided.</p></td>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
-      <tr>
-        <td><code>BadRequest</code></td>
-        <td><p>If an invalid request is made, e.g., with incorrect fields
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>Forbidden</code>
+          </td>
+          <td><p>If too large of a page limit is provided.</p></td>
+        </tr>
+        <tr>
+          <td>
+                <code><span title="optimade.server.exceptions.BadRequest">BadRequest</span></code>
+          </td>
+          <td><p>If an invalid request is made, e.g., with incorrect fields
 or response format.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>Dict[str, Any]</code></td>
-      <td><p>A dictionary representation of the query parameters.</p></td>
-    </tr>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>&#39;Dict[str, Any]&#39;</code>
+          </td>
+          <td><p>A dictionary representation of the query parameters.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
         <details class="quote">
           <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">handle_query_params</span><span class="p">(</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">handle_query_params</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;Union[EntryListingQueryParams, SingleEntryQueryParams]&quot;</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Dict[str, Any]&quot;</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Parse and interpret the backend-agnostic query parameter models into a</span>
@@ -2965,56 +4372,7 @@ or response format.</p></td>
         <span class="s2">&quot;class. Use instead the asynchronous method `ahandle_query_params(params: &quot;</span>
         <span class="s2">&quot;Union[EntryListingQueryParams, SingleEntryQueryParams])`.&quot;</span>
     <span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection.insert" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></code>
-
-
-<a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.insert" class="headerlink" title="Permanent link">&para;</a></h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Add the given entries to the underlying database.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>data</code></td>
-        <td><code>List[EntryResource]</code></td>
-        <td><p>The entry resource objects to add to the database.</p></td>
-        <td><em>required</em></td>
-      </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="s2">&quot;List[EntryResource]&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-        <span class="s2">&quot;This method cannot be used with this class and is a remnant from the parent &quot;</span>
-        <span class="s2">&quot;class. Use instead the asynchronous method `ainsert(data: &quot;</span>
-        <span class="s2">&quot;List[EntryResource])`.&quot;</span>
-    <span class="p">)</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
     </div>
 
@@ -3024,12 +4382,12 @@ or response format.</p></td>
 
 
 
+
   </div>
 
     </div>
 
   </div>
-
 
 
 
@@ -3044,10 +4402,11 @@ or response format.</p></td>
 
               
             </article>
+            
           </div>
         </div>
         
-          <a href="#" class="md-top md-icon" data-md-component="top" data-md-state="hidden">
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
             Back to top
           </a>
@@ -3056,7 +4415,8 @@ or response format.</p></td>
       
         <footer class="md-footer">
   
-    <nav class="md-footer__inner md-grid" aria-label="Footer">
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
       
         
         <a href="../../models/search/" class="md-footer__link md-footer__link--prev" aria-label="Previous: search" rel="prev">
@@ -3131,10 +4491,10 @@ or response format.</p></td>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.b028fd86.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.a6c66575.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.f758a944.min.js"></script>
       
     
   </body>
