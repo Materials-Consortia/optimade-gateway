@@ -1,5 +1,5 @@
 """Pydantic models/schemas for the Gateways resource."""
-# pylint: disable=no-self-argument,no-self-use,too-few-public-methods
+# pylint: disable=no-self-argument,too-few-public-methods
 from typing import List, Optional, Set
 import warnings
 

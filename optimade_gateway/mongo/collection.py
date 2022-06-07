@@ -131,7 +131,7 @@ class AsyncMongoCollection(EntryCollection):
     async def acount(
         self,
         params: "Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]" = None,
-        **kwargs,
+        **kwargs: "Any",
     ) -> int:
         """Count documents in Collection.
 
@@ -140,7 +140,7 @@ class AsyncMongoCollection(EntryCollection):
         Parameters:
             params: URL query parameters, either from a general entry endpoint or a
                 single-entry endpoint.
-            kwargs (dict): Query parameters as keyword arguments. Valid keys will be passed
+            **kwargs: Query parameters as keyword arguments. Valid keys will be passed
                 to the
                 [`AsyncIOMotorCollection.count_documents`](https://motor.readthedocs.io/en/stable/api-asyncio/asyncio_motor_collection.html#motor.motor_asyncio.AsyncIOMotorCollection.count_documents)
                 method.
@@ -415,7 +415,7 @@ class AsyncMongoCollection(EntryCollection):
         ):
             raise RuntimeError(f"Cannot define an alias starting with a '$': {aliases}")
 
-    async def get_one(self, **criteria: "Dict[str, Any]") -> "EntryResource":
+    async def get_one(self, **criteria: "Any") -> "EntryResource":
         """Get one resource based on criteria
 
         Warning:
@@ -423,7 +423,7 @@ class AsyncMongoCollection(EntryCollection):
             but is rather a utility function to easily retrieve a single resource.
 
         Parameters:
-            criteria: Already handled/parsed URL query parameters.
+            **criteria: Already handled/parsed URL query parameters.
 
         Returns:
             A single resource from the MongoDB (mapped to pydantic models).
@@ -437,7 +437,7 @@ class AsyncMongoCollection(EntryCollection):
             )
         )
 
-    async def get_multiple(self, **criteria: "Dict[str, Any]") -> "List[EntryResource]":
+    async def get_multiple(self, **criteria: "Any") -> "List[EntryResource]":
         """Get a list of resources based on criteria
 
         Warning:
@@ -445,7 +445,7 @@ class AsyncMongoCollection(EntryCollection):
             but is rather a utility function to easily retrieve a list of resources.
 
         Parameters:
-            criteria: Already handled/parsed URL query parameters.
+            **criteria: Already handled/parsed URL query parameters.
 
         Returns:
             A list of resources from the MongoDB (mapped to pydantic models).

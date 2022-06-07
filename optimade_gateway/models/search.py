@@ -1,5 +1,5 @@
 """Pydantic models/schemas for the Search resource."""
-# pylint: disable=no-self-argument,no-self-use
+# pylint: disable=no-self-argument
 from typing import Set
 import warnings
 
