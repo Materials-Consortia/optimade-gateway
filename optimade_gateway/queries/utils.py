@@ -23,7 +23,7 @@ async def update_query(  # pylint: disable=too-many-branches
     field: str,
     value: "Any",
     operator: "Optional[str]" = None,
-    **mongo_kwargs,
+    **mongo_kwargs: "Any",
 ) -> None:
     """Update a query's `field` attribute with `value`.
 
@@ -45,7 +45,7 @@ async def update_query(  # pylint: disable=too-many-branches
             **Example**: `response.meta`.
         value: The (possibly) new value for `field`.
         operator: A MongoDB operator to be used for updating `field` with `value`.
-        mongo_kwargs (dict): Further MongoDB update filters.
+        **mongo_kwargs: Further MongoDB update filters.
 
     """
     operator = operator or "$set"
