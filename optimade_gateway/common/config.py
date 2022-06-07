@@ -1,5 +1,5 @@
 """Configuration of the FastAPI server."""
-# pylint: disable=no-self-use,no-self-argument
+# pylint: disable=no-self-argument
 import os
 import re
 from warnings import warn

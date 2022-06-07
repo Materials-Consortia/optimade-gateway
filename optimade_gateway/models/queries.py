@@ -1,5 +1,5 @@
 """Pydantic models/schemas for the Queries resource."""
-# pylint: disable=line-too-long,too-few-public-methods,no-self-argument,no-self-use
+# pylint: disable=line-too-long,too-few-public-methods,no-self-argument
 from copy import deepcopy
 from datetime import timezone
 from enum import Enum
