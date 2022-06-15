@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-gateway/latest/api_reference/routers/utils/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.3">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.5">
     
     
       
@@ -1172,14 +1172,15 @@
 <h1 id="utils">utils<a class="headerlink" href="#utils" title="Permanent link">&para;</a></h1>
 
 
-  <div class="doc doc-object doc-module">
+<div class="doc doc-object doc-module">
+
 
 <a id="optimade_gateway.routers.utils"></a>
-    <div class="doc doc-contents first">
-
+  <div class="doc doc-contents first">
+  
       <p>Utility functions for all routers.</p>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1188,47 +1189,46 @@
 
 
 
-  <div class="doc doc-object doc-attribute">
+
+<div class="doc doc-object doc-attribute">
 
 
 
 <h2 id="optimade_gateway.routers.utils.COLLECTIONS" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">COLLECTIONS</span><span class="p">:</span> <span class="s1">&#39;Dict[str, AsyncMongoCollection]&#39;</span> <span class="o">=</span> <span class="p">{}</span></code>
-
-  <span class="doc doc-properties">
+  
+  <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
   </span>
 
 <a href="#optimade_gateway.routers.utils.COLLECTIONS" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>A lazy-loaded dictionary of asynchronous MongoDB entry-endpoint collections.</p>
-    </div>
-
   </div>
 
+</div>
 
 
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h2 id="optimade_gateway.routers.utils.aretrieve_queryable_properties" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">aretrieve_queryable_properties</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">queryable_properties</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
+  
+  <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.routers.utils.aretrieve_queryable_properties" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>Asynchronous implementation of <code>retrieve_queryable_properties()</code> from <code>optimade</code></p>
 <p>Reference to the function in the <code>optimade</code> API documentation:
 <a href="https://www.optimade.org/optimade-python-tools/api_reference/server/schemas/#optimade.server.schemas.retrieve_queryable_properties"><code>retrieve_queryable_properties()</code></a>.</p>
@@ -1293,9 +1293,9 @@ returning a dictionary of all the OPTIMADE-queryable properties of that model.</
     </tbody>
   </table>
 
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 85</span>
+      <details class="quote">
+        <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 85</span>
 <span class="normal"> 86</span>
 <span class="normal"> 87</span>
 <span class="normal"> 88</span>
@@ -1343,29 +1343,27 @@ returning a dictionary of all the OPTIMADE-queryable properties of that model.</
         <span class="n">queryable_properties</span><span class="o">=</span><span class="n">queryable_properties</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h2 id="optimade_gateway.routers.utils.collection_factory" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">collection_factory</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
+  
+  <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.routers.utils.collection_factory" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>Get or initiate an entry-endpoint resource collection.</p>
 <p>This factory utilizes the global dictionary
 <a class="autorefs autorefs-internal" href="#optimade_gateway.routers.utils.COLLECTIONS"><code>COLLECTIONS</code></a>.
@@ -1438,9 +1436,9 @@ names.</p></td>
     </tbody>
   </table>
 
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">295</span>
+      <details class="quote">
+        <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">295</span>
 <span class="normal">296</span>
 <span class="normal">297</span>
 <span class="normal">298</span>
@@ -1528,34 +1526,32 @@ names.</p></td>
 
     <span class="k">return</span> <span class="n">COLLECTIONS</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h2 id="optimade_gateway.routers.utils.get_entries" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_entries</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">response_cls</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
+  
+  <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.routers.utils.get_entries" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>Generalized <code>/{entries}</code> endpoint getter</p>
 
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">44</span>
+      <details class="quote">
+        <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">44</span>
 <span class="normal">45</span>
 <span class="normal">46</span>
 <span class="normal">47</span>
@@ -1633,34 +1629,32 @@ names.</p></td>
         <span class="p">),</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h2 id="optimade_gateway.routers.utils.get_valid_resource" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_valid_resource</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">entry_id</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
+  
+  <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.routers.utils.get_valid_resource" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>Validate and retrieve a resource</p>
 
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">119</span>
+      <details class="quote">
+        <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">119</span>
 <span class="normal">120</span>
 <span class="normal">121</span>
 <span class="normal">122</span>
@@ -1672,29 +1666,27 @@ names.</p></td>
     <span class="k">await</span> <span class="n">validate_resource</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">entry_id</span><span class="p">)</span>
     <span class="k">return</span> <span class="k">await</span> <span class="n">collection</span><span class="o">.</span><span class="n">get_one</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">entry_id</span><span class="p">})</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h2 id="optimade_gateway.routers.utils.resource_factory" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">resource_factory</span><span class="p">(</span><span class="n">create_resource</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
+  
+  <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.routers.utils.resource_factory" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>Get or create a resource</p>
 <p>Currently supported resources:</p>
 <ul>
@@ -1807,9 +1799,9 @@ and</li>
     </tbody>
   </table>
 
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">127</span>
+      <details class="quote">
+        <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">127</span>
 <span class="normal">128</span>
 <span class="normal">129</span>
 <span class="normal">130</span>
@@ -2141,34 +2133,32 @@ and</li>
 
     <span class="k">return</span> <span class="n">result</span><span class="p">,</span> <span class="n">created</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h2 id="optimade_gateway.routers.utils.validate_resource" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">validate_resource</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">entry_id</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
+  
+  <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.routers.utils.validate_resource" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>Validate whether a resource exists in a collection</p>
 
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">111</span>
+      <details class="quote">
+        <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">111</span>
 <span class="normal">112</span>
 <span class="normal">113</span>
 <span class="normal">114</span>
@@ -2180,20 +2170,18 @@ and</li>
             <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Resource &lt;id=</span><span class="si">{</span><span class="n">entry_id</span><span class="si">}</span><span class="s2">&gt; not found in </span><span class="si">{</span><span class="n">collection</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
+      </details>
+  </div>
+
+</div>
+
+
 
   </div>
 
-
-
-
-
   </div>
 
-    </div>
-
-  </div>
+</div>
 
               
             </article>
@@ -2271,10 +2259,10 @@ and</li>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.b028fd86.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.85cb4492.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.f758a944.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.431f3d41.min.js"></script>
       
     
   </body>

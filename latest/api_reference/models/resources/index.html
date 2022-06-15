@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-gateway/latest/api_reference/models/resources/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.3">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.5">
     
     
       
@@ -728,13 +728,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#optimade_gateway.models.resources.EntryResourceCreate._remove_pre_root_validators" class="md-nav__link">
-    _remove_pre_root_validators()
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -1167,13 +1160,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#optimade_gateway.models.resources.EntryResourceCreate._remove_pre_root_validators" class="md-nav__link">
-    _remove_pre_root_validators()
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -1196,16 +1182,17 @@
 <h1 id="resources">resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h1>
 
 
-  <div class="doc doc-object doc-module">
+<div class="doc doc-object doc-module">
+
 
 <a id="optimade_gateway.models.resources"></a>
-    <div class="doc doc-contents first">
-
+  <div class="doc doc-contents first">
+  
       <p>Pydantic models/schemas for entry-endpoint resources.</p>
 <p>This module is mainly used for a special pydantic base model, which can be used as a
 mix-in class when creating entry-endpoint resources.</p>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1215,29 +1202,29 @@ mix-in class when creating entry-endpoint resources.</p>
 
 
 
-  <div class="doc doc-object doc-class">
+
+<div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade_gateway.models.resources.EntryResourceCreate" class="doc doc-heading">
-          <code>EntryResourceCreate</code>
-
+        <code>EntryResourceCreate</code>
 
 
 <a href="#optimade_gateway.models.resources.EntryResourceCreate" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-    <div class="doc doc-contents ">
-        <p class="doc doc-class-bases">
-          Bases: <code><span title="optimade.models.EntryResourceAttributes">EntryResourceAttributes</span></code></p>
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="optimade.models.EntryResourceAttributes">EntryResourceAttributes</span></code></p>
 
-
+  
       <p>Generic model for creating new entry resources in the MongoDB</p>
 
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/models/resources.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">13</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/models/resources.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">13</span>
 <span class="normal">14</span>
 <span class="normal">15</span>
 <span class="normal">16</span>
@@ -1291,9 +1278,9 @@ mix-in class when creating entry-endpoint resources.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">_remove_pre_root_validators</span><span class="p">()</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
+        </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1302,72 +1289,66 @@ mix-in class when creating entry-endpoint resources.</p>
 
 
 
-  <div class="doc doc-object doc-attribute">
+
+<div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade_gateway.models.resources.EntryResourceCreate.id" class="doc doc-heading">
 <code class="highlight language-python"><span class="nb">id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
-
-  <span class="doc doc-properties">
+  
+  <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#optimade_gateway.models.resources.EntryResourceCreate.id" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-    <div class="doc doc-contents ">
-
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade_gateway.models.resources.EntryResourceCreate.last_modified" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">last_modified</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span></code>
-
-  <span class="doc doc-properties">
+  
+  <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#optimade_gateway.models.resources.EntryResourceCreate.last_modified" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-    <div class="doc doc-contents ">
-
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
 
-
-  <div class="doc doc-object doc-class">
+<div class="doc doc-object doc-class">
 
 
 
 <h3 id="optimade_gateway.models.resources.EntryResourceCreate.Config" class="doc doc-heading">
-          <code>Config</code>
-
+        <code>Config</code>
 
 
 <a href="#optimade_gateway.models.resources.EntryResourceCreate.Config" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-    <div class="doc doc-contents ">
+  <div class="doc doc-contents ">
 
-
+  
       <p>Silently discard extra initiation keys.</p>
 
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/models/resources.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">20</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/models/resources.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">20</span>
 <span class="normal">21</span>
 <span class="normal">22</span>
 <span class="normal">23</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
@@ -1375,9 +1356,9 @@ mix-in class when creating entry-endpoint resources.</p>
 
     <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;ignore&quot;</span>
 </code></pre></div></td></tr></table></div>
-          </details>
+        </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1386,27 +1367,25 @@ mix-in class when creating entry-endpoint resources.</p>
 
 
 
-  <div class="doc doc-object doc-attribute">
+
+<div class="doc doc-object doc-attribute">
 
 
 
 <h4 id="optimade_gateway.models.resources.EntryResourceCreate.Config.extra" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">extra</span> <span class="o">=</span> <span class="s1">&#39;ignore&#39;</span></code>
-
-  <span class="doc doc-properties">
+  
+  <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#optimade_gateway.models.resources.EntryResourceCreate.Config.extra" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
-    <div class="doc doc-contents ">
-
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
-
+</div>
 
 
 
@@ -1414,31 +1393,28 @@ mix-in class when creating entry-endpoint resources.</p>
 
   </div>
 
-    </div>
-
   </div>
 
+</div>
 
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="optimade_gateway.models.resources.EntryResourceCreate.__init__" class="doc doc-heading">
 <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span></code>
 
-
 <a href="#optimade_gateway.models.resources.EntryResourceCreate.__init__" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>Remove root_validator <code>check_illegal_attributes_fields</code>.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/models/resources.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">36</span>
+      <details class="quote">
+        <summary>Source code in <code>optimade_gateway/models/resources.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">36</span>
 <span class="normal">37</span>
 <span class="normal">38</span>
 <span class="normal">39</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -1446,78 +1422,27 @@ mix-in class when creating entry-endpoint resources.</p>
     <span class="bp">self</span><span class="o">.</span><span class="n">_remove_pre_root_validators</span><span class="p">()</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
+      </details>
+  </div>
+
+</div>
+
+
 
   </div>
 
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="optimade_gateway.models.resources.EntryResourceCreate._remove_pre_root_validators" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">_remove_pre_root_validators</span><span class="p">()</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
-  </span>
-
-<a href="#optimade_gateway.models.resources.EntryResourceCreate._remove_pre_root_validators" class="headerlink" title="Permanent link">&para;</a></h3>
-
-
-    <div class="doc doc-contents ">
-
-      <p>Remove <code>check_illegal_attributes_fields</code> pre root_validators.</p>
-
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/models/resources.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span>
-<span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
-<span class="k">def</span> <span class="nf">_remove_pre_root_validators</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Remove `check_illegal_attributes_fields` pre root_validators.&quot;&quot;&quot;</span>
-    <span class="n">pre_root_validators</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">validator</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__pre_root_validators__</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">str</span><span class="p">(</span><span class="n">validator</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span>
-            <span class="s2">&quot;&lt;function Attributes.check_illegal_attributes_fields&quot;</span>
-        <span class="p">):</span>
-            <span class="n">pre_root_validators</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">validator</span><span class="p">)</span>
-    <span class="bp">cls</span><span class="o">.</span><span class="n">__pre_root_validators__</span> <span class="o">=</span> <span class="n">pre_root_validators</span>
-</code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
   </div>
 
+</div>
 
 
 
 
   </div>
 
-    </div>
-
   </div>
 
-
-
-
-
-
-  </div>
-
-    </div>
-
-  </div>
+</div>
 
               
             </article>
@@ -1610,10 +1535,10 @@ mix-in class when creating entry-endpoint resources.</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.b028fd86.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.85cb4492.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.f758a944.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.431f3d41.min.js"></script>
       
     
   </body>

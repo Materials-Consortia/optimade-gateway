@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-gateway/latest/api_reference/models/responses/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.3">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.5">
     
     
       
@@ -1314,14 +1314,15 @@
 <h1 id="responses">responses<a class="headerlink" href="#responses" title="Permanent link">&para;</a></h1>
 
 
-  <div class="doc doc-object doc-module">
+<div class="doc doc-object doc-module">
+
 
 <a id="optimade_gateway.models.responses"></a>
-    <div class="doc doc-contents first">
-
+  <div class="doc doc-contents first">
+  
       <p>Pydantic models/schemas for the API responses.</p>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1331,32 +1332,32 @@
 
 
 
-  <div class="doc doc-object doc-class">
+
+<div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade_gateway.models.responses.DatabasesResponse" class="doc doc-heading">
-          <code>DatabasesResponse</code>
-
+        <code>DatabasesResponse</code>
 
 
 <a href="#optimade_gateway.models.responses.DatabasesResponse" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-    <div class="doc doc-contents ">
-        <p class="doc doc-class-bases">
-          Bases: <code><span title="optimade.models.EntryResponseMany">EntryResponseMany</span></code></p>
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="optimade.models.EntryResponseMany">EntryResponseMany</span></code></p>
 
-
+  
       <p>Successful response for <code>GET /databases</code></p>
 <p>This model is essentially equal to
 <a href="https://www.optimade.org/optimade-python-tools/api_reference/models/responses/#optimade.models.responses.LinksResponse"><code>LinksResponse</code></a>
 with the exception of the `data´ field's description.</p>
 
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/models/responses.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">12</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/models/responses.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">12</span>
 <span class="normal">13</span>
 <span class="normal">14</span>
 <span class="normal">15</span>
@@ -1390,9 +1391,9 @@ with the exception of the `data´ field's description.</p>
         <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
+        </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1401,27 +1402,25 @@ with the exception of the `data´ field's description.</p>
 
 
 
-  <div class="doc doc-object doc-attribute">
+
+<div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade_gateway.models.responses.DatabasesResponse.data" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="bp">Ellipsis</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;List of unique OPTIMADE links resource objects.</span><span class="se">\n</span><span class="s1">These links resource objects represents OPTIMADE databases that can be used for queries in gateways.&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
+  
+  <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#optimade_gateway.models.responses.DatabasesResponse.data" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-    <div class="doc doc-contents ">
-
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
-
+</div>
 
 
 
@@ -1429,35 +1428,32 @@ with the exception of the `data´ field's description.</p>
 
   </div>
 
-    </div>
-
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-class">
+<div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade_gateway.models.responses.DatabasesResponseSingle" class="doc doc-heading">
-          <code>DatabasesResponseSingle</code>
-
+        <code>DatabasesResponseSingle</code>
 
 
 <a href="#optimade_gateway.models.responses.DatabasesResponseSingle" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-    <div class="doc doc-contents ">
-        <p class="doc doc-class-bases">
-          Bases: <code><span title="optimade.models.EntryResponseOne">EntryResponseOne</span></code></p>
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="optimade.models.EntryResponseOne">EntryResponseOne</span></code></p>
 
-
+  
       <p>Successful response for <code>POST /databases</code> and <code>GET /databases/{database_id}</code></p>
 
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/models/responses.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">31</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/models/responses.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">31</span>
 <span class="normal">32</span>
 <span class="normal">33</span>
 <span class="normal">34</span>
@@ -1481,9 +1477,9 @@ with the exception of the `data´ field's description.</p>
         <span class="p">),</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
+        </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1492,27 +1488,25 @@ with the exception of the `data´ field's description.</p>
 
 
 
-  <div class="doc doc-object doc-attribute">
+
+<div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade_gateway.models.responses.DatabasesResponseSingle.data" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="bp">Ellipsis</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A unique OPTIMADE links resource object.</span><span class="se">\n</span><span class="s1">The OPTIMADE links resource object has just been created or found according to the specific query parameter(s) or URL id.</span><span class="se">\n</span><span class="s1">It represents an OPTIMADE database that can be used for queries in gateways.&#39;</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
+  
+  <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#optimade_gateway.models.responses.DatabasesResponseSingle.data" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-    <div class="doc doc-contents ">
-
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
-
+</div>
 
 
 
@@ -1520,35 +1514,32 @@ with the exception of the `data´ field's description.</p>
 
   </div>
 
-    </div>
-
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-class">
+<div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade_gateway.models.responses.GatewaysResponse" class="doc doc-heading">
-          <code>GatewaysResponse</code>
-
+        <code>GatewaysResponse</code>
 
 
 <a href="#optimade_gateway.models.responses.GatewaysResponse" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-    <div class="doc doc-contents ">
-        <p class="doc doc-class-bases">
-          Bases: <code><span title="optimade.models.EntryResponseMany">EntryResponseMany</span></code></p>
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="optimade.models.EntryResponseMany">EntryResponseMany</span></code></p>
 
-
+  
       <p>Successful response for <code>GET /gateways</code></p>
 
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/models/responses.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">45</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/models/responses.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">45</span>
 <span class="normal">46</span>
 <span class="normal">47</span>
 <span class="normal">48</span>
@@ -1564,9 +1555,9 @@ with the exception of the `data´ field's description.</p>
         <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
+        </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1575,27 +1566,25 @@ with the exception of the `data´ field's description.</p>
 
 
 
-  <div class="doc doc-object doc-attribute">
+
+<div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade_gateway.models.responses.GatewaysResponse.data" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">GatewayResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="bp">Ellipsis</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;List of unique OPTIMADE gateway resource objects.&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
+  
+  <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#optimade_gateway.models.responses.GatewaysResponse.data" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-    <div class="doc doc-contents ">
-
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
-
+</div>
 
 
 
@@ -1603,35 +1592,32 @@ with the exception of the `data´ field's description.</p>
 
   </div>
 
-    </div>
-
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-class">
+<div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade_gateway.models.responses.GatewaysResponseSingle" class="doc doc-heading">
-          <code>GatewaysResponseSingle</code>
-
+        <code>GatewaysResponseSingle</code>
 
 
 <a href="#optimade_gateway.models.responses.GatewaysResponseSingle" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-    <div class="doc doc-contents ">
-        <p class="doc doc-class-bases">
-          Bases: <code><span title="optimade.models.EntryResponseOne">EntryResponseOne</span></code></p>
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="optimade.models.EntryResponseOne">EntryResponseOne</span></code></p>
 
-
+  
       <p>Successful response for <code>POST /gateways</code> and <code>GET /gateways/{gateway_id}</code>.</p>
 
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/models/responses.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">55</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/models/responses.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">55</span>
 <span class="normal">56</span>
 <span class="normal">57</span>
 <span class="normal">58</span>
@@ -1653,9 +1639,9 @@ with the exception of the `data´ field's description.</p>
         <span class="p">),</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
+        </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1664,27 +1650,25 @@ with the exception of the `data´ field's description.</p>
 
 
 
-  <div class="doc doc-object doc-attribute">
+
+<div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade_gateway.models.responses.GatewaysResponseSingle.data" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">GatewayResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="bp">Ellipsis</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A unique OPTIMADE gateway resource object.</span><span class="se">\n</span><span class="s1">The OPTIMADE gateway resource object has just been created or found according to the specific query parameter(s) or URL id.&#39;</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
+  
+  <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#optimade_gateway.models.responses.GatewaysResponseSingle.data" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-    <div class="doc doc-contents ">
-
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
-
+</div>
 
 
 
@@ -1692,35 +1676,32 @@ with the exception of the `data´ field's description.</p>
 
   </div>
 
-    </div>
-
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-class">
+<div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade_gateway.models.responses.QueriesResponse" class="doc doc-heading">
-          <code>QueriesResponse</code>
-
+        <code>QueriesResponse</code>
 
 
 <a href="#optimade_gateway.models.responses.QueriesResponse" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-    <div class="doc doc-contents ">
-        <p class="doc doc-class-bases">
-          Bases: <code><span title="optimade.models.EntryResponseMany">EntryResponseMany</span></code></p>
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="optimade.models.EntryResponseMany">EntryResponseMany</span></code></p>
 
-
+  
       <p>Successful response for <code>GET /gateways/{gateway_ID}/queries</code>.</p>
 
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/models/responses.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">68</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/models/responses.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">68</span>
 <span class="normal">69</span>
 <span class="normal">70</span>
 <span class="normal">71</span>
@@ -1736,9 +1717,9 @@ with the exception of the `data´ field's description.</p>
         <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
+        </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1747,27 +1728,25 @@ with the exception of the `data´ field's description.</p>
 
 
 
-  <div class="doc doc-object doc-attribute">
+
+<div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade_gateway.models.responses.QueriesResponse.data" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">QueryResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="bp">Ellipsis</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;List of unique OPTIMADE gateway query resource objects.&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
+  
+  <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#optimade_gateway.models.responses.QueriesResponse.data" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-    <div class="doc doc-contents ">
-
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
-
+</div>
 
 
 
@@ -1775,36 +1754,33 @@ with the exception of the `data´ field's description.</p>
 
   </div>
 
-    </div>
-
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-class">
+<div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade_gateway.models.responses.QueriesResponseSingle" class="doc doc-heading">
-          <code>QueriesResponseSingle</code>
-
+        <code>QueriesResponseSingle</code>
 
 
 <a href="#optimade_gateway.models.responses.QueriesResponseSingle" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-    <div class="doc doc-contents ">
-        <p class="doc doc-class-bases">
-          Bases: <code><span title="optimade.models.EntryResponseOne">EntryResponseOne</span></code></p>
+  <div class="doc doc-contents ">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="optimade.models.EntryResponseOne">EntryResponseOne</span></code></p>
 
-
+  
       <p>Successful response for <code>POST /gateways/{gateway_ID}/queries</code>
 and <code>GET /gateways/{gateway_ID}/queries/{query_id}</code>.</p>
 
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/models/responses.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">78</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/models/responses.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">78</span>
 <span class="normal">79</span>
 <span class="normal">80</span>
 <span class="normal">81</span>
@@ -1828,9 +1804,9 @@ and <code>GET /gateways/{gateway_ID}/queries/{query_id}</code>.</p>
         <span class="p">),</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
+        </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1839,27 +1815,25 @@ and <code>GET /gateways/{gateway_ID}/queries/{query_id}</code>.</p>
 
 
 
-  <div class="doc doc-object doc-attribute">
+
+<div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="optimade_gateway.models.responses.QueriesResponseSingle.data" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">QueryResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="bp">Ellipsis</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A unique OPTIMADE gateway query resource object.</span><span class="se">\n</span><span class="s1">The OPTIMADE gateway query resource object has just been created or found according to the specific query parameter(s) or URL id.&#39;</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
+  
+  <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#optimade_gateway.models.responses.QueriesResponseSingle.data" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-    <div class="doc doc-contents ">
-
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
-
+</div>
 
 
 
@@ -1867,20 +1841,18 @@ and <code>GET /gateways/{gateway_ID}/queries/{query_id}</code>.</p>
 
   </div>
 
-    </div>
+  </div>
+
+</div>
+
+
+
 
   </div>
 
-
-
-
-
-
   </div>
 
-    </div>
-
-  </div>
+</div>
 
               
             </article>
@@ -1973,10 +1945,10 @@ and <code>GET /gateways/{gateway_ID}/queries/{query_id}</code>.</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.b028fd86.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.85cb4492.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.f758a944.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.431f3d41.min.js"></script>
       
     
   </body>

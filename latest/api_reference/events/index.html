@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-gateway/latest/api_reference/events/">
       
       <link rel="icon" href="../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.3">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.5">
     
     
       
@@ -1114,17 +1114,18 @@
 <h1 id="events">events<a class="headerlink" href="#events" title="Permanent link">&para;</a></h1>
 
 
-  <div class="doc doc-object doc-module">
+<div class="doc doc-object doc-module">
+
 
 <a id="optimade_gateway.events"></a>
-    <div class="doc doc-contents first">
-
+  <div class="doc doc-contents first">
+  
       <p>ASGI app events.</p>
 <p>These events can be run at application startup or shutdown.
 The specific events are listed in <a class="autorefs autorefs-internal" href="#optimade_gateway.events.EVENTS"><code>EVENTS</code></a> along with
 their respected proper invocation time.</p>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1133,22 +1134,23 @@ their respected proper invocation time.</p>
 
 
 
-  <div class="doc doc-object doc-attribute">
+
+<div class="doc doc-object doc-attribute">
 
 
 
 <h2 id="optimade_gateway.events.EVENTS" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">EVENTS</span><span class="p">:</span> <span class="s1">&#39;Sequence[Tuple[str, Callable[[], Coroutine[Any, Any, None]]]]&#39;</span> <span class="o">=</span> <span class="p">((</span><span class="s1">&#39;startup&#39;</span><span class="p">,</span> <span class="n">ci_dev_startup</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;startup&#39;</span><span class="p">,</span> <span class="n">load_optimade_providers_databases</span><span class="p">))</span></code>
-
-  <span class="doc doc-properties">
+  
+  <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
   </span>
 
 <a href="#optimade_gateway.events.EVENTS" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>A tuple of all pairs of events and event functions.</p>
 <p>To use this tuple of tuples:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
@@ -1156,36 +1158,34 @@ their respected proper invocation time.</p>
 <span class="k">for</span> <span class="n">event</span><span class="p">,</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">EVENTS</span><span class="p">:</span>
     <span class="n">APP</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
 </code></pre></div>
-    </div>
-
   </div>
 
+</div>
 
 
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h2 id="optimade_gateway.events.ci_dev_startup" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">ci_dev_startup</span><span class="p">()</span></code>
-
-  <span class="doc doc-properties">
+  
+  <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.events.ci_dev_startup" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>Function to run at app startup - only relevant for CI or development to add test
 data.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/events.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">19</span>
+      <details class="quote">
+        <summary>Source code in <code>optimade_gateway/events.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">19</span>
 <span class="normal">20</span>
 <span class="normal">21</span>
 <span class="normal">22</span>
@@ -1269,37 +1269,35 @@ data.</p>
         <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
     <span class="k">await</span> <span class="n">MONGO_DB</span><span class="p">[</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">gateways_collection</span><span class="p">]</span><span class="o">.</span><span class="n">insert_many</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h2 id="optimade_gateway.events.load_optimade_providers_databases" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">load_optimade_providers_databases</span><span class="p">()</span></code>
-
-  <span class="doc doc-properties">
+  
+  <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.events.load_optimade_providers_databases" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>Load in the providers' OPTIMADE databases from Materials-Consortia</p>
 <p>Utilize the Materials-Consortia list of OPTIMADE providers at
 <a href="https://providers.optimade.org">https://providers.optimade.org</a>.
 Load in all databases with a valid base URL.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/events.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 63</span>
+      <details class="quote">
+        <summary>Source code in <code>optimade_gateway/events.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 63</span>
 <span class="normal"> 64</span>
 <span class="normal"> 65</span>
 <span class="normal"> 66</span>
@@ -1637,20 +1635,18 @@ Load in all databases with a valid base URL.</p>
                 <span class="n">registered_database</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
             <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
+      </details>
+  </div>
+
+</div>
+
+
 
   </div>
 
-
-
-
-
   </div>
 
-    </div>
-
-  </div>
+</div>
 
               
             </article>
@@ -1743,10 +1739,10 @@ Load in all databases with a valid base URL.</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.top"], "search": "../../assets/javascripts/workers/search.b028fd86.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.top"], "search": "../../assets/javascripts/workers/search.85cb4492.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.f758a944.min.js"></script>
+      <script src="../../assets/javascripts/bundle.431f3d41.min.js"></script>
       
     
   </body>
