@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-gateway/latest/api_reference/mongo/collection/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.5">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.8">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.4a0965b7.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.1d29e8d0.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.cbb835fc.min.css">
@@ -2359,7 +2359,7 @@ represents an asynchronous version of the equivalent MongoDB collection in <code
         <tr>
           <td><code>resource_cls</code></td>
           <td>
-                <code>&#39;EntryResource&#39;</code>
+                <code><span title="optimade.models.EntryResource">EntryResource</span></code>
           </td>
           <td><p>The <code>EntryResource</code> model that is stored by the collection.</p></td>
           <td>
@@ -2369,7 +2369,7 @@ represents an asynchronous version of the equivalent MongoDB collection in <code
         <tr>
           <td><code>resource_mapper</code></td>
           <td>
-                <code>&#39;BaseResourceMapper&#39;</code>
+                <code><span title="optimade.server.mappers.entries.BaseResourceMapper">BaseResourceMapper</span></code>
           </td>
           <td><p>A resource mapper object that handles aliases and format
 changes between deserialization and response.</p></td>
@@ -2482,7 +2482,7 @@ changes between deserialization and response.</p></td>
         <tr>
           <td><code>params</code></td>
           <td>
-                <code>&#39;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]&#39;</code>
+                <code>Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]</code>
           </td>
           <td><p>URL query parameters, either from a general entry endpoint or a
 single-entry endpoint.</p></td>
@@ -2493,7 +2493,7 @@ single-entry endpoint.</p></td>
         <tr>
           <td><code>**kwargs</code></td>
           <td>
-                <code>&#39;Any&#39;</code>
+                <code><span title="typing.Any">Any</span></code>
           </td>
           <td><p>Query parameters as keyword arguments. Valid keys will be passed
 to the
@@ -2657,7 +2657,7 @@ and pagination of the output.</p>
         <tr>
           <td><code>params</code></td>
           <td>
-                <code>&#39;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]&#39;</code>
+                <code>Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]</code>
           </td>
           <td><p>URL query parameters, either from a general entry endpoint or a
 single-entry endpoint.</p></td>
@@ -2668,7 +2668,7 @@ single-entry endpoint.</p></td>
         <tr>
           <td><code>criteria</code></td>
           <td>
-                <code>&#39;Optional[Dict[str, Any]]&#39;</code>
+                <code>Optional[Dict[str, Any]]</code>
           </td>
           <td><p>Already handled/parsed URL query parameters.</p></td>
           <td>
@@ -2689,19 +2689,19 @@ single-entry endpoint.</p></td>
     <tbody>
         <tr>
           <td>
-                <code>&#39;Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]&#39;</code>
+                <code>Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]</code>
           </td>
           <td><p>A list of entry resource objects, how much data was returned for the query,</p></td>
         </tr>
         <tr>
           <td>
-                <code>&#39;Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]&#39;</code>
+                <code>Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]</code>
           </td>
           <td><p>whether more data is available with pagination, and fields (excluded,</p></td>
         </tr>
         <tr>
           <td>
-                <code>&#39;Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]&#39;</code>
+                <code>Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]</code>
           </td>
           <td><p>included).</p></td>
         </tr>
@@ -2953,7 +2953,7 @@ which will need modification for modified for other backends.</p>
         <tr>
           <td><code>params</code></td>
           <td>
-                <code>&#39;Union[EntryListingQueryParams, SingleEntryQueryParams]&#39;</code>
+                <code>Union[EntryListingQueryParams, SingleEntryQueryParams]</code>
           </td>
           <td><p>The initialized query parameter model from the server.</p></td>
           <td>
@@ -2999,7 +2999,7 @@ response format.</p></td>
     <tbody>
         <tr>
           <td>
-                <code>&#39;Dict[str, Any]&#39;</code>
+                <code>Dict[str, Any]</code>
           </td>
           <td><p>A dictionary representation of the query parameters.</p></td>
         </tr>
@@ -3098,7 +3098,7 @@ response format.</p></td>
         <tr>
           <td><code>data</code></td>
           <td>
-                <code>&#39;List[EntryResource]&#39;</code>
+                <code>List[EntryResource]</code>
           </td>
           <td><p>The entry resource objects to add to the database.</p></td>
           <td>
@@ -3170,7 +3170,7 @@ This will only be done if <code>"id"</code> is not already present in <code>reso
         <tr>
           <td><code>resource</code></td>
           <td>
-                <code>&#39;EntryResourceCreate&#39;</code>
+                <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.EntryResourceCreate" href="../../models/resources/#optimade_gateway.models.resources.EntryResourceCreate">EntryResourceCreate</a></code>
           </td>
           <td><p>The resource to be created.</p></td>
           <td>
@@ -3191,7 +3191,7 @@ This will only be done if <code>"id"</code> is not already present in <code>reso
     <tbody>
         <tr>
           <td>
-                <code>&#39;EntryResource&#39;</code>
+                <code><span title="optimade.models.EntryResource">EntryResource</span></code>
           </td>
           <td><p>The newly created document as a pydantic model entry resource.</p></td>
         </tr>
@@ -3374,7 +3374,7 @@ for more information.</p>
         <tr>
           <td><code>params</code></td>
           <td>
-                <code>&#39;Union[EntryListingQueryParams, SingleEntryQueryParams]&#39;</code>
+                <code>Union[EntryListingQueryParams, SingleEntryQueryParams]</code>
           </td>
           <td><p>Entry listing URL query params.</p></td>
           <td>
@@ -3395,19 +3395,19 @@ for more information.</p>
     <tbody>
         <tr>
           <td>
-                <code>&#39;Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]&#39;</code>
+                <code>Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]</code>
           </td>
           <td><p>A tuple of various relevant values:</p></td>
         </tr>
         <tr>
           <td>
-                <code>&#39;Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]&#39;</code>
+                <code>Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]</code>
           </td>
           <td><p>(<code>results</code>, <code>data_returned</code>, <code>more_data_available</code>, <code>exclude_fields</code>,</p></td>
         </tr>
         <tr>
           <td>
-                <code>&#39;Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]&#39;</code>
+                <code>Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]</code>
           </td>
           <td><p><code>include_fields</code>).</p></td>
         </tr>
@@ -3510,7 +3510,7 @@ but is rather a utility function to easily retrieve a list of resources.</p>
         <tr>
           <td><code>**criteria</code></td>
           <td>
-                <code>&#39;Any&#39;</code>
+                <code><span title="typing.Any">Any</span></code>
           </td>
           <td><p>Already handled/parsed URL query parameters.</p></td>
           <td>
@@ -3531,7 +3531,7 @@ but is rather a utility function to easily retrieve a list of resources.</p>
     <tbody>
         <tr>
           <td>
-                <code>&#39;List[EntryResource]&#39;</code>
+                <code>List[EntryResource]</code>
           </td>
           <td><p>A list of resources from the MongoDB (mapped to pydantic models).</p></td>
         </tr>
@@ -3624,7 +3624,7 @@ but is rather a utility function to easily retrieve a single resource.</p>
         <tr>
           <td><code>**criteria</code></td>
           <td>
-                <code>&#39;Any&#39;</code>
+                <code><span title="typing.Any">Any</span></code>
           </td>
           <td><p>Already handled/parsed URL query parameters.</p></td>
           <td>
@@ -3645,7 +3645,7 @@ but is rather a utility function to easily retrieve a single resource.</p>
     <tbody>
         <tr>
           <td>
-                <code>&#39;EntryResource&#39;</code>
+                <code><span title="optimade.models.EntryResource">EntryResource</span></code>
           </td>
           <td><p>A single resource from the MongoDB (mapped to pydantic models).</p></td>
         </tr>
@@ -3735,7 +3735,7 @@ which will need modification for modified for other backends.</p>
         <tr>
           <td><code>params</code></td>
           <td>
-                <code>&#39;Union[EntryListingQueryParams, SingleEntryQueryParams]&#39;</code>
+                <code>Union[EntryListingQueryParams, SingleEntryQueryParams]</code>
           </td>
           <td><p>The initialized query parameter model from the server.</p></td>
           <td>
@@ -3781,7 +3781,7 @@ or response format.</p></td>
     <tbody>
         <tr>
           <td>
-                <code>&#39;Dict[str, Any]&#39;</code>
+                <code>Dict[str, Any]</code>
           </td>
           <td><p>A dictionary representation of the query parameters.</p></td>
         </tr>
@@ -3957,10 +3957,10 @@ or response format.</p></td>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.85cb4492.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.b97dbffb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.431f3d41.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.0238f547.min.js"></script>
       
     
   </body>
