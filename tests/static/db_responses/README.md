@@ -1,4 +1,5 @@
 # Static database responses
+<!-- markdownlint-disable MD034 -->
 
 This folder contains full responses for various databases to be used for testing.
 
