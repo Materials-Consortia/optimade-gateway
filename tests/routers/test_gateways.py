@@ -151,7 +151,7 @@ async def test_post_gateways_database_ids(
     from optimade_gateway.mongo.database import MONGO_DB
 
     # Databases for gateway "twodbs"
-    data = {"database_ids": ["mcloud/2dstructures", "mcloud/optimade-sample"]}
+    data = {"database_ids": ["mcloud/mc2d", "mcloud/optimade-sample"]}
 
     response = await client("/gateways", method="post", json=data)
 
@@ -215,7 +215,7 @@ async def test_post_gateways_create_with_db_ids(
                 },
             }
         ],
-        "database_ids": ["mcloud/2dstructures"],
+        "database_ids": ["mcloud/mc2d"],
     }
 
     response = await client("/gateways", method="post", json=data)

@@ -4,7 +4,7 @@ This folder contains full responses for various databases to be used for testing
 
 **Successful responses**:
 
-- `2dstructures.json` (https://dev-aiida.materialscloud.org/2dstructures/optimade/structures?)
+- `mc2d.json` (https://dev-aiida.materialscloud.org/mc2d/optimade/structures?)
 - `optimade-sample.json`(https://dev-aiida.materialscloud.org/optimade-sample/optimade/structures?)
 - `providers_optimade.json` (https://providers.optimade.org/v1/links)
   This is an index meta-database, specifically the Materials-Consortia's curated list of OPTIMADE providers, linking to their index meta-databases.

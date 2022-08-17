@@ -23,13 +23,13 @@
       }
     },
     {
-      "id": "2dstructures",
+      "id": "mc2d",
       "type": "links",
       "attributes": {
         "name": "2D Structures",
         "description": "Two-dimensional (2D) materials from high-throughput computational exfoliation of experimentally known compounds.",
-        "base_url": "https://dev-aiida.materialscloud.org/2dstructures/optimade",
-        "homepage": "https://materialscloud.org/explore/2dstructures",
+        "base_url": "https://dev-aiida.materialscloud.org/mc2d/optimade",
+        "homepage": "https://materialscloud.org/explore/mc2d",
         "link_type": "child",
         "aggregate": "ok"
       }

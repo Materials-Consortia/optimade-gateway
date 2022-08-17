@@ -431,7 +431,7 @@ async def test_load_databases_valid_databases(
         )
 
         for db in mcloud_index["data"]:
-            if db["id"] not in ("2dstructures", "optimade-sample"):
+            if db["id"] not in ("mc2d", "optimade-sample"):
                 continue
 
             assert (
@@ -440,7 +440,7 @@ async def test_load_databases_valid_databases(
             )
             assert f"  - {db['attributes']['name']} (id={db['id']!r}) - Registered database with id={'mcloud/' + db['id']!r}"
 
-        # No new databases should be added based on the mock responses since ("2dstructures",
+        # No new databases should be added based on the mock responses since ("mc2d",
         # "optimade-sample") already exist in the collection
         assert (
             await MONGO_DB[CONFIG.databases_collection].count_documents({})
