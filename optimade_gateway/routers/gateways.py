@@ -98,6 +98,7 @@ async def post_gateways(
             data_returned=1,
             data_available=await collection.acount(),
             more_data_available=False,
+            schema=CONFIG.schema_url,
             **{f"_{CONFIG.provider.prefix}_created": created},
         ),
     )
@@ -128,5 +129,6 @@ async def get_gateway(request: Request, gateway_id: str) -> GatewaysResponseSing
             data_returned=1,
             data_available=await collection.acount(),
             more_data_available=False,
+            schema=CONFIG.schema_url,
         ),
     )

@@ -87,6 +87,7 @@ async def perform_query(
                 data_available=0,
                 data_returned=0,
                 more_data_available=False,
+                schema=CONFIG.schema_url,
             ),
         ),
         operator=None,

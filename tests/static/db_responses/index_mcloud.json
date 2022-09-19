@@ -90,7 +90,8 @@
       "source_url": "https://github.com/CasperWA/optimade-python-tools/tree/index_meta_db",
       "maintainer": {
         "email": "casper.andersen@epfl.ch"
-      }
+      },
+      "schema":"https://schemas.optimade.org/openapi/v1.0.1/optimade.json"
     }
   },
   "included": [],

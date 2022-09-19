@@ -5,7 +5,7 @@
       "representation" : "/links"
     },
     "more_data_available" : false,
-    "schema" : "https://schemas.optimade.org/openapi/v1.0/optimade_index.json"
+    "schema" : "https://schemas.optimade.org/openapi/v1.0.1/optimade_index.json"
   },
   "data" : [
     {

@@ -27,6 +27,7 @@ from optimade.server.query_params import EntryListingQueryParams
 from pydantic import BaseModel, EmailStr, Field, validator
 from starlette.datastructures import URL as StarletteURL
 
+from optimade_gateway.common.config import CONFIG
 from optimade_gateway.models.resources import EntryResourceCreate
 from optimade_gateway.warnings import SortNotSupported
 
@@ -318,10 +319,12 @@ class QueryResource(EntryResource):
                     data_returned=0,
                     data_available=0,
                     more_data_available=False,
+                    schema=CONFIG.schema_url,
                 ),
             )
 
         meta_ = self.attributes.response.meta
+        print(meta_)
         if url:
             meta_ = meta_.dict(exclude_unset=True)
             for repeated_key in (
