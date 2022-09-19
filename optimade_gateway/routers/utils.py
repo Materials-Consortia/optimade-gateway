@@ -78,6 +78,7 @@ async def get_entries(
             data_returned=data_returned,
             data_available=await collection.acount(),
             more_data_available=more_data_available,
+            schema=CONFIG.schema_url,
         ),
     )
 

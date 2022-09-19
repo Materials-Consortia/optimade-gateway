@@ -246,4 +246,5 @@ def generic_meta() -> dict:
         "api_version": "1.0.0",
         "query": {"representation": "/links"},
         "more_data_available": False,
+        "schema": "https://schemas.optimade.org/openapi/v1.0.1/optimade.json",
     }
