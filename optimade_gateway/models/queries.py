@@ -324,7 +324,7 @@ class QueryResource(EntryResource):
             )
 
         meta_ = self.attributes.response.meta
-        print(meta_)
+
         if url:
             meta_ = meta_.dict(exclude_unset=True)
             for repeated_key in (
