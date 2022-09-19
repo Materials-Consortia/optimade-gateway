@@ -1,5 +1,73 @@
 # Changelog
 
+## [v0.3.0](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.3.0) (2022-09-05)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.2.2...v0.3.0)
+
+**Fixed bugs:**
+
+- FastAPI safety issues [\#281](https://github.com/Materials-Consortia/optimade-gateway/issues/281)
+- pylint rules seems to be stricter [\#253](https://github.com/Materials-Consortia/optimade-gateway/issues/253)
+- Fix type for auto-merge workflow [\#238](https://github.com/Materials-Consortia/optimade-gateway/issues/238)
+- Pushing in automerge CI workflow not working [\#179](https://github.com/Materials-Consortia/optimade-gateway/issues/179)
+- Auto-merge CD workflow not working [\#177](https://github.com/Materials-Consortia/optimade-gateway/issues/177)
+- Resetting `ci/dependabot-updates` branch failing [\#174](https://github.com/Materials-Consortia/optimade-gateway/issues/174)
+- Single dependabot PR workflow failing [\#167](https://github.com/Materials-Consortia/optimade-gateway/issues/167)
+- Update mcdb name [\#296](https://github.com/Materials-Consortia/optimade-gateway/pull/296) ([CasperWA](https://github.com/CasperWA))
+
+**Closed issues:**
+
+- More verbose in `main` push CI job [\#184](https://github.com/Materials-Consortia/optimade-gateway/issues/184)
+- Add `pre-commit` hooks autoupdate to CI [\#183](https://github.com/Materials-Consortia/optimade-gateway/issues/183)
+
+**Merged pull requests:**
+
+- Update dependencies [\#300](https://github.com/Materials-Consortia/optimade-gateway/pull/300) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#298](https://github.com/Materials-Consortia/optimade-gateway/pull/298) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#293](https://github.com/Materials-Consortia/optimade-gateway/pull/293) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#290](https://github.com/Materials-Consortia/optimade-gateway/pull/290) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#288](https://github.com/Materials-Consortia/optimade-gateway/pull/288) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#286](https://github.com/Materials-Consortia/optimade-gateway/pull/286) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#285](https://github.com/Materials-Consortia/optimade-gateway/pull/285) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#282](https://github.com/Materials-Consortia/optimade-gateway/pull/282) ([CasperWA](https://github.com/CasperWA))
+- Remove no-self-use disables [\#280](https://github.com/Materials-Consortia/optimade-gateway/pull/280) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#277](https://github.com/Materials-Consortia/optimade-gateway/pull/277) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#271](https://github.com/Materials-Consortia/optimade-gateway/pull/271) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#269](https://github.com/Materials-Consortia/optimade-gateway/pull/269) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#267](https://github.com/Materials-Consortia/optimade-gateway/pull/267) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#264](https://github.com/Materials-Consortia/optimade-gateway/pull/264) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#262](https://github.com/Materials-Consortia/optimade-gateway/pull/262) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#261](https://github.com/Materials-Consortia/optimade-gateway/pull/261) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#258](https://github.com/Materials-Consortia/optimade-gateway/pull/258) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#250](https://github.com/Materials-Consortia/optimade-gateway/pull/250) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#248](https://github.com/Materials-Consortia/optimade-gateway/pull/248) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#246](https://github.com/Materials-Consortia/optimade-gateway/pull/246) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#242](https://github.com/Materials-Consortia/optimade-gateway/pull/242) ([CasperWA](https://github.com/CasperWA))
+- Use `ID!` type instead of `String!` [\#239](https://github.com/Materials-Consortia/optimade-gateway/pull/239) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#237](https://github.com/Materials-Consortia/optimade-gateway/pull/237) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#235](https://github.com/Materials-Consortia/optimade-gateway/pull/235) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#232](https://github.com/Materials-Consortia/optimade-gateway/pull/232) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#227](https://github.com/Materials-Consortia/optimade-gateway/pull/227) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#223](https://github.com/Materials-Consortia/optimade-gateway/pull/223) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#219](https://github.com/Materials-Consortia/optimade-gateway/pull/219) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#217](https://github.com/Materials-Consortia/optimade-gateway/pull/217) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#210](https://github.com/Materials-Consortia/optimade-gateway/pull/210) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#209](https://github.com/Materials-Consortia/optimade-gateway/pull/209) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#207](https://github.com/Materials-Consortia/optimade-gateway/pull/207) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#205](https://github.com/Materials-Consortia/optimade-gateway/pull/205) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#202](https://github.com/Materials-Consortia/optimade-gateway/pull/202) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#198](https://github.com/Materials-Consortia/optimade-gateway/pull/198) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#197](https://github.com/Materials-Consortia/optimade-gateway/pull/197) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#196](https://github.com/Materials-Consortia/optimade-gateway/pull/196) ([CasperWA](https://github.com/CasperWA))
+- Be more verbose in CI/CD workflows [\#191](https://github.com/Materials-Consortia/optimade-gateway/pull/191) ([CasperWA](https://github.com/CasperWA))
+- Update `pre-commit` hooks in dependabot CI [\#186](https://github.com/Materials-Consortia/optimade-gateway/pull/186) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#182](https://github.com/Materials-Consortia/optimade-gateway/pull/182) ([CasperWA](https://github.com/CasperWA))
+- Use PAT for pushing to activate CI jobs [\#181](https://github.com/Materials-Consortia/optimade-gateway/pull/181) ([CasperWA](https://github.com/CasperWA))
+- Use push action for pushing to dependabot branch [\#180](https://github.com/Materials-Consortia/optimade-gateway/pull/180) ([CasperWA](https://github.com/CasperWA))
+- Use `ref` instead of `sha` [\#178](https://github.com/Materials-Consortia/optimade-gateway/pull/178) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#173](https://github.com/Materials-Consortia/optimade-gateway/pull/173) ([CasperWA](https://github.com/CasperWA))
+- Wrap def in quotations and change to single quote [\#168](https://github.com/Materials-Consortia/optimade-gateway/pull/168) ([CasperWA](https://github.com/CasperWA))
+
 ## [v0.2.2](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.2.2) (2021-10-05)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.2.1...v0.2.2)
