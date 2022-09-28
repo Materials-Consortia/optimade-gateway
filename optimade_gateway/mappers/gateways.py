@@ -1,7 +1,7 @@
 """Resource mapper for
 [`GatewayResource`][optimade_gateway.models.gateways.GatewayResource]."""
-from optimade_gateway.models import GatewayResource
 from optimade_gateway.mappers.base import BaseResourceMapper
+from optimade_gateway.models import GatewayResource
 
 
 class GatewaysMapper(BaseResourceMapper):

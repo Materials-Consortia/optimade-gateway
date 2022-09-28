@@ -1,7 +1,7 @@
 """Pydantic models/schemas for the Gateways resource."""
 # pylint: disable=no-self-argument,too-few-public-methods
-from typing import List, Optional, Set
 import warnings
+from typing import List, Optional, Set
 
 from optimade.models import EntryResource, EntryResourceAttributes, LinksResource
 from optimade.models.links import LinkType

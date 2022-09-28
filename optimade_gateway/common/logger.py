@@ -1,9 +1,9 @@
 """Logging to both file and console"""
-from contextlib import contextmanager
 import logging
 import os
-from pathlib import Path
 import sys
+from contextlib import contextmanager
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 from uvicorn.logging import DefaultFormatter

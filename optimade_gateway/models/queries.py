@@ -1,14 +1,14 @@
 """Pydantic models/schemas for the Queries resource."""
 # pylint: disable=line-too-long,too-few-public-methods,no-self-argument
+import urllib.parse
+import warnings
 from copy import deepcopy
 from datetime import timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional, Union
-import urllib.parse
-import warnings
 
+from optimade.models import EntryResource as OptimadeEntryResource
 from optimade.models import (
-    EntryResource as OptimadeEntryResource,
     EntryResourceAttributes,
     EntryResponseMany,
     ErrorResponse,

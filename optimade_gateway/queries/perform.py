@@ -1,20 +1,15 @@
 """Perform OPTIMADE queries"""
 # pylint: disable=import-outside-toplevel
 import asyncio
-from concurrent.futures import ThreadPoolExecutor
 import functools
 import json
 import os
+from concurrent.futures import ThreadPoolExecutor
 from typing import TYPE_CHECKING
-
-# import urllib.parse
 
 import httpx
 from optimade import __api_version__
-from optimade.models import (
-    ErrorResponse,
-    ToplevelLinks,
-)
+from optimade.models import ErrorResponse, ToplevelLinks
 from optimade.server.routers.utils import BASE_URL_PREFIXES, meta_values
 
 # from optimade.server.routers.utils import get_base_url
@@ -23,15 +18,14 @@ from pydantic import ValidationError
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.common.utils import get_resource_attribute
-from optimade_gateway.models import (
-    GatewayQueryResponse,
-    GatewayResource,
-    QueryState,
-)
+from optimade_gateway.models import GatewayQueryResponse, GatewayResource, QueryState
 from optimade_gateway.queries.prepare import get_query_params, prepare_query_filter
 from optimade_gateway.queries.process import process_db_response
 from optimade_gateway.queries.utils import update_query
 from optimade_gateway.routers.utils import collection_factory, get_valid_resource
+
+# import urllib.parse
+
 
 if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):  # pragma: no cover
     # pylint: disable=unused-import,ungrouped-imports

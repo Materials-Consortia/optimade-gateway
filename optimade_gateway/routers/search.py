@@ -10,22 +10,12 @@ import asyncio
 from time import time
 from typing import Union
 
-from fastapi import (
-    APIRouter,
-    Depends,
-    Request,
-    Response,
-    status,
-)
+from fastapi import APIRouter, Depends, Request, Response, status
 from fastapi.responses import RedirectResponse
+from optimade.models import LinksResource, LinksResourceAttributes, ToplevelLinks
+from optimade.models.links import LinkType
 from optimade.models.responses import EntryResponseMany, ErrorResponse
 from optimade.server.exceptions import BadRequest, InternalServerError
-from optimade.models import (
-    LinksResource,
-    LinksResourceAttributes,
-    ToplevelLinks,
-)
-from optimade.models.links import LinkType
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import meta_values
 from optimade.server.schemas import ERROR_RESPONSES
@@ -41,14 +31,10 @@ from optimade_gateway.models import (
     QueryResource,
     Search,
 )
-from optimade_gateway.models.queries import (
-    OptimadeQueryParameters,
-    QueryState,
-)
+from optimade_gateway.models.queries import OptimadeQueryParameters, QueryState
 from optimade_gateway.queries.params import SearchQueryParams
 from optimade_gateway.queries.perform import perform_query
 from optimade_gateway.routers.utils import collection_factory, resource_factory
-
 
 ROUTER = APIRouter(redirect_slashes=True)
 

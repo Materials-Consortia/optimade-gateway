@@ -1,9 +1,8 @@
 """Setup instructions and metadata for `pip install`."""
-from pathlib import Path
 import re
+from pathlib import Path
 
-from setuptools import setup, find_packages
-
+from setuptools import find_packages, setup
 
 TOP_DIR = Path(__file__).parent.resolve()
 

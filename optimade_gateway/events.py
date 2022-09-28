@@ -34,8 +34,9 @@ async def ci_dev_startup() -> None:
 
     # Add test gateways
     import json
-    from optimade_gateway.mongo.database import MONGO_DB
     from pathlib import Path
+
+    from optimade_gateway.mongo.database import MONGO_DB
 
     test_data = (
         Path(__file__).parent.parent.joinpath(".ci/test_gateways.json").resolve()

@@ -1,7 +1,7 @@
 """Pydantic models/schemas for the Search resource."""
 # pylint: disable=no-self-argument
-from typing import Set
 import warnings
+from typing import Set
 
 from pydantic import AnyUrl, BaseModel, Field, root_validator, validator
 

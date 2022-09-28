@@ -25,7 +25,6 @@ from optimade_gateway.common.config import CONFIG
 from optimade_gateway.models import GatewayResource, QueryResource
 from optimade_gateway.routers.utils import aretrieve_queryable_properties
 
-
 ROUTER = APIRouter(redirect_slashes=True)
 
 ENTRY_INFO_SCHEMAS = {

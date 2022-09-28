@@ -6,8 +6,8 @@ from typing import TYPE_CHECKING
 import pytest
 
 if TYPE_CHECKING:
-    from typing import Awaitable, Callable
     from pathlib import Path
+    from typing import Awaitable, Callable
 
     try:
         from typing import Literal
@@ -51,6 +51,7 @@ async def test_post_queries(
 ):
     """Test POST /queries"""
     import asyncio
+
     from bson.objectid import ObjectId
     from optimade.server.routers.utils import BASE_URL_PREFIXES
     from pydantic import AnyUrl

@@ -1,8 +1,8 @@
 """Prepare OPTIMADE queries."""
-from os import getenv
 import re
-from typing import TYPE_CHECKING
 import urllib.parse
+from os import getenv
+from typing import TYPE_CHECKING
 from warnings import warn
 
 from optimade_gateway.warnings import OptimadeGatewayWarning

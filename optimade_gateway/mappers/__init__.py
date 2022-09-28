@@ -7,5 +7,4 @@ from .gateways import GatewaysMapper
 from .links import LinksMapper
 from .queries import QueryMapper
 
-
 __all__ = ("DatabasesMapper", "GatewaysMapper", "LinksMapper", "QueryMapper")

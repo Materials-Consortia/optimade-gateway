@@ -27,7 +27,6 @@ from optimade_gateway.routers.utils import (
     resource_factory,
 )
 
-
 ROUTER = APIRouter(redirect_slashes=True)
 
 

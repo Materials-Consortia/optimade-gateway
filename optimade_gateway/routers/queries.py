@@ -9,13 +9,7 @@ where, `id` may be left out.
 # pylint: disable=import-outside-toplevel
 import asyncio
 
-from fastapi import (
-    APIRouter,
-    Depends,
-    Request,
-    Response,
-    status,
-)
+from fastapi import APIRouter, Depends, Request, Response, status
 from optimade.models import ToplevelLinks
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import meta_values
@@ -23,10 +17,10 @@ from optimade.server.schemas import ERROR_RESPONSES
 
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.models import (
-    QueryCreate,
-    QueryResource,
     QueriesResponse,
     QueriesResponseSingle,
+    QueryCreate,
+    QueryResource,
 )
 from optimade_gateway.queries.perform import perform_query
 from optimade_gateway.routers.utils import (
@@ -36,7 +30,6 @@ from optimade_gateway.routers.utils import (
     resource_factory,
     validate_resource,
 )
-
 
 ROUTER = APIRouter(redirect_slashes=True)
 
