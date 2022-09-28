@@ -33,7 +33,7 @@ repos:
     language: python
     types: [python]
     require_serial: true
-    exclude: ^(tests/.*|optimade_gateway/models/queries.py|optimade_gateway/models/resources.py)$
+    exclude: ^tests/.*$
   - id: pytest-plugins
     name: pytest required plugin versions
     entry: invoke
