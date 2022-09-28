@@ -2,24 +2,16 @@
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import RedirectResponse
-
 from optimade.server.exception_handlers import OPTIMADE_EXCEPTIONS
 from optimade.server.middleware import OPTIMADE_MIDDLEWARE
 from optimade.server.routers.utils import BASE_URL_PREFIXES
 from optimade.server.routers.versions import router as versions_router
 
 from optimade_gateway import __version__
+from optimade_gateway.events import EVENTS
 from optimade_gateway.exception_handlers import request_validation_exception_handler
 from optimade_gateway.middleware import CheckWronglyVersionedBaseUrlsGateways
-from optimade_gateway.events import EVENTS
-from optimade_gateway.routers import (
-    databases,
-    gateways,
-    info,
-    links,
-    queries,
-    search,
-)
+from optimade_gateway.routers import databases, gateways, info, links, queries, search
 
 APP = FastAPI(
     title="OPTIMADE Gateway",

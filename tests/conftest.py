@@ -2,12 +2,11 @@
 import asyncio
 import json
 import os
-from pathlib import Path
 import re
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pytest
-
 
 if TYPE_CHECKING:
     from typing import Awaitable, Callable, Union
@@ -106,8 +105,8 @@ def client() -> (
             request: URL path with query parameters
 
         """
-        from optimade_gateway.main import APP
         from optimade_gateway.common.config import CONFIG
+        from optimade_gateway.main import APP
 
         app = app if app is not None else APP
         base_url = base_url if base_url is not None else CONFIG.base_url
@@ -213,8 +212,8 @@ def mock_gateway_responses(
 
         This response sleeps for X seconds, where X is derived from the database ID.
         """
-        from concurrent.futures import ThreadPoolExecutor
         import time
+        from concurrent.futures import ThreadPoolExecutor
 
         from httpx import Response
 
@@ -246,4 +245,5 @@ def generic_meta() -> dict:
         "api_version": "1.0.0",
         "query": {"representation": "/links"},
         "more_data_available": False,
+        "schema": "https://schemas.optimade.org/openapi/v1.0.1/optimade.json",
     }

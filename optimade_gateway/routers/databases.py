@@ -30,7 +30,6 @@ from optimade_gateway.routers.utils import (
     resource_factory,
 )
 
-
 ROUTER = APIRouter(redirect_slashes=True)
 
 
@@ -88,6 +87,7 @@ async def post_databases(
             data_returned=1,
             data_available=await collection.acount(),
             more_data_available=False,
+            schema=CONFIG.schema_url,
             **{f"_{CONFIG.provider.prefix}_created": created},
         ),
     )
@@ -137,5 +137,6 @@ async def get_database(
             data_returned=data_returned,
             data_available=await collection.acount(),
             more_data_available=more_data_available,
+            schema=CONFIG.schema_url,
         ),
     )

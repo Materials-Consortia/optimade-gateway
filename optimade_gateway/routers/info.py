@@ -21,9 +21,9 @@ from optimade.server.exceptions import NotFound
 from optimade.server.routers.utils import get_base_url, meta_values
 from optimade.server.schemas import ERROR_RESPONSES
 
+from optimade_gateway.common.config import CONFIG
 from optimade_gateway.models import GatewayResource, QueryResource
 from optimade_gateway.routers.utils import aretrieve_queryable_properties
-
 
 ROUTER = APIRouter(redirect_slashes=True)
 
@@ -84,6 +84,7 @@ async def get_info(request: Request) -> InfoResponse:
             data_returned=1,
             data_available=1,
             more_data_available=False,
+            schema=CONFIG.schema_url,
         ),
     )
 
@@ -129,5 +130,6 @@ async def get_entry_info(request: Request, entry: str) -> EntryInfoResponse:
             data_returned=1,
             data_available=1,
             more_data_available=False,
+            schema=CONFIG.schema_url,
         ),
     )

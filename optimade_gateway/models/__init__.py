@@ -18,7 +18,6 @@ from .responses import (
 )
 from .search import Search
 
-
 __all__ = (
     "DatabaseCreate",
     "DatabasesResponse",

@@ -104,6 +104,7 @@ async def test_get_single_database(
 ):
     """Test GET /databases/{id}"""
     import json
+
     from optimade.server.routers.utils import BASE_URL_PREFIXES
     from pydantic import AnyUrl
 

@@ -1,9 +1,8 @@
 """Setup instructions and metadata for `pip install`."""
-from pathlib import Path
 import re
+from pathlib import Path
 
-from setuptools import setup, find_packages
-
+from setuptools import find_packages, setup
 
 TOP_DIR = Path(__file__).parent.resolve()
 
@@ -67,7 +66,7 @@ setup(
     long_description_content_type="text/markdown",
     packages=find_packages(),
     include_package_data=True,
-    python_requires=">=3.7",
+    python_requires=">=3.8",
     install_requires=BASE,
     extras_require={"dev": DEV, "docs": DOCS},
     entry_points={
@@ -77,9 +76,9 @@ setup(
     classifiers=[
         "Development Status :: 4 - Beta",
         "Programming Language :: Python :: 3 :: Only",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
         "Intended Audience :: Developers",
         "Topic :: Database",
         "Topic :: Database :: Database Engines/Servers",

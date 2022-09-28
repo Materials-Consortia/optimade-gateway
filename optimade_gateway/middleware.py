@@ -4,8 +4,8 @@ These are in addition to the middleware available in OPTIMADE Python tools.
 For more information see
 https://www.optimade.org/optimade-python-tools/api_reference/server/middleware/.
 """
-from os import getenv
 import re
+from os import getenv
 from typing import TYPE_CHECKING
 
 from optimade.server.exceptions import VersionNotSupported

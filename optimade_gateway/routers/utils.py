@@ -1,8 +1,8 @@
 """Utility functions for all routers."""
 # pylint: disable=line-too-long,import-outside-toplevel
+import urllib.parse
 from os import getenv
 from typing import TYPE_CHECKING
-import urllib.parse
 
 from optimade.models import ToplevelLinks
 from optimade.models.links import LinkType
@@ -78,6 +78,7 @@ async def get_entries(
             data_returned=data_returned,
             data_available=await collection.acount(),
             more_data_available=more_data_available,
+            schema=CONFIG.schema_url,
         ),
     )
 
@@ -315,13 +316,19 @@ async def collection_factory(name: str) -> AsyncMongoCollection:
         return COLLECTIONS[name]
 
     if name == CONFIG.databases_collection:
-        from optimade_gateway.mappers.databases import DatabasesMapper as ResourceMapper  # type: ignore[no-redef]
+        from optimade_gateway.mappers.databases import DatabasesMapper as ResourceMapper
     elif name == CONFIG.gateways_collection:
-        from optimade_gateway.mappers.gateways import GatewaysMapper as ResourceMapper  # type: ignore[no-redef]
+        from optimade_gateway.mappers.gateways import (  # type: ignore[no-redef]
+            GatewaysMapper as ResourceMapper,
+        )
     elif name == CONFIG.queries_collection:
-        from optimade_gateway.mappers.queries import QueryMapper as ResourceMapper  # type: ignore[no-redef]
+        from optimade_gateway.mappers.queries import (  # type: ignore[no-redef]
+            QueryMapper as ResourceMapper,
+        )
     elif name == CONFIG.links_collection:
-        from optimade_gateway.mappers.links import LinksMapper as ResourceMapper  # type: ignore[no-redef]
+        from optimade_gateway.mappers.links import (  # type: ignore[no-redef]
+            LinksMapper as ResourceMapper,
+        )
     else:
         raise ValueError(
             f"{name!r} is not a valid entry-endpoint resource collection name. Configured"
