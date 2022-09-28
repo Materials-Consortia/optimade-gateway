@@ -1,0 +1,93 @@
+<mxfile host="65bd71144e" modified="2020-12-16T14:53:25.778Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.52.0 Chrome/83.0.4103.122 Electron/9.3.5 Safari/537.36" version="13.10.0" etag="IlEMKVpt2Iq6uvH-2QGt" type="embed">
+    <diagram id="x_nLoLKzpzyb_sDTTqQj" name="Page-1">
+        <mxGraphModel dx="766" dy="861" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#FFFFCC" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <object label="User" id="2">
+                    <mxCell style="shape=umlLifeline;participant=umlActor;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;verticalAlign=top;spacingTop=36;outlineConnect=0;fillColor=none;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="1">
+                        <mxGeometry x="50" y="40" width="20" height="350" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="3" value="Search endpoint" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;fillColor=none;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="170" y="40" width="100" height="350" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;labelBackgroundColor=none;fillColor=none;strokeColor=#000000;" vertex="1" parent="3">
+                    <mxGeometry x="40" y="90" width="10" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="Generate unique ID" style="edgeStyle=orthogonalEdgeStyle;html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;entryX=1;entryY=0;labelBackgroundColor=none;strokeColor=#000000;fontColor=#000000;" edge="1" parent="3" target="4">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="45" y="70" as="sourcePoint"/>
+                        <Array as="points">
+                            <mxPoint x="70" y="70"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="6" value="/gateway/{unique ID}" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;fillColor=none;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="320" y="40" width="120" height="350" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="GET + query parameters" style="html=1;verticalAlign=bottom;endArrow=block;fillColor=none;strokeColor=#000000;fontColor=#000000;labelBackgroundColor=none;" edge="1" parent="1">
+                    <mxGeometry width="80" relative="1" as="geometry">
+                        <mxPoint x="60" y="110" as="sourcePoint"/>
+                        <mxPoint x="219.5" y="110" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="10" value="GET" style="html=1;verticalAlign=bottom;endArrow=block;fillColor=none;strokeColor=#000000;fontColor=#000000;labelBackgroundColor=none;" edge="1" parent="1">
+                    <mxGeometry width="80" relative="1" as="geometry">
+                        <mxPoint x="60.25" y="340" as="sourcePoint"/>
+                        <mxPoint x="572.0000000000002" y="340" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="11" value="All collated search results" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;fillColor=none;strokeColor=#000000;fontColor=#000000;labelBackgroundColor=none;" edge="1" parent="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="572.0000000000002" y="370" as="sourcePoint"/>
+                        <mxPoint x="60.25" y="370" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="12" value="Create new endpoint and redirect" style="html=1;verticalAlign=bottom;endArrow=block;fillColor=none;strokeColor=#000000;fontColor=#000000;labelBackgroundColor=none;" edge="1" parent="1">
+                    <mxGeometry width="80" relative="1" as="geometry">
+                        <mxPoint x="220" y="150" as="sourcePoint"/>
+                        <mxPoint x="379.5" y="150" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="13" value="First results and search overview" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;labelBackgroundColor=none;strokeColor=#000000;fontColor=#000000;exitX=-0.163;exitY=0.089;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="7" target="2">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="140" y="179.5" as="sourcePoint"/>
+                        <mxPoint x="310" y="281" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="14" value="(/searches)/{search unique ID}" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;strokeColor=#000000;fillColor=none;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="490" y="40" width="165" height="350" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=none;strokeColor=#000000;fontColor=#000000;" vertex="1" parent="14">
+                    <mxGeometry x="73" y="170" width="10" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="&lt;span style=&quot;&quot;&gt;Start search&lt;/span&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;entryX=1;entryY=0;fillColor=none;strokeColor=#000000;fontColor=#000000;labelBackgroundColor=none;" edge="1" parent="14" target="7">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="84" y="150" as="sourcePoint"/>
+                        <Array as="points">
+                            <mxPoint x="109" y="150"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="16" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;labelBackgroundColor=none;fillColor=none;strokeColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="370" y="170" width="10" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="Generate unique ID" style="edgeStyle=orthogonalEdgeStyle;html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;entryX=1;entryY=0;labelBackgroundColor=none;strokeColor=#000000;fontColor=#000000;" edge="1" parent="1" target="16">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="375.0000000000001" y="150.0000000000001" as="sourcePoint"/>
+                        <Array as="points">
+                            <mxPoint x="400" y="150"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="18" value="Create new endpoint and redirect" style="html=1;verticalAlign=bottom;endArrow=block;fillColor=none;strokeColor=#000000;fontColor=#000000;labelBackgroundColor=none;" edge="1" parent="1" target="14">
+                    <mxGeometry width="80" relative="1" as="geometry">
+                        <mxPoint x="380.0000000000001" y="190.0000000000001" as="sourcePoint"/>
+                        <mxPoint x="539.5" y="190.0000000000001" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
