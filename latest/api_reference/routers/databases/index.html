@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://www.optimade.org/optimade-gateway/latest/api_reference/routers/databases/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.5.2">
+      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.3">
     
     
       
@@ -21,7 +21,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.9f9400aa.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.7a952b86.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.cbb835fc.min.css">
@@ -1213,7 +1213,8 @@ representing the database resource object with <code>id={database ID}</code>.</p
 <span class="normal">138</span>
 <span class="normal">139</span>
 <span class="normal">140</span>
-<span class="normal">141</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@ROUTER</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<span class="normal">141</span>
+<span class="normal">142</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@ROUTER</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
     <span class="s2">&quot;/databases/{database_id:path}&quot;</span><span class="p">,</span>
     <span class="n">response_model</span><span class="o">=</span><span class="n">DatabasesResponseSingle</span><span class="p">,</span>
     <span class="n">response_model_exclude_defaults</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -1257,6 +1258,7 @@ representing the database resource object with <code>id={database ID}</code>.</p
             <span class="n">data_returned</span><span class="o">=</span><span class="n">data_returned</span><span class="p">,</span>
             <span class="n">data_available</span><span class="o">=</span><span class="k">await</span> <span class="n">collection</span><span class="o">.</span><span class="n">acount</span><span class="p">(),</span>
             <span class="n">more_data_available</span><span class="o">=</span><span class="n">more_data_available</span><span class="p">,</span>
+            <span class="n">schema</span><span class="o">=</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">schema_url</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -1286,7 +1288,8 @@ representing the database resource object with <code>id={database ID}</code>.</p
 
       <details class="quote">
         <summary>Source code in <code>optimade_gateway/routers/databases.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">37</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">36</span>
+<span class="normal">37</span>
 <span class="normal">38</span>
 <span class="normal">39</span>
 <span class="normal">40</span>
@@ -1307,8 +1310,7 @@ representing the database resource object with <code>id={database ID}</code>.</p
 <span class="normal">55</span>
 <span class="normal">56</span>
 <span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@ROUTER</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<span class="normal">58</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@ROUTER</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
     <span class="s2">&quot;/databases&quot;</span><span class="p">,</span>
     <span class="n">response_model</span><span class="o">=</span><span class="n">DatabasesResponse</span><span class="p">,</span>
     <span class="n">response_model_exclude_defaults</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -1360,7 +1362,8 @@ representing a database resource object, according to <code>database</code>.</p>
 
       <details class="quote">
         <summary>Source code in <code>optimade_gateway/routers/databases.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">62</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">61</span>
+<span class="normal">62</span>
 <span class="normal">63</span>
 <span class="normal">64</span>
 <span class="normal">65</span>
@@ -1420,6 +1423,7 @@ representing a database resource object, according to <code>database</code>.</p>
             <span class="n">data_returned</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
             <span class="n">data_available</span><span class="o">=</span><span class="k">await</span> <span class="n">collection</span><span class="o">.</span><span class="n">acount</span><span class="p">(),</span>
             <span class="n">more_data_available</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">schema</span><span class="o">=</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">schema_url</span><span class="p">,</span>
             <span class="o">**</span><span class="p">{</span><span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_created&quot;</span><span class="p">:</span> <span class="n">created</span><span class="p">},</span>
         <span class="p">),</span>
     <span class="p">)</span>
@@ -1534,10 +1538,10 @@ representing a database resource object, according to <code>database</code>.</p>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.ecf98df9.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.39f04ddb.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.37e9125f.min.js"></script>
       
     
   </body>
