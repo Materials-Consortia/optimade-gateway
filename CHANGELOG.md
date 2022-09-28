@@ -1,6 +1,14 @@
 # Changelog
 
-## [v0.3.0](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.3.0) (2022-09-05)
+## [v0.4.0](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.4.0) (2022-09-28)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.3.0...v0.4.0)
+
+**Merged pull requests:**
+
+- Update dependencies [\#301](https://github.com/Materials-Consortia/optimade-gateway/pull/301) ([CasperWA](https://github.com/CasperWA))
+
+## [v0.3.0](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.3.0) (2022-09-19)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.2.2...v0.3.0)
 
