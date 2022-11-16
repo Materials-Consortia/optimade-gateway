@@ -11,8 +11,9 @@ from optimade_gateway.routers.utils import collection_factory
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
     # pylint: disable=unused-import,ungrouped-imports
-    from typing import Any, Optional
+    from typing import Any, Dict, Optional, Union
 
+    from pydantic import BaseModel
     from pymongo.results import UpdateResult
 
     from optimade_gateway.models import QueryResource
@@ -88,15 +89,17 @@ async def update_query(  # pylint: disable=too-many-branches
     query.attributes.last_modified = update_time
     if "." in field:
         field_list = field.split(".")
-        field = getattr(query.attributes, field_list[0])
+        sub_field: "Union[BaseModel, Dict[str, Any]]" = getattr(
+            query.attributes, field_list[0]
+        )
         for field_part in field_list[1:-1]:
-            if isinstance(field, dict):
-                field = field.get(field_part)
+            if isinstance(sub_field, dict):
+                sub_field = sub_field.get(field_part, {})
             else:
-                field = getattr(field, field_part)
-        if isinstance(field, dict):
-            field[field_list[-1]] = value
+                sub_field = getattr(sub_field, field_part)
+        if isinstance(sub_field, dict):
+            sub_field[field_list[-1]] = value
         else:
-            setattr(field, field_list[-1], value)
+            setattr(sub_field, field_list[-1], value)
     else:
         setattr(query.attributes, field, value)

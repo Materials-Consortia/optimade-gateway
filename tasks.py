@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING
 from invoke import task
 
 if TYPE_CHECKING:
-    from typing import Tuple
+    from typing import Optional, Tuple
 
     from invoke import Context, Result
 
@@ -19,7 +19,9 @@ if TYPE_CHECKING:
 TOP_DIR = Path(__file__).parent.resolve()
 
 
-def update_file(filename: str, sub_line: "Tuple[str, str]", strip: str = None) -> None:
+def update_file(
+    filename: str, sub_line: "Tuple[str, str]", strip: "Optional[str]" = None
+) -> None:
     """Utility function for tasks to read, update, and write files"""
     with open(filename, "r", encoding="utf8") as handle:
         lines = [

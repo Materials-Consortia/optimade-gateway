@@ -29,7 +29,7 @@ from optimade_gateway.routers.utils import collection_factory, get_valid_resourc
 
 if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):  # pragma: no cover
     # pylint: disable=unused-import,ungrouped-imports
-    from typing import Any, Dict, List, Tuple, Union
+    from typing import Any, Dict, List, Optional, Tuple, Union
 
     from optimade.models import (
         EntryResource,
@@ -156,7 +156,7 @@ def db_find(
     endpoint: str,
     response_model: "Union[EntryResponseMany, EntryResponseOne]",
     query_params: str = "",
-    raw_url: str = None,
+    raw_url: "Optional[str]" = None,
 ) -> "Tuple[Union[ErrorResponse, EntryResponseMany, EntryResponseOne], str]":
     """Imitate `Collection.find()` for any given database for entry-resource endpoints
 
@@ -273,7 +273,7 @@ async def db_get_all_resources(
     endpoint: str,
     response_model: "EntryResponseMany",
     query_params: str = "",
-    raw_url: str = None,
+    raw_url: "Optional[str]" = None,
 ) -> "Tuple[List[Union[EntryResource, Dict[str, Any]]], Union[LinksResource, Dict[str, Any]]]":  # pylint: disable=line-too-long
     """Recursively retrieve all resources from an entry-listing endpoint
 
