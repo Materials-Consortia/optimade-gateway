@@ -33,7 +33,7 @@ async def test_get_queries(
     response = QueriesResponse(**response.json())
     assert response
 
-    test_data = json.load(
+    test_data = json.loads(
         (top_dir / "tests" / "static" / "test_queries.json").read_bytes()
     )
 
