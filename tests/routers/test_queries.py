@@ -33,8 +33,9 @@ async def test_get_queries(
     response = QueriesResponse(**response.json())
     assert response
 
-    with open(top_dir / "tests/static/test_queries.json") as handle:
-        test_data = json.load(handle)
+    test_data = json.load(
+        (top_dir / "tests" / "static" / "test_queries.json").read_bytes()
+    )
 
     assert response.meta.data_returned == len(test_data)
     assert response.meta.data_available == len(test_data)
