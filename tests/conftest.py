@@ -148,7 +148,7 @@ async def random_gateway() -> dict:
     return gateway_ids.pop()
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture
 async def reset_db_after(top_dir: Path) -> None:
     """Reset MongoDB with original test data after the test has run"""
     try:
