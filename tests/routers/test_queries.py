@@ -223,7 +223,7 @@ async def test_errored_query_results(
 
     query_id = QueriesResponseSingle(**response.json()).data.id
 
-    await asyncio.sleep(0.1)  # Ensure the query finishes
+    await asyncio.sleep(1)  # Ensure the query finishes
 
     response = await client(f"/queries/{query_id}")
     assert (
