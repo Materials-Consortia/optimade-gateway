@@ -33,8 +33,9 @@ async def test_get_queries(
     response = QueriesResponse(**response.json())
     assert response
 
-    with open(top_dir / "tests/static/test_queries.json") as handle:
-        test_data = json.load(handle)
+    test_data = json.loads(
+        (top_dir / "tests" / "static" / "test_queries.json").read_bytes()
+    )
 
     assert response.meta.data_returned == len(test_data)
     assert response.meta.data_available == len(test_data)
@@ -222,7 +223,7 @@ async def test_errored_query_results(
 
     query_id = QueriesResponseSingle(**response.json()).data.id
 
-    await asyncio.sleep(0.1)  # Ensure the query finishes
+    await asyncio.sleep(1)  # Ensure the query finishes
 
     response = await client(f"/queries/{query_id}")
     assert (
