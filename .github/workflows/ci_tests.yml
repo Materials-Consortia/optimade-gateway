@@ -63,9 +63,8 @@ jobs:
         pip install -U -r requirements.txt -r requirements_dev.txt -r requirements_docs.txt
         pip install safety
 
-    # Temporarily disabled due to pylint failures
-    # - name: Run pylint
-    #   run: pylint --rcfile=pyproject.toml *.py optimade_gateway
+    - name: Run pylint
+      run: pylint --rcfile=pyproject.toml --recursive=yes *.py optimade_gateway
 
     - name: Run safety
       run: pip freeze | safety check --stdin
@@ -81,7 +80,7 @@ jobs:
 
     services:
       mongo:
-        image: mongo:4
+        image: mongo:5
         ports:
         - 27017:27017
 
@@ -98,7 +97,7 @@ jobs:
     - name: Install python dependencies
       run: |
         python -m pip install -U pip
-        pip install -U setuptools
+        pip install -U setuptools wheel
         pip install -e .[dev]
 
     - name: Test with pytest
