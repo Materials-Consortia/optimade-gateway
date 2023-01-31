@@ -248,6 +248,8 @@ async def test_sort_no_effect(
     This means if the `sort` parameter is used, the response should not change - it should be
     ignored.
     """
+    import asyncio
+
     from optimade.models import Warnings
 
     from optimade_gateway.models.responses import QueriesResponseSingle
@@ -276,6 +278,8 @@ async def test_sort_no_effect(
     assert response_asc
     response_desc = QueriesResponseSingle(**response_desc.json())
     assert response_desc
+
+    await asyncio.sleep(1)  # Ensure the query finishes
 
     sort_warning = SortNotSupported()
 

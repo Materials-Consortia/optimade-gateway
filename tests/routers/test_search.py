@@ -330,6 +330,8 @@ async def test_post_search_existing_gateway(
     caplog: pytest.LogCaptureFixture,
 ):
     """Test POST /search for base URLs matching an existing gateway"""
+    import asyncio
+
     from optimade_gateway.common.config import CONFIG
     from optimade_gateway.models.queries import OptimadeQueryParameters, QueryState
     from optimade_gateway.models.responses import QueriesResponseSingle
@@ -371,6 +373,8 @@ async def test_post_search_existing_gateway(
 
         response = QueriesResponseSingle(**response.json())
         assert response
+
+        await asyncio.sleep(1)  # Ensure the query finishes
 
         assert getattr(
             response.meta, f"_{CONFIG.provider.prefix}_created"
