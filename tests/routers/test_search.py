@@ -321,6 +321,7 @@ async def test_post_search(
     await asyncio.sleep(1)  # Ensure mock URL is queried
 
 
+@pytest.mark.usefixtures("reset_db_after")
 async def test_post_search_existing_gateway(
     client: (
         'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
@@ -397,7 +398,7 @@ async def test_post_search_existing_gateway(
 
 
 @pytest.mark.usefixtures("reset_db_after")
-async def test_sort_no_effect(
+async def test_sort_no_effect_search(
     client: (
         'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
     ),
