@@ -185,11 +185,15 @@ def mock_gateway_responses(
                 # not queried.
                 pass
             else:
-                with open(
-                    top_dir
-                    / f"tests/static/db_responses/{''.join(database['id'].split('/')[1:])}.json"
-                ) as handle:
-                    data: "Union[dict, list]" = json.load(handle)
+                data: "Union[dict, list]" = json.loads(
+                    (
+                        top_dir
+                        / "tests"
+                        / "static"
+                        / "db_responses"
+                        / f'{database["id"].split("/", maxsplit=1)[-1]}.json'
+                    ).read_bytes()
+                )
 
                 if data.get("errors", []):
                     for error in data.get("errors", []):
