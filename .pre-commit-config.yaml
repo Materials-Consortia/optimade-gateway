@@ -23,7 +23,7 @@ repos:
     exclude: ^optimade_gateway/routers/utils.py$
 
 - repo: https://github.com/ambv/black
-  rev: 22.12.0
+  rev: 23.1.0
   hooks:
   - id: black
 
