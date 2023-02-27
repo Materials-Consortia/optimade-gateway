@@ -1,4 +1,4 @@
-pre-commit~=3.0
+pre-commit~=3.1
 pylint~=2.16
 pytest~=7.2
 pytest-asyncio~=0.20.3
