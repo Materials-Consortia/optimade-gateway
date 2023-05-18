@@ -19,7 +19,7 @@
         <link rel="next" href="../gateways/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.11">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.13">
     
     
       
@@ -655,34 +655,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#optimade_gateway.models.databases.DatabaseCreate.base_url" class="md-nav__link">
-    base_url
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optimade_gateway.models.databases.DatabaseCreate.description" class="md-nav__link">
-    description
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optimade_gateway.models.databases.DatabaseCreate.homepage" class="md-nav__link">
-    homepage
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optimade_gateway.models.databases.DatabaseCreate.link_type" class="md-nav__link">
-    link_type
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#optimade_gateway.models.databases.DatabaseCreate.ensure_database_link_type" class="md-nav__link">
     ensure_database_link_type()
   </a>
@@ -1126,34 +1098,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#optimade_gateway.models.databases.DatabaseCreate.base_url" class="md-nav__link">
-    base_url
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optimade_gateway.models.databases.DatabaseCreate.description" class="md-nav__link">
-    description
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optimade_gateway.models.databases.DatabaseCreate.homepage" class="md-nav__link">
-    homepage
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optimade_gateway.models.databases.DatabaseCreate.link_type" class="md-nav__link">
-    link_type
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#optimade_gateway.models.databases.DatabaseCreate.ensure_database_link_type" class="md-nav__link">
     ensure_database_link_type()
   </a>
@@ -1183,15 +1127,14 @@
 <h1 id="databases">databases<a class="headerlink" href="#databases" title="Permanent link">&para;</a></h1>
 
 
-<div class="doc doc-object doc-module">
-
+  <div class="doc doc-object doc-module">
 
 <a id="optimade_gateway.models.databases"></a>
-  <div class="doc doc-contents first">
-  
+    <div class="doc doc-contents first">
+
       <p>Pydantic models/schemas for the LinksResource used in /databases</p>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -1201,23 +1144,24 @@
 
 
 
-
-<div class="doc doc-object doc-class">
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade_gateway.models.databases.DatabaseCreate" class="doc doc-heading">
-        <code>DatabaseCreate</code>
+        <code>
+DatabaseCreate            (<a class="autorefs autorefs-internal" title="optimade_gateway.models.resources.EntryResourceCreate" href="../resources/#optimade_gateway.models.resources.EntryResourceCreate">EntryResourceCreate</a>, <span title="optimade.models.links.LinksResourceAttributes">LinksResourceAttributes</span>)
+        </code>
 
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
 
 <a href="#optimade_gateway.models.databases.DatabaseCreate" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-      <p class="doc doc-class-bases">
-        Bases: <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.resources.EntryResourceCreate" href="../resources/#optimade_gateway.models.resources.EntryResourceCreate">EntryResourceCreate</a></code>, <code><span title="optimade.models.LinksResourceAttributes">LinksResourceAttributes</span></code></p>
-
-  
       <p>Model for creating new LinksResources representing <code>/databases</code> resources in the
 MongoDB.</p>
 <p>Required fields:</p>
@@ -1234,62 +1178,9 @@ model:</p>
 <li><code>link_type</code></li>
 </ul>
 
-
         <details class="quote">
           <summary>Source code in <code>optimade_gateway/models/databases.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span>
-<span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span>
-<span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span>
-<span class="normal">52</span>
-<span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DatabaseCreate</span><span class="p">(</span><span class="n">EntryResourceCreate</span><span class="p">,</span> <span class="n">LinksResourceAttributes</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DatabaseCreate</span><span class="p">(</span><span class="n">EntryResourceCreate</span><span class="p">,</span> <span class="n">LinksResourceAttributes</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Model for creating new LinksResources representing `/databases` resources in the</span>
 <span class="sd">    MongoDB.</span>
 
@@ -1342,10 +1233,10 @@ model:</p>
                 <span class="sa">f</span><span class="s2">&quot;gateway-usable database resources. Given link_type: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">value</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -1355,98 +1246,23 @@ model:</p>
 
 
 
-<div class="doc doc-object doc-attribute">
 
 
-
-<h3 id="optimade_gateway.models.databases.DatabaseCreate.base_url" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">base_url</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Link</span><span class="p">]</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
-  </span>
-
-<a href="#optimade_gateway.models.databases.DatabaseCreate.base_url" class="headerlink" title="Permanent link">&para;</a></h3>
-
-
-  <div class="doc doc-contents ">
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h3 id="optimade_gateway.models.databases.DatabaseCreate.description" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
-  </span>
-
-<a href="#optimade_gateway.models.databases.DatabaseCreate.description" class="headerlink" title="Permanent link">&para;</a></h3>
-
-
-  <div class="doc doc-contents ">
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h3 id="optimade_gateway.models.databases.DatabaseCreate.homepage" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">homepage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">Link</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;JSON API links object, pointing to a homepage URL for this implementation.&#39;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
-  </span>
-
-<a href="#optimade_gateway.models.databases.DatabaseCreate.homepage" class="headerlink" title="Permanent link">&para;</a></h3>
-
-
-  <div class="doc doc-contents ">
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h3 id="optimade_gateway.models.databases.DatabaseCreate.link_type" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">link_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">LinkType</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Link Type&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The type of the linked relation.</span><span class="se">\n</span><span class="s2">MUST be one of these values: &#39;child&#39;, &#39;root&#39;, &#39;external&#39;, &#39;providers&#39;.&quot;</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
-  </span>
-
-<a href="#optimade_gateway.models.databases.DatabaseCreate.link_type" class="headerlink" title="Permanent link">&para;</a></h3>
-
-
-  <div class="doc doc-contents ">
-  </div>
-
-</div>
-
-
-
-<div class="doc doc-object doc-function">
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade_gateway.models.databases.DatabaseCreate.ensure_database_link_type" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">ensure_database_link_type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
 
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
 <a href="#optimade_gateway.models.databases.DatabaseCreate.ensure_database_link_type" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>Ensure databases are not index meta-database-only types</p>
 <p>I.e., ensure they're not of type <code>"root"</code> or <code>"providers"</code>.</p>
 <div class="admonition note">
@@ -1455,25 +1271,9 @@ model:</p>
 but <code>"root"</code> and <code>"providers"</code> can not represent "regular" dbs.</p>
 </div>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade_gateway/models/databases.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span>
-<span class="normal">52</span>
-<span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;link_type&quot;</span><span class="p">)</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/models/databases.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;link_type&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">ensure_database_link_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">LinkType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LinkType</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure databases are not index meta-database-only types</span>
 
@@ -1490,28 +1290,33 @@ but <code>"root"</code> and <code>"providers"</code> can not represent "regular"
             <span class="sa">f</span><span class="s2">&quot;gateway-usable database resources. Given link_type: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">value</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-
+</code></pre></div>
+        </details>
+    </div>
 
   </div>
 
-  </div>
-
-</div>
 
 
 
 
   </div>
 
+    </div>
+
   </div>
 
-</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
 
 
 
@@ -1581,7 +1386,7 @@ but <code>"root"</code> and <code>"providers"</code> can not represent "regular"
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.fac441b0.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.b4d07000.min.js"></script>
       
     
   </body>

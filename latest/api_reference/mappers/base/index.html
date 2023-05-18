@@ -19,7 +19,7 @@
         <link rel="next" href="../databases/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.11">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.13">
     
     
       
@@ -553,6 +553,13 @@
           <li class="md-nav__item">
   <a href="#optimade_gateway.mappers.base.BaseResourceMapper.adeserialize" class="md-nav__link">
     adeserialize()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.mappers.base.BaseResourceMapper.map_back" class="md-nav__link">
+    map_back()
   </a>
   
 </li>
@@ -1104,6 +1111,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.mappers.base.BaseResourceMapper.map_back" class="md-nav__link">
+    map_back()
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1127,16 +1141,15 @@
 <h1 id="base">base<a class="headerlink" href="#base" title="Permanent link">&para;</a></h1>
 
 
-<div class="doc doc-object doc-module">
-
+  <div class="doc doc-object doc-module">
 
 <a id="optimade_gateway.mappers.base"></a>
-  <div class="doc doc-contents first">
-  
+    <div class="doc doc-contents first">
+
       <p>Base resource mapper.</p>
 <p>Based on the <a href="https://www.optimade.org/optimade-python-tools/api_reference/server/mappers/entries/#optimade.server.mappers.entries.BaseResourceMapper"><code>BaseResourceMapper</code></a> in OPTIMADE Python tools.</p>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -1146,180 +1159,99 @@
 
 
 
-
-<div class="doc doc-object doc-class">
+  <div class="doc doc-object doc-class">
 
 
 
 <h2 id="optimade_gateway.mappers.base.BaseResourceMapper" class="doc doc-heading">
-        <code>BaseResourceMapper</code>
+        <code>
+BaseResourceMapper            (<span title="optimade.server.mappers.entries.BaseResourceMapper">BaseResourceMapper</span>)
+        </code>
+
 
 
 <a href="#optimade_gateway.mappers.base.BaseResourceMapper" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-      <p class="doc doc-class-bases">
-        Bases: <code><span title="optimade.server.mappers.entries.BaseResourceMapper">OptimadeBaseResourceMapper</span></code></p>
-
-  
       <p>Generic Resource Mapper that defines and performs the mapping
 between objects in the database and the resource objects defined by
 the specification.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is a "wrapped" sub-class to make certain methods asynchronous.</p>
+</div>
 
-<details class="note" open>
-  <summary>Note</summary>
-  <p>This is a "wrapped" sub-class to make certain methods asynchronous.</p>
-</details>
-  <p><strong>Attributes:</strong></p>
-  <table>
-    <thead>
+<p><strong>Attributes:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
       <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>ALIASES</code></td>
-          <td>
-          </td>
-          <td><p>a tuple of aliases between
+        <td><code>ALIASES</code></td>
+        <td><code>Tuple[Tuple[str, str], ...]</code></td>
+        <td><p>a tuple of aliases between
 OPTIMADE field names and the field names in the database ,
 e.g. <code>(("elements", "custom_elements_field"))</code>.</p></td>
-        </tr>
-        <tr>
-          <td><code>LENGTH_ALIASES</code></td>
-          <td>
-          </td>
-          <td><p>a tuple of aliases between
+      </tr>
+      <tr>
+        <td><code>LENGTH_ALIASES</code></td>
+        <td><code>Tuple[Tuple[str, str], ...]</code></td>
+        <td><p>a tuple of aliases between
 a field name and another field that defines its length, to be used
 when querying, e.g. <code>(("elements", "nelements"))</code>.
 e.g. <code>(("elements", "custom_elements_field"))</code>.</p></td>
-        </tr>
-        <tr>
-          <td><code>ENTRY_RESOURCE_CLASS</code></td>
-          <td>
-          </td>
-          <td><p>The entry type that this mapper corresponds to.</p></td>
-        </tr>
-        <tr>
-          <td><code>PROVIDER_FIELDS</code></td>
-          <td>
-          </td>
-          <td><p>a tuple of extra field names that this
+      </tr>
+      <tr>
+        <td><code>ENTRY_RESOURCE_CLASS</code></td>
+        <td><code>Type[optimade.models.entries.EntryResource]</code></td>
+        <td><p>The entry type that this mapper corresponds to.</p></td>
+      </tr>
+      <tr>
+        <td><code>PROVIDER_FIELDS</code></td>
+        <td><code>Tuple[str, ...]</code></td>
+        <td><p>a tuple of extra field names that this
 mapper should support when querying with the database prefix.</p></td>
-        </tr>
-        <tr>
-          <td><code>TOP_LEVEL_NON_ATTRIBUTES_FIELDS</code></td>
-          <td>
-          </td>
-          <td><p>the set of top-level
+      </tr>
+      <tr>
+        <td><code>TOP_LEVEL_NON_ATTRIBUTES_FIELDS</code></td>
+        <td><code>Set[str]</code></td>
+        <td><p>the set of top-level
 field names common to all endpoints.</p></td>
-        </tr>
-        <tr>
-          <td><code>SUPPORTED_PREFIXES</code></td>
-          <td>
-          </td>
-          <td><p>The set of prefixes registered by this mapper.</p></td>
-        </tr>
-        <tr>
-          <td><code>ALL_ATTRIBUTES</code></td>
-          <td>
-          </td>
-          <td><p>The set of attributes defined across the entry
+      </tr>
+      <tr>
+        <td><code>SUPPORTED_PREFIXES</code></td>
+        <td></td>
+        <td><p>The set of prefixes registered by this mapper.</p></td>
+      </tr>
+      <tr>
+        <td><code>ALL_ATTRIBUTES</code></td>
+        <td></td>
+        <td><p>The set of attributes defined across the entry
 resource class and the server configuration.</p></td>
-        </tr>
-        <tr>
-          <td><code>ENTRY_RESOURCE_ATTRIBUTES</code></td>
-          <td>
-          </td>
-          <td><p>A dictionary of attributes and their definitions
+      </tr>
+      <tr>
+        <td><code>ENTRY_RESOURCE_ATTRIBUTES</code></td>
+        <td></td>
+        <td><p>A dictionary of attributes and their definitions
 defined by the schema of the entry resource class.</p></td>
-        </tr>
-        <tr>
-          <td><code>ENDPOINT</code></td>
-          <td>
-          </td>
-          <td><p>The expected endpoint name for this resource, as defined by
+      </tr>
+      <tr>
+        <td><code>ENDPOINT</code></td>
+        <td></td>
+        <td><p>The expected endpoint name for this resource, as defined by
 the <code>type</code> in the schema of the entry resource class.</p></td>
-        </tr>
-    </tbody>
-  </table>
-
-
+      </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>optimade_gateway/mappers/base.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span>
-<span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span>
-<span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span>
-<span class="normal">52</span>
-<span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
-<span class="normal">66</span>
-<span class="normal">67</span>
-<span class="normal">68</span>
-<span class="normal">69</span>
-<span class="normal">70</span>
-<span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span>
-<span class="normal">75</span>
-<span class="normal">76</span>
-<span class="normal">77</span>
-<span class="normal">78</span>
-<span class="normal">79</span>
-<span class="normal">80</span>
-<span class="normal">81</span>
-<span class="normal">82</span>
-<span class="normal">83</span>
-<span class="normal">84</span>
-<span class="normal">85</span>
-<span class="normal">86</span>
-<span class="normal">87</span>
-<span class="normal">88</span>
-<span class="normal">89</span>
-<span class="normal">90</span>
-<span class="normal">91</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">BaseResourceMapper</span><span class="p">(</span><span class="n">OptimadeBaseResourceMapper</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BaseResourceMapper</span><span class="p">(</span><span class="n">OptimadeBaseResourceMapper</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generic Resource Mapper that defines and performs the mapping</span>
 <span class="sd">    between objects in the database and the resource objects defined by</span>
@@ -1388,10 +1320,10 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
             <span class="p">)</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">map_back</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
         </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -1403,92 +1335,63 @@ the <code>type</code> in the schema of the entry resource class.</p></td>
 
 
 
-<div class="doc doc-object doc-function">
+  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade_gateway.mappers.base.BaseResourceMapper.adeserialize" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">adeserialize</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-async"><code>async</code></small>
-      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
   </span>
 
 <a href="#optimade_gateway.mappers.base.BaseResourceMapper.adeserialize" class="headerlink" title="Permanent link">&para;</a></h3>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p>Asynchronous version of the <code>deserialize()</code> class method.</p>
 
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
       <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>results</code></td>
-          <td>
-                <code>Union[dict, Iterable[dict]]</code>
-          </td>
-          <td><p>A list of or a single dictionary, representing an entry-endpoint
+        <td><code>results</code></td>
+        <td><code>Union[dict, Iterable[dict]]</code></td>
+        <td><p>A list of or a single dictionary, representing an entry-endpoint
 resource.</p></td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-  <p><strong>Returns:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
+        <td><em>required</em></td>
       </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>
-                <code>Union[List[EntryResource], EntryResource]</code>
-          </td>
-          <td><p>The deserialized list of or single pydantic resource model for the input</p></td>
-        </tr>
-        <tr>
-          <td>
-                <code>Union[List[EntryResource], EntryResource]</code>
-          </td>
-          <td><p><code>results</code>.</p></td>
-        </tr>
-    </tbody>
-  </table>
-
-      <details class="quote">
-        <summary>Source code in <code>optimade_gateway/mappers/base.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
-<span class="normal">66</span>
-<span class="normal">67</span>
-<span class="normal">68</span>
-<span class="normal">69</span>
-<span class="normal">70</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Union[List[EntryResource], EntryResource]</code></td>
+      <td><p>The deserialized list of or single pydantic resource model for the input
+<code>results</code>.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/mappers/base.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">adeserialize</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span> <span class="n">results</span><span class="p">:</span> <span class="s2">&quot;Union[dict, Iterable[dict]]&quot;</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Union[List[EntryResource], EntryResource]&quot;</span><span class="p">:</span>
@@ -1504,28 +1407,119 @@ resource.</p></td>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">BaseResourceMapper</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-
+</code></pre></div>
+        </details>
+    </div>
 
   </div>
 
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="optimade_gateway.mappers.base.BaseResourceMapper.map_back" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">map_back</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#optimade_gateway.mappers.base.BaseResourceMapper.map_back" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Map properties from MongoDB to OPTIMADE.</p>
+<p>Starting from a MongoDB document <code>doc</code>, map the DB fields to the corresponding OPTIMADE fields.
+Then, the fields are all added to the top-level field "attributes",
+with the exception of other top-level fields, defined in <code>cls.TOP_LEVEL_NON_ATTRIBUTES_FIELDS</code>.
+All fields not in <code>cls.TOP_LEVEL_NON_ATTRIBUTES_FIELDS</code> + "attributes" will be removed.
+Finally, the <code>type</code> is given the value of the specified <code>cls.ENDPOINT</code>.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>doc</code></td>
+        <td><code>dict</code></td>
+        <td><p>A resource object in MongoDB format.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>dict</code></td>
+      <td><p>A resource object in OPTIMADE format.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/mappers/base.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">map_back</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">optimade.server.routers.utils</span> <span class="kn">import</span> <span class="n">BASE_URL_PREFIXES</span>
+
+    <span class="k">if</span> <span class="s2">&quot;_id&quot;</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+        <span class="n">_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;_id&quot;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="s2">&quot;id&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+            <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_id</span>
+
+    <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;links&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;self&quot;</span><span class="p">:</span> <span class="n">AnyUrl</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">base_url</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="si">}{</span><span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s1">&#39;major&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">ENDPOINT</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">doc</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">),</span>
+            <span class="n">scheme</span><span class="o">=</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">base_url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;://&quot;</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">host</span><span class="o">=</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">base_url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;://&quot;</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">2</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">map_back</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
 
 
 
   </div>
 
+    </div>
+
   </div>
 
-</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
 
 
 
@@ -1595,7 +1589,7 @@ resource.</p></td>
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.fac441b0.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.b4d07000.min.js"></script>
       
     
   </body>

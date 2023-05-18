@@ -19,7 +19,7 @@
         <link rel="next" href="../info/">
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.11">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.13">
     
     
       
@@ -1129,20 +1129,18 @@
 <h1 id="gateways">gateways<a class="headerlink" href="#gateways" title="Permanent link">&para;</a></h1>
 
 
-<div class="doc doc-object doc-module">
-
+  <div class="doc doc-object doc-module">
 
 <a id="optimade_gateway.routers.gateways"></a>
-  <div class="doc doc-contents first">
-  
+    <div class="doc doc-contents first">
+
       <p>/gateways/*</p>
+<p>This file describes the router for:</p>
+<div class="highlight"><pre><span></span><code>/gateways/{id}
+</code></pre></div>
+<p>where, <code>id</code> may be left out.</p>
 
-<details class="this-file-describes-the-router-for" open>
-  <summary>This file describes the router for</summary>
-  <p>/gateways/{id}</p>
-</details>      <p>where, <code>id</code> may be left out.</p>
 
-  
 
   <div class="doc doc-children">
 
@@ -1154,55 +1152,27 @@
 
 
 
-<div class="doc doc-object doc-function">
+  <div class="doc doc-object doc-function">
 
 
 
 <h2 id="optimade_gateway.routers.gateways.get_gateway" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_gateway</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">gateway_id</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-async"><code>async</code></small>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.routers.gateways.get_gateway" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p><code>GET /gateways/{gateway ID}</code></p>
 <p>Return a single <a class="autorefs autorefs-internal" href="../../models/gateways/#optimade_gateway.models.gateways.GatewayResource"><code>GatewayResource</code></a>.</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade_gateway/routers/gateways.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@ROUTER</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/routers/gateways.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@ROUTER</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
     <span class="s2">&quot;/gateways/</span><span class="si">{gateway_id}</span><span class="s2">&quot;</span><span class="p">,</span>
     <span class="n">response_model</span><span class="o">=</span><span class="n">GatewaysResponseSingle</span><span class="p">,</span>
     <span class="n">response_model_exclude_defaults</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -1230,56 +1200,35 @@
             <span class="n">schema</span><span class="o">=</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">schema_url</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-function">
 
 
 
 <h2 id="optimade_gateway.routers.gateways.get_gateways" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_gateways</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">Depends</span><span class="p">())</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-async"><code>async</code></small>
+<code class="highlight language-python"><span class="n">get_gateways</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="n">EntryListingQueryParams</span><span class="p">))</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.routers.gateways.get_gateways" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p><code>GET /gateways</code></p>
 <p>Return overview of all (active) gateways.</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade_gateway/routers/gateways.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span>
-<span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span>
-<span class="normal">52</span>
-<span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@ROUTER</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/routers/gateways.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@ROUTER</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
     <span class="s2">&quot;/gateways&quot;</span><span class="p">,</span>
     <span class="n">response_model</span><span class="o">=</span><span class="n">GatewaysResponse</span><span class="p">,</span>
     <span class="n">response_model_exclude_defaults</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -1302,79 +1251,35 @@
         <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
         <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
     <span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-      </details>
+</code></pre></div>
+        </details>
+    </div>
+
   </div>
 
-</div>
 
-<div class="doc doc-object doc-function">
+
+  <div class="doc doc-object doc-function">
 
 
 
 <h2 id="optimade_gateway.routers.gateways.post_gateways" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">post_gateways</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">gateway</span><span class="p">)</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-async"><code>async</code></small>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.routers.gateways.post_gateways" class="headerlink" title="Permanent link">&para;</a></h2>
 
+    <div class="doc doc-contents ">
 
-  <div class="doc doc-contents ">
-  
       <p><code>POST /gateways</code></p>
 <p>Create or return existing gateway according to <code>gateway</code>.</p>
 
-      <details class="quote">
-        <summary>Source code in <code>optimade_gateway/routers/gateways.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 58</span>
-<span class="normal"> 59</span>
-<span class="normal"> 60</span>
-<span class="normal"> 61</span>
-<span class="normal"> 62</span>
-<span class="normal"> 63</span>
-<span class="normal"> 64</span>
-<span class="normal"> 65</span>
-<span class="normal"> 66</span>
-<span class="normal"> 67</span>
-<span class="normal"> 68</span>
-<span class="normal"> 69</span>
-<span class="normal"> 70</span>
-<span class="normal"> 71</span>
-<span class="normal"> 72</span>
-<span class="normal"> 73</span>
-<span class="normal"> 74</span>
-<span class="normal"> 75</span>
-<span class="normal"> 76</span>
-<span class="normal"> 77</span>
-<span class="normal"> 78</span>
-<span class="normal"> 79</span>
-<span class="normal"> 80</span>
-<span class="normal"> 81</span>
-<span class="normal"> 82</span>
-<span class="normal"> 83</span>
-<span class="normal"> 84</span>
-<span class="normal"> 85</span>
-<span class="normal"> 86</span>
-<span class="normal"> 87</span>
-<span class="normal"> 88</span>
-<span class="normal"> 89</span>
-<span class="normal"> 90</span>
-<span class="normal"> 91</span>
-<span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@ROUTER</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <details class="quote">
+          <summary>Source code in <code>optimade_gateway/routers/gateways.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@ROUTER</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
     <span class="s2">&quot;/gateways&quot;</span><span class="p">,</span>
     <span class="n">response_model</span><span class="o">=</span><span class="n">GatewaysResponseSingle</span><span class="p">,</span>
     <span class="n">response_model_exclude_defaults</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -1420,19 +1325,22 @@
             <span class="o">**</span><span class="p">{</span><span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_created&quot;</span><span class="p">:</span> <span class="n">created</span><span class="p">},</span>
         <span class="p">),</span>
     <span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-
+</code></pre></div>
+        </details>
+    </div>
 
   </div>
 
+
+
+
+
+
   </div>
 
-</div>
+    </div>
+
+  </div>
 
 
 
@@ -1502,7 +1410,7 @@
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.fac441b0.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.b4d07000.min.js"></script>
       
     
   </body>
