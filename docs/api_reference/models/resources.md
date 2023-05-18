@@ -1,5 +1,5 @@
 # resources
 
 ::: optimade_gateway.models.resources
-    rendering:
+    options:
       show_if_no_docstring: true

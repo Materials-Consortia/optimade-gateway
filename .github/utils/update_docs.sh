@@ -6,10 +6,10 @@ git config --local user.email "${GIT_USER_EMAIL}"
 git config --local user.name "${GIT_USER_NAME}"
 
 echo -e "\n-o- Update 'API Reference' docs -o-"
-invoke create-api-reference-docs --pre-clean
+pre-commit run --all-files docs-api-reference
 
 echo -e "\n-o- Update 'index.md' landing page -o-"
-invoke create-docs-index
+pre-commit run --all-files docs-landing-page
 
 echo -e "\n-o- Commit update - Documentation -o-"
 git add docs/api_reference

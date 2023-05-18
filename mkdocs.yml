@@ -74,13 +74,21 @@ plugins:
               - "!__repr__$"
               - "!ValidatorResults$"
             members: null
-            # inherited_members: false
+            inherited_members: false
             docstring_style: google
-            # docstring_options:
-            #   replace_admonitions: true
-          # setup_commands:
-          #   - import os
-          #   - os.environ["MKDOCS_BUILD"] = "1"
-      watch:
-        - optimade_gateway
+            docstring_options:
+              replace_admonitions: true
+          setup_commands:
+            - import os
+            - os.environ["MKDOCS_BUILD"] = "1"
   - awesome-pages
+
+watch:
+  - optimade_gateway
+
+nav:
+  - index.md
+  - design.md
+  - Changelog: CHANGELOG.md
+  - License: LICENSE.md
+  - ... | api_reference/**
