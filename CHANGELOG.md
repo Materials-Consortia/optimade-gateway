@@ -1,5 +1,40 @@
 # Changelog
 
+## [Unreleased](https://github.com/Materials-Consortia/optimade-gateway/tree/HEAD)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.4.1...HEAD)
+
+**Fixed bugs:**
+
+- Update docs config [\#366](https://github.com/Materials-Consortia/optimade-gateway/issues/366)
+
+## [v0.4.1](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.4.1) (2023-05-18)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.4.0...v0.4.1)
+
+**Merged pull requests:**
+
+- Update mkdocs config [\#367](https://github.com/Materials-Consortia/optimade-gateway/pull/367) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#365](https://github.com/Materials-Consortia/optimade-gateway/pull/365) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#361](https://github.com/Materials-Consortia/optimade-gateway/pull/361) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#359](https://github.com/Materials-Consortia/optimade-gateway/pull/359) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#354](https://github.com/Materials-Consortia/optimade-gateway/pull/354) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#351](https://github.com/Materials-Consortia/optimade-gateway/pull/351) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#348](https://github.com/Materials-Consortia/optimade-gateway/pull/348) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#347](https://github.com/Materials-Consortia/optimade-gateway/pull/347) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#342](https://github.com/Materials-Consortia/optimade-gateway/pull/342) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#339](https://github.com/Materials-Consortia/optimade-gateway/pull/339) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#336](https://github.com/Materials-Consortia/optimade-gateway/pull/336) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#335](https://github.com/Materials-Consortia/optimade-gateway/pull/335) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#333](https://github.com/Materials-Consortia/optimade-gateway/pull/333) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#321](https://github.com/Materials-Consortia/optimade-gateway/pull/321) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#319](https://github.com/Materials-Consortia/optimade-gateway/pull/319) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#318](https://github.com/Materials-Consortia/optimade-gateway/pull/318) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#314](https://github.com/Materials-Consortia/optimade-gateway/pull/314) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#311](https://github.com/Materials-Consortia/optimade-gateway/pull/311) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#307](https://github.com/Materials-Consortia/optimade-gateway/pull/307) ([CasperWA](https://github.com/CasperWA))
+- Update dependencies [\#306](https://github.com/Materials-Consortia/optimade-gateway/pull/306) ([CasperWA](https://github.com/CasperWA))
+
 ## [v0.4.0](https://github.com/Materials-Consortia/optimade-gateway/tree/v0.4.0) (2022-09-28)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-gateway/compare/v0.3.0...v0.4.0)
