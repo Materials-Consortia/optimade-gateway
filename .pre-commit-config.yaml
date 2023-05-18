@@ -72,19 +72,3 @@ repos:
     pass_filenames: false
     files: ^requirements_dev.txt$
     description: Update the pytest plugins to be minimum the currently listed requirement versions.
-  # - id: update-docs-api-reference
-  #   name: Update API Reference in Documentation
-  #   entry: invoke
-  #   args: [create-api-reference-docs, --pre-clean, --pre-commit]
-  #   language: python
-  #   pass_filenames: false
-  #   files: ^optimade_gateway/.*\.py$
-  #   description: Update the API Reference documentation, whenever a Python file is touched in the code base.
-  # - id: update-docs-index
-  #   name: Update Landing Page for Documentation
-  #   entry: invoke
-  #   args: [create-docs-index]
-  #   language: python
-  #   pass_filenames: false
-  #   files: ^README.md$
-  #   description: Update the landing page for the documentation if the source file (README.md) is changed.

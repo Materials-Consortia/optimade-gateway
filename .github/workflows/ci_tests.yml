@@ -161,11 +161,11 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install -U pip
-        pip install -U setuptools
-        pip install -e .[docs]
+        pip install -U setuptools wheel
+        pip install -e .[dev]
 
     - name: Build
       run: |
-        invoke create-api-reference-docs --pre-clean
-        invoke create-docs-index
+        pre-commit run --all-files docs-api-reference
+        pre-commit run --all-files docs-landing-page
         mkdocs build --strict --verbose
