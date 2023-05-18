@@ -1,5 +1,5 @@
 # search
 
 ::: optimade_gateway.models.search
-    rendering:
+    options:
       show_if_no_docstring: true

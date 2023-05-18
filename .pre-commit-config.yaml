@@ -47,10 +47,10 @@ repos:
   hooks:
   - id: docs-api-reference
     args:
-      - --package-dir
-      - optimade_gateway
-      - --full-docs-folder
-      - models
+      - --package-dir=optimade_gateway
+      - --full-docs-folder=models
+      - --unwanted-file=__init__.py
+      - --unwanted-file=run.py
   - id: docs-landing-page
 
 - repo: local

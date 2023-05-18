@@ -1,5 +1,5 @@
 # databases
 
 ::: optimade_gateway.models.databases
-    rendering:
+    options:
       show_if_no_docstring: true
