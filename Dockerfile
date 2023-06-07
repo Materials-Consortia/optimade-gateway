@@ -8,10 +8,11 @@ COPY optimade_gateway ./optimade_gateway
 COPY .ci ./.ci
 RUN pip install -e .
 
-EXPOSE 80
+ARG PORT=80
+EXPOSE ${PORT}
 
-ARG CONFIG_FILE=optimade_config/config.json
+ARG CONFIG_FILE=optimade_gateway/config.json
 COPY ${CONFIG_FILE} ./config.json
 ENV OPTIMADE_CONFIG_FILE /app/config.json
 
-CMD [ "uvicorn", "--host", "0.0.0.0", "--port", "80", "optimade_gateway.main:APP" ]
+CMD [ "uvicorn", "--host", "0.0.0.0", "--port", "${PORT}}", "optimade_gateway.main:APP" ]

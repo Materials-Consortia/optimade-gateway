@@ -115,3 +115,25 @@ jobs:
     - name: Deploy documentation
       if: env.RELEASE_RUN == 'false'
       run: mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest main
+
+  deploy-fly:
+    name: Deploy to Fly
+    if: github.repository_owner == 'Materials-Consortia'
+    runs-on: ubuntu-latest
+
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      OPTIMADE_CONFIG_FILE: /app/tests/test_config.json
+      OPTIMADE_BASE_URL: https://optimade-gateway.fly.dev
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Set up Fly
+      uses: superfly/flyctl-actions/setup-flyctl@v1
+
+    - name: Deploy to Fly
+      run: flyctl deploy --remote-only -c ./.github/fly.toml
