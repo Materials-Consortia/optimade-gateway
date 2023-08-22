@@ -62,13 +62,3 @@ repos:
     types: [python]
     require_serial: true
     exclude: ^tests/.*$
-  - id: pytest-plugins
-    name: pytest required plugin versions
-    entry: invoke
-    args: [update-pytest-reqs]
-    language: python
-    always_run: true
-    types: [text]
-    pass_filenames: false
-    files: ^requirements_dev.txt$
-    description: Update the pytest plugins to be minimum the currently listed requirement versions.
