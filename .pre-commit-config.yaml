@@ -23,7 +23,7 @@ repos:
     exclude: ^optimade_gateway/routers/utils.py$
 
 - repo: https://github.com/ambv/black
-  rev: 23.3.0
+  rev: 23.7.0
   hooks:
   - id: black
 
@@ -35,12 +35,12 @@ repos:
     exclude: ^tests/.*$
 
 - repo: https://github.com/pre-commit/mirrors-mypy
-  rev: v1.3.0
+  rev: v1.5.1
   hooks:
   - id: mypy
     exclude: ^tests/.*$
     additional_dependencies:
-      - "pydantic"
+      - "pydantic<2"
 
 - repo: https://github.com/SINTEF/ci-cd
   rev: v2.4.0
