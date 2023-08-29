@@ -5,132 +5,35 @@ on:
     types:
     - published
 
-env:
-  PUBLISH_UPDATE_BRANCH: main
-  GIT_USER_NAME: OPTIMADE Developers
-  GIT_USER_EMAIL: "dev@optimade.org"
-
 jobs:
-
   update-repo-and-release:
-    name: Update CHANGELOG and documentation
-    runs-on: ubuntu-latest
+    name: External
+    uses: SINTEF/ci-cd/.github/workflows/cd_release.yml@v2.4.0
     if: github.repository == 'Materials-Consortia/optimade-gateway' && startsWith(github.ref, 'refs/tags/v')
+    with:
+      # General
+      git_username: OPTIMADE Developers
+      git_email: "dev@optimade.org"
+      release_branch: main
+      install_extras: "[dev]"
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      # PyPI publishing
+      python_package: true
+      python_version_build: "3.8"
+      package_dirs: "optimade_gateway"
+      version_update_changes_separator: ";"
+      version_update_changes: |
+        "optimade_gateway/__init__.py;__version__ * \".*\";__version__ = "{version}""
+        "optimade_gateway/config.json;\"version\": \".*\",;"version": "{version}","
+        "tests/static/test_config.json;\"version\": \".*\",;"version": "{version}","
+      build_libs: "build"
+      build_cmd: "python -m build"
+      publish_on_pypi: false
 
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.8
-
-    - name: Install Python dependencies
-      run: |
-        python -m pip install -U pip
-        pip install -U setuptools
-        pip install -U -e .[dev]
-
-    - name: Update changelog
-      uses: CharMixer/auto-changelog-action@v1
-      with:
-        token: ${{ secrets.RELEASE_PAT_CASPER }}
-        release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
-
-    - name: Update documentation and version - Commit changes and update tag
-      run: .github/utils/update_docs.sh
-
-    - name: Update '${{ env.PUBLISH_UPDATE_BRANCH }}'
-      uses: CasperWA/push-protected@v2
-      with:
-        token: ${{ secrets.RELEASE_PAT_CASPER }}
-        branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
-        sleep: 15
-        force: true
-        tags: true
-
-    - name: Get tagged versions
-      run: echo "PREVIOUS_VERSION=$(git tag -l --sort -version:refname | sed -n 2p)" >> $GITHUB_ENV
-
-    - name: Create release-specific changelog
-      uses: CharMixer/auto-changelog-action@v1
-      with:
-        token: ${{ secrets.RELEASE_PAT_CASPER }}
-        release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
-        since_tag: "${{ env.PREVIOUS_VERSION }}"
-        output: "release_changelog.md"
-
-    - name: Append changelog to release body
-      run: |
-        gh api /repos/${{ github.repository }}/releases/${{ github.event.release.id }} --jq '.body' > release_body.md
-        cat release_changelog.md >> release_body.md
-        gh api /repos/${{ github.repository }}/releases/${{ github.event.release.id }} -X PATCH -F body='@release_body.md'
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  # publish:
-  #   name: Publish on PyPI
-  #   needs: update-repo-and-release
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #   - name: Checkout repository
-  #     uses: actions/checkout@v3
-  #     with:
-  #       fetch-depth: 2
-
-  #   - name: Set up Python 3.8
-  #     uses: actions/setup-python@v4
-  #     with:
-  #       python-version: 3.8
-
-  #   - name: Install Python dependencies
-  #     run: |
-  #       python -m pip install -U pip
-  #       pip install -U setuptools
-
-  #   - name: Build source distribution
-  #     run: python ./setup.py sdist
-
-  #   - name: Publish package to PyPI
-  #     uses: pypa/gh-action-pypi-publish@v1.4.2
-  #     with:
-  #       user: __token__
-  #       password: ${{ secrets.PYPI_TOKEN }}
-
-  docs:
-    name: Deploy release documentation
-    # needs: publish
-    needs: update-repo-and-release
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-        ref: ${{ env.PUBLISH_UPDATE_BRANCH }}
-
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.8
-
-    - name: Install Python dependencies
-      run: |
-        python -m pip install -U pip
-        pip install -U setuptools
-        pip install -U -e .[docs]
-
-    - name: Set git config
-      run: |
-        git config --global user.name "${{ env.GIT_USER_NAME }}"
-        git config --global user.email "${{ env.GIT_USER_EMAIL }}"
-
-    - name: Deploy documentation
-      run: |
-        mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml ${GITHUB_REF#refs/tags/v} stable
-        mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest main
+      # Documentation
+      update_docs: true
+      python_version_docs: "3.8"
+      doc_extras: "[docs]"
+      docs_framework: "mkdocs"
+    secrets:
+      PAT: ${{ secrets.RELEASE_PAT_CASPER }}

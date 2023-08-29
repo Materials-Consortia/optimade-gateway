@@ -8,66 +8,46 @@ on:
       - 'push-action/**'
 
 jobs:
+  basic_tests:
+    name: External
+    uses: SINTEF/ci-cd/.github/workflows/ci_tests.yml@v2.4.0
+    with:
+      # General
+      install_extras: "[dev]"
 
-  pre-commit:
-    runs-on: ubuntu-latest
-    # timeout-minutes: 2
+      # pre-commit
+      run_pre-commit: true
+      python_version_pre-commit: "3.8"
+      skip_pre-commit_hooks: "pylint"
 
-    steps:
-    - uses: actions/checkout@v3
+      # pylint & safety
+      python_version_pylint_safety: "3.8"
 
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.8
+      run_pylint: true
+      pylint_targets: "*.py optimade_gateway"
+      pylint_options: "--rcfile=pyproject.toml --recursive=yes"
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -U setuptools
+      run_safety: true
 
-        while IFS="" read -r line || [ -n "${line}" ]; do
-          if [[ "${line}" =~ ^pre-commit.*$ ]]; then
-            pre_commit="${line}"
-          fi
-        done < requirements_dev.txt
+      # Build package
+      run_build_package: true
+      python_version_package: "3.8"
+      build_libs: "build"
+      build_cmd: "python -m build"
 
-        while IFS="" read -r line || [ -n "${line}" ]; do
-          if [[ "${line}" =~ ^invoke.*$ ]]; then
-            invoke="${line}"
-          fi
-        done < requirements_docs.txt
+      # Build documentation
+      run_build_docs: true
+      python_version_docs: "3.8"
+      warnings_as_errors: true
 
-        pip install ${pre_commit} ${invoke}
-
-    - name: Test with pre-commit
-      run: SKIP=pylint pre-commit run --all-files --show-diff-on-failure
-
-  pylint-safety:
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 2
-
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.8
-
-    - name: Install dependencies
-      run: |
-        python -m pip install -U pip
-        pip install -U setuptools
-        pip install -U -r requirements.txt -r requirements_dev.txt -r requirements_docs.txt
-        pip install safety
-
-    - name: Run pylint
-      run: pylint --rcfile=pyproject.toml --recursive=yes *.py optimade_gateway
-
-    - name: Run safety
-      run: pip freeze | safety check --stdin
+      use_mkdocs: true
+      update_python_api_ref: true
+      update_docs_landing_page: true
+      package_dirs: "optimade_gateway"
+      exclude_files: |
+        __init__.py
+        run.py
+      full_docs_dirs: models
 
   pytest:
     runs-on: ubuntu-latest
@@ -113,16 +93,6 @@ jobs:
         files: ./coverage.xml
         flags: pytest
 
-  build-package:
-    name: Build source distribution
-    runs-on: ubuntu-latest
-    # timeout-minutes: 5
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Check build and install source distribution
-        uses: CasperWA/check-sdist-action@v1
 
   docker:
     name: Docker
@@ -144,28 +114,3 @@ jobs:
         docker-compose up &
         .github/utils/wait_for_it.sh localhost:5000 -t 120
         sleep 5
-
-  docs:
-    name: Documentation
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 2
-
-    - uses: actions/setup-python@v4
-      with:
-        python-version: 3.8
-
-    - name: Install dependencies
-      run: |
-        python -m pip install -U pip
-        pip install -U setuptools wheel
-        pip install -e .[dev]
-
-    - name: Build
-      run: |
-        pre-commit run --all-files docs-api-reference
-        pre-commit run --all-files docs-landing-page
-        mkdocs build --strict --verbose
