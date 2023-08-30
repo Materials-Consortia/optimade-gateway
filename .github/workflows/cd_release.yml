@@ -23,9 +23,9 @@ jobs:
       package_dirs: "optimade_gateway"
       version_update_changes_separator: ";"
       version_update_changes: |
-        optimade_gateway/__init__.py;__version__ * \".*\";__version__ = "{version}"
-        optimade_gateway/config.json;\"version\": \".*\",;"version": "{version}",
-        tests/static/test_config.json;\"version\": \".*\",;"version": "{version}",
+        {package_dir}/__init__.py;__version__ = \".*\";__version__ = \"{version}\"
+        {package_dir}/config.json;\"version\": \".*\",;\"version\": \"{version}\",
+        tests/static/test_config.json;\"version\": \".*\",;\"version\": \"{version}\",
       build_libs: "build"
       build_cmd: "python -m build"
       publish_on_pypi: false
