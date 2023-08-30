@@ -9,99 +9,24 @@ on:
   workflow_dispatch:
 
 jobs:
-
   create-collected-pr:
-    name: Single dependabot PR
+    name: External
+    uses: SINTEF/ci-cd/.github/workflows/ci_update_dependencies.yml@v2.5.1
     if: github.repository_owner == 'Materials-Consortia'
-    runs-on: ubuntu-latest
-    env:
-      DEPENDABOT_BRANCH: ci/dependabot-updates
-      GIT_USER_NAME: OPTIMADE Developers
-      GIT_USER_EMAIL: "dev@optimade.org"
+    with:
+      # General
+      git_username: OPTIMADE Developers
+      git_email: "dev@optimade.org"
+      permanent_dependencies_branch: ci/dependabot-updates
+      default_repo_branch: main
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-      with:
-        ref: main
+      # Generated PR
+      pr_labels: CI/CD,dependencies
 
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.8
-
-    - name: Install `pre-commit` and dependencies
-      run: |
-        python -m pip install -U pip
-        pip install -U setuptools wheel
-
-        while IFS="" read -r line || [ -n "${line}" ]; do
-          if [[ "${line}" =~ ^pre-commit.*$ ]]; then
-            pre_commit="${line}"
-          fi
-        done < requirements_dev.txt
-
-        while IFS="" read -r line || [ -n "${line}" ]; do
-          if [[ "${line}" =~ ^invoke.*$ ]]; then
-            invoke="${line}"
-          fi
-        done < requirements_docs.txt
-
-        pip install ${pre_commit} ${invoke}
-
-    - name: Set up git user info
-      run: |
-        git config --global user.name "${{ env.GIT_USER_NAME }}"
-        git config --global user.email "${{ env.GIT_USER_EMAIL }}"
-
-    - name: Reset to '${{ env.DEPENDABOT_BRANCH }}'
-      run: |
-        git fetch origin ${{ env.DEPENDABOT_BRANCH }}:${{ env.DEPENDABOT_BRANCH }}
-        git reset --hard ${{ env.DEPENDABOT_BRANCH }}
-
-    - name: Auto-update `pre-commit` hooks
-      run: |
-        pre-commit autoupdate
-
-        if [ -n "$(git status --porcelain .pre-commit-config.yaml)" ]; then
-          # Set environment variable notifying next steps that the hooks changed
-          echo "Pre-commit hooks have been updated !"
-          echo "UPDATED_PRE_COMMIT_HOOKS=true" >> $GITHUB_ENV
-        else
-          echo "No pre-commit hooks have been updated."
-          echo "UPDATED_PRE_COMMIT_HOOKS=false" >> $GITHUB_ENV
-        fi
-
-    - name: Possibly run `pre-commit` with updated hooks
-      if: env.UPDATED_PRE_COMMIT_HOOKS == 'true'
-      continue-on-error: true  # Still create the PR if this step fails
-      run: SKIP=pylint pre-commit run --all-files
-
-    - name: Possibly commit changes and updates
-      if: env.UPDATED_PRE_COMMIT_HOOKS == 'true'
-      run: |
-        git add .
-        git commit -m "Update \`pre-commit\` hooks"
-
-    - name: Fetch PR body
-      id: pr_body
-      uses: chuhlomin/render-template@v1.7
-      with:
-        template: .github/utils/single_dependency_pr_body.txt
-
-    - name: Create PR
-      id: cpr
-      uses: peter-evans/create-pull-request@v5
-      with:
-        token: ${{ secrets.RELEASE_PAT_CASPER }}
-        commit-message: New @dependabot-fueled updates
-        committer: "${{ env.GIT_USER_NAME }} <${{ env.GIT_USER_EMAIL }}>"
-        author: "${{ env.GIT_USER_NAME }} <${{ env.GIT_USER_EMAIL }}>"
-        branch: ci/update-dependencies
-        delete-branch: true
-        title: Update dependencies
-        body: ${{ steps.pr_body.outputs.result }}
-        labels: CI/CD,dependencies
-
-    - name: Information
-      run: 'echo "${{ steps.cpr.outputs.pull-request-operation }} PR #${{ steps.cpr.outputs.pull-request-number }}: ${{ steps.cpr.outputs.pull-request-url }}"'
+      # Pre-commit
+      update_pre-commit: true
+      python_version: "3.8"
+      install_extras: "[dev]"
+      skip_pre-commit_hooks: pylint
+    secrets:
+      PAT: ${{ secrets.RELEASE_PAT_CASPER }}
