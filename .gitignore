@@ -3,6 +3,8 @@
 htmlcov/
 .mypy*
 .pytest*
+build/
+dist/
 
 # Python
 *.egg*
