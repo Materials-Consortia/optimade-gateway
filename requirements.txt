@@ -1,4 +1,4 @@
-httpx~=0.24.1
+httpx>=0.24.1,<1
 motor~=3.3
 optimade[server]~=0.24.1; python_version < "3.9"
-optimade[server]~=0.25.1; python_version >= "3.9"
+optimade[server]~=0.25.2; python_version >= "3.9"
