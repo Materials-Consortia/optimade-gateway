@@ -24,7 +24,7 @@ jobs:
       python_version_pylint_safety: "3.8"
 
       run_pylint: true
-      pylint_targets: "*.py optimade_gateway"
+      pylint_targets: "optimade_gateway"
       pylint_options: "--rcfile=pyproject.toml --recursive=yes"
 
       run_safety: true
