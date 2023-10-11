@@ -93,7 +93,7 @@ class SearchQueryParams:
                 "[`QueriesResponseSingle`][optimade_gateway.models.responses.QueriesResponseSingle]"
                 " model."
             ),
-        )
+        ),
     ) -> None:
         self.database_ids = database_ids
         self.optimade_urls = optimade_urls

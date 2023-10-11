@@ -24,7 +24,7 @@ jobs:
       python_version_pylint_safety: "3.8"
 
       run_pylint: true
-      pylint_targets: "*.py optimade_gateway"
+      pylint_targets: "optimade_gateway"
       pylint_options: "--rcfile=pyproject.toml --recursive=yes"
 
       run_safety: true
@@ -32,8 +32,8 @@ jobs:
       # Build package
       run_build_package: true
       python_version_package: "3.8"
-      build_libs: "build"
-      build_cmd: "python -m build"
+      build_libs: "flit"
+      build_cmd: "flit build"
 
       # Build documentation
       run_build_docs: true
@@ -86,7 +86,7 @@ jobs:
       run: pytest -vvv --cov-report=xml
 
     - name: Upload coverage to Codecov
-      if: matrix.python-version == 3.8 && github.repository == 'Materials-Consortia/optimade-gateway'
+      if: matrix.python-version == '3.8' && github.repository == 'Materials-Consortia/optimade-gateway'
       uses: codecov/codecov-action@v3
       with:
         name: optimade-gateway

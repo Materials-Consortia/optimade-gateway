@@ -9,9 +9,6 @@ repos:
   - id: check-toml
     name: Check TOML
   - id: check-yaml
-  - id: requirements-txt-fixer
-    name: Fix requirements*.txt
-    files: ^requirements.*\.txt$
   - id: trailing-whitespace
     args: [--markdown-linebreak-ext=md]
 
