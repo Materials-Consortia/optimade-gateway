@@ -8,6 +8,6 @@ jobs:
   update-dependabot-branch:
     name: External
     uses: SINTEF/ci-cd/.github/workflows/ci_automerge_prs.yml@v2.5.2
-    if: github.repository_owner == 'Materials-Consortia' && startsWith(github.event.pull_request.head.ref, 'dependabot/') && github.actor == 'dependabot[bot]'
+    if: github.repository_owner == 'Materials-Consortia' && ( ( startsWith(github.event.pull_request.head.ref, 'dependabot/') && github.actor == 'dependabot[bot]' ) || ( github.event.pull_request.head.ref == 'ci/update-pyproject' && github.actor == 'CasperWA' ) )
     secrets:
       PAT: ${{ secrets.RELEASE_PAT_CASPER }}
