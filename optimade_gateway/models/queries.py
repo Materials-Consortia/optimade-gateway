@@ -1,5 +1,4 @@
 """Pydantic models/schemas for the Queries resource."""
-# pylint: disable=line-too-long,too-few-public-methods,no-self-argument
 import urllib.parse
 import warnings
 from copy import deepcopy
@@ -276,7 +275,7 @@ class QueryResource(EntryResource):
             or an error response, if errors were returned or occurred during the query.
 
         """
-        from optimade.server.routers.utils import (  # pylint: disable=import-outside-toplevel
+        from optimade.server.routers.utils import (
             meta_values,
         )
 

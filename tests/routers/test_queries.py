@@ -1,5 +1,4 @@
 """Tests for /queries endpoints"""
-# pylint: disable=no-name-in-module
 import json
 from typing import TYPE_CHECKING
 

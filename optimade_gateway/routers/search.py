@@ -5,7 +5,6 @@ This file describes the router for:
     /search
 
 """
-# pylint: disable=line-too-long,import-outside-toplevel
 import asyncio
 from time import time
 from typing import Union
@@ -254,7 +253,7 @@ async def get_search(
 
     once = True
     start_time = time()
-    while (  # pylint: disable=too-many-nested-blocks
+    while (
         time() < (start_time + search_params.timeout) or once
     ):
         # Make sure to run this at least once (e.g., if timeout=0)

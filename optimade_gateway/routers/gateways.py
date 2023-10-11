@@ -6,7 +6,6 @@ This file describes the router for:
 
 where, `id` may be left out.
 """
-# pylint: disable=import-outside-toplevel
 from fastapi import APIRouter, Depends, Request
 from optimade.models import ToplevelLinks
 from optimade.server.query_params import EntryListingQueryParams

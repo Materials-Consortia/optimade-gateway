@@ -1,5 +1,4 @@
 """Perform OPTIMADE queries"""
-# pylint: disable=import-outside-toplevel
 import asyncio
 import functools
 import json
@@ -11,8 +10,6 @@ import httpx
 from optimade import __api_version__
 from optimade.models import ErrorResponse, ToplevelLinks
 from optimade.server.routers.utils import BASE_URL_PREFIXES, meta_values
-
-# from optimade.server.routers.utils import get_base_url
 from pydantic import ValidationError
 
 from optimade_gateway.common.config import CONFIG
@@ -24,11 +21,8 @@ from optimade_gateway.queries.process import process_db_response
 from optimade_gateway.queries.utils import update_query
 from optimade_gateway.routers.utils import collection_factory, get_valid_resource
 
-# import urllib.parse
-
 
 if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    # pylint: disable=unused-import,ungrouped-imports
     from typing import Any, Dict, List, Optional, Tuple, Union
 
     from optimade.models import (
@@ -175,7 +169,7 @@ def db_find(
 
     """
     if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-        response: "Union[httpx.Response, Dict[str, Any], EntryResponseMany, EntryResponseOne, ErrorResponse]"  # pylint: disable=line-too-long
+        response: "Union[httpx.Response, Dict[str, Any], EntryResponseMany, EntryResponseOne, ErrorResponse]"
 
     if raw_url:
         url = raw_url
@@ -274,7 +268,7 @@ async def db_get_all_resources(
     response_model: "EntryResponseMany",
     query_params: str = "",
     raw_url: "Optional[str]" = None,
-) -> "Tuple[List[Union[EntryResource, Dict[str, Any]]], Union[LinksResource, Dict[str, Any]]]":  # pylint: disable=line-too-long
+) -> "Tuple[List[Union[EntryResource, Dict[str, Any]]], Union[LinksResource, Dict[str, Any]]]":
     """Recursively retrieve all resources from an entry-listing endpoint
 
     This function keeps pulling the `links.next` link if `meta.more_data_available` is

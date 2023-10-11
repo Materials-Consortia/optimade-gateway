@@ -1,5 +1,4 @@
 """Utility functions for all routers."""
-# pylint: disable=line-too-long,import-outside-toplevel
 import urllib.parse
 from os import getenv
 from typing import TYPE_CHECKING
@@ -27,7 +26,6 @@ from optimade_gateway.models import (
 from optimade_gateway.mongo.collection import AsyncMongoCollection
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    # pylint: disable=unused-import,ungrouped-imports
     from typing import Any, Dict, Iterable, Tuple, Union
 
     from fastapi import Request
@@ -125,7 +123,7 @@ async def get_valid_resource(
     return await collection.get_one(filter={"id": entry_id})
 
 
-async def resource_factory(  # pylint: disable=too-many-branches
+async def resource_factory(
     create_resource: "Union[DatabaseCreate, GatewayCreate, QueryCreate]",
 ) -> "Tuple[Union[LinksResource, GatewayResource, QueryResource], bool]":
     """Get or create a resource

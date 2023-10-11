@@ -2,7 +2,6 @@
 
 These functions may be used in general throughout the OPTIMADE Gateway Python code.
 """
-# pylint: disable=line-too-long
 from enum import Enum
 from os import getenv
 from typing import TYPE_CHECKING
@@ -10,7 +9,6 @@ from typing import TYPE_CHECKING
 from pydantic import BaseModel
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    # pylint: disable=unused-import
     from typing import Any, Dict, Union
 
 

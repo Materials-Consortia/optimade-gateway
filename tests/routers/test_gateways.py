@@ -1,5 +1,4 @@
 """Tests for /gateways endpoints"""
-# pylint: disable=no-name-in-module
 from typing import TYPE_CHECKING
 
 import pytest

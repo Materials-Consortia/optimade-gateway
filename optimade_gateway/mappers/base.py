@@ -1,4 +1,3 @@
-# pylint: disable=line-too-long,import-outside-toplevel
 """Base resource mapper.
 
 Based on the [`BaseResourceMapper`](https://www.optimade.org/optimade-python-tools/api_reference/server/mappers/entries/#optimade.server.mappers.entries.BaseResourceMapper) in OPTIMADE Python tools.
@@ -14,7 +13,6 @@ from pydantic import AnyUrl
 from optimade_gateway.common.config import CONFIG
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    # pylint: disable=unused-import,ungrouped-imports
     from typing import Iterable, List, Union
 
     from optimade.models import EntryResource

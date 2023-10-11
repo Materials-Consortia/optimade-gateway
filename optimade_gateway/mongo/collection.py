@@ -1,4 +1,3 @@
-# pylint: disable=line-too-long,too-many-branches
 """MongoDB collection for entry-endpoint resources.
 
 The [`AsyncMongoCollection`][optimade_gateway.mongo.collection.AsyncMongoCollection]
@@ -23,7 +22,6 @@ from optimade_gateway.common.utils import clean_python_types
 from optimade_gateway.warnings import OptimadeGatewayWarning
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    # pylint: disable=unused-import,ungrouped-imports
     from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
     from optimade.models import EntryResource
@@ -58,7 +56,7 @@ class AsyncMongoCollection(EntryCollection):
                 changes between deserialization and response.
 
         """
-        from optimade_gateway.mongo.database import (  # pylint: disable=import-outside-toplevel
+        from optimade_gateway.mongo.database import (
             MONGO_DB,
         )
 

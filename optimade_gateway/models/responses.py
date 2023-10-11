@@ -1,5 +1,4 @@
 """Pydantic models/schemas for the API responses."""
-# pylint: disable=line-too-long,too-few-public-methods
 from typing import List, Optional
 
 from optimade.models import EntryResponseMany, EntryResponseOne, LinksResource

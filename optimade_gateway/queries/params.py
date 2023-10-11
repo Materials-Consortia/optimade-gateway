@@ -1,5 +1,4 @@
 """URL query parameters."""
-# pylint: disable=line-too-long,too-few-public-methods
 from typing import Set
 
 from fastapi import Query

@@ -6,7 +6,6 @@ This file describes the router for:
 
 where, `id` may be left out.
 """
-# pylint: disable=import-outside-toplevel
 import asyncio
 
 from fastapi import APIRouter, Depends, Request, Response, status

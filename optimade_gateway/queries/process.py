@@ -12,7 +12,6 @@ from optimade_gateway.queries.utils import update_query
 from optimade_gateway.warnings import OptimadeGatewayWarning
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    # pylint: disable=unused-import,ungrouped-imports
     from typing import Any, Dict, List, Union
 
     from optimade.models import EntryResource, EntryResponseMany, EntryResponseOne
@@ -25,7 +24,7 @@ async def process_db_response(
     database_id: str,
     query: "QueryResource",
     gateway: "GatewayResource",
-) -> "Union[List[EntryResource], List[Dict[str, Any]], EntryResource, Dict[str, Any], None]":  # pylint: disable=line-too-long
+) -> "Union[List[EntryResource], List[Dict[str, Any]], EntryResource, Dict[str, Any], None]":
     """Process an OPTIMADE database response.
 
     The passed `query` will be updated with the top-level `meta` information:

@@ -8,7 +8,6 @@ from warnings import warn
 from optimade_gateway.warnings import OptimadeGatewayWarning
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    # pylint: disable=unused-import,ungrouped-imports
     from typing import List, Mapping, Union
 
     from optimade_gateway.models.queries import OptimadeQueryParameters
@@ -50,7 +49,7 @@ async def prepare_query_filter(
         for database_id in database_ids:
             if matched_id.startswith(f"{database_id}/"):
                 # Database found
-                updated_filter[database_id] = updated_filter[database_id].replace(  # type: ignore[union-attr]  # pylint: disable=line-too-long
+                updated_filter[database_id] = updated_filter[database_id].replace(  # type: ignore[union-attr]
                     f"{database_id}/", "", 1
                 )
                 break

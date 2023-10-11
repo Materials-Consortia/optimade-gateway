@@ -11,7 +11,6 @@ Database resources represent the available databases that may be used for the ga
 One can register a new database (by using `POST /databases`) or look through the available
 databases (by using `GET /databases`) using standard OPTIMADE filtering.
 """
-# pylint: disable=line-too-long,import-outside-toplevel
 from fastapi import APIRouter, Depends, Request
 from optimade.models import ToplevelLinks
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
