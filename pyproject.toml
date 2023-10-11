@@ -1,3 +1,88 @@
+[build-system]
+requires = ["flit_core >=3.4,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "optimade-gateway"
+authors = [
+    {name = "Casper Welzel Andersen", email = "casper@welzel.nu"},
+]
+description = "A gateway server to query multiple OPTIMADE databases."
+readme = "README.md"
+license = {file = "LICENSE"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Intended Audience :: Developers",
+    "Topic :: Database",
+    "Topic :: Database :: Database Engines/Servers",
+    "Topic :: Internet :: WWW/HTTP :: WSGI :: Server",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+keywords = ["optimade", "materials", "database"]
+requires-python = ">=3.8"
+dynamic = ["version"]
+
+dependencies = [
+    "httpx>=0.24.1,<1",
+    "motor~=3.3",
+    "optimade[server]~=0.24.1; python_version < '3.9'",
+    "optimade[server]~=0.25.3; python_version >= '3.9'",
+]
+
+[project.optional-dependencies]
+docs = [
+    "mike~=1.1",
+    "mkdocs~=1.5",
+    "mkdocs-awesome-pages-plugin~=2.9",
+    "mkdocs-material~=9.4",
+    "mkdocstrings[python-legacy]~=0.23.0",
+]
+dev = [
+    "optimade-gateway[docs]",
+    "pre-commit~=3.4",
+    "pylint~=3.0",
+    "pytest~=7.4",
+    "pytest-asyncio~=0.21.1",
+    "pytest-cov~=4.1",
+    "pytest-httpx~=0.22.0; python_version < '3.9'",
+    "pytest-httpx~=0.26.0; python_version >= '3.9'",
+]
+
+[project.urls]
+Home = "https://github.com/Materials-Consortia/optimade-gateway"
+Documentation = "https://www.optimade.org/optimade-gateway"
+Source = "https://github.com/Materials-Consortia/optimade-gateway"
+"Issue Tracker" = "https://github.com/Materials-Consortia/optimade-gateway/issues"
+Changelog = "https://github.com/Materials-Consortia/optimade-gateway/blob/main/CHANGELOG.md"
+# Package = "https://pypi.org/project/optimade-gateway"
+
+[project.scripts]
+optimade-gateway = "optimade_gateway.run:run"
+
+# TOOLS
+[tool.flit.module]
+name = "optimade_gateway"
+
+[tool.flit.sdist]
+exclude = [
+    ".ci/",
+    ".github/",
+    "tests/",
+    ".gitignore",
+    ".pre-commit-config.yaml",
+    ".codecov.yml",
+    "docker-compose.yml",
+    "Dockerfile",
+]
+include = [
+    "optimade_gateway/*.json",
+]
+
 [tool.mypy]
 python_version = "3.8"
 ignore_missing_imports = true

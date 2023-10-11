@@ -1,7 +1,0 @@
-pre-commit~=3.4
-pylint~=3.0
-pytest~=7.4
-pytest-asyncio~=0.21.1
-pytest-cov~=4.1
-pytest-httpx~=0.22.0; python_version < "3.9"
-pytest-httpx~=0.26.0; python_version >= "3.9"
