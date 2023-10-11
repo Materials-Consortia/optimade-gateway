@@ -8,7 +8,8 @@ from warnings import warn
 from optimade_gateway.warnings import OptimadeGatewayWarning
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    from typing import List, Mapping, Union
+    from collections.abc import Mapping
+    from typing import List, Union
 
     from optimade_gateway.models.queries import OptimadeQueryParameters
 

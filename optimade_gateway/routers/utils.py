@@ -26,7 +26,8 @@ from optimade_gateway.models import (
 from optimade_gateway.mongo.collection import AsyncMongoCollection
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    from typing import Any, Dict, Iterable, Tuple, Union
+    from collections.abc import Iterable
+    from typing import Any, Dict, Tuple, Union
 
     from fastapi import Request
     from optimade.models import EntryResource, EntryResponseMany, LinksResource

@@ -11,7 +11,8 @@ from optimade_gateway.common.config import CONFIG
 from optimade_gateway.common.logger import LOGGER
 
 if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    from typing import Any, Callable, Coroutine, Sequence, Tuple, Union
+    from collections.abc import Callable, Coroutine, Sequence
+    from typing import Any, Tuple, Union
 
 
 async def ci_dev_startup() -> None:

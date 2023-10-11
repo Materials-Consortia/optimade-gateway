@@ -15,7 +15,8 @@ from pydantic import AnyUrl
 from optimade_gateway.common.config import CONFIG
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    from typing import Iterable, List, Union
+    from collections.abc import Iterable
+    from typing import List, Union
 
     from optimade.models import EntryResource
 

@@ -4,8 +4,8 @@ from typing import TYPE_CHECKING
 import pytest
 
 if TYPE_CHECKING:
+    from collections.abc import Awaitable, Callable
     from pathlib import Path
-    from typing import Awaitable, Callable
 
     from ..conftest import AsyncGatewayClient
 
