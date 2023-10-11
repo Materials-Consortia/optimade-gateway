@@ -7,11 +7,17 @@ from typing import TYPE_CHECKING
 import uvicorn
 
 if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    # pylint: disable=unused-import
-    from typing import Optional, Sequence, Text
+    import platform
+
+    if platform.python_version() >= "3.9.0":
+        from collections.abc import Sequence
+    else:
+        from typing import Sequence
+
+    from typing import Optional
 
 
-def run(argv: "Optional[Sequence[Text]]" = None) -> None:
+def run(argv: "Optional[Sequence[str]]" = None) -> None:
     """Run OPTIMADE Gateway REST API server."""
     parser = argparse.ArgumentParser(
         "optimade-gateway",

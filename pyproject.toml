@@ -45,7 +45,6 @@ docs = [
 dev = [
     "optimade-gateway[docs]",
     "pre-commit~=3.4",
-    "pylint~=3.0",
     "pytest~=7.4",
     "pytest-asyncio~=0.21.1",
     "pytest-cov~=4.1",
@@ -90,14 +89,6 @@ scripts_are_modules = true
 warn_unused_configs = true
 show_error_codes = true
 allow_redefinition = true
-
-[tool.pylint.messages_control]
-max-line-length = 90
-disable = [
-    "duplicate-code",
-    "no-name-in-module"
-]
-max-args = 10
 
 [tool.pytest.ini_options]
 minversion = "7.0"

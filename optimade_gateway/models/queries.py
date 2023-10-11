@@ -1,5 +1,4 @@
 """Pydantic models/schemas for the Queries resource."""
-# pylint: disable=line-too-long,too-few-public-methods,no-self-argument
 import urllib.parse
 import warnings
 from copy import deepcopy
@@ -174,8 +173,8 @@ class GatewayQueryResponse(Response):
     errors: Optional[List[OptimadeError]] = StrictField(
         [],
         description=(
-            "A list of OPTIMADE-specific JSON API error objects, where the field detail "
-            "MUST be present."
+            "A list of OPTIMADE-specific JSON API error objects, where the field "
+            "detail MUST be present."
         ),
         uniqueItems=True,
     )
@@ -276,7 +275,7 @@ class QueryResource(EntryResource):
             or an error response, if errors were returned or occurred during the query.
 
         """
-        from optimade.server.routers.utils import (  # pylint: disable=import-outside-toplevel
+        from optimade.server.routers.utils import (
             meta_values,
         )
 
@@ -308,8 +307,8 @@ class QueryResource(EntryResource):
                 errors=[
                     {
                         "detail": (
-                            "Can not return as a valid OPTIMADE response as the query has"
-                            " not yet been initialized."
+                            "Can not return as a valid OPTIMADE response as the query "
+                            "has not yet been initialized."
                         ),
                         "id": "OPTIMADE_GATEWAY_QUERY_NOT_INITIALIZED",
                     }

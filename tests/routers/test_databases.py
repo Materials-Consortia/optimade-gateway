@@ -1,28 +1,18 @@
 """Tests for /databases endpoints"""
-# pylint: disable=no-name-in-module
 from typing import TYPE_CHECKING
 
 import pytest
 
 if TYPE_CHECKING:
     from pathlib import Path
-    from typing import Awaitable, Callable
 
-    try:
-        from typing import Literal
-    except ImportError:
-        from typing_extensions import Literal
-
-    from fastapi import FastAPI
-    from httpx import Response
+    from ..conftest import AsyncGatewayClient
 
 
 async def test_get_databases(
-    client: (
-        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
-    ),
+    client: "AsyncGatewayClient",
     top_dir: "Path",
-):
+) -> None:
     """Test GET /databases"""
     import json
 
@@ -43,11 +33,7 @@ async def test_get_databases(
 
 
 @pytest.mark.usefixtures("reset_db_after")
-async def test_post_databases(
-    client: (
-        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
-    ),
-):
+async def test_post_databases(client: "AsyncGatewayClient") -> None:
     """Test POST /databases"""
     from bson.objectid import ObjectId
     from optimade.server.routers.utils import BASE_URL_PREFIXES
@@ -97,11 +83,9 @@ async def test_post_databases(
 
 
 async def test_get_single_database(
-    client: (
-        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
-    ),
+    client: "AsyncGatewayClient",
     top_dir: "Path",
-):
+) -> None:
     """Test GET /databases/{id}"""
     import json
 
@@ -142,10 +126,16 @@ async def test_get_single_database(
         assert (
             await clean_python_types(response.data.attributes.dict()[field])
             == data[field]
-        ), f"Field: {field!r}\n\nResponse: {response.data.attributes.dict()!r}\n\nTest data: {data!r}"
+        ), (
+            f"Field: {field!r}\n\nResponse: {response.data.attributes.dict()!r}\n\n"
+            f"Test data: {data!r}"
+        )
     test_links = {
         "self": AnyUrl(
-            url=f"{'/'.join(str(url).split('/')[:-3])}{BASE_URL_PREFIXES['major']}/databases/{datum.id}",
+            url=(
+                f"{'/'.join(str(url).split('/')[:-3])}{BASE_URL_PREFIXES['major']}"
+                f"/databases/{datum.id}"
+            ),
             scheme=url.scheme,
             host=url.host,
         )

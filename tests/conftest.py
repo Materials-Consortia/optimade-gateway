@@ -9,7 +9,14 @@ from typing import TYPE_CHECKING
 import pytest
 
 if TYPE_CHECKING:
-    from typing import Awaitable, Callable, Union
+    import platform
+
+    if platform.python_version() >= "3.9.0":
+        from collections.abc import Awaitable, Callable
+    else:
+        from typing import Awaitable, Callable
+
+    from typing import Union
 
     try:
         from typing import Literal
@@ -19,6 +26,11 @@ if TYPE_CHECKING:
     from fastapi import FastAPI
     from httpx import Request, Response
     from pytest_httpx import HTTPXMock
+
+    AsyncGatewayClient = Callable[
+        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
+        Awaitable[Response],
+    ]
 
 
 # UTILITY FUNCTIONS
@@ -86,9 +98,7 @@ async def setup_db(top_dir: Path) -> None:
 
 
 @pytest.fixture
-def client() -> (
-    'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
-):
+def client() -> "AsyncGatewayClient":
     """Return function to make HTTP requests with async httpx client"""
     from httpx import AsyncClient
 
@@ -164,8 +174,8 @@ def mock_gateway_responses(
 ) -> "Callable[[dict], None]":
     """Add mock responses for gateway databases
 
-    (Successful) mock responses are loaded from local JSON files and returned according to the
-    database id.
+    (Successful) mock responses are loaded from local JSON files and returned according
+    to the database id.
 
     """
 
@@ -181,8 +191,8 @@ def mock_gateway_responses(
                 gateway["id"].startswith("single-structure")
                 and "_single" not in database["id"]
             ):
-                # Don't mock database responses for single-structure gateways' databases that are
-                # not queried.
+                # Don't mock database responses for single-structure gateways'
+                # databases that are not queried.
                 pass
             else:
                 data: "Union[dict, list]" = json.loads(

@@ -6,7 +6,6 @@ This file describes the router for:
 
 where, `id` may be left out.
 """
-# pylint: disable=import-outside-toplevel
 from fastapi import APIRouter, Depends, Request
 from optimade.models import ToplevelLinks
 from optimade.server.query_params import EntryListingQueryParams
@@ -115,7 +114,8 @@ async def post_gateways(
 async def get_gateway(request: Request, gateway_id: str) -> GatewaysResponseSingle:
     """`GET /gateways/{gateway ID}`
 
-    Return a single [`GatewayResource`][optimade_gateway.models.gateways.GatewayResource].
+    Return a single
+    [`GatewayResource`][optimade_gateway.models.gateways.GatewayResource].
     """
     collection = await collection_factory(CONFIG.gateways_collection)
     result = await get_valid_resource(collection, gateway_id)

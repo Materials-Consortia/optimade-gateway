@@ -1,5 +1,4 @@
 """Perform OPTIMADE queries"""
-# pylint: disable=import-outside-toplevel
 import asyncio
 import functools
 import json
@@ -11,8 +10,6 @@ import httpx
 from optimade import __api_version__
 from optimade.models import ErrorResponse, ToplevelLinks
 from optimade.server.routers.utils import BASE_URL_PREFIXES, meta_values
-
-# from optimade.server.routers.utils import get_base_url
 from pydantic import ValidationError
 
 from optimade_gateway.common.config import CONFIG
@@ -24,11 +21,8 @@ from optimade_gateway.queries.process import process_db_response
 from optimade_gateway.queries.utils import update_query
 from optimade_gateway.routers.utils import collection_factory, get_valid_resource
 
-# import urllib.parse
-
 
 if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    # pylint: disable=unused-import,ungrouped-imports
     from typing import Any, Dict, List, Optional, Tuple, Union
 
     from optimade.models import (
@@ -175,7 +169,7 @@ def db_find(
 
     """
     if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-        response: "Union[httpx.Response, Dict[str, Any], EntryResponseMany, EntryResponseOne, ErrorResponse]"  # pylint: disable=line-too-long
+        response: "Union[httpx.Response, Dict[str, Any], EntryResponseMany, EntryResponseOne, ErrorResponse]"  # noqa: E501
 
     if raw_url:
         url = raw_url
@@ -214,8 +208,9 @@ def db_find(
         try:
             response = ErrorResponse(**response)
         except ValidationError as exc:
-            # If it's an error and `meta` is missing, it is not a valid OPTIMADE response,
-            # but this happens a lot, and is therefore worth having an edge-case for.
+            # If it's an error and `meta` is missing, it is not a valid OPTIMADE
+            # response, but this happens a lot, and is therefore worth having an
+            # edge-case for.
             if "errors" in response:
                 errors = list(response["errors"])
                 errors.append(
@@ -233,7 +228,9 @@ def db_find(
                         errors=errors,
                         meta={
                             "query": {
-                                "representation": f"/{endpoint.strip('/')}?{query_params}"
+                                "representation": (
+                                    f"/{endpoint.strip('/')}?{query_params}"
+                                )
                             },
                             "api_version": __api_version__,
                             "more_data_available": False,
@@ -274,7 +271,7 @@ async def db_get_all_resources(
     response_model: "EntryResponseMany",
     query_params: str = "",
     raw_url: "Optional[str]" = None,
-) -> "Tuple[List[Union[EntryResource, Dict[str, Any]]], Union[LinksResource, Dict[str, Any]]]":  # pylint: disable=line-too-long
+) -> "Tuple[List[Union[EntryResource, Dict[str, Any]]], Union[LinksResource, Dict[str, Any]]]":  # noqa: E501
     """Recursively retrieve all resources from an entry-listing endpoint
 
     This function keeps pulling the `links.next` link if `meta.more_data_available` is
@@ -324,8 +321,8 @@ async def db_get_all_resources(
         if next_page is None:
             LOGGER.error(
                 "Could not find a 'next' link for an OPTIMADE query request to %r "
-                "(id=%r). Cannot get all resources from /%s, even though this was asked "
-                "and `more_data_available` is `True` in the response.",
+                "(id=%r). Cannot get all resources from /%s, even though this was "
+                "asked and `more_data_available` is `True` in the response.",
                 get_resource_attribute(database, "attributes.name", "N/A"),
                 get_resource_attribute(database, "id"),
                 endpoint,

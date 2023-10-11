@@ -1,4 +1,3 @@
-# pylint: disable=line-too-long,too-many-branches
 """MongoDB collection for entry-endpoint resources.
 
 The [`AsyncMongoCollection`][optimade_gateway.mongo.collection.AsyncMongoCollection]
@@ -23,7 +22,6 @@ from optimade_gateway.common.utils import clean_python_types
 from optimade_gateway.warnings import OptimadeGatewayWarning
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    # pylint: disable=unused-import,ungrouped-imports
     from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
     from optimade.models import EntryResource
@@ -58,7 +56,7 @@ class AsyncMongoCollection(EntryCollection):
                 changes between deserialization and response.
 
         """
-        from optimade_gateway.mongo.database import (  # pylint: disable=import-outside-toplevel
+        from optimade_gateway.mongo.database import (
             MONGO_DB,
         )
 
@@ -95,8 +93,8 @@ class AsyncMongoCollection(EntryCollection):
         warn(
             OptimadeGatewayWarning(
                 detail=(
-                    "Cannot calculate length of collection using `len()`. Use `count()` "
-                    "instead."
+                    "Cannot calculate length of collection using `len()`. Use "
+                    "`count()` instead."
                 )
             )
         )
@@ -104,8 +102,8 @@ class AsyncMongoCollection(EntryCollection):
 
     def insert(self, data: "List[EntryResource]") -> None:
         raise NotImplementedError(
-            "This method cannot be used with this class and is a remnant from the parent "
-            "class. Use instead the asynchronous method `ainsert(data: "
+            "This method cannot be used with this class and is a remnant from the "
+            "parent class. Use instead the asynchronous method `ainsert(data: "
             "List[EntryResource])`."
         )
 
@@ -122,15 +120,15 @@ class AsyncMongoCollection(EntryCollection):
 
     def count(self, **kwargs) -> int:
         raise NotImplementedError(
-            "This method cannot be used with this class and is a remnant from the parent "
-            "class. Use instead the asynchronous method `acount(params: "
+            "This method cannot be used with this class and is a remnant from the "
+            "parent class. Use instead the asynchronous method `acount(params: "
             "Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]], "
             "**kwargs)`."
         )
 
     async def acount(
         self,
-        params: "Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]" = None,
+        params: "Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]" = None,  # noqa: E501
         **kwargs: "Any",
     ) -> int:
         """Count documents in Collection.
@@ -176,7 +174,7 @@ class AsyncMongoCollection(EntryCollection):
 
     def find(
         self, params: "Union[EntryListingQueryParams, SingleEntryQueryParams]"
-    ) -> "Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]":
+    ) -> "Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]":  # noqa: E501
         """
         Fetches results and indicates if more data is available.
 
@@ -195,17 +193,17 @@ class AsyncMongoCollection(EntryCollection):
 
         """
         raise NotImplementedError(
-            "This method cannot be used with this class and is a remnant from the parent "
-            "class. Use instead the asynchronous method `afind(params: "
-            "Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]], criteria: "
-            "Optional[Dict[str, Any]])`."
+            "This method cannot be used with this class and is a remnant from the "
+            "parent class. Use instead the asynchronous method `afind(params: "
+            "Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]], "
+            "criteria: Optional[Dict[str, Any]])`."
         )
 
     async def afind(
         self,
-        params: "Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]" = None,
+        params: "Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]" = None,  # noqa: E501
         criteria: "Optional[Dict[str, Any]]" = None,
-    ) -> "Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]":
+    ) -> "Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]":  # noqa: E501
         """Perform the query on the underlying MongoDB Collection, handling projection
         and pagination of the output.
 
@@ -324,9 +322,10 @@ class AsyncMongoCollection(EntryCollection):
 
         """
         raise NotImplementedError(
-            "This method cannot be used with this class and is a remnant from the parent "
-            "class. Use instead the asynchronous method `ahandle_query_params(params: "
-            "Union[EntryListingQueryParams, SingleEntryQueryParams])`."
+            "This method cannot be used with this class and is a remnant from the "
+            "parent class. Use instead the asynchronous method "
+            "`ahandle_query_params(params: Union[EntryListingQueryParams, "
+            "SingleEntryQueryParams])`."
         )
 
     async def ahandle_query_params(
@@ -360,9 +359,9 @@ class AsyncMongoCollection(EntryCollection):
         self, criteria: "Dict[str, Any]", single_entry: bool = False
     ) -> "Tuple[List[Dict[str, Any]], int, bool]":
         raise NotImplementedError(
-            "This method cannot be used with this class and is a remnant from the parent "
-            "class. Use instead the asynchronous method `_arun_db_query(criteria: "
-            "Dict[str, Any], single_entry: bool)`."
+            "This method cannot be used with this class and is a remnant from the "
+            "parent class. Use instead the asynchronous method "
+            "`_arun_db_query(criteria: Dict[str, Any], single_entry: bool)`."
         )
 
     async def _arun_db_query(
@@ -374,7 +373,8 @@ class AsyncMongoCollection(EntryCollection):
 
         Arguments:
             criteria: A dictionary representation of the query parameters.
-            single_entry: Whether or not the caller is expecting a single entry response.
+            single_entry: Whether or not the caller is expecting a single entry
+                response.
 
         Returns:
             The list of entries from the database (without any re-mapping), the total

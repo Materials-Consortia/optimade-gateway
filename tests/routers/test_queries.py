@@ -1,29 +1,26 @@
 """Tests for /queries endpoints"""
-# pylint: disable=no-name-in-module
 import json
 from typing import TYPE_CHECKING
 
 import pytest
 
 if TYPE_CHECKING:
+    import platform
+
+    if platform.python_version() >= "3.9.0":
+        from collections.abc import Awaitable, Callable
+    else:
+        from typing import Awaitable, Callable
+
     from pathlib import Path
-    from typing import Awaitable, Callable
 
-    try:
-        from typing import Literal
-    except ImportError:
-        from typing_extensions import Literal
-
-    from fastapi import FastAPI
-    from httpx import Response
+    from ..conftest import AsyncGatewayClient
 
 
 async def test_get_queries(
-    client: (
-        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
-    ),
+    client: "AsyncGatewayClient",
     top_dir: "Path",
-):
+) -> None:
     """Test GET /queries"""
     from optimade_gateway.models.responses import QueriesResponse
 
@@ -44,12 +41,10 @@ async def test_get_queries(
 
 @pytest.mark.usefixtures("reset_db_after")
 async def test_post_queries(
-    client: (
-        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
-    ),
+    client: "AsyncGatewayClient",
     mock_gateway_responses: "Callable[[dict], None]",
     get_gateway: "Callable[[str], Awaitable[dict]]",
-):
+) -> None:
     """Test POST /queries"""
     import asyncio
 
@@ -87,11 +82,17 @@ async def test_post_queries(
     assert (
         datum.attributes.query_parameters.dict()
         == OptimadeQueryParameters(**data["query_parameters"]).dict()
-    ), f"Response: {datum.attributes.query_parameters!r}\n\nTest data: {OptimadeQueryParameters(**data['query_parameters'])!r}"
+    ), (
+        f"Response: {datum.attributes.query_parameters!r}\n\n"
+        f"Test data: {OptimadeQueryParameters(**data['query_parameters'])!r}"
+    )
 
     assert datum.links.dict() == {
         "self": AnyUrl(
-            url=f"{'/'.join(str(url).split('/')[:-1])}{BASE_URL_PREFIXES['major']}/queries/{datum.id}",
+            url=(
+                f"{'/'.join(str(url).split('/')[:-1])}{BASE_URL_PREFIXES['major']}"
+                f"/queries/{datum.id}"
+            ),
             scheme=url.scheme,
             host=url.host,
         )
@@ -109,11 +110,7 @@ async def test_post_queries(
 
 
 @pytest.mark.usefixtures("reset_db_after")
-async def test_post_queries_bad_data(
-    client: (
-        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
-    ),
-):
+async def test_post_queries_bad_data(client: "AsyncGatewayClient") -> None:
     """Test POST /queries with bad data"""
     from optimade.models import ErrorResponse, OptimadeError
 
@@ -150,12 +147,10 @@ async def test_post_queries_bad_data(
 
 @pytest.mark.usefixtures("reset_db_after")
 async def test_query_results(
-    client: (
-        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
-    ),
+    client: "AsyncGatewayClient",
     mock_gateway_responses: "Callable[[dict], None]",
     get_gateway: "Callable[[str], Awaitable[dict]]",
-):
+) -> None:
     """Test POST /queries and GET /queries/{id}"""
     import asyncio
 
@@ -174,8 +169,8 @@ async def test_query_results(
     assert response.status_code == 202, f"Request failed: {response.json()}"
 
     # Do not expect to have the query finish already
-    # (Sleep shortly to make sure the query is created in the DB, but not long enough for the
-    # external queries to have finished)
+    # (Sleep shortly to make sure the query is created in the DB, but not long enough
+    # for the external queries to have finished)
     await asyncio.sleep(0.5)
     response = await client(f"/queries/{data['id']}")
     assert response.status_code == 200, f"Request failed: {response.json()}"
@@ -199,12 +194,10 @@ async def test_query_results(
 
 @pytest.mark.usefixtures("reset_db_after")
 async def test_errored_query_results(
-    client: (
-        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
-    ),
+    client: "AsyncGatewayClient",
     mock_gateway_responses: "Callable[[dict], None]",
     get_gateway: "Callable[[str], Awaitable[dict]]",
-):
+) -> None:
     """Test POST /queries and GET /queries/{id} with an erroneous response"""
     import asyncio
 
@@ -226,9 +219,10 @@ async def test_errored_query_results(
     await asyncio.sleep(1)  # Ensure the query finishes
 
     response = await client(f"/queries/{query_id}")
-    assert (
-        response.status_code == 404
-    ), f"Request succeeded, where it should have failed:\n{json.dumps(response.json(), indent=2)}"
+    assert response.status_code == 404, (
+        "Request succeeded, where it should have failed:\n"
+        f"{json.dumps(response.json(), indent=2)}"
+    )
 
     response = QueriesResponseSingle(**response.json())
     assert response.data.attributes.response.errors
@@ -236,17 +230,15 @@ async def test_errored_query_results(
 
 @pytest.mark.usefixtures("reset_db_after")
 async def test_sort_no_effect(
-    client: (
-        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
-    ),
+    client: "AsyncGatewayClient",
     get_gateway: "Callable[[str], Awaitable[dict]]",
     mock_gateway_responses: "Callable[[dict], None]",
-):
+) -> None:
     """Test POST /queries with the `sort` query parameter
 
-    Currently, the `sort` query parameter should not have an effect when used with this endpoint.
-    This means if the `sort` parameter is used, the response should not change - it should be
-    ignored.
+    Currently, the `sort` query parameter should not have an effect when used with this
+    endpoint. This means if the `sort` parameter is used, the response should not
+    change - it should be ignored.
     """
     import asyncio
 

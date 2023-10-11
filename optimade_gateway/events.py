@@ -4,7 +4,6 @@ These events can be run at application startup or shutdown.
 The specific events are listed in [`EVENTS`][optimade_gateway.events.EVENTS] along with
 their respected proper invocation time.
 """
-# pylint: disable=import-outside-toplevel
 import os
 from typing import TYPE_CHECKING
 
@@ -12,8 +11,14 @@ from optimade_gateway.common.config import CONFIG
 from optimade_gateway.common.logger import LOGGER
 
 if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    # pylint: disable=unused-import
-    from typing import Any, Callable, Coroutine, Sequence, Tuple, Union
+    import platform
+
+    if platform.python_version() >= "3.9.0":
+        from collections.abc import Callable, Coroutine, Sequence
+    else:
+        from typing import Callable, Coroutine, Sequence
+
+    from typing import Any, Tuple, Union
 
 
 async def ci_dev_startup() -> None:
@@ -61,7 +66,7 @@ async def ci_dev_startup() -> None:
     await MONGO_DB[CONFIG.gateways_collection].insert_many(data)
 
 
-async def load_optimade_providers_databases() -> None:  # pylint: disable=too-many-branches,too-many-statements,too-many-locals
+async def load_optimade_providers_databases() -> None:
     """Load in the providers' OPTIMADE databases from Materials-Consortia
 
     Utilize the Materials-Consortia list of OPTIMADE providers at
@@ -92,8 +97,8 @@ async def load_optimade_providers_databases() -> None:  # pylint: disable=too-ma
 
     async with httpx.AsyncClient() as client:
         providers = await client.get(
-            f"https://providers.optimade.org/v{__api_version__.split('.', maxsplit=1)[0]}"
-            "/links"
+            "https://providers.optimade.org/v"
+            f"{__api_version__.split('.', maxsplit=1)[0]}/links"
         )
 
     if providers.is_error:
@@ -188,7 +193,7 @@ async def load_optimade_providers_databases() -> None:  # pylint: disable=too-ma
             async with httpx.AsyncClient() as client:
                 try:
                     db_response = await client.get(
-                        f"{str(get_resource_attribute(database, 'attributes.base_url')).rstrip('/')}"  # pylint: disable=line-too-long
+                        f"{str(get_resource_attribute(database, 'attributes.base_url')).rstrip('/')}"  # noqa: E501
                         f"{BASE_URL_PREFIXES['major']}/structures",
                     )
                 except httpx.ReadTimeout:

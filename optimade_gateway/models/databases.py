@@ -1,5 +1,4 @@
 """Pydantic models/schemas for the LinksResource used in /databases"""
-# pylint: disable=no-self-argument,line-too-long
 from typing import Optional, Union
 
 from optimade.models import Link, LinksResourceAttributes

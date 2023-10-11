@@ -1,5 +1,4 @@
 """Pydantic models/schemas for the Search resource."""
-# pylint: disable=no-self-argument
 import warnings
 from typing import Set
 
@@ -26,26 +25,26 @@ class Search(BaseModel):
     database_ids: Set[str] = Field(
         set(),
         description=(
-            "A list of registered database IDs. Go to `/databases` to get all registered"
-            " databases."
+            "A list of registered database IDs. Go to `/databases` to get all "
+            "registered databases."
         ),
     )
     optimade_urls: Set[AnyUrl] = Field(
         set(),
         description=(
-            "A list of OPTIMADE base URLs. If a versioned base URL is supplied it will be"
-            " used as is, as long as it represents a supported version. If an "
-            "un-versioned base URL, standard version negotiation will be conducted to get"
-            " the versioned base URL, which will be used as long as it represents a "
-            "supported version. Note, a single URL can be supplied as well, and it will "
-            "automatically be wrapped in a list in the server logic."
+            "A list of OPTIMADE base URLs. If a versioned base URL is supplied it will "
+            "be used as is, as long as it represents a supported version. If an "
+            "un-versioned base URL, standard version negotiation will be conducted to "
+            "get the versioned base URL, which will be used as long as it represents a "
+            "supported version. Note, a single URL can be supplied as well, and it will"
+            " automatically be wrapped in a list in the server logic."
         ),
     )
     endpoint: str = Field(
         "structures",
         description=(
-            "The entry endpoint queried. According to the OPTIMADE specification, this is"
-            " the same as the resource's type."
+            "The entry endpoint queried. According to the OPTIMADE specification, this "
+            "is the same as the resource's type."
         ),
     )
 

@@ -8,8 +8,14 @@ from warnings import warn
 from optimade_gateway.warnings import OptimadeGatewayWarning
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    # pylint: disable=unused-import,ungrouped-imports
-    from typing import List, Mapping, Union
+    import platform
+
+    if platform.python_version() >= "3.9.0":
+        from collections.abc import Mapping
+    else:
+        from typing import Mapping
+
+    from typing import List, Union
 
     from optimade_gateway.models.queries import OptimadeQueryParameters
 
@@ -50,7 +56,7 @@ async def prepare_query_filter(
         for database_id in database_ids:
             if matched_id.startswith(f"{database_id}/"):
                 # Database found
-                updated_filter[database_id] = updated_filter[database_id].replace(  # type: ignore[union-attr]  # pylint: disable=line-too-long
+                updated_filter[database_id] = updated_filter[database_id].replace(  # type: ignore[union-attr]
                     f"{database_id}/", "", 1
                 )
                 break
@@ -59,10 +65,10 @@ async def prepare_query_filter(
                 OptimadeGatewayWarning(
                     title="Non-Unique Entry ID",
                     detail=(
-                        f"The passed entry ID <id={matched_id}> may be ambiguous! To get"
-                        " a specific structures entry, one can prepend the ID with a "
-                        "database ID belonging to the gateway, followed by a forward "
-                        f"slash, e.g., '{database_ids[0]}/<local_database_ID>'. "
+                        f"The passed entry ID <id={matched_id}> may be ambiguous! To "
+                        "get a specific structures entry, one can prepend the ID with "
+                        "a database ID belonging to the gateway, followed by a forward"
+                        f" slash, e.g., '{database_ids[0]}/<local_database_ID>'. "
                         f"Available databases for this gateway: {database_ids}"
                     ),
                 )

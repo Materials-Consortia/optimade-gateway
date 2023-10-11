@@ -1,5 +1,4 @@
 """Utility functions for the `queries` module."""
-# pylint: disable=import-outside-toplevel
 from datetime import datetime
 from os import getenv
 from typing import TYPE_CHECKING
@@ -10,7 +9,6 @@ from optimade_gateway.common.utils import clean_python_types
 from optimade_gateway.routers.utils import collection_factory
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    # pylint: disable=unused-import,ungrouped-imports
     from typing import Any, Dict, Optional, Union
 
     from pydantic import BaseModel
@@ -19,7 +17,7 @@ if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
     from optimade_gateway.models import QueryResource
 
 
-async def update_query(  # pylint: disable=too-many-branches
+async def update_query(
     query: "QueryResource",
     field: str,
     value: "Any",

@@ -6,7 +6,6 @@ This file describes the router for:
 
 where, `entry` may be left out.
 """
-# pylint: disable=import-outside-toplevel
 from fastapi import APIRouter, Request
 from optimade import __api_version__
 from optimade.models import (

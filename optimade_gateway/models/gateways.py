@@ -1,5 +1,4 @@
 """Pydantic models/schemas for the Gateways resource."""
-# pylint: disable=no-self-argument,too-few-public-methods
 import warnings
 from typing import List, Optional, Set
 
@@ -18,7 +17,9 @@ class GatewayResourceAttributes(EntryResourceAttributes):
 
     databases: List[LinksResource] = Field(
         ...,
-        description="List of databases (OPTIMADE 'links') to be queried in this gateway.",
+        description=(
+            "List of databases (OPTIMADE 'links') to be queried in this gateway."
+        ),
     )
 
     @validator("databases", each_item=True)
