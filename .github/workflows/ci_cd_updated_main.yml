@@ -24,7 +24,7 @@ jobs:
       package_dirs: optimade_gateway
       update_docs_landing_page: true
       python_version: "3.8"
-      doc_extras: "[dev]"
+      doc_extras: "[docs]"
       exclude_files: |
         __init__.py
         run.py
