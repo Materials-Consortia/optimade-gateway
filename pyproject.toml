@@ -12,6 +12,7 @@ disable = [
     "duplicate-code",
     "no-name-in-module"
 ]
+max-args = 10
 
 [tool.pytest.ini_options]
 minversion = "7.0"
