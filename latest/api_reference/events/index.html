@@ -1507,7 +1507,7 @@ data.</p>
     <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;OPTIMADE_MONGO_DATABASE&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;optimade_gateway_dev&quot;</span><span class="p">:</span>
         <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
             <span class="s2">&quot;Running in development mode - Will load test gateways (after dropping the&quot;</span>
-            <span class="s2">&quot;collection)!&quot;</span>
+            <span class="s2">&quot; collection)!&quot;</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Not in CI or development mode - will start normally.&quot;</span><span class="p">)</span>
