@@ -7,29 +7,22 @@ if TYPE_CHECKING:
     from pathlib import Path
     from typing import Awaitable, Callable
 
-    try:
-        from typing import Literal
-    except ImportError:
-        from typing_extensions import Literal
-
-    from fastapi import FastAPI
-    from httpx import Response
+    from ..conftest import AsyncGatewayClient
 
 
 @pytest.mark.usefixtures("reset_db_after")
 async def test_get_search(
-    client: (
-        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
-    ),
+    client: "AsyncGatewayClient",
     mock_gateway_responses: "Callable[[dict], None]",
     get_gateway: "Callable[[str], Awaitable[dict]]",
     caplog: pytest.LogCaptureFixture,
-):
+) -> None:
     """Test GET /search
 
     By using the gateway "twodbs", but adding the versioned part to the base URL,
-    this should ensure a new gateway is created, specifically for use with these versioned
-    base URLs, but we can reuse the mock_gateway_responses for the "twodbs" gateway.
+    this should ensure a new gateway is created, specifically for use with these
+    versioned base URLs, but we can reuse the mock_gateway_responses for the "twodbs"
+    gateway.
     """
     from optimade_gateway.models import QueriesResponseSingle
 
@@ -60,13 +53,11 @@ async def test_get_search(
 
 
 async def test_get_search_existing_gateway(
-    client: (
-        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
-    ),
+    client: "AsyncGatewayClient",
     mock_gateway_responses: "Callable[[dict], None]",
     get_gateway: "Callable[[str], Awaitable[dict]]",
     caplog: pytest.LogCaptureFixture,
-):
+) -> None:
     """Test GET /search for base URLs matching an existing gateway"""
     from optimade_gateway.models import QueriesResponseSingle
 
@@ -120,13 +111,11 @@ async def test_get_search_existing_gateway(
 
 
 async def test_get_search_not_finishing(
-    client: (
-        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
-    ),
+    client: "AsyncGatewayClient",
     mock_gateway_responses: "Callable[[dict], None]",
     get_gateway: "Callable[[str], Awaitable[dict]]",
     caplog: pytest.LogCaptureFixture,
-):
+) -> None:
     """Test GET /search for unfinished query (redirect to query URL)"""
     from optimade_gateway.models.queries import GatewayQueryResponse, QueryState
     from optimade_gateway.models.responses import QueriesResponseSingle
@@ -171,13 +160,11 @@ async def test_get_search_not_finishing(
 
 
 async def test_get_as_optimade(
-    client: (
-        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
-    ),
+    client: "AsyncGatewayClient",
     mock_gateway_responses: "Callable[[dict], None]",
     get_gateway: "Callable[[str], Awaitable[dict]]",
     caplog: pytest.LogCaptureFixture,
-):
+) -> None:
     """Test GET /search with `as_optimade=True`
 
     This should be equivalent of `GET /gateways/{gateway_id}/structures`.
@@ -216,7 +203,10 @@ async def test_get_as_optimade(
     assert len(response.data) == query_params["page_limit"] * len(gateway["databases"])
 
     for database in gateway["databases"]:
-        url = f"{database['attributes']['base_url']}/structures?page_limit={query_params['page_limit']}"
+        url = (
+            f"{database['attributes']['base_url']}/structures"
+            f"?page_limit={query_params['page_limit']}"
+        )
         db_response = httpx_get(url)
         assert (
             db_response.status_code == 200
@@ -238,10 +228,13 @@ async def test_get_as_optimade(
     assert more_data_available == response.meta.more_data_available
 
     assert data == response.dict(exclude_unset=True, exclude_none=True)["data"], (
-        f"IDs in test not in response: {set([_['id'] for _ in data]) - set([_['id'] for _ in response.dict(exclude_unset=True)['data']])}\n\n"
-        f"IDs in response not in test: {set([_['id'] for _ in response.dict(exclude_unset=True)['data']]) - set([_['id'] for _ in data])}\n\n"
+        "IDs in test not in response: "
+        f"{set([_['id'] for _ in data]) - set([_['id'] for _ in response.dict(exclude_unset=True)['data']])}\n\n"  # noqa: E501
+        "IDs in response not in test: "
+        f"{set([_['id'] for _ in response.dict(exclude_unset=True)['data']]) - set([_['id'] for _ in data])}\n\n"  # noqa: E501
         f"A /search datum: {response.dict(exclude_unset=True)['data'][0]}\n\n"
-        f"A retrieved datum: {[_ for _ in data if _['id'] == response.dict(exclude_unset=True)['data'][0]['id']][0]}"
+        f"A retrieved datum: "
+        f"{[_ for _ in data if _['id'] == response.dict(exclude_unset=True)['data'][0]['id']][0]}"  # noqa: E501
     )
 
     assert "A gateway was found and reused for a query" in caplog.text, caplog.text
@@ -250,19 +243,18 @@ async def test_get_as_optimade(
 
 @pytest.mark.usefixtures("reset_db_after")
 async def test_post_search(
-    client: (
-        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
-    ),
+    client: "AsyncGatewayClient",
     mock_gateway_responses: "Callable[[dict], None]",
     get_gateway: "Callable[[str], Awaitable[dict]]",
     top_dir: "Path",
     caplog: pytest.LogCaptureFixture,
-):
+) -> None:
     """Test POST /search
 
     By using the gateway "twodbs", but adding the versioned part to the base URL,
-    this should ensure a new gateway is created, specifically for use with these versioned
-    base URLs, but we can reuse the mock_gateway_responses for the "twodbs" gateway.
+    this should ensure a new gateway is created, specifically for use with these
+    versioned base URLs, but we can reuse the mock_gateway_responses for the "twodbs"
+    gateway.
     """
     import asyncio
     import json
@@ -305,7 +297,10 @@ async def test_post_search(
     assert (
         datum.attributes.query_parameters.dict()
         == OptimadeQueryParameters(**data["query_parameters"]).dict()
-    ), f"Response: {datum.attributes.query_parameters!r}\n\nTest data: {OptimadeQueryParameters(**data['query_parameters'])!r}"
+    ), (
+        f"Response: {datum.attributes.query_parameters!r}\n\n"
+        f"Test data: {OptimadeQueryParameters(**data['query_parameters'])!r}"
+    )
 
     assert datum.attributes.state in [QueryState.CREATED, QueryState.STARTED]
     assert datum.attributes.response is None
@@ -322,13 +317,11 @@ async def test_post_search(
 
 
 async def test_post_search_existing_gateway(
-    client: (
-        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
-    ),
+    client: "AsyncGatewayClient",
     mock_gateway_responses: "Callable[[dict], None]",
     get_gateway: "Callable[[str], Awaitable[dict]]",
     caplog: pytest.LogCaptureFixture,
-):
+) -> None:
     """Test POST /search for base URLs matching an existing gateway"""
     import asyncio
 
@@ -389,7 +382,10 @@ async def test_post_search_existing_gateway(
         assert (
             datum.attributes.query_parameters.dict()
             == OptimadeQueryParameters(**gateway_create_data["query_parameters"]).dict()
-        ), f"Response: {datum.attributes.query_parameters!r}\n\nTest data: {OptimadeQueryParameters(**gateway_create_data['query_parameters'])!r}"
+        ), (
+            f"Response: {datum.attributes.query_parameters!r}\n\nTest data: "
+            f"{OptimadeQueryParameters(**gateway_create_data['query_parameters'])!r}"
+        )
 
         assert datum.attributes.state in [QueryState.CREATED, QueryState.STARTED]
         assert datum.attributes.response is None
@@ -402,17 +398,15 @@ async def test_post_search_existing_gateway(
 
 @pytest.mark.usefixtures("reset_db_after")
 async def test_sort_no_effect(
-    client: (
-        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
-    ),
+    client: "AsyncGatewayClient",
     get_gateway: "Callable[[str], Awaitable[dict]]",
     mock_gateway_responses: "Callable[[dict], None]",
-):
+) -> None:
     """Test GET and POST /search with the `sort` query parameter
 
-    Currently, the `sort` query parameter should not have an effect when used with this endpoint.
-    This means if the `sort` parameter is used, the response should not change - it should be
-    ignored.
+    Currently, the `sort` query parameter should not have an effect when used with this
+    endpoint. This means if the `sort` parameter is used, the response should not
+    change - it should be ignored.
     """
     from optimade.models import Warnings
 

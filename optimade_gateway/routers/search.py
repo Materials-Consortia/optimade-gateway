@@ -85,8 +85,9 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
         msg = "No (valid) OPTIMADE URLs with:"
         if search.database_ids:
             msg += (
-                f"\n  Database IDs: {search.database_ids} and corresponding found URLs: "
-                f"{[get_resource_attribute(database, 'attributes.base_url') for database in databases]}"
+                f"\n  Database IDs: {search.database_ids} and corresponding found "
+                "URLs: "
+                f"{[get_resource_attribute(database, 'attributes.base_url') for database in databases]}"  # noqa: E501
             )
         if search.optimade_urls:
             msg += f"\n  Passed OPTIMADE URLs: {search.optimade_urls}"
@@ -137,9 +138,9 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
         )
     else:
         LOGGER.error(
-            "Found more database entries in MongoDB than then number of passed base URLs."
-            " This suggests ambiguity in the base URLs of databases stored in MongoDB.\n"
-            "  base_urls: %s\n  databases %s",
+            "Found more database entries in MongoDB than then number of passed base "
+            "URLs. This suggests ambiguity in the base URLs of databases stored in "
+            "MongoDB.\n  base_urls: %s\n  databases %s",
             base_urls,
             databases,
         )
@@ -204,9 +205,9 @@ async def get_search(
         seconds before returning the query, if it has not finished before.
     1. Return query - similar to `GET /queries/{query_id}`.
 
-    This endpoint works similarly to `GET /queries/{query_id}`, where one passes the query
-    parameters directly in the URL, instead of first POSTing a query and then going to its
-    URL. Hence, a
+    This endpoint works similarly to `GET /queries/{query_id}`, where one passes the
+    query parameters directly in the URL, instead of first POSTing a query and then
+    going to its URL. Hence, a
     [`QueryResponseSingle`][optimade_gateway.models.responses.QueriesResponseSingle] is
     the standard response model for this endpoint.
 
@@ -253,9 +254,7 @@ async def get_search(
 
     once = True
     start_time = time()
-    while (
-        time() < (start_time + search_params.timeout) or once
-    ):
+    while time() < (start_time + search_params.timeout) or once:
         # Make sure to run this at least once (e.g., if timeout=0)
         once = False
 

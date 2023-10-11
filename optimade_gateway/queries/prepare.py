@@ -58,10 +58,10 @@ async def prepare_query_filter(
                 OptimadeGatewayWarning(
                     title="Non-Unique Entry ID",
                     detail=(
-                        f"The passed entry ID <id={matched_id}> may be ambiguous! To get"
-                        " a specific structures entry, one can prepend the ID with a "
-                        "database ID belonging to the gateway, followed by a forward "
-                        f"slash, e.g., '{database_ids[0]}/<local_database_ID>'. "
+                        f"The passed entry ID <id={matched_id}> may be ambiguous! To "
+                        "get a specific structures entry, one can prepend the ID with "
+                        "a database ID belonging to the gateway, followed by a forward"
+                        f" slash, e.g., '{database_ids[0]}/<local_database_ID>'. "
                         f"Available databases for this gateway: {database_ids}"
                     ),
                 )

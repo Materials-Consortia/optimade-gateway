@@ -42,8 +42,8 @@ class CheckWronglyVersionedBaseUrlsGateways(BaseHTTPMiddleware):
             if match.group("version") not in BASE_URL_PREFIXES.values():
                 raise VersionNotSupported(
                     detail=(
-                        f"The parsed versioned base URL {match.group('version')!r} from "
-                        f"{url} is not supported by this implementation. "
+                        f"The parsed versioned base URL {match.group('version')!r} "
+                        f"from {url} is not supported by this implementation. "
                         "Supported versioned base URLs are: "
                         f"{', '.join(BASE_URL_PREFIXES.values())}"
                     )

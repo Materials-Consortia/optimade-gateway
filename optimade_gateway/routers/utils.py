@@ -89,16 +89,17 @@ async def aretrieve_queryable_properties(
     Reference to the function in the `optimade` API documentation:
     [`retrieve_queryable_properties()`](https://www.optimade.org/optimade-python-tools/api_reference/server/schemas/#optimade.server.schemas.retrieve_queryable_properties).
 
-    Recursively loops through the schema of a pydantic model and resolves all references,
-    returning a dictionary of all the OPTIMADE-queryable properties of that model.
+    Recursively loops through the schema of a pydantic model and resolves all
+    references, returning a dictionary of all the OPTIMADE-queryable properties of that
+    model.
 
     Parameters:
         schema: The schema of the pydantic model.
         queryable_properties: The list of properties to find in the schema.
 
     Returns:
-        A flat dictionary with properties as keys, containing the field description, unit,
-        sortability, support level, queryability and type, where provided.
+        A flat dictionary with properties as keys, containing the field description,
+        unit, sortability, support level, queryability and type, where provided.
 
     """
     return retrieve_queryable_properties(
@@ -130,7 +131,8 @@ async def resource_factory(
 
     Currently supported resources:
 
-    - `"databases"` ([`DatabaseCreate`][optimade_gateway.models.databases.DatabaseCreate]
+    - `"databases"`
+        ([`DatabaseCreate`][optimade_gateway.models.databases.DatabaseCreate]
         ->
         [`LinksResource`](https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResource))
     - `"gateways"` ([`GatewayCreate`][optimade_gateway.models.gateways.GatewayCreate] ->
@@ -148,8 +150,8 @@ async def resource_factory(
         model, the `base_url.href` value is used to query the MongoDB.
 
     === "Gateways"
-        The collected list of `databases.attributes.base_url` values is considered unique
-        across all gateways.
+        The collected list of `databases.attributes.base_url` values is considered
+        unique across all gateways.
 
         In the database, the search is done as a combination of the length/size of the
         `databases`' Python list/MongoDB array and a match on all (using the MongoDB
@@ -184,7 +186,8 @@ async def resource_factory(
     Returns:
         Two things in a tuple:
 
-        - Either a [`GatewayResource`][optimade_gateway.models.gateways.GatewayResource];
+        - Either a
+            [`GatewayResource`][optimade_gateway.models.gateways.GatewayResource];
             a [`QueryResource`][optimade_gateway.models.queries.QueryResource]; or a
             [`LinksResource`](https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResource)
             and
@@ -216,8 +219,8 @@ async def resource_factory(
         }
         if unknown_ids:
             raise OptimadeGatewayError(
-                "When using `resource_factory()` for `GatewayCreate`, `database_ids` MUST"
-                f" not include unknown IDs. Passed unknown IDs: {unknown_ids}"
+                "When using `resource_factory()` for `GatewayCreate`, `database_ids` "
+                f"MUST not include unknown IDs. Passed unknown IDs: {unknown_ids}"
             )
 
         mongo_query = {
@@ -329,9 +332,9 @@ async def collection_factory(name: str) -> AsyncMongoCollection:
         )
     else:
         raise ValueError(
-            f"{name!r} is not a valid entry-endpoint resource collection name. Configured"
-            " valid names: "
-            f"{(CONFIG.databases_collection, CONFIG.gateways_collection, CONFIG.queries_collection, CONFIG.links_collection)}"
+            f"{name!r} is not a valid entry-endpoint resource collection name. "
+            "Configured valid names: "
+            f"{(CONFIG.databases_collection, CONFIG.gateways_collection, CONFIG.queries_collection, CONFIG.links_collection)}"  # noqa: E501
         )
 
     COLLECTIONS[name] = AsyncMongoCollection(

@@ -114,7 +114,8 @@ async def post_gateways(
 async def get_gateway(request: Request, gateway_id: str) -> GatewaysResponseSingle:
     """`GET /gateways/{gateway ID}`
 
-    Return a single [`GatewayResource`][optimade_gateway.models.gateways.GatewayResource].
+    Return a single
+    [`GatewayResource`][optimade_gateway.models.gateways.GatewayResource].
     """
     collection = await collection_factory(CONFIG.gateways_collection)
     result = await get_valid_resource(collection, gateway_id)

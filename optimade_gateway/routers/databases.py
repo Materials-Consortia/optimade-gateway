@@ -8,8 +8,8 @@ where, `id` may be left out.
 
 Database resources represent the available databases that may be used for the gateways.
 
-One can register a new database (by using `POST /databases`) or look through the available
-databases (by using `GET /databases`) using standard OPTIMADE filtering.
+One can register a new database (by using `POST /databases`) or look through the
+available databases (by using `GET /databases`) using standard OPTIMADE filtering.
 """
 from fastapi import APIRouter, Depends, Request
 from optimade.models import ToplevelLinks

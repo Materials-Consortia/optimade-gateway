@@ -33,10 +33,10 @@ class DatabasesResponseSingle(EntryResponseOne):
     data: Optional[LinksResource] = Field(
         ...,
         description=(
-            "A unique OPTIMADE links resource object.\nThe OPTIMADE links resource object"
-            " has just been created or found according to the specific query parameter(s)"
-            " or URL id.\nIt represents an OPTIMADE database that can be used for queries"
-            " in gateways."
+            "A unique OPTIMADE links resource object.\nThe OPTIMADE links resource "
+            "object has just been created or found according to the specific query "
+            "parameter(s) or URL id.\nIt represents an OPTIMADE database that can be "
+            "used for queries in gateways."
         ),
     )
 
@@ -81,8 +81,8 @@ class QueriesResponseSingle(EntryResponseOne):
     data: Optional[QueryResource] = Field(
         ...,
         description=(
-            "A unique OPTIMADE gateway query resource object.\nThe OPTIMADE gateway query"
-            " resource object has just been created or found according to the specific "
-            "query parameter(s) or URL id."
+            "A unique OPTIMADE gateway query resource object.\nThe OPTIMADE gateway "
+            "query resource object has just been created or found according to the "
+            "specific query parameter(s) or URL id."
         ),
     )

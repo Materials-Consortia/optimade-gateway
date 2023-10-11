@@ -49,7 +49,8 @@ def get_resource_attribute(
 ) -> "Any":
     """Return a resource's field's value
 
-    Get the field value no matter if the resource is a pydantic model or a Python dictionary.
+    Get the field value no matter if the resource is a pydantic model or a Python
+    dictionary.
 
     Determine ambiguous field values and return them if desired (`disambiguate`).
     For example, if
@@ -85,8 +86,8 @@ def get_resource_attribute(
         return default
     else:
         raise TypeError(
-            "resource must be either a pydantic model or a Python dictionary, it was of "
-            f"type {type(resource)!r}"
+            "resource must be either a pydantic model or a Python dictionary, it was "
+            f"of type {type(resource)!r}"
         )
 
     fields = field.split(".")

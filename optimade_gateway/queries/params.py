@@ -34,10 +34,10 @@ class SearchQueryParams:
             **Example**: `structures`
 
         timeout (int): Timeout time (in seconds) to wait for a query to finish before
-            redirecting (*after* starting the query). Note, if the query has not finished
-            after the timeout time, a redirection will still be performed, but to a
-            zero-results page, which can be refreshed to get the finished query (once it
-            has finished).
+            redirecting (*after* starting the query). Note, if the query has not
+            finished after the timeout time, a redirection will still be performed, but
+            to a zero-results page, which can be refreshed to get the finished query
+            (once it has finished).
 
         as_optimade (bool): Return the response as a standard OPTIMADE entry listing
             endpoint response. Otherwise, the response will be based on the
@@ -62,9 +62,9 @@ class SearchQueryParams:
             description=(
                 "A unique list of OPTIMADE base URLs. If a versioned base URL is "
                 "supplied it will be used as is, as long as it represents a supported "
-                "version. If an un-versioned base URL, standard version negotiation will"
-                " be conducted to get the versioned base URL, which will be used as long"
-                " as it represents a supported version."
+                "version. If an un-versioned base URL, standard version negotiation "
+                "will be conducted to get the versioned base URL, which will be used "
+                "as long as it represents a supported version."
             ),
         ),
         endpoint: str = Query(
@@ -79,9 +79,9 @@ class SearchQueryParams:
             description=(
                 "Timeout time (in seconds) to wait for a query to finish before "
                 "redirecting (*after* starting the query). Note, if the query has not "
-                "finished after the timeout time, a redirection will still be performed,"
-                " but to a zero-results page, which can be refreshed to get the finished"
-                " query (once it has finished)."
+                "finished after the timeout time, a redirection will still be "
+                "performed, but to a zero-results page, which can be refreshed to get "
+                "the finished query (once it has finished)."
             ),
         ),
         as_optimade: bool = Query(

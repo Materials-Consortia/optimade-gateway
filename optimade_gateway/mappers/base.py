@@ -1,6 +1,8 @@
 """Base resource mapper.
 
-Based on the [`BaseResourceMapper`](https://www.optimade.org/optimade-python-tools/api_reference/server/mappers/entries/#optimade.server.mappers.entries.BaseResourceMapper) in OPTIMADE Python tools.
+Based on the
+[`BaseResourceMapper`](https://www.optimade.org/optimade-python-tools/api_reference/server/mappers/entries/#optimade.server.mappers.entries.BaseResourceMapper)
+in OPTIMADE Python tools.
 """
 from os import getenv
 from typing import TYPE_CHECKING

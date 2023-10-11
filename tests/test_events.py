@@ -11,7 +11,9 @@ if TYPE_CHECKING:
 
 
 @pytest.mark.usefixtures("reset_db_after")
-async def test_ci_dev_startup_ci(caplog: pytest.LogCaptureFixture, top_dir: "Path"):
+async def test_ci_dev_startup_ci(
+    caplog: pytest.LogCaptureFixture, top_dir: "Path"
+) -> None:
     """Test ci_dev_startup() if env var CI=true"""
     import json
     import os
@@ -27,8 +29,8 @@ async def test_ci_dev_startup_ci(caplog: pytest.LogCaptureFixture, top_dir: "Pat
         # Reference: https://docs.github.com/en/actions/reference/environment-variables#default-environment-variables
         os.environ["CI"] = "true"
 
-        # Change current gateway to assure that it is reverted (collection dropped and re-inserted)
-        # during `ci_dev_startup()`
+        # Change current gateway to assure that it is reverted (collection dropped and
+        # re-inserted) during `ci_dev_startup()`
         await MONGO_DB[CONFIG.gateways_collection].update_one(
             {"id": "singledb"},
             {"$set": {"databases": []}},
@@ -63,7 +65,9 @@ async def test_ci_dev_startup_ci(caplog: pytest.LogCaptureFixture, top_dir: "Pat
 
 
 @pytest.mark.usefixtures("reset_db_after")
-async def test_ci_dev_startup_dev(caplog: pytest.LogCaptureFixture, top_dir: "Path"):
+async def test_ci_dev_startup_dev(
+    caplog: pytest.LogCaptureFixture, top_dir: "Path"
+) -> None:
     """Test ci_dev_startup() if env var OPTIMADE_MONGO_DATABASE=optimade_gateway_dev"""
     import json
     import os
@@ -82,8 +86,8 @@ async def test_ci_dev_startup_dev(caplog: pytest.LogCaptureFixture, top_dir: "Pa
 
         os.environ["OPTIMADE_MONGO_DATABASE"] = "optimade_gateway_dev"
 
-        # Change current gateway to assure that it is reverted (collection dropped and re-inserted)
-        # during `ci_dev_startup()`
+        # Change current gateway to assure that it is reverted (collection dropped and
+        # re-inserted) during `ci_dev_startup()`
         await MONGO_DB[CONFIG.gateways_collection].update_one(
             {"id": "singledb"},
             {"$set": {"databases": []}},
@@ -120,7 +124,7 @@ async def test_ci_dev_startup_dev(caplog: pytest.LogCaptureFixture, top_dir: "Pa
 
 
 @pytest.mark.usefixtures("reset_db_after")
-async def test_ci_dev_startup_nothing(caplog: pytest.LogCaptureFixture):
+async def test_ci_dev_startup_nothing(caplog: pytest.LogCaptureFixture) -> None:
     """Test ci_dev_startup() if not in CI or development mode"""
     import os
 
@@ -132,15 +136,15 @@ async def test_ci_dev_startup_nothing(caplog: pytest.LogCaptureFixture):
     org_env_var = os.getenv("OPTIMADE_MONGO_DATABASE")
 
     try:
-        # Remove "CI" and "OPTIMADE_MONGO_DATABASE" env var to avoid those function execution
-        # branches
+        # Remove "CI" and "OPTIMADE_MONGO_DATABASE" env var to avoid those function
+        # execution branches
         if "CI" in os.environ:
             del os.environ["CI"]
         if "OPTIMADE_MONGO_DATABASE" in os.environ:
             del os.environ["OPTIMADE_MONGO_DATABASE"]
 
-        # Change current gateway to assure that it is NOT reverted (collection dropped and
-        # re-inserted) during `ci_dev_startup()`
+        # Change current gateway to assure that it is NOT reverted (collection dropped
+        # and re-inserted) during `ci_dev_startup()`
         await MONGO_DB[CONFIG.gateways_collection].update_one(
             {"id": "singledb"},
             {"$set": {"databases": []}},
@@ -174,7 +178,7 @@ async def test_ci_dev_startup_nothing(caplog: pytest.LogCaptureFixture):
             os.environ["OPTIMADE_MONGO_DATABASE"] = org_env_var
 
 
-async def test_load_databases_but_dont(caplog: pytest.LogCaptureFixture):
+async def test_load_databases_but_dont(caplog: pytest.LogCaptureFixture) -> None:
     """Test load_optimade_providers_databases() but with current CONFIG of False"""
     from optimade_gateway.common.config import CONFIG
     from optimade_gateway.events import load_optimade_providers_databases
@@ -191,8 +195,9 @@ async def test_load_databases_but_dont(caplog: pytest.LogCaptureFixture):
 
 async def test_load_databases_providers_error(
     httpx_mock: "HTTPXMock", caplog: pytest.LogCaptureFixture, top_dir: "Path"
-):
-    """Test load_optimade_providers_databases() when providers.optimade.org returns != 200"""
+) -> None:
+    """Test load_optimade_providers_databases() when providers.optimade.org
+    returns != 200"""
     import json
     import re
 
@@ -220,8 +225,8 @@ async def test_load_databases_providers_error(
         await load_optimade_providers_databases()
 
         assert (
-            "Response from Materials-Consortia's list of OPTIMADE providers was not successful"
-            in caplog.text
+            "Response from Materials-Consortia's list of OPTIMADE providers was not "
+            "successful" in caplog.text
         )
         assert (
             "Registering Materials-Consortia list of OPTIMADE providers' databases"
@@ -240,9 +245,9 @@ async def test_load_databases_providers_error(
 
 async def test_load_databases_no_databases(
     httpx_mock: "HTTPXMock", caplog: pytest.LogCaptureFixture, top_dir: "Path"
-):
-    """Test load_optimade_providers_databases() when all providers have index meta-dbs with no
-    valid databases"""
+) -> None:
+    """Test load_optimade_providers_databases() when all providers have index meta-dbs
+    with no valid databases"""
     import json
 
     from optimade_gateway.common.config import CONFIG
@@ -295,8 +300,8 @@ async def test_load_databases_no_databases(
         await load_optimade_providers_databases()
 
         assert (
-            "Response from Materials-Consortia's list of OPTIMADE providers was not successful"
-            not in caplog.text
+            "Response from Materials-Consortia's list of OPTIMADE providers was not "
+            "successful" not in caplog.text
         )
         assert (
             "Registering Materials-Consortia list of OPTIMADE providers' databases"
@@ -306,47 +311,49 @@ async def test_load_databases_no_databases(
         for provider in providers_test_data["data"]:
             if provider["id"] in ("exmpl", "optimade"):
                 assert (
-                    f"- {provider['attributes']['name']} (id={provider['id']!r}) - Skipping: Not a real provider."
-                    in caplog.text
+                    f"- {provider['attributes']['name']} (id={provider['id']!r}) - "
+                    "Skipping: Not a real provider." in caplog.text
                 )
             elif provider["id"] in ("mcloud", "odbx"):
                 assert (
-                    f"- {provider['attributes']['name']} (id={provider['id']!r}) - Skipping: Not a real provider."
-                    not in caplog.text
+                    f"- {provider['attributes']['name']} (id={provider['id']!r}) - "
+                    "Skipping: Not a real provider." not in caplog.text
                 )
                 assert (
-                    f"- {provider['attributes']['name']} (id={provider['id']!r}) - Skipping: No base URL information."
-                    not in caplog.text
+                    f"- {provider['attributes']['name']} (id={provider['id']!r}) - "
+                    "Skipping: No base URL information." not in caplog.text
                 )
                 assert (
-                    f"- {provider['attributes']['name']} (id={provider['id']!r}) - Processing"
-                    in caplog.text
+                    f"- {provider['attributes']['name']} (id={provider['id']!r}) - "
+                    "Processing" in caplog.text
                 )
             else:
                 assert (
-                    f"- {provider['attributes']['name']} (id={provider['id']!r}) - Skipping: No base URL information."
-                    in caplog.text
+                    f"- {provider['attributes']['name']} (id={provider['id']!r}) - "
+                    "Skipping: No base URL information." in caplog.text
                 )
 
-        # Since 'mcloud' returns the standard exmpl index meta-db response, there will be a single
-        # CHILD db with 'null' base_url
+        # Since 'mcloud' returns the standard exmpl index meta-db response, there will
+        # be a single CHILD db with 'null' base_url
         exmpl_child_db = [
             _ for _ in no_provider_databases_response["data"] if _["id"] == "exmpl"
         ][0]
         assert (
-            f"  - {exmpl_child_db['attributes']['name']} (id={exmpl_child_db['id']!r}) - Skipping: No base URL information."
-            in caplog.text
+            f"  - {exmpl_child_db['attributes']['name']} (id={exmpl_child_db['id']!r})"
+            " - Skipping: No base URL information." in caplog.text
         )
         assert (
-            f"  - {exmpl_child_db['attributes']['name']} (id={exmpl_child_db['id']!r}) - Checking versioned base URL and /structures"
-            not in caplog.text
+            f"  - {exmpl_child_db['attributes']['name']} (id={exmpl_child_db['id']!r})"
+            " - Checking versioned base URL and /structures" not in caplog.text
         )
 
-        # Since there are no CHILD dbs for 'odbx' the "skipping" log message for 'exmpl' shoud only appear once
+        # Since there are no CHILD dbs for 'odbx' the "skipping" log message for
+        # 'exmpl' shoud only appear once
         assert caplog.text.count("  - No OPTIMADE databases found.") == 1
         assert (
             caplog.text.count(
-                f"  - {exmpl_child_db['attributes']['name']} (id={exmpl_child_db['id']!r}) - Skipping: No base URL information."
+                f"  - {exmpl_child_db['attributes']['name']} "
+                f"(id={exmpl_child_db['id']!r}) - Skipping: No base URL information."
             )
             == 1
         )
@@ -369,8 +376,9 @@ async def test_load_databases_valid_databases(
     top_dir: "Path",
     get_gateway: "Callable[[str], Awaitable[dict]]",
     mock_gateway_responses: "Callable[[dict], None]",
-):
-    """Test load_optimade_providers_databases() when valid CHILD dbs are found and added"""
+) -> None:
+    """Test load_optimade_providers_databases() when valid CHILD dbs are found and
+    added"""
     import json
 
     from optimade_gateway.common.config import CONFIG
@@ -404,7 +412,8 @@ async def test_load_databases_valid_databases(
             )
         elif provider["id"] == "odbx":
             with open(top_dir / "tests/static/db_responses/index_exmpl.json") as handle:
-                # Standard exmpl response. Contains a single CHILD db with `null` base_url
+                # Standard exmpl response. Contains a single CHILD db with `null`
+                # base_url
                 httpx_mock.add_response(
                     url=url,
                     json=json.load(handle),
@@ -422,8 +431,8 @@ async def test_load_databases_valid_databases(
         await load_optimade_providers_databases()
 
         assert (
-            "Response from Materials-Consortia's list of OPTIMADE providers was not successful"
-            not in caplog.text
+            "Response from Materials-Consortia's list of OPTIMADE providers was not "
+            "successful" not in caplog.text
         )
         assert (
             "Registering Materials-Consortia list of OPTIMADE providers' databases"
@@ -435,10 +444,13 @@ async def test_load_databases_valid_databases(
                 continue
 
             assert (
-                f"  - {db['attributes']['name']} (id={db['id']!r}) - Checking versioned base URL and /structures"
-                in caplog.text
+                f"  - {db['attributes']['name']} (id={db['id']!r}) - Checking "
+                "versioned base URL and /structures" in caplog.text
             )
-            assert f"  - {db['attributes']['name']} (id={db['id']!r}) - Registered database with id={'mcloud/' + db['id']!r}"
+            assert (
+                f"  - {db['attributes']['name']} (id={db['id']!r}) - Registered "
+                f"database with id={'mcloud/' + db['id']!r}" in caplog.text
+            )
 
         # No new databases should be added based on the mock responses since ("mc2d",
         # "optimade-sample") already exist in the collection
@@ -455,8 +467,9 @@ async def test_load_databases_valid_databases(
 
 async def test_bad_provider_databases(
     httpx_mock: "HTTPXMock", caplog: pytest.LogCaptureFixture, generic_meta: dict
-):
-    """Test load_optimade_providers_databases() for a provider with no announced databases"""
+) -> None:
+    """Test load_optimade_providers_databases() for a provider with no announced
+    databases"""
     import re
 
     import httpx
@@ -584,8 +597,8 @@ async def test_bad_provider_databases(
         await load_optimade_providers_databases()
 
         assert (
-            "Response from Materials-Consortia's list of OPTIMADE providers was not successful"
-            not in caplog.text
+            "Response from Materials-Consortia's list of OPTIMADE providers was not "
+            "successful" not in caplog.text
         )
         assert (
             "Registering Materials-Consortia list of OPTIMADE providers' databases"
@@ -594,19 +607,25 @@ async def test_bad_provider_databases(
 
         for provider in mock_provider_list["data"]:
             assert (
-                f"- {provider['attributes'].get('name', 'N/A')} (id={provider['id']!r}) - Processing"
-                in caplog.text
+                f"- {provider['attributes'].get('name', 'N/A')} "
+                f"(id={provider['id']!r}) - Processing" in caplog.text
             )
 
         # No database provider
         assert caplog.text.count("  - No OPTIMADE databases found.") == 1
 
         # Timeout database
-        assert f"  - N/A (id={timeout_database_provider['data'][0]['id']!r}) - Skipping: Timeout while requesting {BASE_URL_PREFIXES['major']}/structures."
+        assert (
+            f"  - N/A (id={timeout_database_provider['data'][0]['id']!r}) - Skipping: "
+            f"Timeout while requesting {BASE_URL_PREFIXES['major']}/structures."
+            in caplog.text
+        )
 
         # Bad response database
         assert (
-            f"  - {bad_response_database_provider['data'][0]['attributes']['name']} (id={bad_response_database_provider['data'][0]['id']!r}) - Skipping: Response from {BASE_URL_PREFIXES['major']}/structures is not 200 OK."
+            f"  - {bad_response_database_provider['data'][0]['attributes']['name']} "
+            f"(id={bad_response_database_provider['data'][0]['id']!r}) - Skipping: "
+            f"Response from {BASE_URL_PREFIXES['major']}/structures is not 200 OK."
             in caplog.text
         )
 

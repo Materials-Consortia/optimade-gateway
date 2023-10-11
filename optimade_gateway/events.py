@@ -90,8 +90,8 @@ async def load_optimade_providers_databases() -> None:
 
     async with httpx.AsyncClient() as client:
         providers = await client.get(
-            f"https://providers.optimade.org/v{__api_version__.split('.', maxsplit=1)[0]}"
-            "/links"
+            "https://providers.optimade.org/v"
+            f"{__api_version__.split('.', maxsplit=1)[0]}/links"
         )
 
     if providers.is_error:
@@ -186,7 +186,7 @@ async def load_optimade_providers_databases() -> None:
             async with httpx.AsyncClient() as client:
                 try:
                     db_response = await client.get(
-                        f"{str(get_resource_attribute(database, 'attributes.base_url')).rstrip('/')}"
+                        f"{str(get_resource_attribute(database, 'attributes.base_url')).rstrip('/')}"  # noqa: E501
                         f"{BASE_URL_PREFIXES['major']}/structures",
                     )
                 except httpx.ReadTimeout:

@@ -24,7 +24,7 @@ async def process_db_response(
     database_id: str,
     query: "QueryResource",
     gateway: "GatewayResource",
-) -> "Union[List[EntryResource], List[Dict[str, Any]], EntryResource, Dict[str, Any], None]":
+) -> "Union[List[EntryResource], List[Dict[str, Any]], EntryResource, Dict[str, Any], None]":  # noqa: E501
     """Process an OPTIMADE database response.
 
     The passed `query` will be updated with the top-level `meta` information:

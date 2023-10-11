@@ -17,7 +17,9 @@ class GatewayResourceAttributes(EntryResourceAttributes):
 
     databases: List[LinksResource] = Field(
         ...,
-        description="List of databases (OPTIMADE 'links') to be queried in this gateway.",
+        description=(
+            "List of databases (OPTIMADE 'links') to be queried in this gateway."
+        ),
     )
 
     @validator("databases", each_item=True)
