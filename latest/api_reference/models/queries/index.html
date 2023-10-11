@@ -2282,8 +2282,8 @@ GatewayQueryResponse            (<span title="optimade.models.jsonapi.Response">
     <span class="n">errors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">OptimadeError</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="p">[],</span>
         <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-            <span class="s2">&quot;A list of OPTIMADE-specific JSON API error objects, where the field detail &quot;</span>
-            <span class="s2">&quot;MUST be present.&quot;</span>
+            <span class="s2">&quot;A list of OPTIMADE-specific JSON API error objects, where the field &quot;</span>
+            <span class="s2">&quot;detail MUST be present.&quot;</span>
         <span class="p">),</span>
         <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
@@ -2924,7 +2924,7 @@ QueryResource            (<a class="autorefs autorefs-internal" title="optimade_
 <span class="sd">            or an error response, if errors were returned or occurred during the query.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">optimade.server.routers.utils</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># pylint: disable=import-outside-toplevel</span>
+        <span class="kn">from</span> <span class="nn">optimade.server.routers.utils</span> <span class="kn">import</span> <span class="p">(</span>
             <span class="n">meta_values</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -2956,8 +2956,8 @@ QueryResource            (<a class="autorefs autorefs-internal" title="optimade_
                 <span class="n">errors</span><span class="o">=</span><span class="p">[</span>
                     <span class="p">{</span>
                         <span class="s2">&quot;detail&quot;</span><span class="p">:</span> <span class="p">(</span>
-                            <span class="s2">&quot;Can not return as a valid OPTIMADE response as the query has&quot;</span>
-                            <span class="s2">&quot; not yet been initialized.&quot;</span>
+                            <span class="s2">&quot;Can not return as a valid OPTIMADE response as the query &quot;</span>
+                            <span class="s2">&quot;has not yet been initialized.&quot;</span>
                         <span class="p">),</span>
                         <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;OPTIMADE_GATEWAY_QUERY_NOT_INITIALIZED&quot;</span><span class="p">,</span>
                     <span class="p">}</span>
@@ -3096,7 +3096,7 @@ or an error response, if errors were returned or occurred during the query.</p><
 <span class="sd">        or an error response, if errors were returned or occurred during the query.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">optimade.server.routers.utils</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># pylint: disable=import-outside-toplevel</span>
+    <span class="kn">from</span> <span class="nn">optimade.server.routers.utils</span> <span class="kn">import</span> <span class="p">(</span>
         <span class="n">meta_values</span><span class="p">,</span>
     <span class="p">)</span>
 
@@ -3128,8 +3128,8 @@ or an error response, if errors were returned or occurred during the query.</p><
             <span class="n">errors</span><span class="o">=</span><span class="p">[</span>
                 <span class="p">{</span>
                     <span class="s2">&quot;detail&quot;</span><span class="p">:</span> <span class="p">(</span>
-                        <span class="s2">&quot;Can not return as a valid OPTIMADE response as the query has&quot;</span>
-                        <span class="s2">&quot; not yet been initialized.&quot;</span>
+                        <span class="s2">&quot;Can not return as a valid OPTIMADE response as the query &quot;</span>
+                        <span class="s2">&quot;has not yet been initialized.&quot;</span>
                     <span class="p">),</span>
                     <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;OPTIMADE_GATEWAY_QUERY_NOT_INITIALIZED&quot;</span><span class="p">,</span>
                 <span class="p">}</span>

@@ -1662,7 +1662,7 @@ AsyncMongoCollection            (<span title="optimade.server.entry_collections.
 <span class="sd">                changes between deserialization and response.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">optimade_gateway.mongo.database</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># pylint: disable=import-outside-toplevel</span>
+        <span class="kn">from</span> <span class="nn">optimade_gateway.mongo.database</span> <span class="kn">import</span> <span class="p">(</span>
             <span class="n">MONGO_DB</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -1699,8 +1699,8 @@ AsyncMongoCollection            (<span title="optimade.server.entry_collections.
         <span class="n">warn</span><span class="p">(</span>
             <span class="n">OptimadeGatewayWarning</span><span class="p">(</span>
                 <span class="n">detail</span><span class="o">=</span><span class="p">(</span>
-                    <span class="s2">&quot;Cannot calculate length of collection using `len()`. Use `count()` &quot;</span>
-                    <span class="s2">&quot;instead.&quot;</span>
+                    <span class="s2">&quot;Cannot calculate length of collection using `len()`. Use &quot;</span>
+                    <span class="s2">&quot;`count()` instead.&quot;</span>
                 <span class="p">)</span>
             <span class="p">)</span>
         <span class="p">)</span>
@@ -1708,8 +1708,8 @@ AsyncMongoCollection            (<span title="optimade.server.entry_collections.
 
     <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="s2">&quot;List[EntryResource]&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="s2">&quot;This method cannot be used with this class and is a remnant from the parent &quot;</span>
-            <span class="s2">&quot;class. Use instead the asynchronous method `ainsert(data: &quot;</span>
+            <span class="s2">&quot;This method cannot be used with this class and is a remnant from the &quot;</span>
+            <span class="s2">&quot;parent class. Use instead the asynchronous method `ainsert(data: &quot;</span>
             <span class="s2">&quot;List[EntryResource])`.&quot;</span>
         <span class="p">)</span>
 
@@ -1726,15 +1726,15 @@ AsyncMongoCollection            (<span title="optimade.server.entry_collections.
 
     <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="s2">&quot;This method cannot be used with this class and is a remnant from the parent &quot;</span>
-            <span class="s2">&quot;class. Use instead the asynchronous method `acount(params: &quot;</span>
+            <span class="s2">&quot;This method cannot be used with this class and is a remnant from the &quot;</span>
+            <span class="s2">&quot;parent class. Use instead the asynchronous method `acount(params: &quot;</span>
             <span class="s2">&quot;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]], &quot;</span>
             <span class="s2">&quot;**kwargs)`.&quot;</span>
         <span class="p">)</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">acount</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: E501</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="s2">&quot;Any&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Count documents in Collection.</span>
@@ -1780,7 +1780,7 @@ AsyncMongoCollection            (<span title="optimade.server.entry_collections.
 
     <span class="k">def</span> <span class="nf">find</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;Union[EntryListingQueryParams, SingleEntryQueryParams]&quot;</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]&quot;</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]&quot;</span><span class="p">:</span>  <span class="c1"># noqa: E501</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fetches results and indicates if more data is available.</span>
 
@@ -1799,17 +1799,17 @@ AsyncMongoCollection            (<span title="optimade.server.entry_collections.
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="s2">&quot;This method cannot be used with this class and is a remnant from the parent &quot;</span>
-            <span class="s2">&quot;class. Use instead the asynchronous method `afind(params: &quot;</span>
-            <span class="s2">&quot;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]], criteria: &quot;</span>
-            <span class="s2">&quot;Optional[Dict[str, Any]])`.&quot;</span>
+            <span class="s2">&quot;This method cannot be used with this class and is a remnant from the &quot;</span>
+            <span class="s2">&quot;parent class. Use instead the asynchronous method `afind(params: &quot;</span>
+            <span class="s2">&quot;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]], &quot;</span>
+            <span class="s2">&quot;criteria: Optional[Dict[str, Any]])`.&quot;</span>
         <span class="p">)</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">afind</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: E501</span>
         <span class="n">criteria</span><span class="p">:</span> <span class="s2">&quot;Optional[Dict[str, Any]]&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]&quot;</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]&quot;</span><span class="p">:</span>  <span class="c1"># noqa: E501</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform the query on the underlying MongoDB Collection, handling projection</span>
 <span class="sd">        and pagination of the output.</span>
 
@@ -1928,9 +1928,10 @@ AsyncMongoCollection            (<span title="optimade.server.entry_collections.
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="s2">&quot;This method cannot be used with this class and is a remnant from the parent &quot;</span>
-            <span class="s2">&quot;class. Use instead the asynchronous method `ahandle_query_params(params: &quot;</span>
-            <span class="s2">&quot;Union[EntryListingQueryParams, SingleEntryQueryParams])`.&quot;</span>
+            <span class="s2">&quot;This method cannot be used with this class and is a remnant from the &quot;</span>
+            <span class="s2">&quot;parent class. Use instead the asynchronous method &quot;</span>
+            <span class="s2">&quot;`ahandle_query_params(params: Union[EntryListingQueryParams, &quot;</span>
+            <span class="s2">&quot;SingleEntryQueryParams])`.&quot;</span>
         <span class="p">)</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">ahandle_query_params</span><span class="p">(</span>
@@ -1964,9 +1965,9 @@ AsyncMongoCollection            (<span title="optimade.server.entry_collections.
         <span class="bp">self</span><span class="p">,</span> <span class="n">criteria</span><span class="p">:</span> <span class="s2">&quot;Dict[str, Any]&quot;</span><span class="p">,</span> <span class="n">single_entry</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Tuple[List[Dict[str, Any]], int, bool]&quot;</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="s2">&quot;This method cannot be used with this class and is a remnant from the parent &quot;</span>
-            <span class="s2">&quot;class. Use instead the asynchronous method `_arun_db_query(criteria: &quot;</span>
-            <span class="s2">&quot;Dict[str, Any], single_entry: bool)`.&quot;</span>
+            <span class="s2">&quot;This method cannot be used with this class and is a remnant from the &quot;</span>
+            <span class="s2">&quot;parent class. Use instead the asynchronous method &quot;</span>
+            <span class="s2">&quot;`_arun_db_query(criteria: Dict[str, Any], single_entry: bool)`.&quot;</span>
         <span class="p">)</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">_arun_db_query</span><span class="p">(</span>
@@ -1978,7 +1979,8 @@ AsyncMongoCollection            (<span title="optimade.server.entry_collections.
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            criteria: A dictionary representation of the query parameters.</span>
-<span class="sd">            single_entry: Whether or not the caller is expecting a single entry response.</span>
+<span class="sd">            single_entry: Whether or not the caller is expecting a single entry</span>
+<span class="sd">                response.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The list of entries from the database (without any re-mapping), the total</span>
@@ -2225,7 +2227,7 @@ changes between deserialization and response.</p></td>
 <span class="sd">            changes between deserialization and response.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">optimade_gateway.mongo.database</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># pylint: disable=import-outside-toplevel</span>
+    <span class="kn">from</span> <span class="nn">optimade_gateway.mongo.database</span> <span class="kn">import</span> <span class="p">(</span>
         <span class="n">MONGO_DB</span><span class="p">,</span>
     <span class="p">)</span>
 
@@ -2317,7 +2319,7 @@ method.</p></td>
           <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">acount</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: E501</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="s2">&quot;Any&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Count documents in Collection.</span>
@@ -2435,9 +2437,9 @@ included).</p></td>
           <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">afind</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: E501</span>
     <span class="n">criteria</span><span class="p">:</span> <span class="s2">&quot;Optional[Dict[str, Any]]&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]&quot;</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]&quot;</span><span class="p">:</span>  <span class="c1"># noqa: E501</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform the query on the underlying MongoDB Collection, handling projection</span>
 <span class="sd">    and pagination of the output.</span>
 
@@ -2750,8 +2752,8 @@ by the keyword arguments.</p>
           <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
     <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-        <span class="s2">&quot;This method cannot be used with this class and is a remnant from the parent &quot;</span>
-        <span class="s2">&quot;class. Use instead the asynchronous method `acount(params: &quot;</span>
+        <span class="s2">&quot;This method cannot be used with this class and is a remnant from the &quot;</span>
+        <span class="s2">&quot;parent class. Use instead the asynchronous method `acount(params: &quot;</span>
         <span class="s2">&quot;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]], &quot;</span>
         <span class="s2">&quot;**kwargs)`.&quot;</span>
     <span class="p">)</span>
@@ -2974,7 +2976,7 @@ for more information.</p>
           <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">find</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="s2">&quot;Union[EntryListingQueryParams, SingleEntryQueryParams]&quot;</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]&quot;</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]&quot;</span><span class="p">:</span>  <span class="c1"># noqa: E501</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Fetches results and indicates if more data is available.</span>
 
@@ -2993,10 +2995,10 @@ for more information.</p>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-        <span class="s2">&quot;This method cannot be used with this class and is a remnant from the parent &quot;</span>
-        <span class="s2">&quot;class. Use instead the asynchronous method `afind(params: &quot;</span>
-        <span class="s2">&quot;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]], criteria: &quot;</span>
-        <span class="s2">&quot;Optional[Dict[str, Any]])`.&quot;</span>
+        <span class="s2">&quot;This method cannot be used with this class and is a remnant from the &quot;</span>
+        <span class="s2">&quot;parent class. Use instead the asynchronous method `afind(params: &quot;</span>
+        <span class="s2">&quot;Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]], &quot;</span>
+        <span class="s2">&quot;criteria: Optional[Dict[str, Any]])`.&quot;</span>
     <span class="p">)</span>
 </code></pre></div>
         </details>
@@ -3279,9 +3281,10 @@ or response format.</p></td>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-        <span class="s2">&quot;This method cannot be used with this class and is a remnant from the parent &quot;</span>
-        <span class="s2">&quot;class. Use instead the asynchronous method `ahandle_query_params(params: &quot;</span>
-        <span class="s2">&quot;Union[EntryListingQueryParams, SingleEntryQueryParams])`.&quot;</span>
+        <span class="s2">&quot;This method cannot be used with this class and is a remnant from the &quot;</span>
+        <span class="s2">&quot;parent class. Use instead the asynchronous method &quot;</span>
+        <span class="s2">&quot;`ahandle_query_params(params: Union[EntryListingQueryParams, &quot;</span>
+        <span class="s2">&quot;SingleEntryQueryParams])`.&quot;</span>
     <span class="p">)</span>
 </code></pre></div>
         </details>
@@ -3328,8 +3331,8 @@ or response format.</p></td>
           <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="s2">&quot;List[EntryResource]&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-        <span class="s2">&quot;This method cannot be used with this class and is a remnant from the parent &quot;</span>
-        <span class="s2">&quot;class. Use instead the asynchronous method `ainsert(data: &quot;</span>
+        <span class="s2">&quot;This method cannot be used with this class and is a remnant from the &quot;</span>
+        <span class="s2">&quot;parent class. Use instead the asynchronous method `ainsert(data: &quot;</span>
         <span class="s2">&quot;List[EntryResource])`.&quot;</span>
     <span class="p">)</span>
 </code></pre></div>

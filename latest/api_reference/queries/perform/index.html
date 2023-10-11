@@ -1552,7 +1552,7 @@ It <strong>must</strong> have a valid base URL and id.</p></td>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">TYPE_CHECKING</span> <span class="ow">or</span> <span class="nb">bool</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;MKDOCS_BUILD&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)):</span>  <span class="c1"># pragma: no cover</span>
-        <span class="n">response</span><span class="p">:</span> <span class="s2">&quot;Union[httpx.Response, Dict[str, Any], EntryResponseMany, EntryResponseOne, ErrorResponse]&quot;</span>  <span class="c1"># pylint: disable=line-too-long</span>
+        <span class="n">response</span><span class="p">:</span> <span class="s2">&quot;Union[httpx.Response, Dict[str, Any], EntryResponseMany, EntryResponseOne, ErrorResponse]&quot;</span>  <span class="c1"># noqa: E501</span>
 
     <span class="k">if</span> <span class="n">raw_url</span><span class="p">:</span>
         <span class="n">url</span> <span class="o">=</span> <span class="n">raw_url</span>
@@ -1591,8 +1591,9 @@ It <strong>must</strong> have a valid base URL and id.</p></td>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">response</span> <span class="o">=</span> <span class="n">ErrorResponse</span><span class="p">(</span><span class="o">**</span><span class="n">response</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-            <span class="c1"># If it&#39;s an error and `meta` is missing, it is not a valid OPTIMADE response,</span>
-            <span class="c1"># but this happens a lot, and is therefore worth having an edge-case for.</span>
+            <span class="c1"># If it&#39;s an error and `meta` is missing, it is not a valid OPTIMADE</span>
+            <span class="c1"># response, but this happens a lot, and is therefore worth having an</span>
+            <span class="c1"># edge-case for.</span>
             <span class="k">if</span> <span class="s2">&quot;errors&quot;</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
                 <span class="n">errors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s2">&quot;errors&quot;</span><span class="p">])</span>
                 <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
@@ -1610,7 +1611,9 @@ It <strong>must</strong> have a valid base URL and id.</p></td>
                         <span class="n">errors</span><span class="o">=</span><span class="n">errors</span><span class="p">,</span>
                         <span class="n">meta</span><span class="o">=</span><span class="p">{</span>
                             <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="p">{</span>
-                                <span class="s2">&quot;representation&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="n">endpoint</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">?</span><span class="si">{</span><span class="n">query_params</span><span class="si">}</span><span class="s2">&quot;</span>
+                                <span class="s2">&quot;representation&quot;</span><span class="p">:</span> <span class="p">(</span>
+                                    <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="n">endpoint</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">?</span><span class="si">{</span><span class="n">query_params</span><span class="si">}</span><span class="s2">&quot;</span>
+                                <span class="p">)</span>
                             <span class="p">},</span>
                             <span class="s2">&quot;api_version&quot;</span><span class="p">:</span> <span class="n">__api_version__</span><span class="p">,</span>
                             <span class="s2">&quot;more_data_available&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
@@ -1744,7 +1747,7 @@ It <strong>must</strong> have a valid base URL and id.</p></td>
     <span class="n">response_model</span><span class="p">:</span> <span class="s2">&quot;EntryResponseMany&quot;</span><span class="p">,</span>
     <span class="n">query_params</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
     <span class="n">raw_url</span><span class="p">:</span> <span class="s2">&quot;Optional[str]&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Tuple[List[Union[EntryResource, Dict[str, Any]]], Union[LinksResource, Dict[str, Any]]]&quot;</span><span class="p">:</span>  <span class="c1"># pylint: disable=line-too-long</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Tuple[List[Union[EntryResource, Dict[str, Any]]], Union[LinksResource, Dict[str, Any]]]&quot;</span><span class="p">:</span>  <span class="c1"># noqa: E501</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Recursively retrieve all resources from an entry-listing endpoint</span>
 
 <span class="sd">    This function keeps pulling the `links.next` link if `meta.more_data_available` is</span>
@@ -1794,8 +1797,8 @@ It <strong>must</strong> have a valid base URL and id.</p></td>
         <span class="k">if</span> <span class="n">next_page</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                 <span class="s2">&quot;Could not find a &#39;next&#39; link for an OPTIMADE query request to </span><span class="si">%r</span><span class="s2"> &quot;</span>
-                <span class="s2">&quot;(id=</span><span class="si">%r</span><span class="s2">). Cannot get all resources from /</span><span class="si">%s</span><span class="s2">, even though this was asked &quot;</span>
-                <span class="s2">&quot;and `more_data_available` is `True` in the response.&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;(id=</span><span class="si">%r</span><span class="s2">). Cannot get all resources from /</span><span class="si">%s</span><span class="s2">, even though this was &quot;</span>
+                <span class="s2">&quot;asked and `more_data_available` is `True` in the response.&quot;</span><span class="p">,</span>
                 <span class="n">get_resource_attribute</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="s2">&quot;attributes.name&quot;</span><span class="p">,</span> <span class="s2">&quot;N/A&quot;</span><span class="p">),</span>
                 <span class="n">get_resource_attribute</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">),</span>
                 <span class="n">endpoint</span><span class="p">,</span>

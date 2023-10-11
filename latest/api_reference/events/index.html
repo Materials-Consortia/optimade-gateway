@@ -1570,7 +1570,7 @@ Load in all databases with a valid base URL.</p>
 
         <details class="quote">
           <summary>Source code in <code>optimade_gateway/events.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">load_optimade_providers_databases</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># pylint: disable=too-many-branches,too-many-statements,too-many-locals</span>
+          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">load_optimade_providers_databases</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Load in the providers&#39; OPTIMADE databases from Materials-Consortia</span>
 
 <span class="sd">    Utilize the Materials-Consortia list of OPTIMADE providers at</span>
@@ -1601,8 +1601,8 @@ Load in all databases with a valid base URL.</p>
 
     <span class="k">async</span> <span class="k">with</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">()</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
         <span class="n">providers</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;https://providers.optimade.org/v</span><span class="si">{</span><span class="n">__api_version__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="s2">&quot;/links&quot;</span>
+            <span class="s2">&quot;https://providers.optimade.org/v&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">__api_version__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">/links&quot;</span>
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">providers</span><span class="o">.</span><span class="n">is_error</span><span class="p">:</span>
@@ -1697,7 +1697,7 @@ Load in all databases with a valid base URL.</p>
             <span class="k">async</span> <span class="k">with</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">()</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">db_response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">get_resource_attribute</span><span class="p">(</span><span class="n">database</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;attributes.base_url&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>  <span class="c1"># pylint: disable=line-too-long</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">get_resource_attribute</span><span class="p">(</span><span class="n">database</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;attributes.base_url&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>  <span class="c1"># noqa: E501</span>
                         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s1">&#39;major&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/structures&quot;</span><span class="p">,</span>
                     <span class="p">)</span>
                 <span class="k">except</span> <span class="n">httpx</span><span class="o">.</span><span class="n">ReadTimeout</span><span class="p">:</span>

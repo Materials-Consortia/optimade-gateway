@@ -1792,7 +1792,9 @@ GatewayResourceAttributes            (<span title="optimade.models.entries.Entry
 
     <span class="n">databases</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of databases (OPTIMADE &#39;links&#39;) to be queried in this gateway.&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;List of databases (OPTIMADE &#39;links&#39;) to be queried in this gateway.&quot;</span>
+        <span class="p">),</span>
     <span class="p">)</span>
 
     <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;databases&quot;</span><span class="p">,</span> <span class="n">each_item</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>

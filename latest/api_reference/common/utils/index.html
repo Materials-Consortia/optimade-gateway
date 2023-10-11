@@ -1508,7 +1508,8 @@ Turn tuples and sets into lists.</p>
     <div class="doc doc-contents ">
 
       <p>Return a resource's field's value</p>
-<p>Get the field value no matter if the resource is a pydantic model or a Python dictionary.</p>
+<p>Get the field value no matter if the resource is a pydantic model or a Python
+dictionary.</p>
 <p>Determine ambiguous field values and return them if desired (<code>disambiguate</code>).
 For example, if
 <a href="https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResourceAttributes.base_url"><code>"attributes.base_url"</code></a>
@@ -1583,7 +1584,8 @@ string value or the value of it's <code>"href"</code> key.</p></td>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Any&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a resource&#39;s field&#39;s value</span>
 
-<span class="sd">    Get the field value no matter if the resource is a pydantic model or a Python dictionary.</span>
+<span class="sd">    Get the field value no matter if the resource is a pydantic model or a Python</span>
+<span class="sd">    dictionary.</span>
 
 <span class="sd">    Determine ambiguous field values and return them if desired (`disambiguate`).</span>
 <span class="sd">    For example, if</span>
@@ -1619,8 +1621,8 @@ string value or the value of it's <code>"href"</code> key.</p></td>
         <span class="k">return</span> <span class="n">default</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-            <span class="s2">&quot;resource must be either a pydantic model or a Python dictionary, it was of &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span><span class="si">!r}</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;resource must be either a pydantic model or a Python dictionary, it was &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span><span class="si">!r}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
 
     <span class="n">fields</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>

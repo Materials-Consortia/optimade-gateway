@@ -1481,10 +1481,10 @@ specification, this is the same as the resource's type.</p>
         <td><code>timeout</code></td>
         <td><code>int</code></td>
         <td><p>Timeout time (in seconds) to wait for a query to finish before
-redirecting (<em>after</em> starting the query). Note, if the query has not finished
-after the timeout time, a redirection will still be performed, but to a
-zero-results page, which can be refreshed to get the finished query (once it
-has finished).</p></td>
+redirecting (<em>after</em> starting the query). Note, if the query has not
+finished after the timeout time, a redirection will still be performed, but
+to a zero-results page, which can be refreshed to get the finished query
+(once it has finished).</p></td>
       </tr>
       <tr>
         <td><code>as_optimade</code></td>
@@ -1527,10 +1527,10 @@ model.</p></td>
 <span class="sd">            **Example**: `structures`</span>
 
 <span class="sd">        timeout (int): Timeout time (in seconds) to wait for a query to finish before</span>
-<span class="sd">            redirecting (*after* starting the query). Note, if the query has not finished</span>
-<span class="sd">            after the timeout time, a redirection will still be performed, but to a</span>
-<span class="sd">            zero-results page, which can be refreshed to get the finished query (once it</span>
-<span class="sd">            has finished).</span>
+<span class="sd">            redirecting (*after* starting the query). Note, if the query has not</span>
+<span class="sd">            finished after the timeout time, a redirection will still be performed, but</span>
+<span class="sd">            to a zero-results page, which can be refreshed to get the finished query</span>
+<span class="sd">            (once it has finished).</span>
 
 <span class="sd">        as_optimade (bool): Return the response as a standard OPTIMADE entry listing</span>
 <span class="sd">            endpoint response. Otherwise, the response will be based on the</span>
@@ -1555,9 +1555,9 @@ model.</p></td>
             <span class="n">description</span><span class="o">=</span><span class="p">(</span>
                 <span class="s2">&quot;A unique list of OPTIMADE base URLs. If a versioned base URL is &quot;</span>
                 <span class="s2">&quot;supplied it will be used as is, as long as it represents a supported &quot;</span>
-                <span class="s2">&quot;version. If an un-versioned base URL, standard version negotiation will&quot;</span>
-                <span class="s2">&quot; be conducted to get the versioned base URL, which will be used as long&quot;</span>
-                <span class="s2">&quot; as it represents a supported version.&quot;</span>
+                <span class="s2">&quot;version. If an un-versioned base URL, standard version negotiation &quot;</span>
+                <span class="s2">&quot;will be conducted to get the versioned base URL, which will be used &quot;</span>
+                <span class="s2">&quot;as long as it represents a supported version.&quot;</span>
             <span class="p">),</span>
         <span class="p">),</span>
         <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>
@@ -1572,9 +1572,9 @@ model.</p></td>
             <span class="n">description</span><span class="o">=</span><span class="p">(</span>
                 <span class="s2">&quot;Timeout time (in seconds) to wait for a query to finish before &quot;</span>
                 <span class="s2">&quot;redirecting (*after* starting the query). Note, if the query has not &quot;</span>
-                <span class="s2">&quot;finished after the timeout time, a redirection will still be performed,&quot;</span>
-                <span class="s2">&quot; but to a zero-results page, which can be refreshed to get the finished&quot;</span>
-                <span class="s2">&quot; query (once it has finished).&quot;</span>
+                <span class="s2">&quot;finished after the timeout time, a redirection will still be &quot;</span>
+                <span class="s2">&quot;performed, but to a zero-results page, which can be refreshed to get &quot;</span>
+                <span class="s2">&quot;the finished query (once it has finished).&quot;</span>
             <span class="p">),</span>
         <span class="p">),</span>
         <span class="n">as_optimade</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span>

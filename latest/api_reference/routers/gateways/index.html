@@ -1472,7 +1472,8 @@
     <div class="doc doc-contents ">
 
       <p><code>GET /gateways/{gateway ID}</code></p>
-<p>Return a single <a class="autorefs autorefs-internal" href="../../models/gateways/#optimade_gateway.models.gateways.GatewayResource"><code>GatewayResource</code></a>.</p>
+<p>Return a single
+<a class="autorefs autorefs-internal" href="../../models/gateways/#optimade_gateway.models.gateways.GatewayResource"><code>GatewayResource</code></a>.</p>
 
         <details class="quote">
           <summary>Source code in <code>optimade_gateway/routers/gateways.py</code></summary>
@@ -1488,7 +1489,8 @@
 <span class="k">async</span> <span class="k">def</span> <span class="nf">get_gateway</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">gateway_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GatewaysResponseSingle</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;`GET /gateways/{gateway ID}`</span>
 
-<span class="sd">    Return a single [`GatewayResource`][optimade_gateway.models.gateways.GatewayResource].</span>
+<span class="sd">    Return a single</span>
+<span class="sd">    [`GatewayResource`][optimade_gateway.models.gateways.GatewayResource].</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">collection</span> <span class="o">=</span> <span class="k">await</span> <span class="n">collection_factory</span><span class="p">(</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">gateways_collection</span><span class="p">)</span>
     <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">get_valid_resource</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">gateway_id</span><span class="p">)</span>

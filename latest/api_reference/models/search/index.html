@@ -1561,26 +1561,26 @@ Search            (<span title="pydantic.main.BaseModel">BaseModel</span>)
     <span class="n">database_ids</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="nb">set</span><span class="p">(),</span>
         <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-            <span class="s2">&quot;A list of registered database IDs. Go to `/databases` to get all registered&quot;</span>
-            <span class="s2">&quot; databases.&quot;</span>
+            <span class="s2">&quot;A list of registered database IDs. Go to `/databases` to get all &quot;</span>
+            <span class="s2">&quot;registered databases.&quot;</span>
         <span class="p">),</span>
     <span class="p">)</span>
     <span class="n">optimade_urls</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="nb">set</span><span class="p">(),</span>
         <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-            <span class="s2">&quot;A list of OPTIMADE base URLs. If a versioned base URL is supplied it will be&quot;</span>
-            <span class="s2">&quot; used as is, as long as it represents a supported version. If an &quot;</span>
-            <span class="s2">&quot;un-versioned base URL, standard version negotiation will be conducted to get&quot;</span>
-            <span class="s2">&quot; the versioned base URL, which will be used as long as it represents a &quot;</span>
-            <span class="s2">&quot;supported version. Note, a single URL can be supplied as well, and it will &quot;</span>
-            <span class="s2">&quot;automatically be wrapped in a list in the server logic.&quot;</span>
+            <span class="s2">&quot;A list of OPTIMADE base URLs. If a versioned base URL is supplied it will &quot;</span>
+            <span class="s2">&quot;be used as is, as long as it represents a supported version. If an &quot;</span>
+            <span class="s2">&quot;un-versioned base URL, standard version negotiation will be conducted to &quot;</span>
+            <span class="s2">&quot;get the versioned base URL, which will be used as long as it represents a &quot;</span>
+            <span class="s2">&quot;supported version. Note, a single URL can be supplied as well, and it will&quot;</span>
+            <span class="s2">&quot; automatically be wrapped in a list in the server logic.&quot;</span>
         <span class="p">),</span>
     <span class="p">)</span>
     <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="s2">&quot;structures&quot;</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-            <span class="s2">&quot;The entry endpoint queried. According to the OPTIMADE specification, this is&quot;</span>
-            <span class="s2">&quot; the same as the resource&#39;s type.&quot;</span>
+            <span class="s2">&quot;The entry endpoint queried. According to the OPTIMADE specification, this &quot;</span>
+            <span class="s2">&quot;is the same as the resource&#39;s type.&quot;</span>
         <span class="p">),</span>
     <span class="p">)</span>
 

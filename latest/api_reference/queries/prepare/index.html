@@ -1576,7 +1576,7 @@ supplied.</p></td>
         <span class="k">for</span> <span class="n">database_id</span> <span class="ow">in</span> <span class="n">database_ids</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">matched_id</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">database_id</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">):</span>
                 <span class="c1"># Database found</span>
-                <span class="n">updated_filter</span><span class="p">[</span><span class="n">database_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">updated_filter</span><span class="p">[</span><span class="n">database_id</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>  <span class="c1"># type: ignore[union-attr]  # pylint: disable=line-too-long</span>
+                <span class="n">updated_filter</span><span class="p">[</span><span class="n">database_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">updated_filter</span><span class="p">[</span><span class="n">database_id</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>  <span class="c1"># type: ignore[union-attr]</span>
                     <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">database_id</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">1</span>
                 <span class="p">)</span>
                 <span class="k">break</span>
@@ -1585,10 +1585,10 @@ supplied.</p></td>
                 <span class="n">OptimadeGatewayWarning</span><span class="p">(</span>
                     <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Non-Unique Entry ID&quot;</span><span class="p">,</span>
                     <span class="n">detail</span><span class="o">=</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;The passed entry ID &lt;id=</span><span class="si">{</span><span class="n">matched_id</span><span class="si">}</span><span class="s2">&gt; may be ambiguous! To get&quot;</span>
-                        <span class="s2">&quot; a specific structures entry, one can prepend the ID with a &quot;</span>
-                        <span class="s2">&quot;database ID belonging to the gateway, followed by a forward &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;slash, e.g., &#39;</span><span class="si">{</span><span class="n">database_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">/&lt;local_database_ID&gt;&#39;. &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;The passed entry ID &lt;id=</span><span class="si">{</span><span class="n">matched_id</span><span class="si">}</span><span class="s2">&gt; may be ambiguous! To &quot;</span>
+                        <span class="s2">&quot;get a specific structures entry, one can prepend the ID with &quot;</span>
+                        <span class="s2">&quot;a database ID belonging to the gateway, followed by a forward&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot; slash, e.g., &#39;</span><span class="si">{</span><span class="n">database_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">/&lt;local_database_ID&gt;&#39;. &quot;</span>
                         <span class="sa">f</span><span class="s2">&quot;Available databases for this gateway: </span><span class="si">{</span><span class="n">database_ids</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="p">),</span>
                 <span class="p">)</span>

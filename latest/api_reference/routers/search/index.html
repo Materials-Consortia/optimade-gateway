@@ -1465,9 +1465,9 @@
     seconds before returning the query, if it has not finished before.</li>
 <li>Return query - similar to <code>GET /queries/{query_id}</code>.</li>
 </ol>
-<p>This endpoint works similarly to <code>GET /queries/{query_id}</code>, where one passes the query
-parameters directly in the URL, instead of first POSTing a query and then going to its
-URL. Hence, a
+<p>This endpoint works similarly to <code>GET /queries/{query_id}</code>, where one passes the
+query parameters directly in the URL, instead of first POSTing a query and then
+going to its URL. Hence, a
 <a class="autorefs autorefs-internal" href="../../models/responses/#optimade_gateway.models.responses.QueriesResponseSingle"><code>QueryResponseSingle</code></a> is
 the standard response model for this endpoint.</p>
 <p>If the timeout time is reached and the query has not yet finished, the user is
@@ -1504,9 +1504,9 @@ For more information see the
 <span class="sd">        seconds before returning the query, if it has not finished before.</span>
 <span class="sd">    1. Return query - similar to `GET /queries/{query_id}`.</span>
 
-<span class="sd">    This endpoint works similarly to `GET /queries/{query_id}`, where one passes the query</span>
-<span class="sd">    parameters directly in the URL, instead of first POSTing a query and then going to its</span>
-<span class="sd">    URL. Hence, a</span>
+<span class="sd">    This endpoint works similarly to `GET /queries/{query_id}`, where one passes the</span>
+<span class="sd">    query parameters directly in the URL, instead of first POSTing a query and then</span>
+<span class="sd">    going to its URL. Hence, a</span>
 <span class="sd">    [`QueryResponseSingle`][optimade_gateway.models.responses.QueriesResponseSingle] is</span>
 <span class="sd">    the standard response model for this endpoint.</span>
 
@@ -1553,9 +1553,7 @@ For more information see the
 
     <span class="n">once</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-    <span class="k">while</span> <span class="p">(</span>  <span class="c1"># pylint: disable=too-many-nested-blocks</span>
-        <span class="n">time</span><span class="p">()</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">start_time</span> <span class="o">+</span> <span class="n">search_params</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span> <span class="ow">or</span> <span class="n">once</span>
-    <span class="p">):</span>
+    <span class="k">while</span> <span class="n">time</span><span class="p">()</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">start_time</span> <span class="o">+</span> <span class="n">search_params</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span> <span class="ow">or</span> <span class="n">once</span><span class="p">:</span>
         <span class="c1"># Make sure to run this at least once (e.g., if timeout=0)</span>
         <span class="n">once</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -1684,8 +1682,9 @@ For more information see the
         <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;No (valid) OPTIMADE URLs with:&quot;</span>
         <span class="k">if</span> <span class="n">search</span><span class="o">.</span><span class="n">database_ids</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">+=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  Database IDs: </span><span class="si">{</span><span class="n">search</span><span class="o">.</span><span class="n">database_ids</span><span class="si">}</span><span class="s2"> and corresponding found URLs: &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">[</span><span class="n">get_resource_attribute</span><span class="p">(</span><span class="n">database</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;attributes.base_url&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">database</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">databases</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  Database IDs: </span><span class="si">{</span><span class="n">search</span><span class="o">.</span><span class="n">database_ids</span><span class="si">}</span><span class="s2"> and corresponding found &quot;</span>
+                <span class="s2">&quot;URLs: &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">[</span><span class="n">get_resource_attribute</span><span class="p">(</span><span class="n">database</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;attributes.base_url&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">database</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">databases</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>  <span class="c1"># noqa: E501</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">search</span><span class="o">.</span><span class="n">optimade_urls</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  Passed OPTIMADE URLs: </span><span class="si">{</span><span class="n">search</span><span class="o">.</span><span class="n">optimade_urls</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -1736,9 +1735,9 @@ For more information see the
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-            <span class="s2">&quot;Found more database entries in MongoDB than then number of passed base URLs.&quot;</span>
-            <span class="s2">&quot; This suggests ambiguity in the base URLs of databases stored in MongoDB.</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="s2">&quot;  base_urls: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">  databases </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Found more database entries in MongoDB than then number of passed base &quot;</span>
+            <span class="s2">&quot;URLs. This suggests ambiguity in the base URLs of databases stored in &quot;</span>
+            <span class="s2">&quot;MongoDB.</span><span class="se">\n</span><span class="s2">  base_urls: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">  databases </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="n">base_urls</span><span class="p">,</span>
             <span class="n">databases</span><span class="p">,</span>
         <span class="p">)</span>
