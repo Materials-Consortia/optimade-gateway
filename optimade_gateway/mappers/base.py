@@ -15,7 +15,13 @@ from pydantic import AnyUrl
 from optimade_gateway.common.config import CONFIG
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    from collections.abc import Iterable
+    import platform
+
+    if platform.python_version() >= "3.9.0":
+        from collections.abc import Iterable
+    else:
+        from typing import Iterable
+
     from typing import List, Union
 
     from optimade.models import EntryResource
