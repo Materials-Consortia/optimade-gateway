@@ -18,6 +18,6 @@ jobs:
       install_extras: "[dev]"
       pr_labels: "dependencies"
       ignore: |
-        dependency-name=httpx...version=>=1
+        dependency-name=httpx...versions=>=1
     secrets:
       PAT: ${{ secrets.RELEASE_PAT_CASPER }}
