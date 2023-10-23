@@ -43,7 +43,11 @@ docs = [
     "mkdocstrings[python-legacy]~=0.23.0",
 ]
 dev = [
-    "optimade-gateway[docs]",
+    "mike~=1.1",
+    "mkdocs~=1.5",
+    "mkdocs-awesome-pages-plugin~=2.9",
+    "mkdocs-material~=9.4",
+    "mkdocstrings[python-legacy]~=0.23.0",
     "pre-commit~=3.4",
     "pytest~=7.4",
     "pytest-asyncio~=0.21.1",
