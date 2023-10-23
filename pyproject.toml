@@ -28,7 +28,7 @@ requires-python = ">=3.8"
 dynamic = ["version"]
 
 dependencies = [
-    "httpx>=0.24.1,<1",
+    "httpx>=0.25.0,<1",
     "motor~=3.3",
     "optimade[server]~=0.24.1; python_version < '3.9'",
     "optimade[server]~=0.25.3; python_version >= '3.9'",
@@ -48,7 +48,7 @@ dev = [
     "mkdocs-awesome-pages-plugin~=2.9",
     "mkdocs-material~=9.4",
     "mkdocstrings[python-legacy]~=0.23.0",
-    "pre-commit~=3.4",
+    "pre-commit~=3.5",
     "pytest~=7.4",
     "pytest-asyncio~=0.21.1",
     "pytest-cov~=4.1",
