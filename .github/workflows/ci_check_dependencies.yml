@@ -17,5 +17,6 @@ jobs:
       python_version: "3.8"
       install_extras: "[dev]"
       pr_labels: "dependencies"
+      debug: true
     secrets:
       PAT: ${{ secrets.RELEASE_PAT_CASPER }}
