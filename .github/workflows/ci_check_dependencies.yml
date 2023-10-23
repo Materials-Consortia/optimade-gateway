@@ -17,7 +17,5 @@ jobs:
       python_version: "3.8"
       install_extras: "[dev]"
       pr_labels: "dependencies"
-      ignore: |
-        dependency-name=httpx...versions=>=1
     secrets:
       PAT: ${{ secrets.RELEASE_PAT_CASPER }}
