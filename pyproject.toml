@@ -40,7 +40,7 @@ docs = [
     "mkdocs~=1.5",
     "mkdocs-awesome-pages-plugin~=2.9",
     "mkdocs-material~=9.4",
-    "mkdocstrings[python-legacy]~=0.23.0",
+    "mkdocstrings[python-legacy]~=0.24.0",
 ]
 dev = [
     "optimade-gateway[docs]",
@@ -49,7 +49,7 @@ dev = [
     "pytest-asyncio~=0.21.1",
     "pytest-cov~=4.1",
     "pytest-httpx~=0.22.0; python_version < '3.9'",
-    "pytest-httpx~=0.26.0; python_version >= '3.9'",
+    "pytest-httpx~=0.27.0; python_version >= '3.9'",
 ]
 
 [project.urls]
