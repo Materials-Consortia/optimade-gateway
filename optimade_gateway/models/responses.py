@@ -54,7 +54,7 @@ class GatewaysResponse(EntryResponseMany):
     data: Annotated[
         list[GatewayResource],
         StrictField(
-            description="""List of unique OPTIMADE gateway resource objects.""",
+            description="List of unique OPTIMADE gateway resource objects.",
             uniqueItems=True,
         ),
     ]
