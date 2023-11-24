@@ -12,6 +12,12 @@ repos:
   - id: trailing-whitespace
     args: [--markdown-linebreak-ext=md]
 
+- repo: https://github.com/asottile/pyupgrade
+  rev: v3.15.0
+  hooks:
+  - id: pyupgrade
+    args: [--py39-plus]
+
 - repo: https://github.com/ambv/black
   rev: 23.11.0
   hooks:
@@ -20,10 +26,12 @@ repos:
 - repo: https://github.com/astral-sh/ruff-pre-commit
   rev: v0.1.6
   hooks:
-    - id: ruff
-      args:
-        - --fix
-        - --exit-non-zero-on-fix
+  - id: ruff
+    args:
+      - --fix
+      - --no-unsafe-fixes
+      - --show-fixes
+      - --exit-non-zero-on-fix
 
 - repo: https://github.com/PyCQA/bandit
   rev: '1.7.5'

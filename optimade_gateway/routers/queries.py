@@ -6,7 +6,10 @@ This file describes the router for:
 
 where, `id` may be left out.
 """
+from __future__ import annotations
+
 import asyncio
+from typing import Annotated
 
 from fastapi import APIRouter, Depends, Request, Response, status
 from optimade.models import ToplevelLinks
@@ -44,7 +47,7 @@ ROUTER = APIRouter(redirect_slashes=True)
 )
 async def get_queries(
     request: Request,
-    params: EntryListingQueryParams = Depends(),
+    params: Annotated[EntryListingQueryParams, Depends()],
 ) -> QueriesResponse:
     """`GET /queries`
 
@@ -82,8 +85,18 @@ async def post_queries(
 
     result, created = await resource_factory(query)
 
+    background_tasks: set[asyncio.Task] = set()
+
     if created:
-        asyncio.create_task(perform_query(url=request.url, query=result))
+        task = asyncio.create_task(perform_query(url=request.url, query=result))
+
+        # Add task to the set. This creates a strong reference.
+        background_tasks.add(task)
+
+        # To prevent keeping references to finished tasks forever,
+        # make each task remove its own reference from the set after
+        # completion:
+        task.add_done_callback(background_tasks.discard)
 
     collection = await collection_factory(CONFIG.queries_collection)
 

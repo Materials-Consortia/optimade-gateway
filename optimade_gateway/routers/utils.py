@@ -1,4 +1,6 @@
 """Utility functions for all routers."""
+from __future__ import annotations
+
 import urllib.parse
 from os import getenv
 from typing import TYPE_CHECKING
@@ -27,7 +29,7 @@ from optimade_gateway.mongo.collection import AsyncMongoCollection
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
     from collections.abc import Iterable
-    from typing import Any, Dict, Tuple, Union
+    from typing import Any
 
     from fastapi import Request
     from optimade.models import EntryResource, EntryResponseMany, LinksResource
@@ -36,16 +38,16 @@ if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
     from optimade_gateway.models import GatewayResource, QueryResource
 
 
-COLLECTIONS: "Dict[str, AsyncMongoCollection]" = {}
+COLLECTIONS: dict[str, AsyncMongoCollection] = {}
 """A lazy-loaded dictionary of asynchronous MongoDB entry-endpoint collections."""
 
 
 async def get_entries(
     collection: AsyncMongoCollection,
-    response_cls: "EntryResponseMany",
-    request: "Request",
-    params: "EntryListingQueryParams",
-) -> "EntryResponseMany":
+    response_cls: EntryResponseMany,
+    request: Request,
+    params: EntryListingQueryParams,
+) -> EntryResponseMany:
     """Generalized `/{entries}` endpoint getter"""
     (
         results,
@@ -83,7 +85,7 @@ async def get_entries(
 
 
 async def aretrieve_queryable_properties(
-    schema: "Dict[str, Any]", queryable_properties: "Iterable"
+    schema: dict[str, Any], queryable_properties: Iterable
 ) -> dict:
     """Asynchronous implementation of `retrieve_queryable_properties()` from `optimade`
 
@@ -119,15 +121,15 @@ async def validate_resource(collection: AsyncMongoCollection, entry_id: str) -> 
 
 async def get_valid_resource(
     collection: AsyncMongoCollection, entry_id: str
-) -> "EntryResource":
+) -> EntryResource:
     """Validate and retrieve a resource"""
     await validate_resource(collection, entry_id)
     return await collection.get_one(filter={"id": entry_id})
 
 
 async def resource_factory(
-    create_resource: "Union[DatabaseCreate, GatewayCreate, QueryCreate]",
-) -> "Tuple[Union[LinksResource, GatewayResource, QueryResource], bool]":
+    create_resource: DatabaseCreate | GatewayCreate | QueryCreate,
+) -> tuple[LinksResource | GatewayResource | QueryResource, bool]:
     """Get or create a resource
 
     Currently supported resources:

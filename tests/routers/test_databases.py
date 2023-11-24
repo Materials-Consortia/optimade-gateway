@@ -1,4 +1,6 @@
 """Tests for /databases endpoints"""
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 import pytest
@@ -10,8 +12,8 @@ if TYPE_CHECKING:
 
 
 async def test_get_databases(
-    client: "AsyncGatewayClient",
-    top_dir: "Path",
+    client: AsyncGatewayClient,
+    top_dir: Path,
 ) -> None:
     """Test GET /databases"""
     import json
@@ -24,16 +26,17 @@ async def test_get_databases(
     response = DatabasesResponse(**response.json())
     assert response
 
-    with open(top_dir / "tests/static/test_databases.json") as handle:
-        test_data = json.load(handle)
+    test_data = json.loads(
+        (top_dir / "tests" / "static" / "test_databases.json").read_text()
+    )
 
     assert response.meta.data_returned == len(test_data)
     assert response.meta.data_available == len(test_data)
     assert not response.meta.more_data_available
 
 
-@pytest.mark.usefixtures("reset_db_after")
-async def test_post_databases(client: "AsyncGatewayClient") -> None:
+@pytest.mark.usefixtures("_reset_db_after")
+async def test_post_databases(client: AsyncGatewayClient) -> None:
     """Test POST /databases"""
     from bson.objectid import ObjectId
     from optimade.server.routers.utils import BASE_URL_PREFIXES
@@ -83,8 +86,8 @@ async def test_post_databases(client: "AsyncGatewayClient") -> None:
 
 
 async def test_get_single_database(
-    client: "AsyncGatewayClient",
-    top_dir: "Path",
+    client: AsyncGatewayClient,
+    top_dir: Path,
 ) -> None:
     """Test GET /databases/{id}"""
     import json
@@ -109,8 +112,10 @@ async def test_get_single_database(
     datum = response.data
     assert datum, response
 
-    with open(top_dir / "tests/static/test_databases.json") as handle:
-        all_test_data = json.load(handle)
+    all_test_data = json.loads(
+        (top_dir / "tests" / "static" / "test_databases.json").read_text()
+    )
+
     for data in all_test_data:
         if data["id"] == database_id:
             test_data = data

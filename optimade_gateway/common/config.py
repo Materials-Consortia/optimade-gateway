@@ -1,4 +1,6 @@
 """Configuration of the FastAPI server."""
+from __future__ import annotations
+
 import os
 import re
 from warnings import warn

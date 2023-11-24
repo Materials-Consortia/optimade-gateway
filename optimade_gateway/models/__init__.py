@@ -4,6 +4,7 @@ Pydantic models
 All pydantic data and response models used to define the API can be found in this
 module.
 """
+from __future__ import annotations
 
 from .databases import DatabaseCreate
 from .gateways import GatewayCreate, GatewayResource, GatewayResourceAttributes

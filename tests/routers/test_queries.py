@@ -1,4 +1,6 @@
 """Tests for /queries endpoints"""
+from __future__ import annotations
+
 import json
 from typing import TYPE_CHECKING
 
@@ -12,8 +14,8 @@ if TYPE_CHECKING:
 
 
 async def test_get_queries(
-    client: "AsyncGatewayClient",
-    top_dir: "Path",
+    client: AsyncGatewayClient,
+    top_dir: Path,
 ) -> None:
     """Test GET /queries"""
     from optimade_gateway.models.responses import QueriesResponse
@@ -33,11 +35,11 @@ async def test_get_queries(
     assert not response.meta.more_data_available
 
 
-@pytest.mark.usefixtures("reset_db_after")
+@pytest.mark.usefixtures("_reset_db_after")
 async def test_post_queries(
-    client: "AsyncGatewayClient",
-    mock_gateway_responses: "Callable[[dict], None]",
-    get_gateway: "Callable[[str], Awaitable[dict]]",
+    client: AsyncGatewayClient,
+    mock_gateway_responses: Callable[[dict], None],
+    get_gateway: Callable[[str], Awaitable[dict]],
 ) -> None:
     """Test POST /queries"""
     import asyncio
@@ -103,8 +105,8 @@ async def test_post_queries(
     await asyncio.sleep(1)  # Ensure mock URL is queried
 
 
-@pytest.mark.usefixtures("reset_db_after")
-async def test_post_queries_bad_data(client: "AsyncGatewayClient") -> None:
+@pytest.mark.usefixtures("_reset_db_after")
+async def test_post_queries_bad_data(client: AsyncGatewayClient) -> None:
     """Test POST /queries with bad data"""
     from optimade.models import ErrorResponse, OptimadeError
 
@@ -139,11 +141,11 @@ async def test_post_queries_bad_data(client: "AsyncGatewayClient") -> None:
     )
 
 
-@pytest.mark.usefixtures("reset_db_after")
+@pytest.mark.usefixtures("_reset_db_after")
 async def test_query_results(
-    client: "AsyncGatewayClient",
-    mock_gateway_responses: "Callable[[dict], None]",
-    get_gateway: "Callable[[str], Awaitable[dict]]",
+    client: AsyncGatewayClient,
+    mock_gateway_responses: Callable[[dict], None],
+    get_gateway: Callable[[str], Awaitable[dict]],
 ) -> None:
     """Test POST /queries and GET /queries/{id}"""
     import asyncio
@@ -186,11 +188,11 @@ async def test_query_results(
     assert response.data.attributes.state == QueryState.FINISHED
 
 
-@pytest.mark.usefixtures("reset_db_after")
+@pytest.mark.usefixtures("_reset_db_after")
 async def test_errored_query_results(
-    client: "AsyncGatewayClient",
-    mock_gateway_responses: "Callable[[dict], None]",
-    get_gateway: "Callable[[str], Awaitable[dict]]",
+    client: AsyncGatewayClient,
+    mock_gateway_responses: Callable[[dict], None],
+    get_gateway: Callable[[str], Awaitable[dict]],
 ) -> None:
     """Test POST /queries and GET /queries/{id} with an erroneous response"""
     import asyncio
@@ -222,11 +224,11 @@ async def test_errored_query_results(
     assert response.data.attributes.response.errors
 
 
-@pytest.mark.usefixtures("reset_db_after")
+@pytest.mark.usefixtures("_reset_db_after")
 async def test_sort_no_effect(
-    client: "AsyncGatewayClient",
-    get_gateway: "Callable[[str], Awaitable[dict]]",
-    mock_gateway_responses: "Callable[[dict], None]",
+    client: AsyncGatewayClient,
+    get_gateway: Callable[[str], Awaitable[dict]],
+    mock_gateway_responses: Callable[[dict], None],
 ) -> None:
     """Test POST /queries with the `sort` query parameter
 

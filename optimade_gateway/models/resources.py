@@ -3,8 +3,10 @@
 This module is mainly used for a special pydantic base model, which can be used as a
 mix-in class when creating entry-endpoint resources.
 """
+from __future__ import annotations
+
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 
 from optimade.models import EntryResourceAttributes
 
@@ -12,9 +14,9 @@ from optimade.models import EntryResourceAttributes
 class EntryResourceCreate(EntryResourceAttributes):
     """Generic model for creating new entry resources in the MongoDB"""
 
-    last_modified: Optional[datetime]
+    last_modified: datetime | None
 
-    id: Optional[str]
+    id: str | None
 
     class Config:
         """Silently discard extra initiation keys."""

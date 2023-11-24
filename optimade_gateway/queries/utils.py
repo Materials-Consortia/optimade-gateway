@@ -1,4 +1,6 @@
 """Utility functions for the `queries` module."""
+from __future__ import annotations
+
 from datetime import datetime
 from os import getenv
 from typing import TYPE_CHECKING
@@ -9,7 +11,7 @@ from optimade_gateway.common.utils import clean_python_types
 from optimade_gateway.routers.utils import collection_factory
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    from typing import Any, Dict, Optional, Union
+    from typing import Any
 
     from pydantic import BaseModel
     from pymongo.results import UpdateResult
@@ -18,11 +20,11 @@ if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
 
 
 async def update_query(
-    query: "QueryResource",
+    query: QueryResource,
     field: str,
-    value: "Any",
-    operator: "Optional[str]" = None,
-    **mongo_kwargs: "Any",
+    value: Any,
+    operator: str | None = None,
+    **mongo_kwargs: Any,
 ) -> None:
     """Update a query's `field` attribute with `value`.
 
@@ -69,7 +71,7 @@ async def update_query(
 
     # MongoDB
     collection = await collection_factory(CONFIG.queries_collection)
-    result: "UpdateResult" = await collection.collection.update_one(
+    result: UpdateResult = await collection.collection.update_one(
         filter={"id": {"$eq": query.id}},
         update=await clean_python_types(update_kwargs),
     )
@@ -87,9 +89,7 @@ async def update_query(
     query.attributes.last_modified = update_time
     if "." in field:
         field_list = field.split(".")
-        sub_field: "Union[BaseModel, Dict[str, Any]]" = getattr(
-            query.attributes, field_list[0]
-        )
+        sub_field: BaseModel | dict[str, Any] = getattr(query.attributes, field_list[0])
         for field_part in field_list[1:-1]:
             if isinstance(sub_field, dict):
                 sub_field = sub_field.get(field_part, {})

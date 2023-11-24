@@ -1,6 +1,8 @@
 """Replicate of
 [`LinksMapper`](https://www.optimade.org/optimade-python-tools/api_reference/server/mappers/links/#optimade.server.mappers.links.LinksMapper)
 in OPTIMADE Python tools."""
+from __future__ import annotations
+
 from optimade.models.links import LinksResource
 
 from optimade_gateway.mappers.base import BaseResourceMapper

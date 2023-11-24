@@ -4,6 +4,8 @@ These events can be run at application startup or shutdown.
 The specific events are listed in [`EVENTS`][optimade_gateway.events.EVENTS] along with
 their respected proper invocation time.
 """
+from __future__ import annotations
+
 import os
 from typing import TYPE_CHECKING
 
@@ -12,7 +14,7 @@ from optimade_gateway.common.logger import LOGGER
 
 if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):  # pragma: no cover
     from collections.abc import Callable, Coroutine, Sequence
-    from typing import Any, Tuple, Union
+    from typing import Any
 
 
 async def ci_dev_startup() -> None:
@@ -55,8 +57,8 @@ async def ci_dev_startup() -> None:
             f"Could not find test data file with test gateways at {test_data} !"
         )
 
-    with open(test_data, encoding="utf8") as handle:
-        data = json.load(handle)
+    data = json.loads(test_data.read_bytes())
+
     await MONGO_DB[CONFIG.gateways_collection].insert_many(data)
 
 
@@ -87,7 +89,7 @@ async def load_optimade_providers_databases() -> None:
         return
 
     if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-        providers: "Union[httpx.Response, LinksResponse]"
+        providers: httpx.Response | LinksResponse
 
     async with httpx.AsyncClient() as client:
         providers = await client.get(
@@ -231,7 +233,7 @@ async def load_optimade_providers_databases() -> None:
             )
 
 
-EVENTS: "Sequence[Tuple[str, Callable[[], Coroutine[Any, Any, None]]]]" = (
+EVENTS: Sequence[tuple[str, Callable[[], Coroutine[Any, Any, None]]]] = (
     ("startup", ci_dev_startup),
     ("startup", load_optimade_providers_databases),
 )

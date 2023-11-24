@@ -1,6 +1,7 @@
 """Pydantic models/schemas for the Search resource."""
+from __future__ import annotations
+
 import warnings
-from typing import Set
 
 from pydantic import AnyUrl, BaseModel, Field, root_validator, validator
 
@@ -22,14 +23,14 @@ class Search(BaseModel):
             "OPTIMADE query parameters for entry listing endpoints used for this query."
         ),
     )
-    database_ids: Set[str] = Field(
+    database_ids: set[str] = Field(
         set(),
         description=(
             "A list of registered database IDs. Go to `/databases` to get all "
             "registered databases."
         ),
     )
-    optimade_urls: Set[AnyUrl] = Field(
+    optimade_urls: set[AnyUrl] = Field(
         set(),
         description=(
             "A list of OPTIMADE base URLs. If a versioned base URL is supplied it will "

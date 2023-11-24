@@ -1,10 +1,12 @@
 """Pydantic models/schemas for the Queries resource."""
+from __future__ import annotations
+
 import urllib.parse
 import warnings
 from copy import deepcopy
 from datetime import timezone
 from enum import Enum
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 from optimade.models import EntryResource as OptimadeEntryResource
 from optimade.models import (
@@ -38,7 +40,7 @@ class EndpointEntryType(Enum):
     REFERENCES = "references"
     STRUCTURES = "structures"
 
-    def get_resource_model(self) -> Union[ReferenceResource, StructureResource]:
+    def get_resource_model(self) -> ReferenceResource | StructureResource:
         """Get the matching pydantic model for a resource."""
         return {
             "references": ReferenceResource,
@@ -47,12 +49,12 @@ class EndpointEntryType(Enum):
 
     def get_response_model(
         self, single: bool = False
-    ) -> Union[
-        ReferenceResponseMany,
-        ReferenceResponseOne,
-        StructureResponseMany,
-        StructureResponseOne,
-    ]:
+    ) -> (
+        ReferenceResponseMany
+        | ReferenceResponseOne
+        | StructureResponseMany
+        | StructureResponseOne
+    ):
         """Get the matching pydantic model for a successful response."""
         if single:
             return {
@@ -73,59 +75,59 @@ QUERY_PARAMETERS = EntryListingQueryParams()
 class OptimadeQueryParameters(BaseModel):
     """Common OPTIMADE entry listing endpoint query parameters."""
 
-    filter: Optional[str] = Field(
+    filter: str | None = Field(
         QUERY_PARAMETERS.filter.default,
         description=QUERY_PARAMETERS.filter.description,
     )
-    response_format: Optional[str] = Field(
+    response_format: str | None = Field(
         QUERY_PARAMETERS.response_format.default,
         description=QUERY_PARAMETERS.response_format.description,
     )
-    email_address: Optional[EmailStr] = Field(
+    email_address: EmailStr | None = Field(
         QUERY_PARAMETERS.email_address.default,
         description=QUERY_PARAMETERS.email_address.description,
     )
-    response_fields: Optional[str] = Field(
+    response_fields: str | None = Field(
         QUERY_PARAMETERS.response_fields.default,
         description=QUERY_PARAMETERS.response_fields.description,
         regex=QUERY_PARAMETERS.response_fields.regex,
     )
-    sort: Optional[str] = Field(
+    sort: str | None = Field(
         QUERY_PARAMETERS.sort.default,
         description=QUERY_PARAMETERS.sort.description,
         regex=QUERY_PARAMETERS.sort.regex,
     )
-    page_limit: Optional[int] = Field(
+    page_limit: int | None = Field(
         QUERY_PARAMETERS.page_limit.default,
         description=QUERY_PARAMETERS.page_limit.description,
         ge=QUERY_PARAMETERS.page_limit.ge,
     )
-    page_offset: Optional[int] = Field(
+    page_offset: int | None = Field(
         QUERY_PARAMETERS.page_offset.default,
         description=QUERY_PARAMETERS.page_offset.description,
         ge=QUERY_PARAMETERS.page_offset.ge,
     )
-    page_number: Optional[int] = Field(
+    page_number: int | None = Field(
         QUERY_PARAMETERS.page_number.default,
         description=QUERY_PARAMETERS.page_number.description,
         ge=QUERY_PARAMETERS.page_number.ge,
     )
-    page_cursor: Optional[int] = Field(
+    page_cursor: int | None = Field(
         QUERY_PARAMETERS.page_cursor.default,
         description=QUERY_PARAMETERS.page_cursor.description,
         ge=QUERY_PARAMETERS.page_cursor.ge,
     )
-    page_above: Optional[int] = Field(
+    page_above: int | None = Field(
         QUERY_PARAMETERS.page_above.default,
         description=QUERY_PARAMETERS.page_above.description,
         ge=QUERY_PARAMETERS.page_above.ge,
     )
-    page_below: Optional[int] = Field(
+    page_below: int | None = Field(
         QUERY_PARAMETERS.page_below.default,
         description=QUERY_PARAMETERS.page_below.description,
         ge=QUERY_PARAMETERS.page_below.ge,
     )
-    include: Optional[str] = Field(
+    include: str | None = Field(
         QUERY_PARAMETERS.include.default,
         description=QUERY_PARAMETERS.include.description,
     )
@@ -164,13 +166,13 @@ class EntryResource(OptimadeEntryResource):
 class GatewayQueryResponse(Response):
     """Response from a Gateway Query."""
 
-    data: Dict[str, Union[List[EntryResource], List[Dict[str, Any]]]] = StrictField(
+    data: dict[str, list[EntryResource] | list[dict[str, Any]]] = StrictField(
         ..., uniqueItems=True, description="Outputted Data."
     )
     meta: ResponseMeta = StrictField(
         ..., description="A meta object containing non-standard information."
     )
-    errors: Optional[List[OptimadeError]] = StrictField(
+    errors: list[OptimadeError] | None = StrictField(
         [],
         description=(
             "A list of OPTIMADE-specific JSON API error objects, where the field "
@@ -178,7 +180,7 @@ class GatewayQueryResponse(Response):
         ),
         uniqueItems=True,
     )
-    included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = Field(
+    included: list[EntryResource] | list[dict[str, Any]] | None = Field(
         None, uniqueItems=True
     )
 
@@ -222,7 +224,7 @@ class QueryResourceAttributes(EntryResourceAttributes):
         title="State",
         type="enum",
     )
-    response: Optional[GatewayQueryResponse] = Field(
+    response: GatewayQueryResponse | None = Field(
         None,
         description="Response from gateway query.",
     )
@@ -257,10 +259,11 @@ class QueryResource(EntryResource):
 
     async def response_as_optimade(
         self,
-        url: Optional[
-            Union[urllib.parse.ParseResult, urllib.parse.SplitResult, StarletteURL, str]
-        ] = None,
-    ) -> Union[EntryResponseMany, ErrorResponse]:
+        url: None
+        | (
+            urllib.parse.ParseResult | urllib.parse.SplitResult | StarletteURL | str
+        ) = None,
+    ) -> EntryResponseMany | ErrorResponse:
         """Return `attributes.response` as a valid OPTIMADE entry listing response.
 
         Note, this method disregards the state of the query and will simply return the
@@ -280,8 +283,8 @@ class QueryResource(EntryResource):
         )
 
         async def _update_id(
-            entry_: Union[EntryResource, Dict[str, Any]], database_provider_: str
-        ) -> Union[EntryResource, Dict[str, Any]]:
+            entry_: EntryResource | dict[str, Any], database_provider_: str
+        ) -> EntryResource | dict[str, Any]:
             """Internal utility function to prepend the entries' `id` with
             `provider/database/`.
 
@@ -360,8 +363,8 @@ class QueryResource(EntryResource):
 class QueryCreate(EntryResourceCreate, QueryResourceAttributes):
     """Model for creating new Query resources in the MongoDB"""
 
-    state: Optional[QueryState]  # type: ignore[assignment]
-    endpoint: Optional[EndpointEntryType]  # type: ignore[assignment]
+    state: QueryState | None  # type: ignore[assignment]
+    endpoint: EndpointEntryType | None  # type: ignore[assignment]
 
     @validator("query_parameters")
     def sort_not_supported(

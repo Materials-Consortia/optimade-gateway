@@ -1,4 +1,6 @@
 """Tests for the /search endpoint"""
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 import pytest
@@ -10,11 +12,11 @@ if TYPE_CHECKING:
     from ..conftest import AsyncGatewayClient
 
 
-@pytest.mark.usefixtures("reset_db_after")
+@pytest.mark.usefixtures("_reset_db_after")
 async def test_get_search(
-    client: "AsyncGatewayClient",
-    mock_gateway_responses: "Callable[[dict], None]",
-    get_gateway: "Callable[[str], Awaitable[dict]]",
+    client: AsyncGatewayClient,
+    mock_gateway_responses: Callable[[dict], None],
+    get_gateway: Callable[[str], Awaitable[dict]],
     caplog: pytest.LogCaptureFixture,
 ) -> None:
     """Test GET /search
@@ -53,9 +55,9 @@ async def test_get_search(
 
 
 async def test_get_search_existing_gateway(
-    client: "AsyncGatewayClient",
-    mock_gateway_responses: "Callable[[dict], None]",
-    get_gateway: "Callable[[str], Awaitable[dict]]",
+    client: AsyncGatewayClient,
+    mock_gateway_responses: Callable[[dict], None],
+    get_gateway: Callable[[str], Awaitable[dict]],
     caplog: pytest.LogCaptureFixture,
 ) -> None:
     """Test GET /search for base URLs matching an existing gateway"""
@@ -111,9 +113,9 @@ async def test_get_search_existing_gateway(
 
 
 async def test_get_search_not_finishing(
-    client: "AsyncGatewayClient",
-    mock_gateway_responses: "Callable[[dict], None]",
-    get_gateway: "Callable[[str], Awaitable[dict]]",
+    client: AsyncGatewayClient,
+    mock_gateway_responses: Callable[[dict], None],
+    get_gateway: Callable[[str], Awaitable[dict]],
     caplog: pytest.LogCaptureFixture,
 ) -> None:
     """Test GET /search for unfinished query (redirect to query URL)"""
@@ -160,9 +162,9 @@ async def test_get_search_not_finishing(
 
 
 async def test_get_as_optimade(
-    client: "AsyncGatewayClient",
-    mock_gateway_responses: "Callable[[dict], None]",
-    get_gateway: "Callable[[str], Awaitable[dict]]",
+    client: AsyncGatewayClient,
+    mock_gateway_responses: Callable[[dict], None],
+    get_gateway: Callable[[str], Awaitable[dict]],
     caplog: pytest.LogCaptureFixture,
 ) -> None:
     """Test GET /search with `as_optimade=True`
@@ -219,9 +221,9 @@ async def test_get_as_optimade(
             more_data_available = db_response.meta.more_data_available
 
         for datum in db_response.data:
-            datum = datum.dict(exclude_unset=True, exclude_none=True)
-            datum["id"] = f"{database['id']}/{datum['id']}"
-            data.append(datum)
+            dumped_datum = datum.dict(exclude_unset=True, exclude_none=True)
+            dumped_datum["id"] = f"{database['id']}/{dumped_datum['id']}"
+            data.append(dumped_datum)
 
     assert data_returned == response.meta.data_returned
     assert data_available == response.meta.data_available
@@ -229,24 +231,24 @@ async def test_get_as_optimade(
 
     assert data == response.dict(exclude_unset=True, exclude_none=True)["data"], (
         "IDs in test not in response: "
-        f"{set([_['id'] for _ in data]) - set([_['id'] for _ in response.dict(exclude_unset=True)['data']])}\n\n"  # noqa: E501
+        f"{ {_['id'] for _ in data} - {_['id'] for _ in response.dict(exclude_unset=True)['data']} }\n\n"  # noqa: E501
         "IDs in response not in test: "
-        f"{set([_['id'] for _ in response.dict(exclude_unset=True)['data']]) - set([_['id'] for _ in data])}\n\n"  # noqa: E501
+        f"{ {_['id'] for _ in response.dict(exclude_unset=True)['data']} - {_['id'] for _ in data} }\n\n"  # noqa: E501
         f"A /search datum: {response.dict(exclude_unset=True)['data'][0]}\n\n"
         f"A retrieved datum: "
-        f"{[_ for _ in data if _['id'] == response.dict(exclude_unset=True)['data'][0]['id']][0]}"  # noqa: E501
+        f"{next(_ for _ in data if _['id'] == response.dict(exclude_unset=True)['data'][0]['id'])}"  # noqa: E501
     )
 
     assert "A gateway was found and reused for a query" in caplog.text, caplog.text
     assert "A new gateway was created for a query" not in caplog.text, caplog.text
 
 
-@pytest.mark.usefixtures("reset_db_after")
+@pytest.mark.usefixtures("_reset_db_after")
 async def test_post_search(
-    client: "AsyncGatewayClient",
-    mock_gateway_responses: "Callable[[dict], None]",
-    get_gateway: "Callable[[str], Awaitable[dict]]",
-    top_dir: "Path",
+    client: AsyncGatewayClient,
+    mock_gateway_responses: Callable[[dict], None],
+    get_gateway: Callable[[str], Awaitable[dict]],
+    top_dir: Path,
     caplog: pytest.LogCaptureFixture,
 ) -> None:
     """Test POST /search
@@ -305,8 +307,9 @@ async def test_post_search(
     assert datum.attributes.state in [QueryState.CREATED, QueryState.STARTED]
     assert datum.attributes.response is None
 
-    with open(top_dir / "tests/static/test_gateways.json") as handle:
-        gateways = json.load(handle)
+    gateways = json.loads(
+        (top_dir / "tests" / "static" / "test_gateways.json").read_text()
+    )
 
     assert datum.attributes.gateway_id not in [_["id"] for _ in gateways]
 
@@ -317,9 +320,9 @@ async def test_post_search(
 
 
 async def test_post_search_existing_gateway(
-    client: "AsyncGatewayClient",
-    mock_gateway_responses: "Callable[[dict], None]",
-    get_gateway: "Callable[[str], Awaitable[dict]]",
+    client: AsyncGatewayClient,
+    mock_gateway_responses: Callable[[dict], None],
+    get_gateway: Callable[[str], Awaitable[dict]],
     caplog: pytest.LogCaptureFixture,
 ) -> None:
     """Test POST /search for base URLs matching an existing gateway"""
@@ -396,11 +399,11 @@ async def test_post_search_existing_gateway(
         assert await MONGO_DB["queries"].count_documents(mongo_filter) == 1
 
 
-@pytest.mark.usefixtures("reset_db_after")
+@pytest.mark.usefixtures("_reset_db_after")
 async def test_sort_no_effect(
-    client: "AsyncGatewayClient",
-    get_gateway: "Callable[[str], Awaitable[dict]]",
-    mock_gateway_responses: "Callable[[dict], None]",
+    client: AsyncGatewayClient,
+    get_gateway: Callable[[str], Awaitable[dict]],
+    mock_gateway_responses: Callable[[dict], None],
 ) -> None:
     """Test GET and POST /search with the `sort` query parameter
 

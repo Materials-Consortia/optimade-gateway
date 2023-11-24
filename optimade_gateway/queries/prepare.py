@@ -1,4 +1,6 @@
 """Prepare OPTIMADE queries."""
+from __future__ import annotations
+
 import re
 import urllib.parse
 from os import getenv
@@ -9,14 +11,13 @@ from optimade_gateway.warnings import OptimadeGatewayWarning
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
     from collections.abc import Mapping
-    from typing import List, Union
 
     from optimade_gateway.models.queries import OptimadeQueryParameters
 
 
 async def prepare_query_filter(
-    database_ids: "List[str]", filter_query: "Union[str, None]"
-) -> "Mapping[str, Union[str, None]]":
+    database_ids: list[str], filter_query: str | None
+) -> Mapping[str, str | None]:
     """Update the query parameter `filter` value to be database-specific
 
     This is needed due to the served change of `id` values.
@@ -71,9 +72,9 @@ async def prepare_query_filter(
 
 
 async def get_query_params(
-    query_parameters: "OptimadeQueryParameters",
+    query_parameters: OptimadeQueryParameters,
     database_id: str,
-    filter_mapping: "Mapping[str, Union[str, None]]",
+    filter_mapping: Mapping[str, str | None],
 ) -> str:
     """Construct the parsed URL query parameters"""
     query_params = {

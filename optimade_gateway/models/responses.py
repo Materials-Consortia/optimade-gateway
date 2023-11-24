@@ -1,5 +1,5 @@
 """Pydantic models/schemas for the API responses."""
-from typing import List, Optional
+from __future__ import annotations
 
 from optimade.models import EntryResponseMany, EntryResponseOne, LinksResource
 from pydantic import Field
@@ -13,10 +13,10 @@ class DatabasesResponse(EntryResponseMany):
 
     This model is essentially equal to
     [`LinksResponse`](https://www.optimade.org/optimade-python-tools/api_reference/models/responses/#optimade.models.responses.LinksResponse)
-    with the exception of the `data´ field's description.
+    with the exception of the `data` field's description.
     """
 
-    data: List[LinksResource] = Field(
+    data: list[LinksResource] = Field(
         ...,
         description=(
             "List of unique OPTIMADE links resource objects.\nThese links resource "
@@ -30,7 +30,7 @@ class DatabasesResponse(EntryResponseMany):
 class DatabasesResponseSingle(EntryResponseOne):
     """Successful response for `POST /databases` and `GET /databases/{database_id}`"""
 
-    data: Optional[LinksResource] = Field(
+    data: LinksResource | None = Field(
         ...,
         description=(
             "A unique OPTIMADE links resource object.\nThe OPTIMADE links resource "
@@ -44,7 +44,7 @@ class DatabasesResponseSingle(EntryResponseOne):
 class GatewaysResponse(EntryResponseMany):
     """Successful response for `GET /gateways`"""
 
-    data: List[GatewayResource] = Field(
+    data: list[GatewayResource] = Field(
         ...,
         description="""List of unique OPTIMADE gateway resource objects.""",
         uniqueItems=True,
@@ -54,7 +54,7 @@ class GatewaysResponse(EntryResponseMany):
 class GatewaysResponseSingle(EntryResponseOne):
     """Successful response for `POST /gateways` and `GET /gateways/{gateway_id}`."""
 
-    data: Optional[GatewayResource] = Field(
+    data: GatewayResource | None = Field(
         ...,
         description=(
             "A unique OPTIMADE gateway resource object.\nThe OPTIMADE gateway resource "
@@ -67,7 +67,7 @@ class GatewaysResponseSingle(EntryResponseOne):
 class QueriesResponse(EntryResponseMany):
     """Successful response for `GET /gateways/{gateway_ID}/queries`."""
 
-    data: List[QueryResource] = Field(
+    data: list[QueryResource] = Field(
         ...,
         description="List of unique OPTIMADE gateway query resource objects.",
         uniqueItems=True,
@@ -78,7 +78,7 @@ class QueriesResponseSingle(EntryResponseOne):
     """Successful response for `POST /gateways/{gateway_ID}/queries`
     and `GET /gateways/{gateway_ID}/queries/{query_id}`."""
 
-    data: Optional[QueryResource] = Field(
+    data: QueryResource | None = Field(
         ...,
         description=(
             "A unique OPTIMADE gateway query resource object.\nThe OPTIMADE gateway "

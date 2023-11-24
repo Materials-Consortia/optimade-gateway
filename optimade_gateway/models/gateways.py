@@ -1,6 +1,7 @@
 """Pydantic models/schemas for the Gateways resource."""
+from __future__ import annotations
+
 import warnings
-from typing import List, Optional, Set
 
 from optimade.models import EntryResource, EntryResourceAttributes, LinksResource
 from optimade.models.links import LinkType
@@ -15,7 +16,7 @@ from optimade_gateway.warnings import OptimadeGatewayWarning
 class GatewayResourceAttributes(EntryResourceAttributes):
     """Attributes for an OPTIMADE gateway"""
 
-    databases: List[LinksResource] = Field(
+    databases: list[LinksResource] = Field(
         ...,
         description=(
             "List of databases (OPTIMADE 'links') to be queried in this gateway."
@@ -38,7 +39,7 @@ class GatewayResourceAttributes(EntryResourceAttributes):
         return value
 
     @validator("databases")
-    def unique_base_urls(cls, value: List[LinksResource]) -> List[LinksResource]:
+    def unique_base_urls(cls, value: list[LinksResource]) -> list[LinksResource]:
         """Remove extra entries with repeated base_urls"""
         db_base_urls = [_.attributes.base_url for _ in value]
         unique_base_urls = set(db_base_urls)
@@ -51,7 +52,7 @@ class GatewayResourceAttributes(EntryResourceAttributes):
         ]
         for base_url in repeated_base_urls:
             new_databases.append(
-                [_ for _ in value if _.attributes.base_url == base_url][0]
+                next(_ for _ in value if _.attributes.base_url == base_url)
             )
         warnings.warn(
             "Removed extra database entries for a gateway, because the base_url was "
@@ -113,7 +114,7 @@ class GatewayResource(EntryResource):
 class GatewayCreate(EntryResourceCreate, GatewayResourceAttributes):
     """Model for creating new Gateway resources in the MongoDB"""
 
-    id: Optional[str] = OptimadeField(
+    id: str | None = OptimadeField(
         None,
         description="""An entry's ID as defined in section Definition of Terms.
 
@@ -137,11 +138,11 @@ class GatewayCreate(EntryResourceCreate, GatewayResourceAttributes):
         regex=r"^[^/]*$",  # This regex is the special addition
     )
 
-    database_ids: Optional[Set[str]] = Field(
+    database_ids: set[str] | None = Field(
         None, description="A unique list of database IDs for registered databases."
     )
 
-    databases: Optional[List[LinksResource]]  # type: ignore
+    databases: list[LinksResource] | None
 
     @root_validator
     def specify_databases(cls, values: dict) -> dict:

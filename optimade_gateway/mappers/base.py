@@ -4,6 +4,8 @@ Based on the
 [`BaseResourceMapper`](https://www.optimade.org/optimade-python-tools/api_reference/server/mappers/entries/#optimade.server.mappers.entries.BaseResourceMapper)
 in OPTIMADE Python tools.
 """
+from __future__ import annotations
+
 from os import getenv
 from typing import TYPE_CHECKING
 
@@ -16,7 +18,6 @@ from optimade_gateway.common.config import CONFIG
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
     from collections.abc import Iterable
-    from typing import List, Union
 
     from optimade.models import EntryResource
 
@@ -55,8 +56,8 @@ class BaseResourceMapper(OptimadeBaseResourceMapper):
 
     @classmethod
     async def adeserialize(
-        cls, results: "Union[dict, Iterable[dict]]"
-    ) -> "Union[List[EntryResource], EntryResource]":
+        cls, results: dict | Iterable[dict]
+    ) -> list[EntryResource] | EntryResource:
         """Asynchronous version of the `deserialize()` class method.
 
         Parameters:
@@ -68,7 +69,7 @@ class BaseResourceMapper(OptimadeBaseResourceMapper):
             `results`.
 
         """
-        return super(BaseResourceMapper, cls).deserialize(results)
+        return super().deserialize(results)
 
     @classmethod
     def map_back(cls, doc: dict) -> dict:

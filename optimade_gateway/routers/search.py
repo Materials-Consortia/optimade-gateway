@@ -5,9 +5,11 @@ This file describes the router for:
     /search
 
 """
+from __future__ import annotations
+
 import asyncio
 from time import time
-from typing import Union
+from typing import Annotated, Union
 
 from fastapi import APIRouter, Depends, Request, Response, status
 from fastapi.responses import RedirectResponse
@@ -161,8 +163,18 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
     )
     query, created = await resource_factory(query)
 
+    background_tasks: set[asyncio.Task] = set()
+
     if created:
-        asyncio.create_task(perform_query(url=request.url, query=query))
+        task = asyncio.create_task(perform_query(url=request.url, query=query))
+
+        # Add task to the set. This creates a strong reference.
+        background_tasks.add(task)
+
+        # To prevent keeping references to finished tasks forever,
+        # make each task remove its own reference from the set after
+        # completion:
+        task.add_done_callback(background_tasks.discard)
 
     collection = await collection_factory(CONFIG.queries_collection)
 
@@ -182,7 +194,7 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
 
 @ROUTER.get(
     "/search",
-    response_model=Union[QueriesResponseSingle, EntryResponseMany, ErrorResponse],  # type: ignore[arg-type]
+    response_model=Union[QueriesResponseSingle, EntryResponseMany, ErrorResponse],
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
@@ -192,9 +204,9 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
 async def get_search(
     request: Request,
     response: Response,
-    search_params: SearchQueryParams = Depends(),
-    entry_params: EntryListingQueryParams = Depends(),
-) -> Union[QueriesResponseSingle, EntryResponseMany, ErrorResponse, RedirectResponse]:
+    search_params: Annotated[SearchQueryParams, Depends()],
+    entry_params: Annotated[EntryListingQueryParams, Depends()],
+) -> QueriesResponseSingle | EntryResponseMany | ErrorResponse | RedirectResponse:
     """`GET /search`
 
     Coordinate a new OPTIMADE query in multiple databases through a gateway:
@@ -261,7 +273,7 @@ async def get_search(
         collection = await collection_factory(CONFIG.queries_collection)
 
         query: QueryResource = await collection.get_one(
-            **{"filter": {"id": queries_response.data.id}}
+            filter={"id": queries_response.data.id}
         )
 
         if query.attributes.state == QueryState.FINISHED:

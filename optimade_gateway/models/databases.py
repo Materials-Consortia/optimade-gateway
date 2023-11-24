@@ -1,5 +1,5 @@
 """Pydantic models/schemas for the LinksResource used in /databases"""
-from typing import Optional, Union
+from __future__ import annotations
 
 from optimade.models import Link, LinksResourceAttributes
 from optimade.models.links import LinkType
@@ -28,15 +28,15 @@ class DatabaseCreate(EntryResourceCreate, LinksResourceAttributes):
 
     """
 
-    description: Optional[str]
-    base_url: Union[AnyUrl, Link]
-    homepage: Optional[Union[AnyUrl, Link]] = StrictField(
+    description: str | None
+    base_url: AnyUrl | Link
+    homepage: AnyUrl | Link | None = StrictField(
         None,
         description=(
             "JSON API links object, pointing to a homepage URL for this implementation."
         ),
     )
-    link_type: Optional[LinkType] = StrictField(
+    link_type: LinkType | None = StrictField(
         None,
         title="Link Type",
         description=(

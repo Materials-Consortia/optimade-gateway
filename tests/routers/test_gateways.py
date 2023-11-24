@@ -1,4 +1,6 @@
 """Tests for /gateways endpoints"""
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 import pytest
@@ -10,8 +12,8 @@ if TYPE_CHECKING:
 
 
 async def test_get_gateways(
-    client: "AsyncGatewayClient",
-    top_dir: "Path",
+    client: AsyncGatewayClient,
+    top_dir: Path,
 ) -> None:
     """Test GET /gateways"""
     import json
@@ -24,16 +26,17 @@ async def test_get_gateways(
     response = GatewaysResponse(**response.json())
     assert response
 
-    with open(top_dir / "tests/static/test_gateways.json") as handle:
-        test_data = json.load(handle)
+    test_data = json.loads(
+        (top_dir / "tests" / "static" / "test_gateways.json").read_text()
+    )
 
     assert response.meta.data_returned == len(test_data)
     assert response.meta.data_available == len(test_data)
     assert not response.meta.more_data_available
 
 
-@pytest.mark.usefixtures("reset_db_after")
-async def test_post_gateways(client: "AsyncGatewayClient") -> None:
+@pytest.mark.usefixtures("_reset_db_after")
+async def test_post_gateways(client: AsyncGatewayClient) -> None:
     """Test POST /gateways"""
     from bson.objectid import ObjectId
     from optimade.models import LinksResource
@@ -94,8 +97,8 @@ async def test_post_gateways(client: "AsyncGatewayClient") -> None:
 
 
 async def test_path_id_raises(
-    client: "AsyncGatewayClient",
-    top_dir: "Path",
+    client: AsyncGatewayClient,
+    top_dir: Path,
 ) -> None:
     """Ensure a suggested gateway id with a forward slash gives an error"""
     import json
@@ -115,13 +118,14 @@ async def test_path_id_raises(
     mongo_filter = {"id": bad_gateway_id}
     assert await MONGO_DB["gateways"].count_documents(mongo_filter) == 0
 
-    with open(top_dir / "tests/static/test_gateways.json") as handle:
-        test_data = json.load(handle)
+    test_data = json.loads(
+        (top_dir / "tests" / "static" / "test_gateways.json").read_text()
+    )
 
     assert await MONGO_DB["gateways"].count_documents({}) == len(test_data)
 
 
-async def test_post_gateways_database_ids(client: "AsyncGatewayClient") -> None:
+async def test_post_gateways_database_ids(client: AsyncGatewayClient) -> None:
     """Test POST /gateways with `database_ids` specified"""
     from optimade.server.routers.utils import BASE_URL_PREFIXES
     from pydantic import AnyUrl
@@ -167,8 +171,8 @@ async def test_post_gateways_database_ids(client: "AsyncGatewayClient") -> None:
         assert db["id"] in data["database_ids"]
 
 
-@pytest.mark.usefixtures("reset_db_after")
-async def test_post_gateways_create_with_db_ids(client: "AsyncGatewayClient") -> None:
+@pytest.mark.usefixtures("_reset_db_after")
+async def test_post_gateways_create_with_db_ids(client: AsyncGatewayClient) -> None:
     """Test POST /gateways with `database_ids`, while creating gateway"""
     from optimade.server.routers.utils import BASE_URL_PREFIXES
     from pydantic import AnyUrl
@@ -228,9 +232,9 @@ async def test_post_gateways_create_with_db_ids(client: "AsyncGatewayClient") ->
 
 
 async def test_get_single_gateway(
-    client: "AsyncGatewayClient",
+    client: AsyncGatewayClient,
     random_gateway: str,
-    top_dir: "Path",
+    top_dir: Path,
 ) -> None:
     """Test GET /gateways/{gateway_id}"""
     import json
@@ -243,8 +247,9 @@ async def test_get_single_gateway(
     response = GatewaysResponseSingle(**response.json())
     assert response
 
-    with open(top_dir / "tests/static/test_gateways.json") as handle:
-        test_data = json.load(handle)
+    test_data = json.loads(
+        (top_dir / "tests" / "static" / "test_gateways.json").read_text()
+    )
 
     assert response.meta.data_returned == 1
     assert response.meta.data_available == len(test_data)

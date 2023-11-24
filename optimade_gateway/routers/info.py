@@ -6,6 +6,8 @@ This file describes the router for:
 
 where, `entry` may be left out.
 """
+from __future__ import annotations
+
 from fastapi import APIRouter, Request
 from optimade import __api_version__
 from optimade.models import (
@@ -72,8 +74,8 @@ async def get_info(request: Request) -> InfoResponse:
                         "openapi.json",
                         "redoc",
                         "search",
+                        *list(ENTRY_INFO_SCHEMAS.keys()),
                     ]
-                    + list(ENTRY_INFO_SCHEMAS.keys())
                 ),
                 is_index=False,
             ),

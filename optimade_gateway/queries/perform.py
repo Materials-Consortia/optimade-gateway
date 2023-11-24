@@ -1,4 +1,6 @@
 """Perform OPTIMADE queries"""
+from __future__ import annotations
+
 import asyncio
 import functools
 import json
@@ -21,9 +23,8 @@ from optimade_gateway.queries.process import process_db_response
 from optimade_gateway.queries.utils import update_query
 from optimade_gateway.routers.utils import collection_factory, get_valid_resource
 
-
 if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    from typing import Any, Dict, List, Optional, Tuple, Union
+    from typing import Any
 
     from optimade.models import (
         EntryResource,
@@ -37,9 +38,9 @@ if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):  # pragma: no cover
 
 
 async def perform_query(
-    url: "URL",
-    query: "QueryResource",
-) -> "Union[EntryResponseMany, ErrorResponse, GatewayQueryResponse]":
+    url: URL,
+    query: QueryResource,
+) -> EntryResponseMany | ErrorResponse | GatewayQueryResponse:
     """Perform OPTIMADE query with gateway.
 
     Parameters:
@@ -146,12 +147,12 @@ async def perform_query(
 
 
 def db_find(
-    database: "Union[LinksResource, Dict[str, Any]]",
+    database: LinksResource | dict[str, Any],
     endpoint: str,
-    response_model: "Union[EntryResponseMany, EntryResponseOne]",
+    response_model: EntryResponseMany | EntryResponseOne,
     query_params: str = "",
-    raw_url: "Optional[str]" = None,
-) -> "Tuple[Union[ErrorResponse, EntryResponseMany, EntryResponseOne], str]":
+    raw_url: str | None = None,
+) -> tuple[ErrorResponse | EntryResponseMany | EntryResponseOne, str]:
     """Imitate `Collection.find()` for any given database for entry-resource endpoints
 
     Parameters:
@@ -169,7 +170,13 @@ def db_find(
 
     """
     if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-        response: "Union[httpx.Response, Dict[str, Any], EntryResponseMany, EntryResponseOne, ErrorResponse]"  # noqa: E501
+        response: (
+            httpx.Response
+            | dict[str, Any]
+            | EntryResponseMany
+            | EntryResponseOne
+            | ErrorResponse
+        )
 
     if raw_url:
         url = raw_url
@@ -266,12 +273,12 @@ def db_find(
 
 
 async def db_get_all_resources(
-    database: "Union[LinksResource, Dict[str, Any]]",
+    database: LinksResource | dict[str, Any],
     endpoint: str,
-    response_model: "EntryResponseMany",
+    response_model: EntryResponseMany,
     query_params: str = "",
-    raw_url: "Optional[str]" = None,
-) -> "Tuple[List[Union[EntryResource, Dict[str, Any]]], Union[LinksResource, Dict[str, Any]]]":  # noqa: E501
+    raw_url: str | None = None,
+) -> tuple[list[EntryResource | dict[str, Any]], LinksResource | dict[str, Any]]:
     """Recursively retrieve all resources from an entry-listing endpoint
 
     This function keeps pulling the `links.next` link if `meta.more_data_available` is

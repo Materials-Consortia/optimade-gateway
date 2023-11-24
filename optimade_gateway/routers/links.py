@@ -5,6 +5,10 @@ This file describes the router for:
     /links
 
 """
+from __future__ import annotations
+
+from typing import Annotated
+
 from fastapi import APIRouter, Depends, Request
 from optimade.models import LinksResponse
 from optimade.server.query_params import EntryListingQueryParams
@@ -26,7 +30,7 @@ ROUTER = APIRouter(redirect_slashes=True)
     responses=ERROR_RESPONSES,
 )
 async def get_links(
-    request: Request, params: EntryListingQueryParams = Depends()
+    request: Request, params: Annotated[EntryListingQueryParams, Depends()]
 ) -> LinksResponse:
     """`GET /links`
 

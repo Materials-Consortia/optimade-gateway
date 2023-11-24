@@ -1,12 +1,13 @@
 """Tests for /info endpoint"""
-from typing import TYPE_CHECKING
+from __future__ import annotations
 
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..conftest import AsyncGatewayClient
 
 
-async def test_get_info(client: "AsyncGatewayClient") -> None:
+async def test_get_info(client: AsyncGatewayClient) -> None:
     """Test GET /info"""
     from optimade.models import InfoResponse
 
@@ -42,7 +43,7 @@ async def test_get_info(client: "AsyncGatewayClient") -> None:
     )
 
 
-async def test_get_info_entry(client: "AsyncGatewayClient") -> None:
+async def test_get_info_entry(client: AsyncGatewayClient) -> None:
     """Test GET /info/{entry}"""
     from optimade.models import EntryInfoResponse
 
