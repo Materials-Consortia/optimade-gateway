@@ -237,7 +237,7 @@ async def get_search(
             query_parameters=OptimadeQueryParameters(
                 **{
                     field: getattr(entry_params, field)
-                    for field in OptimadeQueryParameters.__fields__
+                    for field in OptimadeQueryParameters.model_fields
                     if getattr(entry_params, field)
                 }
             ),

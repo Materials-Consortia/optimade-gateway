@@ -11,21 +11,37 @@ from typing import TYPE_CHECKING
 import pytest
 
 if TYPE_CHECKING:
-    from collections.abc import Awaitable, Callable
-
-    try:
-        from typing import Literal
-    except ImportError:
-        from typing_extensions import Literal
+    from collections.abc import Awaitable
+    from typing import Literal, Protocol
 
     from fastapi import FastAPI
     from httpx import Request, Response
     from pytest_httpx import HTTPXMock
 
-    AsyncGatewayClient = Callable[
-        [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]],
-        Awaitable[Response],
-    ]
+    class AsyncGatewayClient(Protocol):
+        """Protocol for async client fixture"""
+
+        def __call__(
+            self,
+            request: str,
+            app: FastAPI | None = None,
+            base_url: str | None = None,
+            method: Literal["get", "post", "put", "delete", "patch"] | None = None,
+            **kwargs,
+        ) -> Awaitable[Response]:
+            ...
+
+    class GetGateway(Protocol):
+        """Protocol for get_gateway fixture"""
+
+        def __call__(self, id: str) -> Awaitable[dict]:
+            ...
+
+    class MockGatewayResponses(Protocol):
+        """Protocol for mock_gateway_responses fixture"""
+
+        def __call__(self, gateway: dict) -> None:
+            ...
 
 
 # UTILITY FUNCTIONS
@@ -128,7 +144,7 @@ def client() -> AsyncGatewayClient:
 
 
 @pytest.fixture()
-def get_gateway() -> Callable[[str], Awaitable[dict]]:
+def get_gateway() -> GetGateway:
     """Return function to find a single gateway in the current MongoDB"""
 
     async def _get_gateway(id: str) -> dict:
@@ -166,7 +182,7 @@ async def _reset_db_after(top_dir: Path) -> None:
 @pytest.fixture()
 def mock_gateway_responses(
     httpx_mock: HTTPXMock, top_dir: Path
-) -> Callable[[dict], None]:
+) -> MockGatewayResponses:
     """Add mock responses for gateway databases
 
     (Successful) mock responses are loaded from local JSON files and returned according

@@ -285,9 +285,9 @@ async def resource_factory(
                 create_resource.homepage = None
         elif isinstance(create_resource, GatewayCreate):
             # Do not store `database_ids`
-            if "database_ids" in create_resource.__fields_set__:
+            if "database_ids" in create_resource.model_fields_set:
                 create_resource.database_ids = None
-                create_resource.__fields_set__.remove("database_ids")
+                create_resource.model_fields_set.remove("database_ids")
         elif isinstance(create_resource, QueryCreate):
             create_resource.state = QueryState.CREATED
         result = await collection.create_one(create_resource)

@@ -47,11 +47,20 @@ async def prepare_query_filter(
         r'(?P<id_value_r>[^\s]*)"',
         f"={filter_query}" if filter_query else "",
     ):
-        matched_id = id_match.group("id_value_l") or id_match.group("id_value_r")
+        matched_id: str = id_match.group("id_value_l") or id_match.group("id_value_r")
         for database_id in database_ids:
             if matched_id.startswith(f"{database_id}/"):
+                updated_filter_query = updated_filter[database_id]
+                if not updated_filter_query or not isinstance(
+                    updated_filter_query, str
+                ):
+                    raise TypeError(
+                        "Expected a string for filter query, got "
+                        f"{type(updated_filter_query)}"
+                    )
+
                 # Database found
-                updated_filter[database_id] = updated_filter[database_id].replace(  # type: ignore[union-attr]
+                updated_filter[database_id] = updated_filter_query.replace(
                     f"{database_id}/", "", 1
                 )
                 break
@@ -68,7 +77,7 @@ async def prepare_query_filter(
                     ),
                 )
             )
-    return updated_filter  # type: ignore[return-value]
+    return updated_filter
 
 
 async def get_query_params(
@@ -78,7 +87,7 @@ async def get_query_params(
 ) -> str:
     """Construct the parsed URL query parameters"""
     query_params = {
-        param: value for param, value in query_parameters.dict().items() if value
+        param: value for param, value in query_parameters.model_dump().items() if value
     }
     if filter_mapping[database_id]:
         query_params.update({"filter": filter_mapping[database_id]})

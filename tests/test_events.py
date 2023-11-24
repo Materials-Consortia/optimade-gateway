@@ -6,11 +6,12 @@ from typing import TYPE_CHECKING
 import pytest
 
 if TYPE_CHECKING:
-    from collections.abc import Awaitable, Callable
     from pathlib import Path
     from typing import Any
 
     from pytest_httpx import HTTPXMock
+
+    from .conftest import GetGateway, MockGatewayResponses
 
 
 @pytest.mark.usefixtures("_reset_db_after")
@@ -384,8 +385,8 @@ async def test_load_databases_valid_databases(
     httpx_mock: HTTPXMock,
     caplog: pytest.LogCaptureFixture,
     top_dir: Path,
-    get_gateway: Callable[[str], Awaitable[dict]],
-    mock_gateway_responses: Callable[[dict], None],
+    get_gateway: GetGateway,
+    mock_gateway_responses: MockGatewayResponses,
 ) -> None:
     """Test load_optimade_providers_databases() when valid CHILD dbs are found and
     added"""

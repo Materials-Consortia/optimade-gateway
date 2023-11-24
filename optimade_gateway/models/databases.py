@@ -1,10 +1,12 @@
 """Pydantic models/schemas for the LinksResource used in /databases"""
 from __future__ import annotations
 
+from typing import Annotated
+
 from optimade.models import Link, LinksResourceAttributes
 from optimade.models.links import LinkType
 from optimade.models.utils import StrictField
-from pydantic import AnyUrl, validator
+from pydantic import AnyUrl, field_validator
 
 from optimade_gateway.models.resources import EntryResourceCreate
 
@@ -30,22 +32,28 @@ class DatabaseCreate(EntryResourceCreate, LinksResourceAttributes):
 
     description: str | None
     base_url: AnyUrl | Link
-    homepage: AnyUrl | Link | None = StrictField(
-        None,
-        description=(
-            "JSON API links object, pointing to a homepage URL for this implementation."
+    homepage: Annotated[
+        AnyUrl | Link | None,
+        StrictField(
+            description=(
+                "JSON API links object, pointing to a homepage URL for this "
+                "implementation."
+            ),
         ),
-    )
-    link_type: LinkType | None = StrictField(
-        None,
-        title="Link Type",
-        description=(
-            "The type of the linked relation.\nMUST be one of these values: 'child', "
-            "'root', 'external', 'providers'."
+    ] = None
+    link_type: Annotated[
+        LinkType | None,
+        StrictField(
+            title="Link Type",
+            description=(
+                "The type of the linked relation.\nMUST be one of these values: "
+                "'child', 'root', 'external', 'providers'."
+            ),
         ),
-    )
+    ] = None
 
-    @validator("link_type")
+    @field_validator("link_type", mode="after")
+    @classmethod
     def ensure_database_link_type(cls, value: LinkType) -> LinkType:
         """Ensure databases are not index meta-database-only types
 

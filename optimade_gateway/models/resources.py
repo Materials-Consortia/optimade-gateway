@@ -9,19 +9,17 @@ from datetime import datetime
 from typing import Any
 
 from optimade.models import EntryResourceAttributes
+from pydantic import ConfigDict
 
 
 class EntryResourceCreate(EntryResourceAttributes):
     """Generic model for creating new entry resources in the MongoDB"""
 
+    model_config = ConfigDict(extra="ignore")
+
     last_modified: datetime | None
 
     id: str | None
-
-    class Config:
-        """Silently discard extra initiation keys."""
-
-        extra = "ignore"
 
     @classmethod
     def _remove_pre_root_validators(cls):

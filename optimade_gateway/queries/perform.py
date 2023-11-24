@@ -317,7 +317,7 @@ async def db_get_all_resources(
         LOGGER.error(
             "Error while querying database (id=%r). Full response: %s",
             get_resource_attribute(database, "id"),
-            response.json(indent=2),
+            response.model_dump_json(indent=2),
         )
         return [], database
 

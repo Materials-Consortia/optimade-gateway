@@ -32,7 +32,7 @@ async def clean_python_types(data: Any) -> Any:
             res[key] = await clean_python_types(data[key])
     elif isinstance(data, BaseModel):
         # Pydantic model
-        res = await clean_python_types(data.dict())
+        res = await clean_python_types(data.model_dump())
     elif isinstance(data, Enum):
         res = await clean_python_types(data.value)
     elif isinstance(data, type):

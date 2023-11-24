@@ -86,8 +86,6 @@ class BaseResourceMapper(OptimadeBaseResourceMapper):
                     f"{CONFIG.base_url.strip('/')}{BASE_URL_PREFIXES['major']}"
                     f"/{cls.ENDPOINT}/{doc['id']}"
                 ),
-                scheme=CONFIG.base_url.split("://", maxsplit=1)[0],
-                host=CONFIG.base_url.split("://", maxsplit=2)[1].split("/")[0],
             )
         }
         return super().map_back(doc)

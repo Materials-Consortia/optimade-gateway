@@ -63,7 +63,7 @@ async def process_db_response(
                 # model.
                 meta_error = {}
                 if error.meta:
-                    meta_error = error.meta.dict()
+                    meta_error = error.meta.model_dump()
                 meta_error.update(
                     {
                         f"_{CONFIG.provider.prefix}_source_gateway": {

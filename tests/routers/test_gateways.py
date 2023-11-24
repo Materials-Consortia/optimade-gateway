@@ -73,16 +73,16 @@ async def test_post_gateways(client: AsyncGatewayClient) -> None:
 
     assert getattr(
         response.meta, f"_{CONFIG.provider.prefix}_created"
-    ), response.meta.dict()
+    ), response.meta.model_dump()
 
     datum = response.data
     assert datum, response
 
     for response_db, test_db in zip(datum.attributes.databases, data["databases"]):
         assert (
-            response_db.dict() == LinksResource(**test_db).dict()
+            response_db.model_dump() == LinksResource(**test_db).model_dump()
         ), f"Response: {response_db!r}\n\nTest data: {LinksResource(**test_db)!r}"
-    assert datum.links.dict() == {
+    assert datum.links.model_dump() == {
         "self": AnyUrl(
             url=f"{'/'.join(str(url).split('/')[:-1])}{BASE_URL_PREFIXES['major']}/gateways/{datum.id}",
             scheme=url.scheme,
@@ -147,7 +147,7 @@ async def test_post_gateways_database_ids(client: AsyncGatewayClient) -> None:
 
     assert not getattr(
         response.meta, f"_{CONFIG.provider.prefix}_created"
-    ), response.meta.dict()
+    ), response.meta.model_dump()
 
     datum = response.data
     assert datum, response
@@ -156,7 +156,7 @@ async def test_post_gateways_database_ids(client: AsyncGatewayClient) -> None:
     for database in datum.attributes.databases:
         assert database.id in data["database_ids"]
 
-    assert datum.links.dict() == {
+    assert datum.links.model_dump() == {
         "self": AnyUrl(
             url=f"{'/'.join(str(url).split('/')[:-1])}{BASE_URL_PREFIXES['major']}/gateways/{datum.id}",
             scheme=url.scheme,
@@ -208,7 +208,7 @@ async def test_post_gateways_create_with_db_ids(client: AsyncGatewayClient) -> N
 
     assert getattr(
         response.meta, f"_{CONFIG.provider.prefix}_created"
-    ), response.meta.dict()
+    ), response.meta.model_dump()
 
     datum = response.data
     assert datum, response
@@ -216,7 +216,7 @@ async def test_post_gateways_create_with_db_ids(client: AsyncGatewayClient) -> N
     for database in datum.attributes.databases:
         assert database.id in [data["databases"][0]["id"], data["database_ids"][0]]
 
-    assert datum.links.dict() == {
+    assert datum.links.model_dump() == {
         "self": AnyUrl(
             url=f"{'/'.join(str(url).split('/')[:-1])}{BASE_URL_PREFIXES['major']}/gateways/{datum.id}",
             scheme=url.scheme,

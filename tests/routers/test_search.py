@@ -6,17 +6,16 @@ from typing import TYPE_CHECKING
 import pytest
 
 if TYPE_CHECKING:
-    from collections.abc import Awaitable, Callable
     from pathlib import Path
 
-    from ..conftest import AsyncGatewayClient
+    from ..conftest import AsyncGatewayClient, GetGateway, MockGatewayResponses
 
 
 @pytest.mark.usefixtures("_reset_db_after")
 async def test_get_search(
     client: AsyncGatewayClient,
-    mock_gateway_responses: Callable[[dict], None],
-    get_gateway: Callable[[str], Awaitable[dict]],
+    mock_gateway_responses: MockGatewayResponses,
+    get_gateway: GetGateway,
     caplog: pytest.LogCaptureFixture,
 ) -> None:
     """Test GET /search
@@ -56,8 +55,8 @@ async def test_get_search(
 
 async def test_get_search_existing_gateway(
     client: AsyncGatewayClient,
-    mock_gateway_responses: Callable[[dict], None],
-    get_gateway: Callable[[str], Awaitable[dict]],
+    mock_gateway_responses: MockGatewayResponses,
+    get_gateway: GetGateway,
     caplog: pytest.LogCaptureFixture,
 ) -> None:
     """Test GET /search for base URLs matching an existing gateway"""
@@ -103,10 +102,10 @@ async def test_get_search_existing_gateway(
         response = QueriesResponseSingle(**response.json())
         assert (
             response.data.attributes.response.data
-        ), f"No data: {response.json(indent=2)}"
+        ), f"No data: {response.model_dump_json(indent=2)}"
         assert (
             response.data.attributes.state.value == "finished"
-        ), f"Query never finished. Response: {response.json(indent=2)}"
+        ), f"Query never finished. Response: {response.model_dump_json(indent=2)}"
 
         assert "A gateway was found and reused for a query" in caplog.text, caplog.text
         assert "A new gateway was created for a query" not in caplog.text, caplog.text
@@ -114,8 +113,8 @@ async def test_get_search_existing_gateway(
 
 async def test_get_search_not_finishing(
     client: AsyncGatewayClient,
-    mock_gateway_responses: Callable[[dict], None],
-    get_gateway: Callable[[str], Awaitable[dict]],
+    mock_gateway_responses: MockGatewayResponses,
+    get_gateway: GetGateway,
     caplog: pytest.LogCaptureFixture,
 ) -> None:
     """Test GET /search for unfinished query (redirect to query URL)"""
@@ -146,7 +145,7 @@ async def test_get_search_not_finishing(
     response = QueriesResponseSingle(**response.json())
     assert (
         response.data.attributes.response.data == {}
-    ), f"Data was found in response: {response.json(indent=2)}"
+    ), f"Data was found in response: {response.model_dump_json(indent=2)}"
 
     query = response.data
     assert query, query
@@ -163,8 +162,8 @@ async def test_get_search_not_finishing(
 
 async def test_get_as_optimade(
     client: AsyncGatewayClient,
-    mock_gateway_responses: Callable[[dict], None],
-    get_gateway: Callable[[str], Awaitable[dict]],
+    mock_gateway_responses: MockGatewayResponses,
+    get_gateway: GetGateway,
     caplog: pytest.LogCaptureFixture,
 ) -> None:
     """Test GET /search with `as_optimade=True`
@@ -221,7 +220,7 @@ async def test_get_as_optimade(
             more_data_available = db_response.meta.more_data_available
 
         for datum in db_response.data:
-            dumped_datum = datum.dict(exclude_unset=True, exclude_none=True)
+            dumped_datum = datum.model_dump(exclude_unset=True, exclude_none=True)
             dumped_datum["id"] = f"{database['id']}/{dumped_datum['id']}"
             data.append(dumped_datum)
 
@@ -229,14 +228,14 @@ async def test_get_as_optimade(
     assert data_available == response.meta.data_available
     assert more_data_available == response.meta.more_data_available
 
-    assert data == response.dict(exclude_unset=True, exclude_none=True)["data"], (
+    assert data == response.model_dump(exclude_unset=True, exclude_none=True)["data"], (
         "IDs in test not in response: "
-        f"{ {_['id'] for _ in data} - {_['id'] for _ in response.dict(exclude_unset=True)['data']} }\n\n"  # noqa: E501
+        f"{ {_['id'] for _ in data} - {_['id'] for _ in response.model_dump(exclude_unset=True)['data']} }\n\n"  # noqa: E501
         "IDs in response not in test: "
-        f"{ {_['id'] for _ in response.dict(exclude_unset=True)['data']} - {_['id'] for _ in data} }\n\n"  # noqa: E501
-        f"A /search datum: {response.dict(exclude_unset=True)['data'][0]}\n\n"
+        f"{ {_['id'] for _ in response.model_dump(exclude_unset=True)['data']} - {_['id'] for _ in data} }\n\n"  # noqa: E501
+        f"A /search datum: {response.model_dump(exclude_unset=True)['data'][0]}\n\n"
         f"A retrieved datum: "
-        f"{next(_ for _ in data if _['id'] == response.dict(exclude_unset=True)['data'][0]['id'])}"  # noqa: E501
+        f"{next(_ for _ in data if _['id'] == response.model_dump(exclude_unset=True)['data'][0]['id'])}"  # noqa: E501
     )
 
     assert "A gateway was found and reused for a query" in caplog.text, caplog.text
@@ -246,8 +245,8 @@ async def test_get_as_optimade(
 @pytest.mark.usefixtures("_reset_db_after")
 async def test_post_search(
     client: AsyncGatewayClient,
-    mock_gateway_responses: Callable[[dict], None],
-    get_gateway: Callable[[str], Awaitable[dict]],
+    mock_gateway_responses: MockGatewayResponses,
+    get_gateway: GetGateway,
     top_dir: Path,
     caplog: pytest.LogCaptureFixture,
 ) -> None:
@@ -288,7 +287,7 @@ async def test_post_search(
 
     assert getattr(
         response.meta, f"_{CONFIG.provider.prefix}_created"
-    ), response.meta.dict()
+    ), response.meta.model_dump()
 
     assert "A new gateway was created for a query" in caplog.text, caplog.text
     assert "A gateway was found and reused for a query" not in caplog.text, caplog.text
@@ -297,8 +296,8 @@ async def test_post_search(
     assert datum, response
 
     assert (
-        datum.attributes.query_parameters.dict()
-        == OptimadeQueryParameters(**data["query_parameters"]).dict()
+        datum.attributes.query_parameters.model_dump()
+        == OptimadeQueryParameters(**data["query_parameters"]).model_dump()
     ), (
         f"Response: {datum.attributes.query_parameters!r}\n\n"
         f"Test data: {OptimadeQueryParameters(**data['query_parameters'])!r}"
@@ -321,8 +320,8 @@ async def test_post_search(
 
 async def test_post_search_existing_gateway(
     client: AsyncGatewayClient,
-    mock_gateway_responses: Callable[[dict], None],
-    get_gateway: Callable[[str], Awaitable[dict]],
+    mock_gateway_responses: MockGatewayResponses,
+    get_gateway: GetGateway,
     caplog: pytest.LogCaptureFixture,
 ) -> None:
     """Test POST /search for base URLs matching an existing gateway"""
@@ -374,7 +373,7 @@ async def test_post_search_existing_gateway(
 
         assert getattr(
             response.meta, f"_{CONFIG.provider.prefix}_created"
-        ), response.meta.dict()
+        ), response.meta.model_dump()
 
         assert "A gateway was found and reused for a query" in caplog.text, caplog.text
         assert "A new gateway was created for a query" not in caplog.text, caplog.text
@@ -383,8 +382,10 @@ async def test_post_search_existing_gateway(
         assert datum, response
 
         assert (
-            datum.attributes.query_parameters.dict()
-            == OptimadeQueryParameters(**gateway_create_data["query_parameters"]).dict()
+            datum.attributes.query_parameters.model_dump()
+            == OptimadeQueryParameters(
+                **gateway_create_data["query_parameters"]
+            ).model_dump()
         ), (
             f"Response: {datum.attributes.query_parameters!r}\n\nTest data: "
             f"{OptimadeQueryParameters(**gateway_create_data['query_parameters'])!r}"
@@ -402,8 +403,8 @@ async def test_post_search_existing_gateway(
 @pytest.mark.usefixtures("_reset_db_after")
 async def test_sort_no_effect(
     client: AsyncGatewayClient,
-    get_gateway: Callable[[str], Awaitable[dict]],
-    mock_gateway_responses: Callable[[dict], None],
+    get_gateway: GetGateway,
+    mock_gateway_responses: MockGatewayResponses,
 ) -> None:
     """Test GET and POST /search with the `sort` query parameter
 
@@ -452,7 +453,7 @@ async def test_sort_no_effect(
     sort_warning = SortNotSupported()
 
     for response in (response_asc, response_desc):
-        assert response.meta.warnings, response.json()
+        assert response.meta.warnings, response.model_dump_json()
         assert len(response.meta.warnings) == 1
         assert response.meta.warnings[0] == Warnings(
             title=sort_warning.title,
@@ -488,7 +489,7 @@ async def test_sort_no_effect(
     sort_warning = SortNotSupported()
 
     for response in (response_asc, response_desc):
-        assert response.meta.warnings, response.json()
+        assert response.meta.warnings, response.model_dump_json()
         assert len(response.meta.warnings) == 1
         assert response.meta.warnings[0] == Warnings(
             title=sort_warning.title,
