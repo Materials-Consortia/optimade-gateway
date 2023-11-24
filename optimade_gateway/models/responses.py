@@ -4,6 +4,7 @@ from __future__ import annotations
 from typing import Annotated
 
 from optimade.models import EntryResponseMany, EntryResponseOne, LinksResource
+from optimade.models.utils import StrictField
 from pydantic import Field
 
 from optimade_gateway.models.gateways import GatewayResource
@@ -20,7 +21,7 @@ class DatabasesResponse(EntryResponseMany):
 
     data: Annotated[
         list[LinksResource],
-        Field(
+        StrictField(
             description=(
                 "List of unique OPTIMADE links resource objects.\nThese links resource "
                 "objects represents OPTIMADE databases that can be used for queries in "
@@ -52,7 +53,7 @@ class GatewaysResponse(EntryResponseMany):
 
     data: Annotated[
         list[GatewayResource],
-        Field(
+        StrictField(
             description="""List of unique OPTIMADE gateway resource objects.""",
             uniqueItems=True,
         ),
@@ -79,7 +80,7 @@ class QueriesResponse(EntryResponseMany):
 
     data: Annotated[
         list[QueryResource],
-        Field(
+        StrictField(
             description="List of unique OPTIMADE gateway query resource objects.",
             uniqueItems=True,
         ),
