@@ -8,7 +8,7 @@ from enum import Enum
 from os import getenv
 from typing import TYPE_CHECKING
 
-from pydantic import BaseModel
+from pydantic import AnyUrl, BaseModel
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
     from typing import Any
@@ -101,7 +101,7 @@ def get_resource_attribute(
     if (
         disambiguate
         and field in ("base_url", "next", "prev", "last", "first")
-        and not isinstance(value, str)
+        and not isinstance(value, (str, AnyUrl))
     ):
         value = _get_attr(value, "href", default)
 
