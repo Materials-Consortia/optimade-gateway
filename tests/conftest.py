@@ -9,13 +9,7 @@ from typing import TYPE_CHECKING
 import pytest
 
 if TYPE_CHECKING:
-    import platform
-
-    if platform.python_version() >= "3.9.0":
-        from collections.abc import Awaitable, Callable
-    else:
-        from typing import Awaitable, Callable
-
+    from collections.abc import Awaitable, Callable
     from typing import Union
 
     try:

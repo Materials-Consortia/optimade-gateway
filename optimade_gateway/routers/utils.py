@@ -26,13 +26,7 @@ from optimade_gateway.models import (
 from optimade_gateway.mongo.collection import AsyncMongoCollection
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    import platform
-
-    if platform.python_version() >= "3.9.0":
-        from collections.abc import Iterable
-    else:
-        from typing import Iterable
-
+    from collections.abc import Iterable
     from typing import Any, Dict, Tuple, Union
 
     from fastapi import Request

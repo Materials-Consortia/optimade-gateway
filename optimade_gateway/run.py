@@ -7,13 +7,7 @@ from typing import TYPE_CHECKING
 import uvicorn
 
 if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    import platform
-
-    if platform.python_version() >= "3.9.0":
-        from collections.abc import Sequence
-    else:
-        from typing import Sequence
-
+    from collections.abc import Sequence
     from typing import Optional
 
 

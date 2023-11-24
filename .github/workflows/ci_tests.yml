@@ -17,23 +17,23 @@ jobs:
 
       # pre-commit
       run_pre-commit: true
-      python_version_pre-commit: "3.8"
+      python_version_pre-commit: "3.9"
 
       # pylint & safety
-      python_version_pylint_safety: "3.8"
+      python_version_pylint_safety: "3.9"
 
       run_pylint: false
       run_safety: true
 
       # Build package
       run_build_package: true
-      python_version_package: "3.8"
+      python_version_package: "3.9"
       build_libs: "flit"
       build_cmd: "flit build"
 
       # Build documentation
       run_build_docs: true
-      python_version_docs: "3.8"
+      python_version_docs: "3.9"
       warnings_as_errors: true
 
       use_mkdocs: true
@@ -61,7 +61,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
+        python-version: ["3.9", "3.10"]
 
     services:
       mongo:
@@ -91,7 +91,7 @@ jobs:
       run: pytest -vvv --cov-report=xml
 
     - name: Upload coverage to Codecov
-      if: matrix.python-version == '3.8' && github.repository == 'Materials-Consortia/optimade-gateway'
+      if: matrix.python-version == '3.9' && github.repository == 'Materials-Consortia/optimade-gateway'
       uses: codecov/codecov-action@v3
       with:
         name: optimade-gateway

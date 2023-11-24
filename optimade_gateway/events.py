@@ -11,13 +11,7 @@ from optimade_gateway.common.config import CONFIG
 from optimade_gateway.common.logger import LOGGER
 
 if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    import platform
-
-    if platform.python_version() >= "3.9.0":
-        from collections.abc import Callable, Coroutine, Sequence
-    else:
-        from typing import Callable, Coroutine, Sequence
-
+    from collections.abc import Callable, Coroutine, Sequence
     from typing import Any, Tuple, Union
 
 

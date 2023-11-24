@@ -38,7 +38,7 @@ repos:
   - id: mypy
     exclude: ^tests/.*$
     additional_dependencies:
-      - "pydantic<2"
+      - "pydantic>=2"
 
 - repo: https://github.com/SINTEF/ci-cd
   rev: v2.6.0

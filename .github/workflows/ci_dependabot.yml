@@ -25,7 +25,7 @@ jobs:
 
       # Pre-commit
       update_pre-commit: true
-      python_version: "3.8"
+      python_version: "3.9"
       install_extras: "[dev]"
     secrets:
       PAT: ${{ secrets.RELEASE_PAT_CASPER }}
