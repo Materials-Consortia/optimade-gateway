@@ -35,7 +35,6 @@ async def test_get_databases(
     assert not response.meta.more_data_available
 
 
-@pytest.mark.usefixtures("_reset_db_after")
 async def test_post_databases(client: AsyncGatewayClient) -> None:
     """Test POST /databases"""
     from bson.objectid import ObjectId
@@ -67,14 +66,19 @@ async def test_post_databases(client: AsyncGatewayClient) -> None:
     assert datum, response
 
     for field in data:
-        assert (
-            getattr(response.data.attributes, field) == data[field]
-        ), f"Response: {response.data.attributes.model_dump()!r}\n\nTest data: {data!r}"
+        value = getattr(response.data.attributes, field)
+        if isinstance(value, AnyUrl):
+            assert (
+                str(value) == data[field]
+            ), f"Response: {response.data.attributes.model_dump()!r}\n\nTest data: {data!r}"
+        else:
+            assert (
+                value == data[field]
+            ), f"Response: {response.data.attributes.model_dump()!r}\n\nTest data: {data!r}"
     assert datum.links.model_dump() == {
         "self": AnyUrl(
-            url=f"{'/'.join(str(url).split('/')[:-1])}{BASE_URL_PREFIXES['major']}/databases/{datum.id}",
-            scheme=url.scheme,
-            host=url.host,
+            f"{'/'.join(str(url).split('/')[:-1])}"
+            f"{BASE_URL_PREFIXES['major']}/databases/{datum.id}"
         )
     }
 
@@ -138,12 +142,8 @@ async def test_get_single_database(
         )
     test_links = {
         "self": AnyUrl(
-            url=(
-                f"{'/'.join(str(url).split('/')[:-3])}{BASE_URL_PREFIXES['major']}"
-                f"/databases/{datum.id}"
-            ),
-            scheme=url.scheme,
-            host=url.host,
+            f"{'/'.join(str(url).split('/')[:-3])}{BASE_URL_PREFIXES['major']}"
+            f"/databases/{datum.id}"
         )
     }
     assert (

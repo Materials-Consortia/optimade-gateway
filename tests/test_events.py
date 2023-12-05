@@ -14,7 +14,6 @@ if TYPE_CHECKING:
     from .conftest import GetGateway, MockGatewayResponses
 
 
-@pytest.mark.usefixtures("_reset_db_after")
 async def test_ci_dev_startup_ci(
     caplog: pytest.LogCaptureFixture, top_dir: Path
 ) -> None:
@@ -67,7 +66,6 @@ async def test_ci_dev_startup_ci(
             del os.environ["CI"]
 
 
-@pytest.mark.usefixtures("_reset_db_after")
 async def test_ci_dev_startup_dev(
     caplog: pytest.LogCaptureFixture, top_dir: Path
 ) -> None:
@@ -125,7 +123,6 @@ async def test_ci_dev_startup_dev(
             del os.environ["OPTIMADE_MONGO_DATABASE"]
 
 
-@pytest.mark.usefixtures("_reset_db_after")
 async def test_ci_dev_startup_nothing(caplog: pytest.LogCaptureFixture) -> None:
     """Test ci_dev_startup() if not in CI or development mode"""
     import os
@@ -380,7 +377,6 @@ async def test_load_databases_no_databases(
         CONFIG.load_optimade_providers_databases = org_val
 
 
-@pytest.mark.usefixtures("_reset_db_after")
 async def test_load_databases_valid_databases(
     httpx_mock: HTTPXMock,
     caplog: pytest.LogCaptureFixture,

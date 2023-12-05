@@ -11,7 +11,6 @@ if TYPE_CHECKING:
     from ..conftest import AsyncGatewayClient, GetGateway, MockGatewayResponses
 
 
-@pytest.mark.usefixtures("_reset_db_after")
 async def test_get_search(
     client: AsyncGatewayClient,
     mock_gateway_responses: MockGatewayResponses,
@@ -34,7 +33,7 @@ async def test_get_search(
         "filter": 'elements HAS "Cu"',
         "page_limit": 15,
         "optimade_urls": [
-            _.get("attributes", {}).get("base_url") + "/v1"
+            f'{_.get("attributes", {}).get("base_url").rstrip("/")}/v1'
             for _ in gateway.get("databases", [{}])
         ],
     }
@@ -111,55 +110,6 @@ async def test_get_search_existing_gateway(
         assert "A new gateway was created for a query" not in caplog.text, caplog.text
 
 
-async def test_get_search_not_finishing(
-    client: AsyncGatewayClient,
-    mock_gateway_responses: MockGatewayResponses,
-    get_gateway: GetGateway,
-    caplog: pytest.LogCaptureFixture,
-) -> None:
-    """Test GET /search for unfinished query (redirect to query URL)"""
-    from optimade_gateway.models.queries import GatewayQueryResponse, QueryState
-    from optimade_gateway.models.responses import QueriesResponseSingle
-
-    gateway_id = "slow-query"
-    gateway: dict = await get_gateway(gateway_id)
-
-    query_params = {
-        "filter": 'elements HAS "Cu"',
-        "page_limit": 15,
-        "optimade_urls": [
-            _.get("attributes", {}).get("base_url")
-            for _ in gateway.get("databases", [{}])
-        ],
-        "timeout": 0,
-    }
-
-    mock_gateway_responses(gateway)
-
-    response = await client("/search", params=query_params)
-    assert response.status_code == 200, f"Request failed: {response.json()}"
-
-    assert "A gateway was found and reused for a query" in caplog.text, caplog.text
-    assert "A new gateway was created for a query" not in caplog.text, caplog.text
-
-    response = QueriesResponseSingle(**response.json())
-    assert (
-        response.data.attributes.response.data == {}
-    ), f"Data was found in response: {response.model_dump_json(indent=2)}"
-
-    query = response.data
-    assert query, query
-    assert query.attributes.state in (QueryState.STARTED, QueryState.IN_PROGRESS), query
-    assert query.attributes.query_parameters.filter == query_params["filter"], query
-    assert (
-        query.attributes.query_parameters.page_limit == query_params["page_limit"]
-    ), query
-    assert isinstance(query.attributes.response, GatewayQueryResponse)
-    assert query.attributes.response.data == {}
-    assert query.attributes.response.errors == []
-    assert query.attributes.gateway_id == gateway_id, query
-
-
 async def test_get_as_optimade(
     client: AsyncGatewayClient,
     mock_gateway_responses: MockGatewayResponses,
@@ -170,6 +120,8 @@ async def test_get_as_optimade(
 
     This should be equivalent of `GET /gateways/{gateway_id}/structures`.
     """
+    import json
+
     from httpx import get as httpx_get
     from optimade.models import StructureResponseMany
 
@@ -189,7 +141,7 @@ async def test_get_as_optimade(
 
     response = await client("/search", params=query_params)
 
-    assert response.status_code == 200, f"Request failed: {response.json()}"
+    assert response.status_code == 200, f"Request failed:\n{json.dumps(response.json(), indent=2)}"
 
     response = StructureResponseMany(**response.json())
     assert response
@@ -205,9 +157,10 @@ async def test_get_as_optimade(
 
     for database in gateway["databases"]:
         url = (
-            f"{database['attributes']['base_url']}/structures"
+            f"{database['attributes']['base_url'].rstrip('/')}/structures"
             f"?page_limit={query_params['page_limit']}"
         )
+
         db_response = httpx_get(url)
         assert (
             db_response.status_code == 200
@@ -242,7 +195,6 @@ async def test_get_as_optimade(
     assert "A new gateway was created for a query" not in caplog.text, caplog.text
 
 
-@pytest.mark.usefixtures("_reset_db_after")
 async def test_post_search(
     client: AsyncGatewayClient,
     mock_gateway_responses: MockGatewayResponses,
@@ -271,7 +223,7 @@ async def test_post_search(
     data = {
         "query_parameters": {"filter": 'elements HAS "Cu"', "page_limit": 15},
         "optimade_urls": [
-            _.get("attributes", {}).get("base_url") + "/v1"
+            f'{_.get("attributes", {}).get("base_url").rstrip("/")}/v1'
             for _ in gateway.get("databases", [{}])
         ],
     }
@@ -400,7 +352,6 @@ async def test_post_search_existing_gateway(
         assert await MONGO_DB["queries"].count_documents(mongo_filter) == 1
 
 
-@pytest.mark.usefixtures("_reset_db_after")
 async def test_sort_no_effect(
     client: AsyncGatewayClient,
     get_gateway: GetGateway,
@@ -423,7 +374,7 @@ async def test_sort_no_effect(
     query_params_asc = {
         "sort": "id",
         "optimade_urls": [
-            _.get("attributes", {}).get("base_url") + "/v1"
+            f'{_.get("attributes", {}).get("base_url").rstrip("/")}/v1'
             for _ in gateway.get("databases", [{}])
         ],
     }
@@ -495,3 +446,52 @@ async def test_sort_no_effect(
             title=sort_warning.title,
             detail=sort_warning.detail,
         )
+
+
+async def test_get_search_not_finishing(
+    client: AsyncGatewayClient,
+    mock_gateway_responses: MockGatewayResponses,
+    get_gateway: GetGateway,
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """Test GET /search for unfinished query (redirect to query URL)"""
+    from optimade_gateway.models.queries import GatewayQueryResponse, QueryState
+    from optimade_gateway.models.responses import QueriesResponseSingle
+
+    gateway_id = "slow-query"
+    gateway: dict = await get_gateway(gateway_id)
+
+    query_params = {
+        "filter": 'elements HAS "Cu"',
+        "page_limit": 15,
+        "optimade_urls": [
+            _.get("attributes", {}).get("base_url")
+            for _ in gateway.get("databases", [{}])
+        ],
+        "timeout": 0,
+    }
+
+    mock_gateway_responses(gateway)
+
+    response = await client("/search", params=query_params)
+    assert response.status_code == 200, f"Request failed: {response.json()}"
+
+    assert "A gateway was found and reused for a query" in caplog.text, caplog.text
+    assert "A new gateway was created for a query" not in caplog.text, caplog.text
+
+    response = QueriesResponseSingle(**response.json())
+    assert (
+        response.data.attributes.response.data == {}
+    ), f"Data was found in response: {response.model_dump_json(indent=2)}"
+
+    query = response.data
+    assert query, query
+    assert query.attributes.state in (QueryState.STARTED, QueryState.IN_PROGRESS), query
+    assert query.attributes.query_parameters.filter == query_params["filter"], query
+    assert (
+        query.attributes.query_parameters.page_limit == query_params["page_limit"]
+    ), query
+    assert isinstance(query.attributes.response, GatewayQueryResponse)
+    assert query.attributes.response.data == {}
+    assert query.attributes.response.errors == []
+    assert query.attributes.gateway_id == gateway_id, query

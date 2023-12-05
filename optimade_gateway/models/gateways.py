@@ -2,11 +2,11 @@
 from __future__ import annotations
 
 import warnings
-from typing import Annotated, Literal
+from typing import Annotated, Literal, Optional
 
 from optimade.models import EntryResource, EntryResourceAttributes, LinksResource
 from optimade.models.links import LinkType
-from optimade.models.utils import OptimadeField, SupportLevel
+from optimade.models.utils import OptimadeField
 from pydantic import Field, field_validator, model_validator
 
 from optimade_gateway.models.resources import EntryResourceCreate
@@ -85,72 +85,40 @@ class GatewayResource(EntryResource):
     id: Annotated[
         str,
         OptimadeField(
-            description="""An entry's ID as defined in section Definition of Terms.
-
-- **Type**: string.
-
-- **Requirements/Conventions**:
-    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.
-    - **Query**: MUST be a queryable property with support for all mandatory filter
-      features.
-    - **Response**: REQUIRED in the response.
-    - **Gateway-specific**: MUST NOT contain a forward slash (`/`).
-
-- **Examples**:
-    - `"db_1234567"`
-    - `"cod_2000000"`
-    - `"cod_2000000@1234567"`
-    - `"nomad_L1234567890"`
-    - `"42"`""",
-            support=SupportLevel.MUST,
-            queryable=SupportLevel.MUST,
+            description=EntryResource.model_fields["id"].description,
+            support=EntryResource.model_fields["id"].json_schema_extra["x-optimade-support"],
+            queryable=EntryResource.model_fields["id"].json_schema_extra["x-optimade-queryable"],
             pattern=r"^[^/]*$",
         ),
     ]
+
     type: Annotated[
         Literal["gateways"],
-        Field(
-            description="The name of the type of an entry.",
-        ),
+        Field(description="The name of the type of an entry."),
     ] = "gateways"
-    attributes: GatewayResourceAttributes
+
+    attributes: Annotated[GatewayResourceAttributes, Field(description=EntryResource.model_fields["attributes"].description)]
 
 
 class GatewayCreate(EntryResourceCreate, GatewayResourceAttributes):
     """Model for creating new Gateway resources in the MongoDB"""
 
     id: Annotated[
-        str | None,
+        Optional[str],
         OptimadeField(
-            description="""An entry's ID as defined in section Definition of Terms.
-
-- **Type**: string.
-
-- **Requirements/Conventions**:
-    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.
-    - **Query**: MUST be a queryable property with support for all mandatory filter
-      features.
-    - **Response**: REQUIRED in the response.
-    - **Gateway-specific**: MUST NOT contain a forward slash (`/`).
-
-- **Examples**:
-    - `"db_1234567"`
-    - `"cod_2000000"`
-    - `"cod_2000000@1234567"`
-    - `"nomad_L1234567890"`
-    - `"42"`""",
-            support=SupportLevel.MUST,
-            queryable=SupportLevel.MUST,
-            pattern=r"^[^/]*$",  # This regex is the special addition
+            description=EntryResource.model_fields["id"].description,
+            support=EntryResource.model_fields["id"].json_schema_extra["x-optimade-support"],
+            queryable=EntryResource.model_fields["id"].json_schema_extra["x-optimade-queryable"],
+            pattern=r"^[^/]*$",  # This pattern is the special addition
         ),
     ] = None
 
     database_ids: Annotated[
-        set[str] | None,
+        Optional[set[str]],
         Field(description="A unique list of database IDs for registered databases."),
     ] = None
 
-    databases: list[LinksResource] | None  # type: ignore[assignment]
+    databases: Annotated[Optional[list[LinksResource]], Field(description=GatewayResourceAttributes.model_fields["databases"].description)] = None
 
     @model_validator(mode="after")
     def specify_databases(self) -> GatewayCreate:

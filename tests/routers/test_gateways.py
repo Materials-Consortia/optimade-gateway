@@ -35,7 +35,6 @@ async def test_get_gateways(
     assert not response.meta.more_data_available
 
 
-@pytest.mark.usefixtures("_reset_db_after")
 async def test_post_gateways(client: AsyncGatewayClient) -> None:
     """Test POST /gateways"""
     from bson.objectid import ObjectId
@@ -56,7 +55,7 @@ async def test_post_gateways(client: AsyncGatewayClient) -> None:
                     "name": "PyTest test_post_gateways",
                     "description": "This is a valid test database",
                     "base_url": "https://example.org/test",
-                    "homepage": "https://example.org",
+                    "homepage": "https://example.org/",
                     "link_type": "child",
                 },
             }
@@ -84,9 +83,8 @@ async def test_post_gateways(client: AsyncGatewayClient) -> None:
         ), f"Response: {response_db!r}\n\nTest data: {LinksResource(**test_db)!r}"
     assert datum.links.model_dump() == {
         "self": AnyUrl(
-            url=f"{'/'.join(str(url).split('/')[:-1])}{BASE_URL_PREFIXES['major']}/gateways/{datum.id}",
-            scheme=url.scheme,
-            host=url.host,
+            f"{'/'.join(str(url).split('/')[:-1])}"
+            f"{BASE_URL_PREFIXES['major']}/gateways/{datum.id}"
         )
     }
 
@@ -158,9 +156,8 @@ async def test_post_gateways_database_ids(client: AsyncGatewayClient) -> None:
 
     assert datum.links.model_dump() == {
         "self": AnyUrl(
-            url=f"{'/'.join(str(url).split('/')[:-1])}{BASE_URL_PREFIXES['major']}/gateways/{datum.id}",
-            scheme=url.scheme,
-            host=url.host,
+            f"{'/'.join(str(url).split('/')[:-1])}"
+            f"{BASE_URL_PREFIXES['major']}/gateways/{datum.id}"
         )
     }
 
@@ -171,7 +168,6 @@ async def test_post_gateways_database_ids(client: AsyncGatewayClient) -> None:
         assert db["id"] in data["database_ids"]
 
 
-@pytest.mark.usefixtures("_reset_db_after")
 async def test_post_gateways_create_with_db_ids(client: AsyncGatewayClient) -> None:
     """Test POST /gateways with `database_ids`, while creating gateway"""
     from optimade.server.routers.utils import BASE_URL_PREFIXES
@@ -190,7 +186,7 @@ async def test_post_gateways_create_with_db_ids(client: AsyncGatewayClient) -> N
                     "name": "PyTest test_post_gateways",
                     "description": "This is a valid test database",
                     "base_url": "https://example.org/test",
-                    "homepage": "https://example.org",
+                    "homepage": "https://example.org/",
                     "link_type": "child",
                 },
             }
@@ -218,9 +214,8 @@ async def test_post_gateways_create_with_db_ids(client: AsyncGatewayClient) -> N
 
     assert datum.links.model_dump() == {
         "self": AnyUrl(
-            url=f"{'/'.join(str(url).split('/')[:-1])}{BASE_URL_PREFIXES['major']}/gateways/{datum.id}",
-            scheme=url.scheme,
-            host=url.host,
+            f"{'/'.join(str(url).split('/')[:-1])}"
+            f"{BASE_URL_PREFIXES['major']}/gateways/{datum.id}",
         )
     }
 

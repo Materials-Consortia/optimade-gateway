@@ -6,10 +6,10 @@ mix-in class when creating entry-endpoint resources.
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Any
+from typing import Optional
 
 from optimade.models import EntryResourceAttributes
-from pydantic import ConfigDict
+from pydantic import ConfigDict, model_validator
 
 
 class EntryResourceCreate(EntryResourceAttributes):
@@ -17,22 +17,11 @@ class EntryResourceCreate(EntryResourceAttributes):
 
     model_config = ConfigDict(extra="ignore")
 
-    last_modified: datetime | None
+    last_modified: Optional[datetime] = None
 
-    id: str | None
+    id: Optional[str] = None
 
-    @classmethod
-    def _remove_pre_root_validators(cls):
-        """Remove `check_illegal_attributes_fields` pre root_validators."""
-        pre_root_validators = []
-        for validator in cls.__pre_root_validators__:
-            if not str(validator).startswith(
-                "<function Attributes.check_illegal_attributes_fields"
-            ):
-                pre_root_validators.append(validator)
-        cls.__pre_root_validators__ = pre_root_validators
-
-    def __init__(self, **data: Any) -> None:
-        """Remove root_validator `check_illegal_attributes_fields`."""
-        self._remove_pre_root_validators()
-        super().__init__(**data)
+    @model_validator(mode="after")
+    def check_illegal_attributes_fields(self) -> EntryResourceCreate:
+        """Overwrite parental `check_illegal_attributes_fields` class validators."""
+        return self

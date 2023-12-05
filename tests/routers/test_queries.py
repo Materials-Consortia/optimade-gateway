@@ -34,7 +34,6 @@ async def test_get_queries(
     assert not response.meta.more_data_available
 
 
-@pytest.mark.usefixtures("_reset_db_after")
 async def test_post_queries(
     client: AsyncGatewayClient,
     mock_gateway_responses: MockGatewayResponses,
@@ -84,12 +83,8 @@ async def test_post_queries(
 
     assert datum.links.model_dump() == {
         "self": AnyUrl(
-            url=(
-                f"{'/'.join(str(url).split('/')[:-1])}{BASE_URL_PREFIXES['major']}"
-                f"/queries/{datum.id}"
-            ),
-            scheme=url.scheme,
-            host=url.host,
+            f"{'/'.join(str(url).split('/')[:-1])}{BASE_URL_PREFIXES['major']}"
+            f"/queries/{datum.id}"
         )
     }
     assert datum.attributes.state == QueryState.CREATED
@@ -104,7 +99,6 @@ async def test_post_queries(
     await asyncio.sleep(1)  # Ensure mock URL is queried
 
 
-@pytest.mark.usefixtures("_reset_db_after")
 async def test_post_queries_bad_data(client: AsyncGatewayClient) -> None:
     """Test POST /queries with bad data"""
     from optimade.models import ErrorResponse, OptimadeError
@@ -140,7 +134,6 @@ async def test_post_queries_bad_data(client: AsyncGatewayClient) -> None:
     )
 
 
-@pytest.mark.usefixtures("_reset_db_after")
 async def test_query_results(
     client: AsyncGatewayClient,
     mock_gateway_responses: MockGatewayResponses,
@@ -187,7 +180,6 @@ async def test_query_results(
     assert response.data.attributes.state == QueryState.FINISHED
 
 
-@pytest.mark.usefixtures("_reset_db_after")
 async def test_errored_query_results(
     client: AsyncGatewayClient,
     mock_gateway_responses: MockGatewayResponses,
@@ -223,7 +215,6 @@ async def test_errored_query_results(
     assert response.data.attributes.response.errors
 
 
-@pytest.mark.usefixtures("_reset_db_after")
 async def test_sort_no_effect(
     client: AsyncGatewayClient,
     get_gateway: GetGateway,

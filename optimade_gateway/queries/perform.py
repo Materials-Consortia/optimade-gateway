@@ -12,7 +12,7 @@ import httpx
 from optimade import __api_version__
 from optimade.models import ErrorResponse, ToplevelLinks
 from optimade.server.routers.utils import BASE_URL_PREFIXES, meta_values
-from pydantic import ValidationError
+from pydantic import ValidationError, AnyUrl
 
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.common.logger import LOGGER
@@ -151,7 +151,7 @@ def db_find(
     endpoint: str,
     response_model: EntryResponseMany | EntryResponseOne,
     query_params: str = "",
-    raw_url: str | None = None,
+    raw_url: AnyUrl | str | None = None,
 ) -> tuple[ErrorResponse | EntryResponseMany | EntryResponseOne, str]:
     """Imitate `Collection.find()` for any given database for entry-resource endpoints
 
@@ -179,12 +179,20 @@ def db_find(
         )
 
     if raw_url:
-        url = raw_url
+        url = str(raw_url)
     else:
-        url = (
-            f"{str(get_resource_attribute(database, 'attributes.base_url')).strip('/')}"
-            f"{BASE_URL_PREFIXES['major']}/{endpoint.strip('/')}?{query_params}"
-        )
+        url = ""
+
+        base_url = str(get_resource_attribute(database, "attributes.base_url")).rstrip("/")
+        url += base_url
+
+        # Check whether base_url is a versioned base URL
+        if not any(base_url.endswith(_) for _ in BASE_URL_PREFIXES.values()):
+            # Unversioned base URL - add the currently supported major version
+            url += BASE_URL_PREFIXES["major"]
+
+        url += f"/{endpoint.strip('/')}?{query_params}"
+
     response = httpx.get(url, timeout=60)
 
     try:
@@ -277,7 +285,7 @@ async def db_get_all_resources(
     endpoint: str,
     response_model: EntryResponseMany,
     query_params: str = "",
-    raw_url: str | None = None,
+    raw_url: AnyUrl | str | None = None,
 ) -> tuple[list[EntryResource | dict[str, Any]], LinksResource | dict[str, Any]]:
     """Recursively retrieve all resources from an entry-listing endpoint
 

@@ -68,7 +68,7 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
     # NOTE: It may be that the final list of base URLs (`base_urls`) contains the same
     # provider(s), but with differring base URLS, if, for example, a versioned base URL
     # is supplied.
-    base_urls = set()
+    base_urls: set[AnyUrl] = set()
 
     if search.database_ids:
         databases = await databases_collection.get_multiple(
@@ -104,31 +104,25 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
     databases = await databases_collection.get_multiple(
         filter={"base_url": {"$in": await clean_python_types(base_urls)}}
     )
+
     if len(databases) == len(base_urls):
         # At this point it is expected that the list of databases in `databases`
         # is a complete set of databases requested.
-        gateway = GatewayCreate(databases=databases)
+        pass
+
     elif len(databases) < len(base_urls):
-        # There are unregistered databases
-        current_base_urls = {
+        # There are unregistered databases, i.e., databases not in the local collection
+        current_base_urls: set[AnyUrl] = {
             get_resource_attribute(database, "attributes.base_url")
             for database in databases
         }
         databases.extend(
             [
                 LinksResource(
-                    id=(
-                        f"{url.user + '@' if url.user else ''}{url.host}"
-                        f"{':' + url.port if url.port else ''}"
-                        f"{url.path.rstrip('/') if url.path else ''}"
-                    ).replace(".", "__"),
+                    id=str(url).replace(".", "__")[len(url.scheme) + 3 :].split("?", maxsplit=1)[0].split("#", maxsplit=1)[0],
                     type="links",
                     attributes=LinksResourceAttributes(
-                        name=(
-                            f"{url.user + '@' if url.user else ''}{url.host}"
-                            f"{':' + url.port if url.port else ''}"
-                            f"{url.path.rstrip('/') if url.path else ''}"
-                        ),
+                        name=str(url)[len(url.scheme) + 3 :].split("?", maxsplit=1)[0].split("#", maxsplit=1)[0],
                         description="",
                         base_url=url,
                         link_type=LinkType.CHILD,
@@ -292,7 +286,11 @@ async def get_search(
                     response.status_code = 500
 
             if search_params.as_optimade:
-                return await query.response_as_optimade(url=request.url)
+                response = await query.response_as_optimade(url=request.url)
+                LOGGER.debug(
+                    "Returning response as OPTIMADE entry listing:\n%s", response
+                )
+                return response
 
             return QueriesResponseSingle(
                 links=ToplevelLinks(next=None),

@@ -7,7 +7,7 @@ import warnings
 from copy import deepcopy
 from datetime import timezone
 from enum import Enum
-from typing import TYPE_CHECKING, Annotated, Any, Literal
+from typing import TYPE_CHECKING, Annotated, Any, Literal, Optional
 
 from optimade.models import EntryResource as OptimadeEntryResource
 from optimade.models import (
@@ -26,11 +26,12 @@ from optimade.models import (
 )
 from optimade.models.utils import StrictField
 from optimade.server.query_params import EntryListingQueryParams
-from pydantic import BaseModel, EmailStr, Field, field_validator
+from pydantic import BaseModel, EmailStr, Field, field_validator, model_validator
 from pydantic.fields import FieldInfo
 from starlette.datastructures import URL as StarletteURL
 
 from optimade_gateway.common.config import CONFIG
+from optimade_gateway.common.utils import clean_python_types
 from optimade_gateway.models.resources import EntryResourceCreate
 from optimade_gateway.warnings import SortNotSupported
 
@@ -253,24 +254,13 @@ class GatewayQueryResponse(Response):
         ),
     ] = None
 
-    @classmethod
-    def _remove_pre_root_validators(cls):
-        """Remove `either_data_meta_or_errors_must_be_set` pre root_validator.
-        This will always be available through `meta`, and more importantly,
+    @model_validator(mode="after")
+    def either_data_meta_or_errors_must_be_set(self) -> GatewayQueryResponse:
+        """Overwrite `either_data_meta_or_errors_must_be_set`.
+
         `errors` should be allowed to be present always for this special response.
         """
-        pre_root_validators = []
-        for validator_ in cls.__pre_root_validators__:
-            if not str(validator_).startswith(
-                "<function Response.either_data_meta_or_errors_must_be_set"
-            ):
-                pre_root_validators.append(validator_)
-        cls.__pre_root_validators__ = pre_root_validators
-
-    def __init__(self, **data: Any) -> None:
-        """Remove root_validator `either_data_meta_or_errors_must_be_set`."""
-        self._remove_pre_root_validators()
-        super().__init__(**data)
+        return self
 
 
 class QueryResourceAttributes(EntryResourceAttributes):
@@ -391,10 +381,12 @@ class QueryResource(EntryResource):
             if isinstance(entry_, dict):
                 _entry = deepcopy(entry_)
                 _entry["id"] = f"{database_provider_}/{entry_['id']}"
-            else:
-                _entry = entry_.model_copy(deep=True)
-                _entry.id = f"{database_provider_}/{entry_.id}"  # type: ignore[union-attr]
-            return _entry
+                return _entry
+
+            return entry_.model_copy(
+                update={"id": f"{database_provider_}/{entry_.id}"},
+                deep=True,
+            ).model_dump(exclude_unset=True, exclude_none=True)
 
         if not self.attributes.response:
             # The query has not yet been initiated
@@ -455,8 +447,16 @@ class QueryResource(EntryResource):
 class QueryCreate(EntryResourceCreate, QueryResourceAttributes):
     """Model for creating new Query resources in the MongoDB"""
 
-    state: QueryState | None  # type: ignore[assignment]
-    endpoint: EndpointEntryType | None  # type: ignore[assignment]
+    state: Annotated[Optional[QueryState], Field(
+        title=QueryResourceAttributes.model_fields["state"].title,
+        description=QueryResourceAttributes.model_fields["state"].description,
+        json_schema_extra=QueryResourceAttributes.model_fields["state"].json_schema_extra,
+    )] = None
+    endpoint: Annotated[Optional[EndpointEntryType], Field(
+        title=QueryResourceAttributes.model_fields["endpoint"].title,
+        description=QueryResourceAttributes.model_fields["endpoint"].description,
+        json_schema_extra=QueryResourceAttributes.model_fields["endpoint"].json_schema_extra,
+    )] = None
 
     @field_validator("query_parameters", mode="after")
     @classmethod

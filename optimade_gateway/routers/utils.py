@@ -34,6 +34,7 @@ if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
     from fastapi import Request
     from optimade.models import EntryResource, EntryResponseMany, LinksResource
     from optimade.server.query_params import EntryListingQueryParams
+    from optimade.server.schemas import QueryableProperties
 
     from optimade_gateway.models import GatewayResource, QueryResource
 
@@ -85,8 +86,8 @@ async def get_entries(
 
 
 async def aretrieve_queryable_properties(
-    schema: dict[str, Any], queryable_properties: Iterable
-) -> dict:
+    schema: type[EntryResource], queryable_properties: Iterable[str], entry_type: str | None = None
+) -> "QueryableProperties":
     """Asynchronous implementation of `retrieve_queryable_properties()` from `optimade`
 
     Reference to the function in the `optimade` API documentation:
@@ -108,6 +109,7 @@ async def aretrieve_queryable_properties(
     return retrieve_queryable_properties(
         schema=schema,
         queryable_properties=queryable_properties,
+        entry_type=entry_type,
     )
 
 
@@ -248,8 +250,8 @@ async def resource_factory(
         }
     else:
         raise TypeError(
-            "create_resource must be either a GatewayCreate or QueryCreate object not "
-            f"{type(create_resource)!r}"
+            "create_resource must be either a DatabaseCreate, GatewayCreate, or "
+            f"QueryCreate object, not {type(create_resource)!r}"
         )
 
     collection = await collection_factory(collection_name)
@@ -279,17 +281,24 @@ async def resource_factory(
                     f"{create_resource.name} created by OPTIMADE gateway database "
                     "registration."
                 )
+
             if not create_resource.link_type:
                 create_resource.link_type = LinkType.EXTERNAL
+
             if not create_resource.homepage:
                 create_resource.homepage = None
-        elif isinstance(create_resource, GatewayCreate):
+
+        elif (
+            isinstance(create_resource, GatewayCreate)
+            and "database_ids" in create_resource.model_fields_set
+        ):
             # Do not store `database_ids`
-            if "database_ids" in create_resource.model_fields_set:
-                create_resource.database_ids = None
-                create_resource.model_fields_set.remove("database_ids")
+            del create_resource.database_ids
+            create_resource.model_fields_set.remove("database_ids")
+
         elif isinstance(create_resource, QueryCreate):
             create_resource.state = QueryState.CREATED
+
         result = await collection.create_one(create_resource)
         LOGGER.debug("Created new %s: %r", result.type, result)
         created = True

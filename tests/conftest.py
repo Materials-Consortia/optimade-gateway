@@ -12,7 +12,7 @@ import pytest
 
 if TYPE_CHECKING:
     from collections.abc import Awaitable
-    from typing import Literal, Protocol
+    from typing import Literal, Protocol, TypedDict
 
     from fastapi import FastAPI
     from httpx import Request, Response
@@ -44,6 +44,38 @@ if TYPE_CHECKING:
             ...
 
 
+    class DatabaseAttributesOptionalsDict(TypedDict, total=False):
+        """Database attributes dict of optional fields"""
+
+        aggregate: str
+
+
+    class DatabaseAttributesDict(DatabaseAttributesOptionalsDict):
+        """Database attributes dict"""
+
+        name: str
+        description: str
+        base_url: str
+        homepage: str | None
+        link_type: str
+
+
+    class DatabaseDict(TypedDict):
+        """Database dict"""
+
+        id: str
+        type: str
+        attributes: DatabaseAttributesDict
+
+
+    class GatewayDict(TypedDict):
+        """Gateway dict"""
+
+        id: str
+        last_modified: str
+        databases: list[DatabaseDict]
+
+
 # UTILITY FUNCTIONS
 
 
@@ -58,7 +90,7 @@ async def setup_db_utility(top_dir: Path | str) -> None:
 
     top_dir = Path(top_dir).resolve()
 
-    test_config = json.loads(
+    test_config: dict = json.loads(
         (top_dir / "tests" / "static" / "test_config.json").read_bytes()
     )
 
@@ -76,7 +108,7 @@ async def setup_db_utility(top_dir: Path | str) -> None:
             data_file.exists()
         ), f"Test data file at {data_file} does not seem to exist!"
 
-        data = json.loads(data_file.read_bytes())
+        data: list[dict] = json.loads(data_file.read_bytes())
 
         await MONGO_DB[collection].insert_many(data)
 
@@ -169,7 +201,7 @@ async def random_gateway() -> dict:
     return gateway_ids.pop()
 
 
-@pytest.fixture()
+@pytest.fixture(autouse=True)
 async def _reset_db_after(top_dir: Path) -> None:
     """Reset MongoDB with original test data after the test has run"""
     try:
@@ -190,7 +222,7 @@ def mock_gateway_responses(
 
     """
 
-    def _mock_response(gateway: dict) -> None:
+    def _mock_response(gateway: GatewayDict) -> None:
         """Add mock responses (`httpx_mock`) for `gateway`'s databases"""
         for database in gateway["databases"]:
             if database["id"].startswith("sleep"):
@@ -227,7 +259,7 @@ def mock_gateway_responses(
                     status_code = 200
 
                 httpx_mock.add_response(
-                    url=re.compile(rf"{database['attributes']['base_url']}.*"),
+                    url=re.compile(rf"{re.escape(database['attributes']['base_url'])}.*"),
                     json=data,
                     status_code=status_code,
                 )

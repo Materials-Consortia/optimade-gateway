@@ -14,33 +14,40 @@ if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
     from typing import Any
 
 
-async def clean_python_types(data: Any) -> Any:
+async def clean_python_types(data: Any, **dump_kwargs: Any) -> Any:
     """Turn any types into MongoDB-friendly Python types.
 
-    Use `dict()` method for Pydantic models.
+    Use `model_dump()` method for Pydantic models.
     Use `value` property for Enums.
     Turn tuples and sets into lists.
     """
-    res: Any = None
     if isinstance(data, (list, tuple, set)):
         res = []
         for datum in data:
-            res.append(await clean_python_types(datum))
-    elif isinstance(data, dict):
+            res.append(await clean_python_types(datum, **dump_kwargs))
+        return res
+    
+    if isinstance(data, dict):
         res = {}
         for key in list(data.keys()):
-            res[key] = await clean_python_types(data[key])
-    elif isinstance(data, BaseModel):
+            res[key] = await clean_python_types(data[key], **dump_kwargs)
+        return res
+    
+    if isinstance(data, BaseModel):
         # Pydantic model
-        res = await clean_python_types(data.model_dump())
-    elif isinstance(data, Enum):
-        res = await clean_python_types(data.value)
-    elif isinstance(data, type):
-        res = await clean_python_types(f"{data.__module__}.{data.__name__}")
-    else:
-        # Unknown or other basic type, e.g., str, int, etc.
-        res = data
-    return res
+        return await clean_python_types(data.model_dump(**dump_kwargs))
+    
+    if isinstance(data, Enum):
+        return await clean_python_types(data.value, **dump_kwargs)
+
+    if isinstance(data, type):
+        return await clean_python_types(f"{data.__module__}.{data.__name__}", **dump_kwargs)
+
+    if isinstance(data, AnyUrl):
+        return await clean_python_types(str(data), **dump_kwargs)
+
+    # Unknown or other basic type, e.g., str, int, etc.
+    return data
 
 
 def get_resource_attribute(

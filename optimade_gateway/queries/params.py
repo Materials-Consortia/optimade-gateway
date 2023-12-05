@@ -1,6 +1,4 @@
 """URL query parameters."""
-from __future__ import annotations
-
 from typing import Annotated
 
 from fastapi import Query
@@ -18,11 +16,11 @@ class SearchQueryParams:
     The extra query parameters are as follows.
 
     Attributes:
-        database_ids (Set[str]): List of possible database IDs that are already known by
+        database_ids (set[str]): List of possible database IDs that are already known by
             the gateway. To be known they need to be registered with the gateway
             (currently not possible).
 
-        optimade_urls (Set[AnyUrl]): A list of OPTIMADE base URLs. If a versioned base
+        optimade_urls (set[AnyUrl]): A list of OPTIMADE base URLs. If a versioned base
             URL is supplied it will be used as is, as long as it represents a supported
             version. If an un-versioned base URL, standard version negotiation will be
             conducted to get the versioned base URL, which will be used as long as it

@@ -1,12 +1,12 @@
 """Pydantic models/schemas for the LinksResource used in /databases"""
 from __future__ import annotations
 
-from typing import Annotated
+from typing import Annotated, Optional
 
-from optimade.models import Link, LinksResourceAttributes
-from optimade.models.links import LinkType
+from optimade.models import LinksResourceAttributes
+from optimade.models.links import LinkType, JsonLinkType
 from optimade.models.utils import StrictField
-from pydantic import AnyUrl, field_validator
+from pydantic import field_validator
 
 from optimade_gateway.models.resources import EntryResourceCreate
 
@@ -30,25 +30,22 @@ class DatabaseCreate(EntryResourceCreate, LinksResourceAttributes):
 
     """
 
-    description: str | None
-    base_url: AnyUrl | Link
+    description: Annotated[Optional[str], StrictField(description=LinksResourceAttributes.model_fields["description"].description)] = None
+
+    base_url: Annotated[JsonLinkType, StrictField(description=LinksResourceAttributes.model_fields["base_url"].description)]
+
     homepage: Annotated[
-        AnyUrl | Link | None,
+        Optional[JsonLinkType],
         StrictField(
-            description=(
-                "JSON API links object, pointing to a homepage URL for this "
-                "implementation."
-            ),
+            description=LinksResourceAttributes.model_fields["homepage"].description,
         ),
     ] = None
+
     link_type: Annotated[
-        LinkType | None,
+        Optional[LinkType],
         StrictField(
-            title="Link Type",
-            description=(
-                "The type of the linked relation.\nMUST be one of these values: "
-                "'child', 'root', 'external', 'providers'."
-            ),
+            title=LinksResourceAttributes.model_fields["link_type"].title,
+            description=LinksResourceAttributes.model_fields["link_type"].description,
         ),
     ] = None
 
