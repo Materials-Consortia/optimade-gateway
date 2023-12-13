@@ -39,7 +39,7 @@ docs = [
     "mkdocs~=1.5",
     "mkdocs-awesome-pages-plugin~=2.9",
     "mkdocs-material~=9.4",
-    "mkdocstrings[python-legacy]~=0.24.0",
+    "mkdocstrings[python]~=0.24.0",
 ]
 dev = [
     "mongomock_motor~=0.0.25",

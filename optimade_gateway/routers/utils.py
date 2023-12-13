@@ -103,6 +103,7 @@ async def aretrieve_queryable_properties(
     Parameters:
         schema: The schema of the pydantic model.
         queryable_properties: The list of properties to find in the schema.
+        entry_type: The entry type of the model, if any.
 
     Returns:
         A flat dictionary with properties as keys, containing the field description,
@@ -194,12 +195,12 @@ async def resource_factory(
     Returns:
         Two things in a tuple:
 
-        - Either a
-            [`GatewayResource`][optimade_gateway.models.gateways.GatewayResource];
-            a [`QueryResource`][optimade_gateway.models.queries.QueryResource]; or a
-            [`LinksResource`](https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResource)
-            and
-        - whether or not the resource was newly created.
+            - Either a
+                [`GatewayResource`][optimade_gateway.models.gateways.GatewayResource];
+                a [`QueryResource`][optimade_gateway.models.queries.QueryResource]; or a
+                [`LinksResource`](https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResource)
+                and
+            - whether or not the resource was newly created.
 
     """
     created = False
