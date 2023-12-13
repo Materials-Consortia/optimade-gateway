@@ -1123,7 +1123,7 @@
         <li class="md-nav__item">
   <a href="#optimade_gateway.queries.prepare" class="md-nav__link">
     <span class="md-ellipsis">
-      optimade_gateway.queries.prepare
+      prepare
     </span>
   </a>
   
@@ -1434,7 +1434,7 @@
         <li class="md-nav__item">
   <a href="#optimade_gateway.queries.prepare" class="md-nav__link">
     <span class="md-ellipsis">
-      optimade_gateway.queries.prepare
+      prepare
     </span>
   </a>
   
@@ -1476,14 +1476,16 @@
 <h1 id="prepare">prepare<a class="headerlink" href="#prepare" title="Permanent link">&para;</a></h1>
 
 
-  <div class="doc doc-object doc-module">
+<div class="doc doc-object doc-module">
+
+
 
 <a id="optimade_gateway.queries.prepare"></a>
-    <div class="doc doc-contents first">
-
+  <div class="doc doc-contents first">
+  
       <p>Prepare OPTIMADE queries.</p>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1494,112 +1496,218 @@
 
 
 
-  <div class="doc doc-object doc-function">
+
+
+<div class="doc doc-object doc-function">
+
 
 
 
 <h2 id="optimade_gateway.queries.prepare.get_query_params" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_query_params</span><span class="p">(</span><span class="n">query_parameters</span><span class="p">,</span> <span class="n">database_id</span><span class="p">,</span> <span class="n">filter_mapping</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-async"><code>async</code></small>
+          <code class="highlight language-python"><span class="n">get_query_params</span><span class="p">(</span><span class="n">query_parameters</span><span class="p">,</span> <span class="n">database_id</span><span class="p">,</span> <span class="n">filter_mapping</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.queries.prepare.get_query_params" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Construct the parsed URL query parameters</p>
 
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/queries/prepare.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_query_params</span><span class="p">(</span>
-    <span class="n">query_parameters</span><span class="p">:</span> <span class="s2">&quot;OptimadeQueryParameters&quot;</span><span class="p">,</span>
+          <details class="quote">
+            <summary>Source code in <code>optimade_gateway/queries/prepare.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span>
+<span class="normal">93</span>
+<span class="normal">94</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_query_params</span><span class="p">(</span>
+    <span class="n">query_parameters</span><span class="p">:</span> <span class="n">OptimadeQueryParameters</span><span class="p">,</span>
     <span class="n">database_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">filter_mapping</span><span class="p">:</span> <span class="s2">&quot;Mapping[str, Union[str, None]]&quot;</span><span class="p">,</span>
+    <span class="n">filter_mapping</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Construct the parsed URL query parameters&quot;&quot;&quot;</span>
     <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">param</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">param</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">query_parameters</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">value</span>
+        <span class="n">param</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">param</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">query_parameters</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">value</span>
     <span class="p">}</span>
     <span class="k">if</span> <span class="n">filter_mapping</span><span class="p">[</span><span class="n">database_id</span><span class="p">]:</span>
         <span class="n">query_params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;filter&quot;</span><span class="p">:</span> <span class="n">filter_mapping</span><span class="p">[</span><span class="n">database_id</span><span class="p">]})</span>
     <span class="k">return</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlencode</span><span class="p">(</span><span class="n">query_params</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+          </details>
   </div>
 
+</div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
+
 
 
 
 <h2 id="optimade_gateway.queries.prepare.prepare_query_filter" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">prepare_query_filter</span><span class="p">(</span><span class="n">database_ids</span><span class="p">,</span> <span class="n">filter_query</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-async"><code>async</code></small>
+          <code class="highlight language-python"><span class="n">prepare_query_filter</span><span class="p">(</span><span class="n">database_ids</span><span class="p">,</span> <span class="n">filter_query</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.queries.prepare.prepare_query_filter" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Update the query parameter <code>filter</code> value to be database-specific</p>
 <p>This is needed due to the served change of <code>id</code> values.
 If someone searches for a gateway-changed <code>id</code>, it needs to be reverted to be
 database-specific.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>database_ids</code></td>
-        <td><code>List[str]</code></td>
-        <td><p>List of the databases to create updated filter values for.
-These values are part of the gateway-changed <code>id</code> values and are essential.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>database_ids</code></td>
+          <td>
+                <code>list[str]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>List of the databases to create updated filter values for.
+These values are part of the gateway-changed <code>id</code> values and are essential.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>filter_query</code></td>
+          <td>
+                <code>str | None</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The submitted <code>filter</code> query parameter value. Can be <code>None</code> if not
+supplied.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>filter_query</code></td>
-        <td><code>Union[str, None]</code></td>
-        <td><p>The submitted <code>filter</code> query parameter value. Can be <code>None</code> if not
-supplied.</p></td>
-        <td><em>required</em></td>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>Mapping[str, Union[str, None]]</code></td>
-      <td><p>A mapping for database IDs to database-specific <code>filter</code> query parameter values.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/queries/prepare.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">prepare_query_filter</span><span class="p">(</span>
-    <span class="n">database_ids</span><span class="p">:</span> <span class="s2">&quot;List[str]&quot;</span><span class="p">,</span> <span class="n">filter_query</span><span class="p">:</span> <span class="s2">&quot;Union[str, None]&quot;</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Mapping[str, Union[str, None]]&quot;</span><span class="p">:</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="collections.abc.Mapping">Mapping</span>[str, str | None]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A mapping for database IDs to database-specific <code>filter</code> query parameter values.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>optimade_gateway/queries/prepare.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">prepare_query_filter</span><span class="p">(</span>
+    <span class="n">database_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">filter_query</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Update the query parameter `filter` value to be database-specific</span>
 
 <span class="sd">    This is needed due to the served change of `id` values.</span>
@@ -1629,11 +1737,20 @@ supplied.</p></td>
         <span class="sa">r</span><span class="s1">&#39;(?P&lt;id_value_r&gt;[^\s]*)&quot;&#39;</span><span class="p">,</span>
         <span class="sa">f</span><span class="s2">&quot;=</span><span class="si">{</span><span class="n">filter_query</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">filter_query</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="n">matched_id</span> <span class="o">=</span> <span class="n">id_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;id_value_l&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">id_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;id_value_r&quot;</span><span class="p">)</span>
+        <span class="n">matched_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">id_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;id_value_l&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">id_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;id_value_r&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">database_id</span> <span class="ow">in</span> <span class="n">database_ids</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">matched_id</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">database_id</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">):</span>
+                <span class="n">updated_filter_query</span> <span class="o">=</span> <span class="n">updated_filter</span><span class="p">[</span><span class="n">database_id</span><span class="p">]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">updated_filter_query</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span>
+                    <span class="n">updated_filter_query</span><span class="p">,</span> <span class="nb">str</span>
+                <span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                        <span class="s2">&quot;Expected a string for filter query, got &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">updated_filter_query</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+
                 <span class="c1"># Database found</span>
-                <span class="n">updated_filter</span><span class="p">[</span><span class="n">database_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">updated_filter</span><span class="p">[</span><span class="n">database_id</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>  <span class="c1"># type: ignore[union-attr]</span>
+                <span class="n">updated_filter</span><span class="p">[</span><span class="n">database_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">updated_filter_query</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">database_id</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">1</span>
                 <span class="p">)</span>
                 <span class="k">break</span>
@@ -1650,23 +1767,20 @@ supplied.</p></td>
                     <span class="p">),</span>
                 <span class="p">)</span>
             <span class="p">)</span>
-    <span class="k">return</span> <span class="n">updated_filter</span>  <span class="c1"># type: ignore[return-value]</span>
-</code></pre></div>
-        </details>
-    </div>
-
+    <span class="k">return</span> <span class="n">updated_filter</span>
+</code></pre></div></td></tr></table></div>
+          </details>
   </div>
 
-
-
+</div>
 
 
 
   </div>
 
-    </div>
-
   </div>
+
+</div>
 
 
 

@@ -544,7 +544,7 @@
         <li class="md-nav__item">
   <a href="#optimade_gateway.common.config" class="md-nav__link">
     <span class="md-ellipsis">
-      optimade_gateway.common.config
+      config
     </span>
   </a>
   
@@ -559,42 +559,6 @@
   
     <nav class="md-nav" aria-label="ServerConfig">
       <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#optimade_gateway.common.config.ServerConfig.databases_collection" class="md-nav__link">
-    <span class="md-ellipsis">
-      databases_collection
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optimade_gateway.common.config.ServerConfig.gateways_collection" class="md-nav__link">
-    <span class="md-ellipsis">
-      gateways_collection
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optimade_gateway.common.config.ServerConfig.load_optimade_providers_databases" class="md-nav__link">
-    <span class="md-ellipsis">
-      load_optimade_providers_databases
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optimade_gateway.common.config.ServerConfig.queries_collection" class="md-nav__link">
-    <span class="md-ellipsis">
-      queries_collection
-    </span>
-  </a>
-  
-</li>
         
           <li class="md-nav__item">
   <a href="#optimade_gateway.common.config.ServerConfig.replace_with_env_vars" class="md-nav__link">
@@ -1476,7 +1440,7 @@
         <li class="md-nav__item">
   <a href="#optimade_gateway.common.config" class="md-nav__link">
     <span class="md-ellipsis">
-      optimade_gateway.common.config
+      config
     </span>
   </a>
   
@@ -1491,42 +1455,6 @@
   
     <nav class="md-nav" aria-label="ServerConfig">
       <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#optimade_gateway.common.config.ServerConfig.databases_collection" class="md-nav__link">
-    <span class="md-ellipsis">
-      databases_collection
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optimade_gateway.common.config.ServerConfig.gateways_collection" class="md-nav__link">
-    <span class="md-ellipsis">
-      gateways_collection
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optimade_gateway.common.config.ServerConfig.load_optimade_providers_databases" class="md-nav__link">
-    <span class="md-ellipsis">
-      load_optimade_providers_databases
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optimade_gateway.common.config.ServerConfig.queries_collection" class="md-nav__link">
-    <span class="md-ellipsis">
-      queries_collection
-    </span>
-  </a>
-  
-</li>
         
           <li class="md-nav__item">
   <a href="#optimade_gateway.common.config.ServerConfig.replace_with_env_vars" class="md-nav__link">
@@ -1560,14 +1488,16 @@
 <h1 id="config">config<a class="headerlink" href="#config" title="Permanent link">&para;</a></h1>
 
 
-  <div class="doc doc-object doc-module">
+<div class="doc doc-object doc-module">
+
+
 
 <a id="optimade_gateway.common.config"></a>
-    <div class="doc doc-contents first">
-
+  <div class="doc doc-contents first">
+  
       <p>Configuration of the FastAPI server.</p>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1578,57 +1508,127 @@
 
 
 
-  <div class="doc doc-object doc-class">
+<div class="doc doc-object doc-class">
+
 
 
 
 <h2 id="optimade_gateway.common.config.ServerConfig" class="doc doc-heading">
-        <code>
-ServerConfig            (<span title="optimade.server.config.ServerConfig">ServerConfig</span>)
-        </code>
+          <code>ServerConfig</code>
 
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
-  </span>
 
 <a href="#optimade_gateway.common.config.ServerConfig" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="optimade.server.config.ServerConfig">ServerConfig</span></code></p>
+
+  
       <p>This class stores server config parameters in a way that
 can be easily extended for new config file types.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/common/config.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ServerConfig</span><span class="p">(</span><span class="n">OptimadeServerConfig</span><span class="p">):</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/common/config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ServerConfig</span><span class="p">(</span><span class="n">OptimadeServerConfig</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This class stores server config parameters in a way that</span>
 <span class="sd">    can be easily extended for new config file types.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">databases_collection</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="s2">&quot;databases&quot;</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mongo collection name for `/databases` endpoint resources.&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">gateways_collection</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="s2">&quot;gateways&quot;</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mongo collection name for `/gateways` endpoint resources.&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">queries_collection</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="s2">&quot;queries&quot;</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mongo collection name for `/queries` endpoint resources.&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">load_optimade_providers_databases</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="kc">True</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-            <span class="s2">&quot;Whether or not to load all valid OPTIMADE providers&#39; databases from the &quot;</span>
-            <span class="s2">&quot;[Materials-Consortia list of OPTIMADE providers]&quot;</span>
-            <span class="s2">&quot;(https://providers.optimade.org) on server startup.&quot;</span>
+    <span class="n">databases_collection</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mongo collection name for `/databases` endpoint resources.&quot;</span><span class="p">,</span>
         <span class="p">),</span>
-    <span class="p">)</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;databases&quot;</span>
 
-    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;mongo_uri&quot;</span><span class="p">)</span>
+    <span class="n">gateways_collection</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mongo collection name for `/gateways` endpoint resources.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;gateways&quot;</span>
+
+    <span class="n">queries_collection</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mongo collection name for `/queries` endpoint resources.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;queries&quot;</span>
+
+    <span class="n">load_optimade_providers_databases</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">description</span><span class="o">=</span><span class="p">(</span>
+                <span class="s2">&quot;Whether or not to load all valid OPTIMADE providers&#39; databases from &quot;</span>
+                <span class="s2">&quot;the [Materials-Consortia list of OPTIMADE providers]&quot;</span>
+                <span class="s2">&quot;(https://providers.optimade.org) on server startup.&quot;</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;mongo_uri&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">replace_with_env_vars</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Replace string variables with environment variables, if possible&quot;&quot;&quot;</span>
         <span class="n">res</span> <span class="o">=</span> <span class="n">value</span>
@@ -1649,10 +1649,10 @@ can be easily extended for new config file types.</p>
                     <span class="p">)</span>
                 <span class="p">)</span>
         <span class="k">return</span> <span class="n">res</span>
-</code></pre></div>
-        </details>
+</code></pre></div></td></tr></table></div>
+            </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1661,117 +1661,54 @@ can be easily extended for new config file types.</p>
 
 
 
-  <div class="doc doc-object doc-attribute">
-
-
-
-<h3 id="optimade_gateway.common.config.ServerConfig.databases_collection" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">databases_collection</span><span class="p">:</span> <span class="nb">str</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
-  </span>
-
-<a href="#optimade_gateway.common.config.ServerConfig.databases_collection" class="headerlink" title="Permanent link">&para;</a></h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Mongo collection name for <code>/databases</code> endpoint resources.</p>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-attribute">
-
-
-
-<h3 id="optimade_gateway.common.config.ServerConfig.gateways_collection" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">gateways_collection</span><span class="p">:</span> <span class="nb">str</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
-  </span>
-
-<a href="#optimade_gateway.common.config.ServerConfig.gateways_collection" class="headerlink" title="Permanent link">&para;</a></h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Mongo collection name for <code>/gateways</code> endpoint resources.</p>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-attribute">
-
-
-
-<h3 id="optimade_gateway.common.config.ServerConfig.load_optimade_providers_databases" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">load_optimade_providers_databases</span><span class="p">:</span> <span class="nb">bool</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
-  </span>
-
-<a href="#optimade_gateway.common.config.ServerConfig.load_optimade_providers_databases" class="headerlink" title="Permanent link">&para;</a></h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Whether or not to load all valid OPTIMADE providers' databases from the <a href="https://providers.optimade.org">Materials-Consortia list of OPTIMADE providers</a> on server startup.</p>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-attribute">
-
-
-
-<h3 id="optimade_gateway.common.config.ServerConfig.queries_collection" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">queries_collection</span><span class="p">:</span> <span class="nb">str</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
-  </span>
-
-<a href="#optimade_gateway.common.config.ServerConfig.queries_collection" class="headerlink" title="Permanent link">&para;</a></h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Mongo collection name for <code>/queries</code> endpoint resources.</p>
-    </div>
-
-  </div>
 
 
 
 
+<div class="doc doc-object doc-function">
 
-
-  <div class="doc doc-object doc-method">
 
 
 
 <h3 id="optimade_gateway.common.config.ServerConfig.replace_with_env_vars" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">replace_with_env_vars</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+          <code class="highlight language-python"><span class="n">replace_with_env_vars</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
 <a href="#optimade_gateway.common.config.ServerConfig.replace_with_env_vars" class="headerlink" title="Permanent link">&para;</a></h3>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Replace string variables with environment variables, if possible</p>
 
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/common/config.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;mongo_uri&quot;</span><span class="p">)</span>
+          <details class="quote">
+            <summary>Source code in <code>optimade_gateway/common/config.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;mongo_uri&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+<span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">replace_with_env_vars</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Replace string variables with environment variables, if possible&quot;&quot;&quot;</span>
     <span class="n">res</span> <span class="o">=</span> <span class="n">value</span>
@@ -1792,33 +1729,28 @@ can be easily extended for new config file types.</p>
                 <span class="p">)</span>
             <span class="p">)</span>
     <span class="k">return</span> <span class="n">res</span>
-</code></pre></div>
-        </details>
-    </div>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
 
   </div>
 
-
-
-
-
   </div>
 
-    </div>
-
-  </div>
-
-
-
+</div>
 
 
 
 
   </div>
 
-    </div>
-
   </div>
+
+</div>
 
 
 

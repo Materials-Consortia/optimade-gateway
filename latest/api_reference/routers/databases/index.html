@@ -1231,7 +1231,7 @@
         <li class="md-nav__item">
   <a href="#optimade_gateway.routers.databases" class="md-nav__link">
     <span class="md-ellipsis">
-      optimade_gateway.routers.databases
+      databases
     </span>
   </a>
   
@@ -1443,7 +1443,7 @@
         <li class="md-nav__item">
   <a href="#optimade_gateway.routers.databases" class="md-nav__link">
     <span class="md-ellipsis">
-      optimade_gateway.routers.databases
+      databases
     </span>
   </a>
   
@@ -1494,11 +1494,13 @@
 <h1 id="databases">databases<a class="headerlink" href="#databases" title="Permanent link">&para;</a></h1>
 
 
-  <div class="doc doc-object doc-module">
+<div class="doc doc-object doc-module">
+
+
 
 <a id="optimade_gateway.routers.databases"></a>
-    <div class="doc doc-contents first">
-
+  <div class="doc doc-contents first">
+  
       <p>/databases/*</p>
 <p>This file describes the router for:</p>
 <div class="highlight"><pre><span></span><code>/databases/{id}
@@ -1508,7 +1510,7 @@
 <p>One can register a new database (by using <code>POST /databases</code>) or look through the
 available databases (by using <code>GET /databases</code>) using standard OPTIMADE filtering.</p>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1520,29 +1522,78 @@ available databases (by using <code>GET /databases</code>) using standard OPTIMA
 
 
 
-  <div class="doc doc-object doc-function">
+
+<div class="doc doc-object doc-function">
+
 
 
 
 <h2 id="optimade_gateway.routers.databases.get_database" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_database</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">database_id</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="n">SingleEntryQueryParams</span><span class="p">))</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-async"><code>async</code></small>
+          <code class="highlight language-python"><span class="n">get_database</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">database_id</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.routers.databases.get_database" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p><code>GET /databases/{database ID}</code></p>
 <p>Return a single
 <a href="https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResource"><code>LinksResource</code></a>
 representing the database resource object with <code>id={database ID}</code>.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/routers/databases.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@ROUTER</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+          <details class="quote">
+            <summary>Source code in <code>optimade_gateway/routers/databases.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@ROUTER</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
     <span class="s2">&quot;/databases/{database_id:path}&quot;</span><span class="p">,</span>
     <span class="n">response_model</span><span class="o">=</span><span class="n">DatabasesResponseSingle</span><span class="p">,</span>
     <span class="n">response_model_exclude_defaults</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -1554,7 +1605,7 @@ representing the database resource object with <code>id={database ID}</code>.</p
 <span class="k">async</span> <span class="k">def</span> <span class="nf">get_database</span><span class="p">(</span>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
     <span class="n">database_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">params</span><span class="p">:</span> <span class="n">SingleEntryQueryParams</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(),</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">SingleEntryQueryParams</span><span class="p">,</span> <span class="n">Depends</span><span class="p">()],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DatabasesResponseSingle</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;`GET /databases/{database ID}`</span>
 
@@ -1589,35 +1640,58 @@ representing the database resource object with <code>id={database ID}</code>.</p
             <span class="n">schema</span><span class="o">=</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">schema_url</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+          </details>
   </div>
 
+</div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
+
 
 
 
 <h2 id="optimade_gateway.routers.databases.get_databases" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_databases</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="n">EntryListingQueryParams</span><span class="p">))</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-async"><code>async</code></small>
+          <code class="highlight language-python"><span class="n">get_databases</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.routers.databases.get_databases" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p><code>GET /databases</code></p>
 <p>Return overview of all (active) databases.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/routers/databases.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@ROUTER</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+          <details class="quote">
+            <summary>Source code in <code>optimade_gateway/routers/databases.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@ROUTER</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
     <span class="s2">&quot;/databases&quot;</span><span class="p">,</span>
     <span class="n">response_model</span><span class="o">=</span><span class="n">DatabasesResponse</span><span class="p">,</span>
     <span class="n">response_model_exclude_defaults</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -1628,7 +1702,7 @@ representing the database resource object with <code>id={database ID}</code>.</p
 <span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">get_databases</span><span class="p">(</span>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
-    <span class="n">params</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(),</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">EntryListingQueryParams</span><span class="p">,</span> <span class="n">Depends</span><span class="p">()],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DatabasesResponse</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;`GET /databases`</span>
 
@@ -1640,37 +1714,70 @@ representing the database resource object with <code>id={database ID}</code>.</p
         <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
         <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
     <span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+          </details>
   </div>
 
+</div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
+
 
 
 
 <h2 id="optimade_gateway.routers.databases.post_databases" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">post_databases</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">database</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-async"><code>async</code></small>
+          <code class="highlight language-python"><span class="n">post_databases</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">database</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.routers.databases.post_databases" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p><code>POST /databases</code></p>
 <p>Create/Register or return an existing
 <a href="https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResource"><code>LinksResource</code></a>,
 representing a database resource object, according to <code>database</code>.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/routers/databases.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@ROUTER</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+          <details class="quote">
+            <summary>Source code in <code>optimade_gateway/routers/databases.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span>
+<span class="normal">93</span>
+<span class="normal">94</span>
+<span class="normal">95</span>
+<span class="normal">96</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@ROUTER</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
     <span class="s2">&quot;/databases&quot;</span><span class="p">,</span>
     <span class="n">response_model</span><span class="o">=</span><span class="n">DatabasesResponseSingle</span><span class="p">,</span>
     <span class="n">response_model_exclude_defaults</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -1703,22 +1810,19 @@ representing a database resource object, according to <code>database</code>.</p>
             <span class="o">**</span><span class="p">{</span><span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_created&quot;</span><span class="p">:</span> <span class="n">created</span><span class="p">},</span>
         <span class="p">),</span>
     <span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+          </details>
   </div>
 
-
-
+</div>
 
 
 
   </div>
 
-    </div>
-
   </div>
+
+</div>
 
 
 

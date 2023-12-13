@@ -421,7 +421,7 @@
         <li class="md-nav__item">
   <a href="#optimade_gateway.exception_handlers" class="md-nav__link">
     <span class="md-ellipsis">
-      optimade_gateway.exception_handlers
+      exception_handlers
     </span>
   </a>
   
@@ -1423,7 +1423,7 @@
         <li class="md-nav__item">
   <a href="#optimade_gateway.exception_handlers" class="md-nav__link">
     <span class="md-ellipsis">
-      optimade_gateway.exception_handlers
+      exception_handlers
     </span>
   </a>
   
@@ -1456,17 +1456,19 @@
 <h1 id="exception_handlers">exception_handlers<a class="headerlink" href="#exception_handlers" title="Permanent link">&para;</a></h1>
 
 
-  <div class="doc doc-object doc-module">
+<div class="doc doc-object doc-module">
+
+
 
 <a id="optimade_gateway.exception_handlers"></a>
-    <div class="doc doc-contents first">
-
+  <div class="doc doc-contents first">
+  
       <p>ASGI app exception handlers.</p>
 <p>These are in addition to the exception handlers available in OPTIMADE Python tools.
 For more information see
 https://www.optimade.org/optimade-python-tools/api_reference/server/exception_handlers/.</p>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1477,28 +1479,56 @@ https://www.optimade.org/optimade-python-tools/api_reference/server/exception_ha
 
 
 
-  <div class="doc doc-object doc-function">
+
+
+<div class="doc doc-object doc-function">
+
 
 
 
 <h2 id="optimade_gateway.exception_handlers.request_validation_exception_handler" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">request_validation_exception_handler</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-async"><code>async</code></small>
+          <code class="highlight language-python"><span class="n">request_validation_exception_handler</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.exception_handlers.request_validation_exception_handler" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Special handler if a <code>RequestValidationError</code> comes from wrong <code>POST</code> data</p>
 
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/exception_handlers.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">request_validation_exception_handler</span><span class="p">(</span>
-    <span class="n">request</span><span class="p">:</span> <span class="s2">&quot;Request&quot;</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="s2">&quot;RequestValidationError&quot;</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;JSONResponse&quot;</span><span class="p">:</span>
+          <details class="quote">
+            <summary>Source code in <code>optimade_gateway/exception_handlers.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">request_validation_exception_handler</span><span class="p">(</span>
+    <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="n">RequestValidationError</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONResponse</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Special handler if a `RequestValidationError` comes from wrong `POST` data&quot;&quot;&quot;</span>
     <span class="n">status_code</span> <span class="o">=</span> <span class="mi">500</span>
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="s2">&quot;post&quot;</span><span class="p">):</span>
@@ -1521,22 +1551,19 @@ https://www.optimade.org/optimade-python-tools/api_reference/server/exception_ha
         <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">general_exception</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">exc</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="n">status_code</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">errors</span><span class="p">))</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+          </details>
   </div>
 
-
-
+</div>
 
 
 
   </div>
 
-    </div>
-
   </div>
+
+</div>
 
 
 

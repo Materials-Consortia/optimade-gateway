@@ -886,7 +886,7 @@
         <li class="md-nav__item">
   <a href="#optimade_gateway.models.resources" class="md-nav__link">
     <span class="md-ellipsis">
-      optimade_gateway.models.resources
+      resources
     </span>
   </a>
   
@@ -912,33 +912,27 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#optimade_gateway.models.resources.EntryResourceCreate.Config" class="md-nav__link">
+  <a href="#optimade_gateway.models.resources.EntryResourceCreate.last_modified" class="md-nav__link">
     <span class="md-ellipsis">
-      Config
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Config">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#optimade_gateway.models.resources.EntryResourceCreate.Config.extra" class="md-nav__link">
-    <span class="md-ellipsis">
-      extra
+      last_modified
     </span>
   </a>
   
 </li>
         
-      </ul>
-    </nav>
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.resources.EntryResourceCreate.model_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      model_config
+    </span>
+  </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#optimade_gateway.models.resources.EntryResourceCreate.__init__" class="md-nav__link">
+  <a href="#optimade_gateway.models.resources.EntryResourceCreate.check_illegal_attributes_fields" class="md-nav__link">
     <span class="md-ellipsis">
-      __init__()
+      check_illegal_attributes_fields()
     </span>
   </a>
   
@@ -1473,7 +1467,7 @@
         <li class="md-nav__item">
   <a href="#optimade_gateway.models.resources" class="md-nav__link">
     <span class="md-ellipsis">
-      optimade_gateway.models.resources
+      resources
     </span>
   </a>
   
@@ -1499,33 +1493,27 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#optimade_gateway.models.resources.EntryResourceCreate.Config" class="md-nav__link">
+  <a href="#optimade_gateway.models.resources.EntryResourceCreate.last_modified" class="md-nav__link">
     <span class="md-ellipsis">
-      Config
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Config">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#optimade_gateway.models.resources.EntryResourceCreate.Config.extra" class="md-nav__link">
-    <span class="md-ellipsis">
-      extra
+      last_modified
     </span>
   </a>
   
 </li>
         
-      </ul>
-    </nav>
+          <li class="md-nav__item">
+  <a href="#optimade_gateway.models.resources.EntryResourceCreate.model_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      model_config
+    </span>
+  </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#optimade_gateway.models.resources.EntryResourceCreate.__init__" class="md-nav__link">
+  <a href="#optimade_gateway.models.resources.EntryResourceCreate.check_illegal_attributes_fields" class="md-nav__link">
     <span class="md-ellipsis">
-      __init__()
+      check_illegal_attributes_fields()
     </span>
   </a>
   
@@ -1554,16 +1542,18 @@
 <h1 id="resources">resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h1>
 
 
-  <div class="doc doc-object doc-module">
+<div class="doc doc-object doc-module">
+
+
 
 <a id="optimade_gateway.models.resources"></a>
-    <div class="doc doc-contents first">
-
+  <div class="doc doc-contents first">
+  
       <p>Pydantic models/schemas for entry-endpoint resources.</p>
 <p>This module is mainly used for a special pydantic base model, which can be used as a
 mix-in class when creating entry-endpoint resources.</p>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1573,59 +1563,57 @@ mix-in class when creating entry-endpoint resources.</p>
 
 
 
-  <div class="doc doc-object doc-class">
+
+<div class="doc doc-object doc-class">
+
 
 
 
 <h2 id="optimade_gateway.models.resources.EntryResourceCreate" class="doc doc-heading">
-        <code>
-EntryResourceCreate            (<span title="optimade.models.entries.EntryResourceAttributes">EntryResourceAttributes</span>)
-        </code>
+          <code>EntryResourceCreate</code>
 
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
-  </span>
 
 <a href="#optimade_gateway.models.resources.EntryResourceCreate" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="optimade.models.EntryResourceAttributes">EntryResourceAttributes</span></code></p>
+
+  
       <p>Generic model for creating new entry resources in the MongoDB</p>
 
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/models/resources.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">EntryResourceCreate</span><span class="p">(</span><span class="n">EntryResourceAttributes</span><span class="p">):</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/models/resources.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">EntryResourceCreate</span><span class="p">(</span><span class="n">EntryResourceAttributes</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generic model for creating new entry resources in the MongoDB&quot;&quot;&quot;</span>
 
-    <span class="n">last_modified</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span>
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
 
-    <span class="nb">id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">last_modified</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Silently discard extra initiation keys.&quot;&quot;&quot;</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;ignore&quot;</span>
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">check_illegal_attributes_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EntryResourceCreate</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Overwrite parental `check_illegal_attributes_fields` class validators.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span>
+</code></pre></div></td></tr></table></div>
+            </details>
 
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_remove_pre_root_validators</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove `check_illegal_attributes_fields` pre root_validators.&quot;&quot;&quot;</span>
-        <span class="n">pre_root_validators</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">validator</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__pre_root_validators__</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">str</span><span class="p">(</span><span class="n">validator</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span>
-                <span class="s2">&quot;&lt;function Attributes.check_illegal_attributes_fields&quot;</span>
-            <span class="p">):</span>
-                <span class="n">pre_root_validators</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">validator</span><span class="p">)</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">__pre_root_validators__</span> <span class="o">=</span> <span class="n">pre_root_validators</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove root_validator `check_illegal_attributes_fields`.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_remove_pre_root_validators</span><span class="p">()</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-
-
+  
 
   <div class="doc doc-children">
 
@@ -1634,145 +1622,119 @@ EntryResourceCreate            (<span title="optimade.models.entries.EntryResour
 
 
 
-  <div class="doc doc-object doc-attribute">
+
+<div class="doc doc-object doc-attribute">
+
 
 
 
 <h3 id="optimade_gateway.models.resources.EntryResourceCreate.id" class="doc doc-heading">
-<code class="highlight language-python"><span class="nb">id</span><span class="p">:</span> <span class="nb">str</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+          <code class="highlight language-python"><span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#optimade_gateway.models.resources.EntryResourceCreate.id" class="headerlink" title="Permanent link">&para;</a></h3>
 
-    <div class="doc doc-contents ">
 
-    </div>
-
+  <div class="doc doc-contents ">
   </div>
 
+</div>
 
-
-
-  <div class="doc doc-object doc-class">
-
-
-
-<h3 id="optimade_gateway.models.resources.EntryResourceCreate.Config" class="doc doc-heading">
-        <code>
-Config        </code>
-
-
-
-<a href="#optimade_gateway.models.resources.EntryResourceCreate.Config" class="headerlink" title="Permanent link">&para;</a></h3>
-
-    <div class="doc doc-contents ">
-
-      <p>Silently discard extra initiation keys.</p>
-
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/models/resources.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Silently discard extra initiation keys.&quot;&quot;&quot;</span>
-
-    <span class="n">extra</span> <span class="o">=</span> <span class="s2">&quot;ignore&quot;</span>
-</code></pre></div>
-        </details>
-
-
-
-  <div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
 
 
 
 
-
-
-  <div class="doc doc-object doc-attribute">
-
-
-
-<h4 id="optimade_gateway.models.resources.EntryResourceCreate.Config.extra" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">extra</span></code>
-
-
-<a href="#optimade_gateway.models.resources.EntryResourceCreate.Config.extra" class="headerlink" title="Permanent link">&para;</a></h4>
-
-    <div class="doc doc-contents ">
-
-    </div>
-
-  </div>
-
-
-
-
-
-
-
-
-  </div>
-
-    </div>
-
-  </div>
-
-
-
-
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h3 id="optimade_gateway.models.resources.EntryResourceCreate.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-special"><code>special</code></small>
+<h3 id="optimade_gateway.models.resources.EntryResourceCreate.last_modified" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">last_modified</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-<a href="#optimade_gateway.models.resources.EntryResourceCreate.__init__" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#optimade_gateway.models.resources.EntryResourceCreate.last_modified" class="headerlink" title="Permanent link">&para;</a></h3>
 
-    <div class="doc doc-contents ">
 
-      <p>Remove root_validator <code>check_illegal_attributes_fields</code>.</p>
+  <div class="doc doc-contents ">
+  </div>
 
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/models/resources.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove root_validator `check_illegal_attributes_fields`.&quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_remove_pre_root_validators</span><span class="p">()</span>
-    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h3 id="optimade_gateway.models.resources.EntryResourceCreate.model_config" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#optimade_gateway.models.resources.EntryResourceCreate.model_config" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="optimade_gateway.models.resources.EntryResourceCreate.check_illegal_attributes_fields" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">check_illegal_attributes_fields</span><span class="p">()</span></code>
+
+<a href="#optimade_gateway.models.resources.EntryResourceCreate.check_illegal_attributes_fields" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Overwrite parental <code>check_illegal_attributes_fields</code> class validators.</p>
+
+          <details class="quote">
+            <summary>Source code in <code>optimade_gateway/models/resources.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">check_illegal_attributes_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EntryResourceCreate</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Overwrite parental `check_illegal_attributes_fields` class validators.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
 
   </div>
 
+  </div>
+
+</div>
 
 
 
 
   </div>
 
-    </div>
-
   </div>
 
-
-
-
-
-
-
-  </div>
-
-    </div>
-
-  </div>
+</div>
 
 
 

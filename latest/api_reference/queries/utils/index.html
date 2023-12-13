@@ -1165,7 +1165,7 @@
         <li class="md-nav__item">
   <a href="#optimade_gateway.queries.utils" class="md-nav__link">
     <span class="md-ellipsis">
-      optimade_gateway.queries.utils
+      utils
     </span>
   </a>
   
@@ -1425,7 +1425,7 @@
         <li class="md-nav__item">
   <a href="#optimade_gateway.queries.utils" class="md-nav__link">
     <span class="md-ellipsis">
-      optimade_gateway.queries.utils
+      utils
     </span>
   </a>
   
@@ -1458,14 +1458,16 @@
 <h1 id="utils">utils<a class="headerlink" href="#utils" title="Permanent link">&para;</a></h1>
 
 
-  <div class="doc doc-object doc-module">
+<div class="doc doc-object doc-module">
+
+
 
 <a id="optimade_gateway.queries.utils"></a>
-    <div class="doc doc-contents first">
-
+  <div class="doc doc-contents first">
+  
       <p>Utility functions for the <code>queries</code> module.</p>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1476,21 +1478,25 @@
 
 
 
-  <div class="doc doc-object doc-function">
+
+
+<div class="doc doc-object doc-function">
+
 
 
 
 <h2 id="optimade_gateway.queries.utils.update_query" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">update_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">operator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">mongo_kwargs</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-async"><code>async</code></small>
+          <code class="highlight language-python"><span class="n">update_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">operator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">mongo_kwargs</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
 <a href="#optimade_gateway.queries.utils.update_query" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Update a query's <code>field</code> attribute with <code>value</code>.</p>
 <p>If <code>field</code> is a dot-separated value, then only the last field part may be a
 non-pre-existing field. Otherwise a <code>KeyError</code> or <code>AttributeError</code> will be raised.</p>
@@ -1504,59 +1510,183 @@ cannot update <code>id</code>, <code>type</code> or any other top-level resource
 <p><code>mongo_kwargs</code> will not be considered for updating the pydantic model instance.</p>
 </div>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>query</code></td>
-        <td><code>QueryResource</code></td>
-        <td><p>The query to be updated.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>field</code></td>
-        <td><code>str</code></td>
-        <td><p>The <code>attributes</code> field (key) to be set.
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>query</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.QueryResource" href="../../models/queries/#optimade_gateway.models.queries.QueryResource">QueryResource</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The query to be updated.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>field</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The <code>attributes</code> field (key) to be set.
 This can be a dot-separated key value to signify embedded fields.</p>
-<p><strong>Example</strong>: <code>response.meta</code>.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>value</code></td>
-        <td><code>Any</code></td>
-        <td><p>The (possibly) new value for <code>field</code>.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>operator</code></td>
-        <td><code>Optional[str]</code></td>
-        <td><p>A MongoDB operator to be used for updating <code>field</code> with <code>value</code>.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>**mongo_kwargs</code></td>
-        <td><code>Any</code></td>
-        <td><p>Further MongoDB update filters.</p></td>
-        <td><code>{}</code></td>
-      </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>optimade_gateway/queries/utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">update_query</span><span class="p">(</span>
-    <span class="n">query</span><span class="p">:</span> <span class="s2">&quot;QueryResource&quot;</span><span class="p">,</span>
+<p><strong>Example</strong>: <code>response.meta</code>.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>value</code></td>
+          <td>
+                <code><span title="typing.Any">Any</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The (possibly) new value for <code>field</code>.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>operator</code></td>
+          <td>
+                <code>str | None</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A MongoDB operator to be used for updating <code>field</code> with <code>value</code>.</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>**mongo_kwargs</code></td>
+          <td>
+                <code><span title="typing.Any">Any</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Further MongoDB update filters.</p>
+            </div>
+          </td>
+          <td>
+                <code>{}</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>optimade_gateway/queries/utils.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">update_query</span><span class="p">(</span>
+    <span class="n">query</span><span class="p">:</span> <span class="n">QueryResource</span><span class="p">,</span>
     <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;Any&quot;</span><span class="p">,</span>
-    <span class="n">operator</span><span class="p">:</span> <span class="s2">&quot;Optional[str]&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="o">**</span><span class="n">mongo_kwargs</span><span class="p">:</span> <span class="s2">&quot;Any&quot;</span><span class="p">,</span>
+    <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="n">operator</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">mongo_kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Update a query&#39;s `field` attribute with `value`.</span>
 
@@ -1586,7 +1716,7 @@ This can be a dot-separated key value to signify embedded fields.</p>
     <span class="k">if</span> <span class="n">operator</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">operator</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">):</span>
         <span class="n">operator</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;$</span><span class="si">{</span><span class="n">operator</span><span class="si">}</span><span class="s2">&quot;</span>
 
-    <span class="n">update_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+    <span class="n">update_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
 
     <span class="n">update_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;$set&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;last_modified&quot;</span><span class="p">:</span> <span class="n">update_time</span><span class="p">}}</span>
 
@@ -1603,7 +1733,7 @@ This can be a dot-separated key value to signify embedded fields.</p>
 
     <span class="c1"># MongoDB</span>
     <span class="n">collection</span> <span class="o">=</span> <span class="k">await</span> <span class="n">collection_factory</span><span class="p">(</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">queries_collection</span><span class="p">)</span>
-    <span class="n">result</span><span class="p">:</span> <span class="s2">&quot;UpdateResult&quot;</span> <span class="o">=</span> <span class="k">await</span> <span class="n">collection</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">update_one</span><span class="p">(</span>
+    <span class="n">result</span><span class="p">:</span> <span class="n">UpdateResult</span> <span class="o">=</span> <span class="k">await</span> <span class="n">collection</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">update_one</span><span class="p">(</span>
         <span class="nb">filter</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$eq&quot;</span><span class="p">:</span> <span class="n">query</span><span class="o">.</span><span class="n">id</span><span class="p">}},</span>
         <span class="n">update</span><span class="o">=</span><span class="k">await</span> <span class="n">clean_python_types</span><span class="p">(</span><span class="n">update_kwargs</span><span class="p">),</span>
     <span class="p">)</span>
@@ -1621,9 +1751,7 @@ This can be a dot-separated key value to signify embedded fields.</p>
     <span class="n">query</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">last_modified</span> <span class="o">=</span> <span class="n">update_time</span>
     <span class="k">if</span> <span class="s2">&quot;.&quot;</span> <span class="ow">in</span> <span class="n">field</span><span class="p">:</span>
         <span class="n">field_list</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
-        <span class="n">sub_field</span><span class="p">:</span> <span class="s2">&quot;Union[BaseModel, Dict[str, Any]]&quot;</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
-            <span class="n">query</span><span class="o">.</span><span class="n">attributes</span><span class="p">,</span> <span class="n">field_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="p">)</span>
+        <span class="n">sub_field</span><span class="p">:</span> <span class="n">BaseModel</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">attributes</span><span class="p">,</span> <span class="n">field_list</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">for</span> <span class="n">field_part</span> <span class="ow">in</span> <span class="n">field_list</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sub_field</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                 <span class="n">sub_field</span> <span class="o">=</span> <span class="n">sub_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field_part</span><span class="p">,</span> <span class="p">{})</span>
@@ -1635,22 +1763,19 @@ This can be a dot-separated key value to signify embedded fields.</p>
             <span class="nb">setattr</span><span class="p">(</span><span class="n">sub_field</span><span class="p">,</span> <span class="n">field_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">value</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">attributes</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+          </details>
   </div>
 
-
-
+</div>
 
 
 
   </div>
 
-    </div>
-
   </div>
+
+</div>
 
 
 

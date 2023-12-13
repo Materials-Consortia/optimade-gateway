@@ -1015,7 +1015,7 @@
         <li class="md-nav__item">
   <a href="#optimade_gateway.mongo.database" class="md-nav__link">
     <span class="md-ellipsis">
-      optimade_gateway.mongo.database
+      database
     </span>
   </a>
   
@@ -1434,7 +1434,7 @@
         <li class="md-nav__item">
   <a href="#optimade_gateway.mongo.database" class="md-nav__link">
     <span class="md-ellipsis">
-      optimade_gateway.mongo.database
+      database
     </span>
   </a>
   
@@ -1476,14 +1476,16 @@
 <h1 id="database">database<a class="headerlink" href="#database" title="Permanent link">&para;</a></h1>
 
 
-  <div class="doc doc-object doc-module">
+<div class="doc doc-object doc-module">
+
+
 
 <a id="optimade_gateway.mongo.database"></a>
-    <div class="doc doc-contents first">
-
+  <div class="doc doc-contents first">
+  
       <p>Initialize the MongoDB database.</p>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1492,45 +1494,51 @@
 
 
 
-  <div class="doc doc-object doc-attribute">
+
+<div class="doc doc-object doc-attribute">
+
 
 
 
 <h2 id="optimade_gateway.mongo.database.MONGO_CLIENT" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">MONGO_CLIENT</span><span class="p">:</span> <span class="n">MongoClient</span></code>
-
+          <code class="highlight language-python"><span class="n">MONGO_CLIENT</span><span class="p">:</span> <span class="n">MongoClient</span> <span class="o">=</span> <span class="n">AsyncIOMotorClient</span><span class="p">(</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">mongo_uri</span><span class="p">,</span> <span class="n">appname</span><span class="o">=</span><span class="s1">&#39;optimade-gateway&#39;</span><span class="p">,</span> <span class="n">readConcernLevel</span><span class="o">=</span><span class="s1">&#39;majority&#39;</span><span class="p">,</span> <span class="n">readPreference</span><span class="o">=</span><span class="s1">&#39;primary&#39;</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="s1">&#39;majority&#39;</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
 
 <a href="#optimade_gateway.mongo.database.MONGO_CLIENT" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>The MongoDB motor client.</p>
-    </div>
-
   </div>
 
+</div>
 
+<div class="doc doc-object doc-attribute">
 
-  <div class="doc doc-object doc-attribute">
 
 
 
 <h2 id="optimade_gateway.mongo.database.MONGO_DB" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">MONGO_DB</span><span class="p">:</span> <span class="n">Database</span></code>
-
+          <code class="highlight language-python"><span class="n">MONGO_DB</span><span class="p">:</span> <span class="n">Database</span> <span class="o">=</span> <span class="n">MONGO_CLIENT</span><span class="p">[</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">mongo_database</span><span class="p">]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
 
 <a href="#optimade_gateway.mongo.database.MONGO_DB" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>The MongoDB motor database.
 This is a representation of the database used for the gateway service.</p>
-    </div>
-
   </div>
 
-
-
+</div>
 
 
 
@@ -1538,9 +1546,9 @@ This is a representation of the database used for the gateway service.</p>
 
   </div>
 
-    </div>
-
   </div>
+
+</div>
 
 
 
