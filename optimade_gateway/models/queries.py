@@ -7,7 +7,7 @@ import warnings
 from copy import deepcopy
 from datetime import timezone
 from enum import Enum
-from typing import TYPE_CHECKING, Annotated, Any, Literal, Optional
+from typing import TYPE_CHECKING, Annotated, Any, Literal
 
 from optimade.models import EntryResource as OptimadeEntryResource
 from optimade.models import (
@@ -31,7 +31,6 @@ from pydantic.fields import FieldInfo
 from starlette.datastructures import URL as StarletteURL
 
 from optimade_gateway.common.config import CONFIG
-from optimade_gateway.common.utils import clean_python_types
 from optimade_gateway.models.resources import EntryResourceCreate
 from optimade_gateway.warnings import SortNotSupported
 
@@ -447,16 +446,26 @@ class QueryResource(EntryResource):
 class QueryCreate(EntryResourceCreate, QueryResourceAttributes):
     """Model for creating new Query resources in the MongoDB"""
 
-    state: Annotated[Optional[QueryState], Field(
-        title=QueryResourceAttributes.model_fields["state"].title,
-        description=QueryResourceAttributes.model_fields["state"].description,
-        json_schema_extra=QueryResourceAttributes.model_fields["state"].json_schema_extra,
-    )] = None
-    endpoint: Annotated[Optional[EndpointEntryType], Field(
-        title=QueryResourceAttributes.model_fields["endpoint"].title,
-        description=QueryResourceAttributes.model_fields["endpoint"].description,
-        json_schema_extra=QueryResourceAttributes.model_fields["endpoint"].json_schema_extra,
-    )] = None
+    state: Annotated[
+        QueryState | None,
+        Field(
+            title=QueryResourceAttributes.model_fields["state"].title,
+            description=QueryResourceAttributes.model_fields["state"].description,
+            json_schema_extra=QueryResourceAttributes.model_fields[
+                "state"
+            ].json_schema_extra,
+        ),
+    ] = None
+    endpoint: Annotated[
+        EndpointEntryType | None,
+        Field(
+            title=QueryResourceAttributes.model_fields["endpoint"].title,
+            description=QueryResourceAttributes.model_fields["endpoint"].description,
+            json_schema_extra=QueryResourceAttributes.model_fields[
+                "endpoint"
+            ].json_schema_extra,
+        ),
+    ] = None
 
     @field_validator("query_parameters", mode="after")
     @classmethod

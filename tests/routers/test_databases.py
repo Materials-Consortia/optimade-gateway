@@ -68,13 +68,15 @@ async def test_post_databases(client: AsyncGatewayClient) -> None:
     for field in data:
         value = getattr(response.data.attributes, field)
         if isinstance(value, AnyUrl):
-            assert (
-                str(value) == data[field]
-            ), f"Response: {response.data.attributes.model_dump()!r}\n\nTest data: {data!r}"
+            assert str(value) == data[field], (
+                f"Response: {response.data.attributes.model_dump()!r}\n\n"
+                f"Test data: {data!r}"
+            )
         else:
-            assert (
-                value == data[field]
-            ), f"Response: {response.data.attributes.model_dump()!r}\n\nTest data: {data!r}"
+            assert value == data[field], (
+                f"Response: {response.data.attributes.model_dump()!r}\n\n"
+                f"Test data: {data!r}"
+            )
     assert datum.links.model_dump() == {
         "self": AnyUrl(
             f"{'/'.join(str(url).split('/')[:-1])}"

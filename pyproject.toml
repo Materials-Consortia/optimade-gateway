@@ -41,6 +41,7 @@ docs = [
     "mkdocstrings[python-legacy]~=0.24.0",
 ]
 dev = [
+    "mongomock_motor~=0.0.25",
     "optimade-gateway[docs]",
     "pre-commit~=3.4",
     "pytest~=7.4",
@@ -90,7 +91,13 @@ allow_redefinition = true
 [tool.pytest.ini_options]
 minversion = "7.4"
 addopts = "-rs --cov=./optimade_gateway/ --cov-report=term-missing:skip-covered --no-cov-on-fail"
-filterwarnings = ["error"]
+filterwarnings = [
+    # Treat all warnings as errors
+    "error",
+
+    # mongomock uses pkg_resources
+    "ignore:.*pkg_resources is deprecated as an API.*:DeprecationWarning",
+]
 asyncio_mode = "auto"
 
 [tool.ruff.lint]

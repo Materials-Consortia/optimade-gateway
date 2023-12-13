@@ -6,7 +6,6 @@ mix-in class when creating entry-endpoint resources.
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional
 
 from optimade.models import EntryResourceAttributes
 from pydantic import ConfigDict, model_validator
@@ -17,9 +16,9 @@ class EntryResourceCreate(EntryResourceAttributes):
 
     model_config = ConfigDict(extra="ignore")
 
-    last_modified: Optional[datetime] = None
+    last_modified: datetime | None = None
 
-    id: Optional[str] = None
+    id: str | None = None
 
     @model_validator(mode="after")
     def check_illegal_attributes_fields(self) -> EntryResourceCreate:

@@ -16,6 +16,7 @@ if TYPE_CHECKING:
 
     from fastapi import FastAPI
     from httpx import Request, Response
+    from pymongo.database import Database
     from pytest_httpx import HTTPXMock
 
     class AsyncGatewayClient(Protocol):
@@ -43,12 +44,10 @@ if TYPE_CHECKING:
         def __call__(self, gateway: dict) -> None:
             ...
 
-
     class DatabaseAttributesOptionalsDict(TypedDict, total=False):
         """Database attributes dict of optional fields"""
 
         aggregate: str
-
 
     class DatabaseAttributesDict(DatabaseAttributesOptionalsDict):
         """Database attributes dict"""
@@ -59,14 +58,12 @@ if TYPE_CHECKING:
         homepage: str | None
         link_type: str
 
-
     class DatabaseDict(TypedDict):
         """Database dict"""
 
         id: str
         type: str
         attributes: DatabaseAttributesDict
-
 
     class GatewayDict(TypedDict):
         """Gateway dict"""
@@ -78,6 +75,59 @@ if TYPE_CHECKING:
 
 # UTILITY FUNCTIONS
 
+MONGO_DB_INFO: tuple[Database, bool] | None = None
+
+
+def get_test_config(top_dir: Path | str) -> dict:
+    """Utility function for getting and parsing the test config."""
+    top_dir = Path(top_dir).resolve()
+
+    test_config: dict = json.loads(
+        (top_dir / "tests" / "static" / "test_config.json").read_bytes()
+    )
+
+    assert isinstance(test_config, dict), "Test config is not a dict!"
+
+    return test_config
+
+
+def get_mongo_db(top_dir: Path | str) -> tuple[Database, bool]:
+    """Utility function for getting the MongoDB"""
+    global MONGO_DB_INFO  # noqa: PLW0603
+    test_config = get_test_config(top_dir)
+
+    if MONGO_DB_INFO is not None:
+        return MONGO_DB_INFO
+
+    if any(
+        _ == "mongodb"
+        for _ in (
+            os.getenv("OPTIMADE_DATABASE_BACKEND"),
+            test_config["database_backend"],
+        )
+    ):
+        from optimade_gateway.mongo.database import MONGO_DB
+
+        mock_client = False
+    else:
+        from mongomock_motor import AsyncMongoMockClient
+
+        from optimade_gateway.common.config import CONFIG
+
+        MONGO_DB = AsyncMongoMockClient(
+            host=CONFIG.mongo_uri,
+            appname="optimade-gateway",
+            readConcernLevel="majority",
+            readPreference="primary",
+            w="majority",
+        )[test_config["mongo_database"]]
+
+        mock_client = True
+
+    MONGO_DB_INFO = MONGO_DB, mock_client
+
+    return MONGO_DB_INFO
+
 
 async def setup_db_utility(top_dir: Path | str) -> None:
     """Utility function for setting up/resetting the MongoDB
@@ -86,13 +136,9 @@ async def setup_db_utility(top_dir: Path | str) -> None:
         top_dir: Path to the repository's directory.
 
     """
-    from optimade_gateway.mongo.database import MONGO_DB
-
     top_dir = Path(top_dir).resolve()
-
-    test_config: dict = json.loads(
-        (top_dir / "tests" / "static" / "test_config.json").read_bytes()
-    )
+    test_config = get_test_config(top_dir)
+    MONGO_DB, _ = get_mongo_db(top_dir)
 
     assert (
         MONGO_DB.name == test_config["mongo_database"]
@@ -140,6 +186,17 @@ def top_dir() -> Path:
 async def _setup_db(top_dir: Path) -> None:
     """Setup test DB"""
     await setup_db_utility(top_dir)
+
+
+@pytest.fixture(autouse=True)
+def _patch_mongo_db(top_dir: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Return test config dict"""
+    MONGO_DB, mock_client = get_mongo_db(top_dir)
+
+    if mock_client:
+        from optimade_gateway.mongo import database
+
+        monkeypatch.setattr(database, "MONGO_DB", MONGO_DB)
 
 
 @pytest.fixture()
@@ -259,7 +316,9 @@ def mock_gateway_responses(
                     status_code = 200
 
                 httpx_mock.add_response(
-                    url=re.compile(rf"{re.escape(database['attributes']['base_url'])}.*"),
+                    url=re.compile(
+                        rf"{re.escape(database['attributes']['base_url'])}.*"
+                    ),
                     json=data,
                     status_code=status_code,
                 )

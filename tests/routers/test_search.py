@@ -141,7 +141,9 @@ async def test_get_as_optimade(
 
     response = await client("/search", params=query_params)
 
-    assert response.status_code == 200, f"Request failed:\n{json.dumps(response.json(), indent=2)}"
+    assert (
+        response.status_code == 200
+    ), f"Request failed:\n{json.dumps(response.json(), indent=2)}"
 
     response = StructureResponseMany(**response.json())
     assert response

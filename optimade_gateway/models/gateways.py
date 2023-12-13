@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import warnings
-from typing import Annotated, Literal, Optional
+from typing import Annotated, Literal
 
 from optimade.models import EntryResource, EntryResourceAttributes, LinksResource
 from optimade.models.links import LinkType
@@ -86,8 +86,12 @@ class GatewayResource(EntryResource):
         str,
         OptimadeField(
             description=EntryResource.model_fields["id"].description,
-            support=EntryResource.model_fields["id"].json_schema_extra["x-optimade-support"],
-            queryable=EntryResource.model_fields["id"].json_schema_extra["x-optimade-queryable"],
+            support=EntryResource.model_fields["id"].json_schema_extra[
+                "x-optimade-support"
+            ],
+            queryable=EntryResource.model_fields["id"].json_schema_extra[
+                "x-optimade-queryable"
+            ],
             pattern=r"^[^/]*$",
         ),
     ]
@@ -97,28 +101,40 @@ class GatewayResource(EntryResource):
         Field(description="The name of the type of an entry."),
     ] = "gateways"
 
-    attributes: Annotated[GatewayResourceAttributes, Field(description=EntryResource.model_fields["attributes"].description)]
+    attributes: Annotated[
+        GatewayResourceAttributes,
+        Field(description=EntryResource.model_fields["attributes"].description),
+    ]
 
 
 class GatewayCreate(EntryResourceCreate, GatewayResourceAttributes):
     """Model for creating new Gateway resources in the MongoDB"""
 
     id: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description=EntryResource.model_fields["id"].description,
-            support=EntryResource.model_fields["id"].json_schema_extra["x-optimade-support"],
-            queryable=EntryResource.model_fields["id"].json_schema_extra["x-optimade-queryable"],
+            support=EntryResource.model_fields["id"].json_schema_extra[
+                "x-optimade-support"
+            ],
+            queryable=EntryResource.model_fields["id"].json_schema_extra[
+                "x-optimade-queryable"
+            ],
             pattern=r"^[^/]*$",  # This pattern is the special addition
         ),
     ] = None
 
     database_ids: Annotated[
-        Optional[set[str]],
+        set[str] | None,
         Field(description="A unique list of database IDs for registered databases."),
     ] = None
 
-    databases: Annotated[Optional[list[LinksResource]], Field(description=GatewayResourceAttributes.model_fields["databases"].description)] = None
+    databases: Annotated[
+        list[LinksResource] | None,
+        Field(
+            description=GatewayResourceAttributes.model_fields["databases"].description
+        ),
+    ] = None
 
     @model_validator(mode="after")
     def specify_databases(self) -> GatewayCreate:

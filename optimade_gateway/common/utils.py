@@ -26,22 +26,24 @@ async def clean_python_types(data: Any, **dump_kwargs: Any) -> Any:
         for datum in data:
             res.append(await clean_python_types(datum, **dump_kwargs))
         return res
-    
+
     if isinstance(data, dict):
         res = {}
         for key in list(data.keys()):
             res[key] = await clean_python_types(data[key], **dump_kwargs)
         return res
-    
+
     if isinstance(data, BaseModel):
         # Pydantic model
         return await clean_python_types(data.model_dump(**dump_kwargs))
-    
+
     if isinstance(data, Enum):
         return await clean_python_types(data.value, **dump_kwargs)
 
     if isinstance(data, type):
-        return await clean_python_types(f"{data.__module__}.{data.__name__}", **dump_kwargs)
+        return await clean_python_types(
+            f"{data.__module__}.{data.__name__}", **dump_kwargs
+        )
 
     if isinstance(data, AnyUrl):
         return await clean_python_types(str(data), **dump_kwargs)

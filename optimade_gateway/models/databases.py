@@ -1,10 +1,10 @@
 """Pydantic models/schemas for the LinksResource used in /databases"""
 from __future__ import annotations
 
-from typing import Annotated, Optional
+from typing import Annotated
 
 from optimade.models import LinksResourceAttributes
-from optimade.models.links import LinkType, JsonLinkType
+from optimade.models.links import JsonLinkType, LinkType
 from optimade.models.utils import StrictField
 from pydantic import field_validator
 
@@ -30,19 +30,29 @@ class DatabaseCreate(EntryResourceCreate, LinksResourceAttributes):
 
     """
 
-    description: Annotated[Optional[str], StrictField(description=LinksResourceAttributes.model_fields["description"].description)] = None
+    description: Annotated[
+        str | None,
+        StrictField(
+            description=LinksResourceAttributes.model_fields["description"].description
+        ),
+    ] = None
 
-    base_url: Annotated[JsonLinkType, StrictField(description=LinksResourceAttributes.model_fields["base_url"].description)]
+    base_url: Annotated[
+        JsonLinkType,
+        StrictField(
+            description=LinksResourceAttributes.model_fields["base_url"].description
+        ),
+    ]
 
     homepage: Annotated[
-        Optional[JsonLinkType],
+        JsonLinkType | None,
         StrictField(
             description=LinksResourceAttributes.model_fields["homepage"].description,
         ),
     ] = None
 
     link_type: Annotated[
-        Optional[LinkType],
+        LinkType | None,
         StrictField(
             title=LinksResourceAttributes.model_fields["link_type"].title,
             description=LinksResourceAttributes.model_fields["link_type"].description,

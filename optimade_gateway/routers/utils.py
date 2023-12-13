@@ -29,7 +29,6 @@ from optimade_gateway.mongo.collection import AsyncMongoCollection
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
     from collections.abc import Iterable
-    from typing import Any
 
     from fastapi import Request
     from optimade.models import EntryResource, EntryResponseMany, LinksResource
@@ -86,8 +85,10 @@ async def get_entries(
 
 
 async def aretrieve_queryable_properties(
-    schema: type[EntryResource], queryable_properties: Iterable[str], entry_type: str | None = None
-) -> "QueryableProperties":
+    schema: type[EntryResource],
+    queryable_properties: Iterable[str],
+    entry_type: str | None = None,
+) -> QueryableProperties:
     """Asynchronous implementation of `retrieve_queryable_properties()` from `optimade`
 
     Reference to the function in the `optimade` API documentation:

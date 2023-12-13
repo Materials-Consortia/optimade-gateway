@@ -62,10 +62,11 @@ jobs:
       fail-fast: false
       matrix:
         python-version: ["3.9", "3.10"]
+        database-backend: ["mongodb", "mongomock"]
 
     services:
       mongo:
-        image: mongo:5
+        image: mongo:7
         ports:
         - 27017:27017
 
@@ -88,6 +89,7 @@ jobs:
     - name: Test with pytest
       env:
         OPTIMADE_MONGO_URI: "mongodb://localhost:27017"
+        OPTIMADE_DATABASE_BACKEND: ${{ matrix.database-backend }}
       run: pytest -vvv --cov-report=xml
 
     - name: Upload coverage to Codecov
@@ -97,7 +99,6 @@ jobs:
         name: optimade-gateway
         files: ./coverage.xml
         flags: pytest
-
 
   docker:
     name: Docker

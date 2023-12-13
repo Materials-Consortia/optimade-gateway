@@ -119,10 +119,15 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
         databases.extend(
             [
                 LinksResource(
-                    id=str(url).replace(".", "__")[len(url.scheme) + 3 :].split("?", maxsplit=1)[0].split("#", maxsplit=1)[0],
+                    id=str(url)
+                    .replace(".", "__")[len(url.scheme) + 3 :]
+                    .split("?", maxsplit=1)[0]
+                    .split("#", maxsplit=1)[0],
                     type="links",
                     attributes=LinksResourceAttributes(
-                        name=str(url)[len(url.scheme) + 3 :].split("?", maxsplit=1)[0].split("#", maxsplit=1)[0],
+                        name=str(url)[len(url.scheme) + 3 :]
+                        .split("?", maxsplit=1)[0]
+                        .split("#", maxsplit=1)[0],
                         description="",
                         base_url=url,
                         link_type=LinkType.CHILD,

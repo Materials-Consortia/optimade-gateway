@@ -12,7 +12,7 @@ import httpx
 from optimade import __api_version__
 from optimade.models import ErrorResponse, ToplevelLinks
 from optimade.server.routers.utils import BASE_URL_PREFIXES, meta_values
-from pydantic import ValidationError, AnyUrl
+from pydantic import AnyUrl, ValidationError
 
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.common.logger import LOGGER
@@ -183,7 +183,9 @@ def db_find(
     else:
         url = ""
 
-        base_url = str(get_resource_attribute(database, "attributes.base_url")).rstrip("/")
+        base_url = str(get_resource_attribute(database, "attributes.base_url")).rstrip(
+            "/"
+        )
         url += base_url
 
         # Check whether base_url is a versioned base URL
