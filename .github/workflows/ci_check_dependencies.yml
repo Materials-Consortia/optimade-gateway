@@ -14,7 +14,7 @@ jobs:
       git_username: OPTIMADE Developers
       git_email: "dev@optimade.org"
       permanent_dependencies_branch: ci/dependabot-updates
-      python_version: "3.9"
+      python_version: "3.10"
       install_extras: "[dev]"
       pr_labels: "dependencies"
       ignore: |

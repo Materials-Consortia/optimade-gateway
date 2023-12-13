@@ -19,7 +19,7 @@ jobs:
 
       # PyPI publishing
       python_package: true
-      python_version_build: "3.9"
+      python_version_build: "3.10"
       package_dirs: "optimade_gateway"
       version_update_changes_separator: ";"
       version_update_changes: |
@@ -32,7 +32,7 @@ jobs:
 
       # Documentation
       update_docs: true
-      python_version_docs: "3.9"
+      python_version_docs: "3.10"
       doc_extras: "[docs]"
       docs_framework: "mkdocs"
     secrets:
