@@ -1,25 +1,20 @@
 """Tests for /queries endpoints"""
+from __future__ import annotations
+
 import json
 from typing import TYPE_CHECKING
 
 import pytest
 
 if TYPE_CHECKING:
-    import platform
-
-    if platform.python_version() >= "3.9.0":
-        from collections.abc import Awaitable, Callable
-    else:
-        from typing import Awaitable, Callable
-
     from pathlib import Path
 
-    from ..conftest import AsyncGatewayClient
+    from ..conftest import AsyncGatewayClient, GetGateway, MockGatewayResponses
 
 
 async def test_get_queries(
-    client: "AsyncGatewayClient",
-    top_dir: "Path",
+    client: AsyncGatewayClient,
+    top_dir: Path,
 ) -> None:
     """Test GET /queries"""
     from optimade_gateway.models.responses import QueriesResponse
@@ -39,11 +34,10 @@ async def test_get_queries(
     assert not response.meta.more_data_available
 
 
-@pytest.mark.usefixtures("reset_db_after")
 async def test_post_queries(
-    client: "AsyncGatewayClient",
-    mock_gateway_responses: "Callable[[dict], None]",
-    get_gateway: "Callable[[str], Awaitable[dict]]",
+    client: AsyncGatewayClient,
+    mock_gateway_responses: MockGatewayResponses,
+    get_gateway: GetGateway,
 ) -> None:
     """Test POST /queries"""
     import asyncio
@@ -74,27 +68,23 @@ async def test_post_queries(
 
     assert getattr(
         response.meta, f"_{CONFIG.provider.prefix}_created"
-    ), response.meta.dict()
+    ), response.meta.model_dump()
 
     datum = response.data
     assert datum, response
 
     assert (
-        datum.attributes.query_parameters.dict()
-        == OptimadeQueryParameters(**data["query_parameters"]).dict()
+        datum.attributes.query_parameters.model_dump()
+        == OptimadeQueryParameters(**data["query_parameters"]).model_dump()
     ), (
         f"Response: {datum.attributes.query_parameters!r}\n\n"
         f"Test data: {OptimadeQueryParameters(**data['query_parameters'])!r}"
     )
 
-    assert datum.links.dict() == {
+    assert datum.links.model_dump() == {
         "self": AnyUrl(
-            url=(
-                f"{'/'.join(str(url).split('/')[:-1])}{BASE_URL_PREFIXES['major']}"
-                f"/queries/{datum.id}"
-            ),
-            scheme=url.scheme,
-            host=url.host,
+            f"{'/'.join(str(url).split('/')[:-1])}{BASE_URL_PREFIXES['major']}"
+            f"/queries/{datum.id}"
         )
     }
     assert datum.attributes.state == QueryState.CREATED
@@ -109,8 +99,7 @@ async def test_post_queries(
     await asyncio.sleep(1)  # Ensure mock URL is queried
 
 
-@pytest.mark.usefixtures("reset_db_after")
-async def test_post_queries_bad_data(client: "AsyncGatewayClient") -> None:
+async def test_post_queries_bad_data(client: AsyncGatewayClient) -> None:
     """Test POST /queries with bad data"""
     from optimade.models import ErrorResponse, OptimadeError
 
@@ -133,7 +122,7 @@ async def test_post_queries_bad_data(client: "AsyncGatewayClient") -> None:
 
     assert len(response.errors) == 1, response.errors
     assert (
-        response.errors[0].dict()
+        response.errors[0].model_dump()
         == OptimadeError(
             title="Not Found",
             status="404",
@@ -141,15 +130,14 @@ async def test_post_queries_bad_data(client: "AsyncGatewayClient") -> None:
                 "Resource <id=non-existent> not found in "
                 f"{await collection_factory(CONFIG.gateways_collection)}."
             ),
-        ).dict()
+        ).model_dump()
     )
 
 
-@pytest.mark.usefixtures("reset_db_after")
 async def test_query_results(
-    client: "AsyncGatewayClient",
-    mock_gateway_responses: "Callable[[dict], None]",
-    get_gateway: "Callable[[str], Awaitable[dict]]",
+    client: AsyncGatewayClient,
+    mock_gateway_responses: MockGatewayResponses,
+    get_gateway: GetGateway,
 ) -> None:
     """Test POST /queries and GET /queries/{id}"""
     import asyncio
@@ -192,11 +180,10 @@ async def test_query_results(
     assert response.data.attributes.state == QueryState.FINISHED
 
 
-@pytest.mark.usefixtures("reset_db_after")
 async def test_errored_query_results(
-    client: "AsyncGatewayClient",
-    mock_gateway_responses: "Callable[[dict], None]",
-    get_gateway: "Callable[[str], Awaitable[dict]]",
+    client: AsyncGatewayClient,
+    mock_gateway_responses: MockGatewayResponses,
+    get_gateway: GetGateway,
 ) -> None:
     """Test POST /queries and GET /queries/{id} with an erroneous response"""
     import asyncio
@@ -228,11 +215,10 @@ async def test_errored_query_results(
     assert response.data.attributes.response.errors
 
 
-@pytest.mark.usefixtures("reset_db_after")
 async def test_sort_no_effect(
-    client: "AsyncGatewayClient",
-    get_gateway: "Callable[[str], Awaitable[dict]]",
-    mock_gateway_responses: "Callable[[dict], None]",
+    client: AsyncGatewayClient,
+    get_gateway: GetGateway,
+    mock_gateway_responses: MockGatewayResponses,
 ) -> None:
     """Test POST /queries with the `sort` query parameter
 
@@ -276,7 +262,7 @@ async def test_sort_no_effect(
     sort_warning = SortNotSupported()
 
     for response in (response_asc, response_desc):
-        assert response.meta.warnings, response.json()
+        assert response.meta.warnings, response.model_dump_json()
         assert len(response.meta.warnings) == 1
         assert response.meta.warnings[0] == Warnings(
             title=sort_warning.title,

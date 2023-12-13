@@ -1,4 +1,6 @@
 """Tests for /databases endpoints"""
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 import pytest
@@ -10,8 +12,8 @@ if TYPE_CHECKING:
 
 
 async def test_get_databases(
-    client: "AsyncGatewayClient",
-    top_dir: "Path",
+    client: AsyncGatewayClient,
+    top_dir: Path,
 ) -> None:
     """Test GET /databases"""
     import json
@@ -24,16 +26,16 @@ async def test_get_databases(
     response = DatabasesResponse(**response.json())
     assert response
 
-    with open(top_dir / "tests/static/test_databases.json") as handle:
-        test_data = json.load(handle)
+    test_data = json.loads(
+        (top_dir / "tests" / "static" / "test_databases.json").read_text()
+    )
 
     assert response.meta.data_returned == len(test_data)
     assert response.meta.data_available == len(test_data)
     assert not response.meta.more_data_available
 
 
-@pytest.mark.usefixtures("reset_db_after")
-async def test_post_databases(client: "AsyncGatewayClient") -> None:
+async def test_post_databases(client: AsyncGatewayClient) -> None:
     """Test POST /databases"""
     from bson.objectid import ObjectId
     from optimade.server.routers.utils import BASE_URL_PREFIXES
@@ -58,20 +60,27 @@ async def test_post_databases(client: "AsyncGatewayClient") -> None:
 
     assert getattr(
         response.meta, f"_{CONFIG.provider.prefix}_created"
-    ), response.meta.dict()
+    ), response.meta.model_dump()
 
     datum = response.data
     assert datum, response
 
     for field in data:
-        assert (
-            getattr(response.data.attributes, field) == data[field]
-        ), f"Response: {response.data.attributes.dict()!r}\n\nTest data: {data!r}"
-    assert datum.links.dict() == {
+        value = getattr(response.data.attributes, field)
+        if isinstance(value, AnyUrl):
+            assert str(value) == data[field], (
+                f"Response: {response.data.attributes.model_dump()!r}\n\n"
+                f"Test data: {data!r}"
+            )
+        else:
+            assert value == data[field], (
+                f"Response: {response.data.attributes.model_dump()!r}\n\n"
+                f"Test data: {data!r}"
+            )
+    assert datum.links.model_dump() == {
         "self": AnyUrl(
-            url=f"{'/'.join(str(url).split('/')[:-1])}{BASE_URL_PREFIXES['major']}/databases/{datum.id}",
-            scheme=url.scheme,
-            host=url.host,
+            f"{'/'.join(str(url).split('/')[:-1])}"
+            f"{BASE_URL_PREFIXES['major']}/databases/{datum.id}"
         )
     }
 
@@ -83,8 +92,8 @@ async def test_post_databases(client: "AsyncGatewayClient") -> None:
 
 
 async def test_get_single_database(
-    client: "AsyncGatewayClient",
-    top_dir: "Path",
+    client: AsyncGatewayClient,
+    top_dir: Path,
 ) -> None:
     """Test GET /databases/{id}"""
     import json
@@ -109,8 +118,10 @@ async def test_get_single_database(
     datum = response.data
     assert datum, response
 
-    with open(top_dir / "tests/static/test_databases.json") as handle:
-        all_test_data = json.load(handle)
+    all_test_data = json.loads(
+        (top_dir / "tests" / "static" / "test_databases.json").read_text()
+    )
+
     for data in all_test_data:
         if data["id"] == database_id:
             test_data = data
@@ -124,25 +135,22 @@ async def test_get_single_database(
         if field in ("id", "type", "links", "relationships", "meta"):
             continue
         assert (
-            await clean_python_types(response.data.attributes.dict()[field])
+            await clean_python_types(response.data.attributes.model_dump()[field])
             == data[field]
         ), (
-            f"Field: {field!r}\n\nResponse: {response.data.attributes.dict()!r}\n\n"
+            "Field: "
+            f"{field!r}\n\nResponse: {response.data.attributes.model_dump()!r}\n\n"
             f"Test data: {data!r}"
         )
     test_links = {
         "self": AnyUrl(
-            url=(
-                f"{'/'.join(str(url).split('/')[:-3])}{BASE_URL_PREFIXES['major']}"
-                f"/databases/{datum.id}"
-            ),
-            scheme=url.scheme,
-            host=url.host,
+            f"{'/'.join(str(url).split('/')[:-3])}{BASE_URL_PREFIXES['major']}"
+            f"/databases/{datum.id}"
         )
     }
     assert (
-        datum.links.dict() == test_links
-    ), f"Response: {datum.links.dict()}\n\nTest data: {test_links}"
+        datum.links.model_dump() == test_links
+    ), f"Response: {datum.links.model_dump()}\n\nTest data: {test_links}"
 
     mongo_filter = {"id": datum.id}
     assert await MONGO_DB["databases"].count_documents(mongo_filter) == 1

@@ -2,6 +2,8 @@
 
 The design for these mappers is based on the mappers in OPTIMADE Python tools.
 """
+from __future__ import annotations
+
 from .databases import DatabasesMapper
 from .gateways import GatewaysMapper
 from .links import LinksMapper

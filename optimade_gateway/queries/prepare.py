@@ -1,4 +1,6 @@
 """Prepare OPTIMADE queries."""
+from __future__ import annotations
+
 import re
 import urllib.parse
 from os import getenv
@@ -8,21 +10,14 @@ from warnings import warn
 from optimade_gateway.warnings import OptimadeGatewayWarning
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    import platform
-
-    if platform.python_version() >= "3.9.0":
-        from collections.abc import Mapping
-    else:
-        from typing import Mapping
-
-    from typing import List, Union
+    from collections.abc import Mapping
 
     from optimade_gateway.models.queries import OptimadeQueryParameters
 
 
 async def prepare_query_filter(
-    database_ids: "List[str]", filter_query: "Union[str, None]"
-) -> "Mapping[str, Union[str, None]]":
+    database_ids: list[str], filter_query: str | None
+) -> Mapping[str, str | None]:
     """Update the query parameter `filter` value to be database-specific
 
     This is needed due to the served change of `id` values.
@@ -52,11 +47,20 @@ async def prepare_query_filter(
         r'(?P<id_value_r>[^\s]*)"',
         f"={filter_query}" if filter_query else "",
     ):
-        matched_id = id_match.group("id_value_l") or id_match.group("id_value_r")
+        matched_id: str = id_match.group("id_value_l") or id_match.group("id_value_r")
         for database_id in database_ids:
             if matched_id.startswith(f"{database_id}/"):
+                updated_filter_query = updated_filter[database_id]
+                if not updated_filter_query or not isinstance(
+                    updated_filter_query, str
+                ):
+                    raise TypeError(
+                        "Expected a string for filter query, got "
+                        f"{type(updated_filter_query)}"
+                    )
+
                 # Database found
-                updated_filter[database_id] = updated_filter[database_id].replace(  # type: ignore[union-attr]
+                updated_filter[database_id] = updated_filter_query.replace(
                     f"{database_id}/", "", 1
                 )
                 break
@@ -73,17 +77,17 @@ async def prepare_query_filter(
                     ),
                 )
             )
-    return updated_filter  # type: ignore[return-value]
+    return updated_filter
 
 
 async def get_query_params(
-    query_parameters: "OptimadeQueryParameters",
+    query_parameters: OptimadeQueryParameters,
     database_id: str,
-    filter_mapping: "Mapping[str, Union[str, None]]",
+    filter_mapping: Mapping[str, str | None],
 ) -> str:
     """Construct the parsed URL query parameters"""
     query_params = {
-        param: value for param, value in query_parameters.dict().items() if value
+        param: value for param, value in query_parameters.model_dump().items() if value
     }
     if filter_mapping[database_id]:
         query_params.update({"filter": filter_mapping[database_id]})

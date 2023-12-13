@@ -1,12 +1,13 @@
 """Pydantic models/schemas for the Gateways resource."""
+from __future__ import annotations
+
 import warnings
-from typing import List, Optional, Set
+from typing import Annotated, Literal
 
 from optimade.models import EntryResource, EntryResourceAttributes, LinksResource
 from optimade.models.links import LinkType
-from optimade.models.utils import OptimadeField, SupportLevel
-from pydantic import Field, validator
-from pydantic.class_validators import root_validator
+from optimade.models.utils import OptimadeField
+from pydantic import Field, field_validator, model_validator
 
 from optimade_gateway.models.resources import EntryResourceCreate
 from optimade_gateway.warnings import OptimadeGatewayWarning
@@ -15,31 +16,34 @@ from optimade_gateway.warnings import OptimadeGatewayWarning
 class GatewayResourceAttributes(EntryResourceAttributes):
     """Attributes for an OPTIMADE gateway"""
 
-    databases: List[LinksResource] = Field(
-        ...,
-        description=(
-            "List of databases (OPTIMADE 'links') to be queried in this gateway."
+    databases: Annotated[
+        list[LinksResource],
+        Field(
+            description=(
+                "List of databases (OPTIMADE 'links') to be queried in this gateway."
+            ),
         ),
-    )
+    ]
 
-    @validator("databases", each_item=True)
-    def no_index_databases(cls, value: LinksResource) -> LinksResource:
-        """Ensure databases are not of type `"root"` or `"providers"`
+    @field_validator("databases", mode="after")
+    @classmethod
+    def unique_base_urls(cls, value: list[LinksResource]) -> list[LinksResource]:
+        """Remove extra entries with repeated base_urls.
+
+        Also, ensure databases are not of type `"root"` or `"providers"`
 
         !!! note
             Both `"external"` and `"child"` can still represent index meta-dbs,
             but `"root"` and `"providers"` can not represent "regular" dbs.
-        """
-        if value.attributes.link_type in (LinkType.ROOT, LinkType.PROVIDERS):
-            raise ValueError(
-                "Databases with 'root' or 'providers' link_type is not allowed for "
-                f"gateway resources. Given database: {value}"
-            )
-        return value
 
-    @validator("databases")
-    def unique_base_urls(cls, value: List[LinksResource]) -> List[LinksResource]:
-        """Remove extra entries with repeated base_urls"""
+        """
+        for resource in value:
+            if resource.attributes.link_type in (LinkType.ROOT, LinkType.PROVIDERS):
+                raise ValueError(
+                    "Databases with 'root' or 'providers' link_type is not allowed for "
+                    f"gateway resources. Given database: {resource}"
+                )
+
         db_base_urls = [_.attributes.base_url for _ in value]
         unique_base_urls = set(db_base_urls)
         if len(db_base_urls) == len(unique_base_urls):
@@ -51,7 +55,7 @@ class GatewayResourceAttributes(EntryResourceAttributes):
         ]
         for base_url in repeated_base_urls:
             new_databases.append(
-                [_ for _ in value if _.attributes.base_url == base_url][0]
+                next(_ for _ in value if _.attributes.base_url == base_url)
             )
         warnings.warn(
             "Removed extra database entries for a gateway, because the base_url was "
@@ -78,76 +82,65 @@ class GatewayResource(EntryResource):
     the originating database.
     """
 
-    id: str = OptimadeField(
-        ...,
-        description="""An entry's ID as defined in section Definition of Terms.
+    id: Annotated[
+        str,
+        OptimadeField(
+            description=EntryResource.model_fields["id"].description,
+            support=EntryResource.model_fields["id"].json_schema_extra[
+                "x-optimade-support"
+            ],
+            queryable=EntryResource.model_fields["id"].json_schema_extra[
+                "x-optimade-queryable"
+            ],
+            pattern=r"^[^/]*$",
+        ),
+    ]
 
-- **Type**: string.
+    type: Annotated[
+        Literal["gateways"],
+        Field(description="The name of the type of an entry."),
+    ] = "gateways"
 
-- **Requirements/Conventions**:
-    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.
-    - **Query**: MUST be a queryable property with support for all mandatory filter
-      features.
-    - **Response**: REQUIRED in the response.
-    - **Gateway-specific**: MUST NOT contain a forward slash (`/`).
-
-- **Examples**:
-    - `"db_1234567"`
-    - `"cod_2000000"`
-    - `"cod_2000000@1234567"`
-    - `"nomad_L1234567890"`
-    - `"42"`""",
-        support=SupportLevel.MUST,
-        queryable=SupportLevel.MUST,
-        regex=r"^[^/]*$",
-    )
-    type: str = Field(
-        "gateways",
-        const=True,
-        description="The name of the type of an entry.",
-        regex="^gateways$",
-    )
-    attributes: GatewayResourceAttributes
+    attributes: Annotated[
+        GatewayResourceAttributes,
+        Field(description=EntryResource.model_fields["attributes"].description),
+    ]
 
 
 class GatewayCreate(EntryResourceCreate, GatewayResourceAttributes):
     """Model for creating new Gateway resources in the MongoDB"""
 
-    id: Optional[str] = OptimadeField(
-        None,
-        description="""An entry's ID as defined in section Definition of Terms.
+    id: Annotated[
+        str | None,
+        OptimadeField(
+            description=EntryResource.model_fields["id"].description,
+            support=EntryResource.model_fields["id"].json_schema_extra[
+                "x-optimade-support"
+            ],
+            queryable=EntryResource.model_fields["id"].json_schema_extra[
+                "x-optimade-queryable"
+            ],
+            pattern=r"^[^/]*$",  # This pattern is the special addition
+        ),
+    ] = None
 
-- **Type**: string.
+    database_ids: Annotated[
+        set[str] | None,
+        Field(description="A unique list of database IDs for registered databases."),
+    ] = None
 
-- **Requirements/Conventions**:
-    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.
-    - **Query**: MUST be a queryable property with support for all mandatory filter
-      features.
-    - **Response**: REQUIRED in the response.
-    - **Gateway-specific**: MUST NOT contain a forward slash (`/`).
+    databases: Annotated[
+        list[LinksResource] | None,
+        Field(
+            description=GatewayResourceAttributes.model_fields["databases"].description
+        ),
+    ] = None  # type: ignore[assignment]
 
-- **Examples**:
-    - `"db_1234567"`
-    - `"cod_2000000"`
-    - `"cod_2000000@1234567"`
-    - `"nomad_L1234567890"`
-    - `"42"`""",
-        support=SupportLevel.MUST,
-        queryable=SupportLevel.MUST,
-        regex=r"^[^/]*$",  # This regex is the special addition
-    )
-
-    database_ids: Optional[Set[str]] = Field(
-        None, description="A unique list of database IDs for registered databases."
-    )
-
-    databases: Optional[List[LinksResource]]  # type: ignore
-
-    @root_validator
-    def specify_databases(cls, values: dict) -> dict:
+    @model_validator(mode="after")
+    def specify_databases(self) -> GatewayCreate:
         """Either `database_ids` or `databases` must be non-empty.
         Both together is also fine.
         """
-        if not any(values.get(field) for field in ("database_ids", "databases")):
+        if not any(getattr(self, field) for field in ("database_ids", "databases")):
             raise ValueError("Either 'database_ids' or 'databases' MUST be specified")
-        return values
+        return self

@@ -13,9 +13,9 @@ license = {file = "LICENSE"}
 classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Intended Audience :: Developers",
     "Topic :: Database",
     "Topic :: Database :: Database Engines/Servers",
@@ -24,14 +24,13 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Physics",
 ]
 keywords = ["optimade", "materials", "database"]
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 dynamic = ["version"]
 
 dependencies = [
     "httpx>=0.24.1,<1",
     "motor~=3.3",
-    "optimade[server]~=0.24.1; python_version < '3.9'",
-    "optimade[server]~=0.25.3; python_version >= '3.9'",
+    "optimade[server]~=1.0",
 ]
 
 [project.optional-dependencies]
@@ -40,16 +39,16 @@ docs = [
     "mkdocs~=1.5",
     "mkdocs-awesome-pages-plugin~=2.9",
     "mkdocs-material~=9.4",
-    "mkdocstrings[python-legacy]~=0.24.0",
+    "mkdocstrings[python]~=0.24.0",
 ]
 dev = [
+    "mongomock_motor~=0.0.25",
     "optimade-gateway[docs]",
     "pre-commit~=3.4",
     "pytest~=7.4",
     "pytest-asyncio~=0.21.1",
     "pytest-cov~=4.1",
-    "pytest-httpx~=0.22.0; python_version < '3.9'",
-    "pytest-httpx~=0.27.0; python_version >= '3.9'",
+    "pytest-httpx~=0.27.0",
 ]
 
 [project.urls]
@@ -83,7 +82,7 @@ include = [
 ]
 
 [tool.mypy]
-python_version = "3.8"
+python_version = "3.10"
 ignore_missing_imports = true
 scripts_are_modules = true
 warn_unused_configs = true
@@ -91,10 +90,49 @@ show_error_codes = true
 allow_redefinition = true
 
 [tool.pytest.ini_options]
-minversion = "7.0"
-required_plugins = "pytest-asyncio pytest-cov pytest-httpx"
-addopts = "-rs --cov=./optimade_gateway/ --cov-report=term --durations=10"
+minversion = "7.4"
+addopts = "-rs --cov=./optimade_gateway/ --cov-report=term-missing:skip-covered --no-cov-on-fail"
 filterwarnings = [
-    "ignore:.*imp module.*:DeprecationWarning"
+    # Treat all warnings as errors
+    "error",
+
+    # mongomock uses pkg_resources
+    "ignore:.*pkg_resources is deprecated as an API.*:DeprecationWarning",
 ]
 asyncio_mode = "auto"
+
+[tool.ruff.lint]
+extend-select = [
+    "E",  # pycodestyle
+    "F",  # pyflakes
+    "B",  # flake8-bugbear
+    "I",  # isort
+    "ARG",  # flake8-unused-arguments
+    "C4",  # flake8-comprehensions
+    "ICN",  # flake8-import-conventions
+    "G",  # flake8-logging-format
+    "PGH",  # pygrep-hooks
+    "PIE",  # flake8-pie
+    "PL",  # pylint
+    "PT",  # flake8-pytest-style
+    "PTH",  # flake8-use-pathlib
+    "RET",  # flake8-return
+    "RUF",  # Ruff-specific
+    "SIM",  # flake8-simplify
+    "T20",  # flake8-print
+    "YTT",  # flake8-2020
+    "EXE",  # flake8-executable
+    "NPY",  # NumPy specific rules
+    "PYI",  # flake8-pyi
+]
+ignore = [
+    "PLR",  # Design related pylint codes
+    "B028",  # Bugbear: No explicit 'stacklevel' keyword argument to 'warnings.warn' call
+]
+# isort.required-imports = ["from __future__ import annotations"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["T20"]
+"optimade_gateway/run.py" = ["T20"]
+"optimade_gateway/models/**" = ["B006"]
+"optimade_gateway/queries/params.py" = ["B006"]

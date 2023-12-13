@@ -11,6 +11,10 @@ Database resources represent the available databases that may be used for the ga
 One can register a new database (by using `POST /databases`) or look through the
 available databases (by using `GET /databases`) using standard OPTIMADE filtering.
 """
+from __future__ import annotations
+
+from typing import Annotated
+
 from fastapi import APIRouter, Depends, Request
 from optimade.models import ToplevelLinks
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
@@ -43,7 +47,7 @@ ROUTER = APIRouter(redirect_slashes=True)
 )
 async def get_databases(
     request: Request,
-    params: EntryListingQueryParams = Depends(),
+    params: Annotated[EntryListingQueryParams, Depends()],
 ) -> DatabasesResponse:
     """`GET /databases`
 
@@ -104,7 +108,7 @@ async def post_databases(
 async def get_database(
     request: Request,
     database_id: str,
-    params: SingleEntryQueryParams = Depends(),
+    params: Annotated[SingleEntryQueryParams, Depends()],
 ) -> DatabasesResponseSingle:
     """`GET /databases/{database ID}`
 

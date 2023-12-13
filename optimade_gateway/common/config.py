@@ -1,10 +1,13 @@
 """Configuration of the FastAPI server."""
+from __future__ import annotations
+
 import os
 import re
+from typing import Annotated
 from warnings import warn
 
 from optimade.server.config import ServerConfig as OptimadeServerConfig
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 from optimade_gateway.warnings import OptimadeGatewayWarning
 
@@ -15,28 +18,40 @@ class ServerConfig(OptimadeServerConfig):
 
     """
 
-    databases_collection: str = Field(
-        "databases",
-        description="Mongo collection name for `/databases` endpoint resources.",
-    )
-    gateways_collection: str = Field(
-        "gateways",
-        description="Mongo collection name for `/gateways` endpoint resources.",
-    )
-    queries_collection: str = Field(
-        "queries",
-        description="Mongo collection name for `/queries` endpoint resources.",
-    )
-    load_optimade_providers_databases: bool = Field(
-        True,
-        description=(
-            "Whether or not to load all valid OPTIMADE providers' databases from the "
-            "[Materials-Consortia list of OPTIMADE providers]"
-            "(https://providers.optimade.org) on server startup."
+    databases_collection: Annotated[
+        str,
+        Field(
+            description="Mongo collection name for `/databases` endpoint resources.",
         ),
-    )
+    ] = "databases"
 
-    @validator("mongo_uri")
+    gateways_collection: Annotated[
+        str,
+        Field(
+            description="Mongo collection name for `/gateways` endpoint resources.",
+        ),
+    ] = "gateways"
+
+    queries_collection: Annotated[
+        str,
+        Field(
+            description="Mongo collection name for `/queries` endpoint resources.",
+        ),
+    ] = "queries"
+
+    load_optimade_providers_databases: Annotated[
+        bool,
+        Field(
+            description=(
+                "Whether or not to load all valid OPTIMADE providers' databases from "
+                "the [Materials-Consortia list of OPTIMADE providers]"
+                "(https://providers.optimade.org) on server startup."
+            ),
+        ),
+    ] = True
+
+    @field_validator("mongo_uri", mode="after")
+    @classmethod
     def replace_with_env_vars(cls, value: str) -> str:
         """Replace string variables with environment variables, if possible"""
         res = value

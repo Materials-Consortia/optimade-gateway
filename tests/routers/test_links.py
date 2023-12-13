@@ -1,12 +1,13 @@
 """Tests for /links endpoint"""
-from typing import TYPE_CHECKING
+from __future__ import annotations
 
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..conftest import AsyncGatewayClient
 
 
-async def test_get_links(client: "AsyncGatewayClient") -> None:
+async def test_get_links(client: AsyncGatewayClient) -> None:
     """Test GET /links"""
     from optimade.models import LinksResponse
 

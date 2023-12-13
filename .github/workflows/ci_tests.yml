@@ -17,23 +17,23 @@ jobs:
 
       # pre-commit
       run_pre-commit: true
-      python_version_pre-commit: "3.8"
+      python_version_pre-commit: "3.10"
 
       # pylint & safety
-      python_version_pylint_safety: "3.8"
+      python_version_pylint_safety: "3.10"
 
       run_pylint: false
       run_safety: true
 
       # Build package
       run_build_package: true
-      python_version_package: "3.8"
+      python_version_package: "3.10"
       build_libs: "flit"
       build_cmd: "flit build"
 
       # Build documentation
       run_build_docs: true
-      python_version_docs: "3.8"
+      python_version_docs: "3.10"
       warnings_as_errors: true
 
       use_mkdocs: true
@@ -61,18 +61,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
+        python-version: ["3.10", "3.11", "3.12"]
+        database-backend: ["mongodb", "mongomock"]
 
     services:
       mongo:
-        image: mongo:5
+        image: mongo:7
         ports:
         - 27017:27017
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 2
+    - name: Checout repository
+      uses: actions/checkout@v4
 
     - name: Set up Python ${{ matrix.python-version}}
       uses: actions/setup-python@v5
@@ -88,16 +88,20 @@ jobs:
     - name: Test with pytest
       env:
         OPTIMADE_MONGO_URI: "mongodb://localhost:27017"
+        OPTIMADE_DATABASE_BACKEND: ${{ matrix.database-backend }}
       run: pytest -vvv --cov-report=xml
 
     - name: Upload coverage to Codecov
-      if: matrix.python-version == '3.8' && github.repository == 'Materials-Consortia/optimade-gateway'
+      if: github.repository == 'Materials-Consortia/optimade-gateway'
       uses: codecov/codecov-action@v3
       with:
         name: optimade-gateway
         files: ./coverage.xml
-        flags: pytest
-
+        env_vars: OS,PYTHON
+        flags: ${{ matrix.database-backend }}
+      env:
+        OS: ubuntu-latest
+        PYTHON: ${{ matrix.python-version }}
 
   docker:
     name: Docker
@@ -105,9 +109,8 @@ jobs:
     # timeout-minutes
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 2
+    - name: Checout repository
+      uses: actions/checkout@v4
 
     - name: Build the Docker app
       run: docker-compose build

@@ -1,4 +1,6 @@
 """Utility functions for all routers."""
+from __future__ import annotations
+
 import urllib.parse
 from os import getenv
 from typing import TYPE_CHECKING
@@ -19,6 +21,7 @@ from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.common.utils import clean_python_types, get_resource_attribute
 from optimade_gateway.models import (
     DatabaseCreate,
+    EndpointEntryType,
     GatewayCreate,
     QueryCreate,
     QueryState,
@@ -26,32 +29,27 @@ from optimade_gateway.models import (
 from optimade_gateway.mongo.collection import AsyncMongoCollection
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    import platform
-
-    if platform.python_version() >= "3.9.0":
-        from collections.abc import Iterable
-    else:
-        from typing import Iterable
-
-    from typing import Any, Dict, Tuple, Union
+    from collections.abc import Iterable
+    from typing import Any
 
     from fastapi import Request
     from optimade.models import EntryResource, EntryResponseMany, LinksResource
     from optimade.server.query_params import EntryListingQueryParams
+    from optimade.server.schemas import QueryableProperties
 
     from optimade_gateway.models import GatewayResource, QueryResource
 
 
-COLLECTIONS: "Dict[str, AsyncMongoCollection]" = {}
+COLLECTIONS: dict[str, AsyncMongoCollection] = {}
 """A lazy-loaded dictionary of asynchronous MongoDB entry-endpoint collections."""
 
 
 async def get_entries(
     collection: AsyncMongoCollection,
-    response_cls: "EntryResponseMany",
-    request: "Request",
-    params: "EntryListingQueryParams",
-) -> "EntryResponseMany":
+    response_cls: EntryResponseMany,
+    request: Request,
+    params: EntryListingQueryParams,
+) -> EntryResponseMany:
     """Generalized `/{entries}` endpoint getter"""
     (
         results,
@@ -89,8 +87,10 @@ async def get_entries(
 
 
 async def aretrieve_queryable_properties(
-    schema: "Dict[str, Any]", queryable_properties: "Iterable"
-) -> dict:
+    schema: type[EntryResource],
+    queryable_properties: Iterable[str],
+    entry_type: str | None = None,
+) -> QueryableProperties:
     """Asynchronous implementation of `retrieve_queryable_properties()` from `optimade`
 
     Reference to the function in the `optimade` API documentation:
@@ -103,6 +103,7 @@ async def aretrieve_queryable_properties(
     Parameters:
         schema: The schema of the pydantic model.
         queryable_properties: The list of properties to find in the schema.
+        entry_type: The entry type of the model, if any.
 
     Returns:
         A flat dictionary with properties as keys, containing the field description,
@@ -112,6 +113,7 @@ async def aretrieve_queryable_properties(
     return retrieve_queryable_properties(
         schema=schema,
         queryable_properties=queryable_properties,
+        entry_type=entry_type,
     )
 
 
@@ -125,15 +127,15 @@ async def validate_resource(collection: AsyncMongoCollection, entry_id: str) -> 
 
 async def get_valid_resource(
     collection: AsyncMongoCollection, entry_id: str
-) -> "EntryResource":
+) -> EntryResource:
     """Validate and retrieve a resource"""
     await validate_resource(collection, entry_id)
     return await collection.get_one(filter={"id": entry_id})
 
 
 async def resource_factory(
-    create_resource: "Union[DatabaseCreate, GatewayCreate, QueryCreate]",
-) -> "Tuple[Union[LinksResource, GatewayResource, QueryResource], bool]":
+    create_resource: DatabaseCreate | GatewayCreate | QueryCreate,
+) -> tuple[LinksResource | GatewayResource | QueryResource, bool]:
     """Get or create a resource
 
     Currently supported resources:
@@ -193,12 +195,12 @@ async def resource_factory(
     Returns:
         Two things in a tuple:
 
-        - Either a
-            [`GatewayResource`][optimade_gateway.models.gateways.GatewayResource];
-            a [`QueryResource`][optimade_gateway.models.queries.QueryResource]; or a
-            [`LinksResource`](https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResource)
-            and
-        - whether or not the resource was newly created.
+            - Either a
+                [`GatewayResource`][optimade_gateway.models.gateways.GatewayResource];
+                a [`QueryResource`][optimade_gateway.models.queries.QueryResource]; or a
+                [`LinksResource`](https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResource)
+                and
+            - whether or not the resource was newly created.
 
     """
     created = False
@@ -208,7 +210,7 @@ async def resource_factory(
 
         base_url = get_resource_attribute(create_resource, "base_url")
 
-        mongo_query = {
+        mongo_query: dict[str, Any] = {
             "$or": [
                 {"base_url": {"$eq": base_url}},
                 {"base_url.href": {"$eq": base_url}},
@@ -231,7 +233,7 @@ async def resource_factory(
             )
 
         mongo_query = {
-            "databases": {"$size": len(create_resource.databases)},
+            "databases": {"$size": len(create_resource.databases or [])},
             "databases.attributes.base_url": {
                 "$all": [_.attributes.base_url for _ in create_resource.databases or []]
             },
@@ -242,7 +244,9 @@ async def resource_factory(
         # Currently only /structures entry endpoints can be queried with multiple
         # expected responses.
         create_resource.endpoint = (
-            create_resource.endpoint if create_resource.endpoint else "structures"
+            create_resource.endpoint
+            if create_resource.endpoint is not None
+            else EndpointEntryType("structures")
         )
 
         mongo_query = {
@@ -252,8 +256,8 @@ async def resource_factory(
         }
     else:
         raise TypeError(
-            "create_resource must be either a GatewayCreate or QueryCreate object not "
-            f"{type(create_resource)!r}"
+            "create_resource must be either a DatabaseCreate, GatewayCreate, or "
+            f"QueryCreate object, not {type(create_resource)!r}"
         )
 
     collection = await collection_factory(collection_name)
@@ -283,17 +287,24 @@ async def resource_factory(
                     f"{create_resource.name} created by OPTIMADE gateway database "
                     "registration."
                 )
+
             if not create_resource.link_type:
                 create_resource.link_type = LinkType.EXTERNAL
+
             if not create_resource.homepage:
                 create_resource.homepage = None
-        elif isinstance(create_resource, GatewayCreate):
+
+        elif (
+            isinstance(create_resource, GatewayCreate)
+            and "database_ids" in create_resource.model_fields_set
+        ):
             # Do not store `database_ids`
-            if "database_ids" in create_resource.__fields_set__:
-                create_resource.database_ids = None
-                create_resource.__fields_set__.remove("database_ids")
+            del create_resource.database_ids
+            create_resource.model_fields_set.remove("database_ids")
+
         elif isinstance(create_resource, QueryCreate):
             create_resource.state = QueryState.CREATED
+
         result = await collection.create_one(create_resource)
         LOGGER.debug("Created new %s: %r", result.type, result)
         created = True

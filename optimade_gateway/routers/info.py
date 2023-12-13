@@ -6,6 +6,8 @@ This file describes the router for:
 
 where, `entry` may be left out.
 """
+from __future__ import annotations
+
 from fastapi import APIRouter, Request
 from optimade import __api_version__
 from optimade.models import (
@@ -13,6 +15,7 @@ from optimade.models import (
     BaseInfoResource,
     EntryInfoResource,
     EntryInfoResponse,
+    EntryResource,
     InfoResponse,
     LinksResource,
 )
@@ -26,11 +29,12 @@ from optimade_gateway.routers.utils import aretrieve_queryable_properties
 
 ROUTER = APIRouter(redirect_slashes=True)
 
-ENTRY_INFO_SCHEMAS = {
-    "databases": LinksResource.schema,
-    "gateways": GatewayResource.schema,
-    "queries": QueryResource.schema,
+ENTRY_INFO_SCHEMAS: dict[str, type[EntryResource]] = {
+    "databases": LinksResource,
+    "gateways": GatewayResource,
+    "queries": QueryResource,
 }
+"""This dictionary is used to define the `/info/<entry_type>` endpoints."""
 
 
 @ROUTER.get(
@@ -49,8 +53,8 @@ async def get_info(request: Request) -> InfoResponse:
     """
     return InfoResponse(
         data=BaseInfoResource(
-            id=BaseInfoResource.schema()["properties"]["id"]["default"],
-            type=BaseInfoResource.schema()["properties"]["type"]["default"],
+            id=BaseInfoResource.model_fields["id"].default,
+            type=BaseInfoResource.model_fields["type"].default,
             attributes=BaseInfoAttributes(
                 api_version=__api_version__,
                 available_api_versions=[
@@ -72,8 +76,8 @@ async def get_info(request: Request) -> InfoResponse:
                         "openapi.json",
                         "redoc",
                         "search",
+                        *list(ENTRY_INFO_SCHEMAS.keys()),
                     ]
-                    + list(ENTRY_INFO_SCHEMAS.keys())
                 ),
                 is_index=False,
             ),
@@ -111,16 +115,18 @@ async def get_entry_info(request: Request, entry: str) -> EntryInfoResponse:
             ),
         )
 
-    schema = ENTRY_INFO_SCHEMAS[entry]()
+    schema = ENTRY_INFO_SCHEMAS[entry]
     queryable_properties = {"id", "type", "attributes"}
-    properties = await aretrieve_queryable_properties(schema, queryable_properties)
+    properties = await aretrieve_queryable_properties(
+        schema, queryable_properties, entry_type=entry
+    )
 
-    output_fields_by_format = {"json": list(properties.keys())}
+    output_fields_by_format = {"json": list(properties)}
 
     return EntryInfoResponse(
         data=EntryInfoResource(
-            formats=list(output_fields_by_format.keys()),
-            description=schema.get("description", "Entry Resources"),
+            formats=list(output_fields_by_format),
+            description=getattr(schema, "__doc__", "Entry Resources"),
             properties=properties,
             output_fields_by_format=output_fields_by_format,
         ),

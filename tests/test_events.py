@@ -1,24 +1,21 @@
 """Tests for events.py"""
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 import pytest
 
 if TYPE_CHECKING:
-    import platform
-
-    if platform.python_version() >= "3.9.0":
-        from collections.abc import Awaitable, Callable
-    else:
-        from typing import Awaitable, Callable
-
     from pathlib import Path
+    from typing import Any
 
     from pytest_httpx import HTTPXMock
 
+    from .conftest import GetGateway, MockGatewayResponses
 
-@pytest.mark.usefixtures("reset_db_after")
+
 async def test_ci_dev_startup_ci(
-    caplog: pytest.LogCaptureFixture, top_dir: "Path"
+    caplog: pytest.LogCaptureFixture, top_dir: Path
 ) -> None:
     """Test ci_dev_startup() if env var CI=true"""
     import json
@@ -50,8 +47,7 @@ async def test_ci_dev_startup_ci(
 
         assert "CI detected" in caplog.text
 
-        with open(top_dir / ".ci/test_gateways.json") as handle:
-            test_data = json.load(handle)
+        test_data = json.loads((top_dir / ".ci" / "test_gateways.json").read_text())
 
         assert await MONGO_DB[CONFIG.gateways_collection].count_documents({}) == len(
             test_data
@@ -70,9 +66,8 @@ async def test_ci_dev_startup_ci(
             del os.environ["CI"]
 
 
-@pytest.mark.usefixtures("reset_db_after")
 async def test_ci_dev_startup_dev(
-    caplog: pytest.LogCaptureFixture, top_dir: "Path"
+    caplog: pytest.LogCaptureFixture, top_dir: Path
 ) -> None:
     """Test ci_dev_startup() if env var OPTIMADE_MONGO_DATABASE=optimade_gateway_dev"""
     import json
@@ -107,8 +102,7 @@ async def test_ci_dev_startup_dev(
 
         assert "Running in development mode" in caplog.text
 
-        with open(top_dir / ".ci/test_gateways.json") as handle:
-            test_data = json.load(handle)
+        test_data = json.loads((top_dir / ".ci" / "test_gateways.json").read_text())
 
         assert await MONGO_DB[CONFIG.gateways_collection].count_documents({}) == len(
             test_data
@@ -129,7 +123,6 @@ async def test_ci_dev_startup_dev(
             del os.environ["OPTIMADE_MONGO_DATABASE"]
 
 
-@pytest.mark.usefixtures("reset_db_after")
 async def test_ci_dev_startup_nothing(caplog: pytest.LogCaptureFixture) -> None:
     """Test ci_dev_startup() if not in CI or development mode"""
     import os
@@ -200,7 +193,7 @@ async def test_load_databases_but_dont(caplog: pytest.LogCaptureFixture) -> None
 
 
 async def test_load_databases_providers_error(
-    httpx_mock: "HTTPXMock", caplog: pytest.LogCaptureFixture, top_dir: "Path"
+    httpx_mock: HTTPXMock, caplog: pytest.LogCaptureFixture, top_dir: Path
 ) -> None:
     """Test load_optimade_providers_databases() when providers.optimade.org
     returns != 200"""
@@ -224,8 +217,11 @@ async def test_load_databases_providers_error(
         number_of_databases = await MONGO_DB[
             CONFIG.databases_collection
         ].count_documents({})
-        with open(top_dir / "tests/static/test_databases.json") as handle:
-            test_data = json.load(handle)
+
+        test_data = json.loads(
+            (top_dir / "tests" / "static" / "test_databases.json").read_text()
+        )
+
         assert number_of_databases == len(test_data)
 
         await load_optimade_providers_databases()
@@ -250,7 +246,7 @@ async def test_load_databases_providers_error(
 
 
 async def test_load_databases_no_databases(
-    httpx_mock: "HTTPXMock", caplog: pytest.LogCaptureFixture, top_dir: "Path"
+    httpx_mock: HTTPXMock, caplog: pytest.LogCaptureFixture, top_dir: Path
 ) -> None:
     """Test load_optimade_providers_databases() when all providers have index meta-dbs
     with no valid databases"""
@@ -262,15 +258,21 @@ async def test_load_databases_no_databases(
 
     org_val = CONFIG.load_optimade_providers_databases
 
-    with open(top_dir / "tests/static/db_responses/providers_optimade.json") as handle:
-        providers_test_data = json.load(handle)
+    providers_test_data = json.loads(
+        (
+            top_dir / "tests" / "static" / "db_responses" / "providers_optimade.json"
+        ).read_text()
+    )
 
     httpx_mock.add_response(
         url="https://providers.optimade.org/v1/links",
         json=providers_test_data,
     )
-    with open(top_dir / "tests/static/db_responses/index_exmpl.json") as handle:
-        no_provider_databases_response: dict = json.load(handle)
+
+    no_provider_databases_response: dict[str, Any] = json.loads(
+        (top_dir / "tests" / "static" / "db_responses" / "index_exmpl.json").read_text()
+    )
+
     for provider in providers_test_data["data"]:
         url = (
             f"{provider['attributes']['base_url'].rstrip('/')}/v1/links"
@@ -341,9 +343,9 @@ async def test_load_databases_no_databases(
 
         # Since 'mcloud' returns the standard exmpl index meta-db response, there will
         # be a single CHILD db with 'null' base_url
-        exmpl_child_db = [
+        exmpl_child_db = next(
             _ for _ in no_provider_databases_response["data"] if _["id"] == "exmpl"
-        ][0]
+        )
         assert (
             f"  - {exmpl_child_db['attributes']['name']} (id={exmpl_child_db['id']!r})"
             " - Skipping: No base URL information." in caplog.text
@@ -375,13 +377,12 @@ async def test_load_databases_no_databases(
         CONFIG.load_optimade_providers_databases = org_val
 
 
-@pytest.mark.usefixtures("reset_db_after")
 async def test_load_databases_valid_databases(
-    httpx_mock: "HTTPXMock",
+    httpx_mock: HTTPXMock,
     caplog: pytest.LogCaptureFixture,
-    top_dir: "Path",
-    get_gateway: "Callable[[str], Awaitable[dict]]",
-    mock_gateway_responses: "Callable[[dict], None]",
+    top_dir: Path,
+    get_gateway: GetGateway,
+    mock_gateway_responses: MockGatewayResponses,
 ) -> None:
     """Test load_optimade_providers_databases() when valid CHILD dbs are found and
     added"""
@@ -393,8 +394,11 @@ async def test_load_databases_valid_databases(
 
     org_val = CONFIG.load_optimade_providers_databases
 
-    with open(top_dir / "tests/static/db_responses/providers_optimade.json") as handle:
-        providers_test_data = json.load(handle)
+    providers_test_data = json.loads(
+        (
+            top_dir / "tests" / "static" / "db_responses" / "providers_optimade.json"
+        ).read_text()
+    )
 
     httpx_mock.add_response(
         url="https://providers.optimade.org/v1/links",
@@ -407,23 +411,30 @@ async def test_load_databases_valid_databases(
             else None
         )
         if provider["id"] == "mcloud":
-            with open(
-                top_dir / "tests/static/db_responses/index_mcloud.json"
-            ) as handle:
-                mcloud_index = json.load(handle)
+            mcloud_index = json.loads(
+                (
+                    top_dir / "tests" / "static" / "db_responses" / "index_mcloud.json"
+                ).read_text()
+            )
+
             # Modified mcloud response. Contains mockable responses CHILD dbs.
             httpx_mock.add_response(
                 url=url,
                 json=mcloud_index,
             )
         elif provider["id"] == "odbx":
-            with open(top_dir / "tests/static/db_responses/index_exmpl.json") as handle:
-                # Standard exmpl response. Contains a single CHILD db with `null`
-                # base_url
-                httpx_mock.add_response(
-                    url=url,
-                    json=json.load(handle),
-                )
+            httpx_mock.add_response(
+                url=url,
+                json=json.loads(
+                    (
+                        top_dir
+                        / "tests"
+                        / "static"
+                        / "db_responses"
+                        / "index_exmpl.json"
+                    ).read_text()
+                ),
+            )
     # Mock databases provided by "mcloud" provider (as well as "exmpl", added above)
     mock_gateway_responses(await get_gateway("twodbs"))
 
@@ -472,7 +483,7 @@ async def test_load_databases_valid_databases(
 
 
 async def test_bad_provider_databases(
-    httpx_mock: "HTTPXMock", caplog: pytest.LogCaptureFixture, generic_meta: dict
+    httpx_mock: HTTPXMock, caplog: pytest.LogCaptureFixture, generic_meta: dict
 ) -> None:
     """Test load_optimade_providers_databases() for a provider with no announced
     databases"""

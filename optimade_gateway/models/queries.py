@@ -1,10 +1,13 @@
 """Pydantic models/schemas for the Queries resource."""
+from __future__ import annotations
+
+import inspect
 import urllib.parse
 import warnings
 from copy import deepcopy
 from datetime import timezone
 from enum import Enum
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Annotated, Any, Literal
 
 from optimade.models import EntryResource as OptimadeEntryResource
 from optimade.models import (
@@ -23,12 +26,22 @@ from optimade.models import (
 )
 from optimade.models.utils import StrictField
 from optimade.server.query_params import EntryListingQueryParams
-from pydantic import BaseModel, EmailStr, Field, validator
+from pydantic import BaseModel, EmailStr, Field, field_validator, model_validator
+from pydantic.fields import FieldInfo
 from starlette.datastructures import URL as StarletteURL
 
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.models.resources import EntryResourceCreate
 from optimade_gateway.warnings import SortNotSupported
+
+if TYPE_CHECKING:  # pragma: no cover
+    from typing import TypedDict
+
+    class QueryParameters(TypedDict):
+        """Type definition for `QUERY_PARAMETERS`."""
+
+        annotations: dict[str, FieldInfo]
+        defaults: EntryListingQueryParams
 
 
 class EndpointEntryType(Enum):
@@ -38,7 +51,7 @@ class EndpointEntryType(Enum):
     REFERENCES = "references"
     STRUCTURES = "structures"
 
-    def get_resource_model(self) -> Union[ReferenceResource, StructureResource]:
+    def get_resource_model(self) -> ReferenceResource | StructureResource:
         """Get the matching pydantic model for a resource."""
         return {
             "references": ReferenceResource,
@@ -47,12 +60,12 @@ class EndpointEntryType(Enum):
 
     def get_response_model(
         self, single: bool = False
-    ) -> Union[
-        ReferenceResponseMany,
-        ReferenceResponseOne,
-        StructureResponseMany,
-        StructureResponseOne,
-    ]:
+    ) -> (
+        ReferenceResponseMany
+        | ReferenceResponseOne
+        | StructureResponseMany
+        | StructureResponseOne
+    ):
         """Get the matching pydantic model for a successful response."""
         if single:
             return {
@@ -65,7 +78,15 @@ class EndpointEntryType(Enum):
         }[self.value]
 
 
-QUERY_PARAMETERS = EntryListingQueryParams()
+QUERY_PARAMETERS: QueryParameters = {
+    "annotations": {
+        name: FieldInfo.from_annotation(parameter.annotation)
+        for name, parameter in (
+            inspect.signature(EntryListingQueryParams).parameters.items()
+        )
+    },
+    "defaults": EntryListingQueryParams(),
+}
 """Entry listing URL query parameters from the `optimade` package
 ([`EntryListingQueryParams`](https://www.optimade.org/optimade-python-tools/api_reference/server/query_params/#optimade.server.query_params.EntryListingQueryParams))."""
 
@@ -73,67 +94,104 @@ QUERY_PARAMETERS = EntryListingQueryParams()
 class OptimadeQueryParameters(BaseModel):
     """Common OPTIMADE entry listing endpoint query parameters."""
 
-    filter: Optional[str] = Field(
-        QUERY_PARAMETERS.filter.default,
-        description=QUERY_PARAMETERS.filter.description,
-    )
-    response_format: Optional[str] = Field(
-        QUERY_PARAMETERS.response_format.default,
-        description=QUERY_PARAMETERS.response_format.description,
-    )
-    email_address: Optional[EmailStr] = Field(
-        QUERY_PARAMETERS.email_address.default,
-        description=QUERY_PARAMETERS.email_address.description,
-    )
-    response_fields: Optional[str] = Field(
-        QUERY_PARAMETERS.response_fields.default,
-        description=QUERY_PARAMETERS.response_fields.description,
-        regex=QUERY_PARAMETERS.response_fields.regex,
-    )
-    sort: Optional[str] = Field(
-        QUERY_PARAMETERS.sort.default,
-        description=QUERY_PARAMETERS.sort.description,
-        regex=QUERY_PARAMETERS.sort.regex,
-    )
-    page_limit: Optional[int] = Field(
-        QUERY_PARAMETERS.page_limit.default,
-        description=QUERY_PARAMETERS.page_limit.description,
-        ge=QUERY_PARAMETERS.page_limit.ge,
-    )
-    page_offset: Optional[int] = Field(
-        QUERY_PARAMETERS.page_offset.default,
-        description=QUERY_PARAMETERS.page_offset.description,
-        ge=QUERY_PARAMETERS.page_offset.ge,
-    )
-    page_number: Optional[int] = Field(
-        QUERY_PARAMETERS.page_number.default,
-        description=QUERY_PARAMETERS.page_number.description,
-        ge=QUERY_PARAMETERS.page_number.ge,
-    )
-    page_cursor: Optional[int] = Field(
-        QUERY_PARAMETERS.page_cursor.default,
-        description=QUERY_PARAMETERS.page_cursor.description,
-        ge=QUERY_PARAMETERS.page_cursor.ge,
-    )
-    page_above: Optional[int] = Field(
-        QUERY_PARAMETERS.page_above.default,
-        description=QUERY_PARAMETERS.page_above.description,
-        ge=QUERY_PARAMETERS.page_above.ge,
-    )
-    page_below: Optional[int] = Field(
-        QUERY_PARAMETERS.page_below.default,
-        description=QUERY_PARAMETERS.page_below.description,
-        ge=QUERY_PARAMETERS.page_below.ge,
-    )
-    include: Optional[str] = Field(
-        QUERY_PARAMETERS.include.default,
-        description=QUERY_PARAMETERS.include.description,
-    )
-    # api_hint: Optional[str] = Field(
-    #     QUERY_PARAMETERS.api_hint.default,
-    #     description=QUERY_PARAMETERS.api_hint.description,
-    #     regex=QUERY_PARAMETERS.api_hint.regex,
-    # )
+    filter: Annotated[
+        str | None,
+        Field(
+            description=QUERY_PARAMETERS["annotations"]["filter"].description,
+        ),
+    ] = QUERY_PARAMETERS["defaults"].filter
+
+    response_format: Annotated[
+        str | None,
+        Field(
+            description=QUERY_PARAMETERS["annotations"]["response_format"].description,
+        ),
+    ] = QUERY_PARAMETERS["defaults"].response_format
+
+    email_address: Annotated[
+        EmailStr | None,
+        Field(
+            description=QUERY_PARAMETERS["annotations"]["email_address"].description,
+        ),
+    ] = QUERY_PARAMETERS["defaults"].email_address
+
+    response_fields: Annotated[
+        str | None,
+        Field(
+            description=QUERY_PARAMETERS["annotations"]["response_fields"].description,
+            pattern=QUERY_PARAMETERS["annotations"]["response_fields"]
+            .metadata[0]
+            .pattern,
+        ),
+    ] = QUERY_PARAMETERS["defaults"].response_fields
+
+    sort: Annotated[
+        str | None,
+        Field(
+            description=QUERY_PARAMETERS["annotations"]["sort"].description,
+            pattern=QUERY_PARAMETERS["annotations"]["sort"].metadata[0].pattern,
+        ),
+    ] = QUERY_PARAMETERS["defaults"].sort
+
+    page_limit: Annotated[
+        int | None,
+        Field(
+            description=QUERY_PARAMETERS["annotations"]["page_limit"].description,
+            ge=QUERY_PARAMETERS["annotations"]["page_limit"].metadata[0].ge,
+        ),
+    ] = QUERY_PARAMETERS["defaults"].page_limit
+
+    page_offset: Annotated[
+        int | None,
+        Field(
+            description=QUERY_PARAMETERS["annotations"]["page_offset"].description,
+            ge=QUERY_PARAMETERS["annotations"]["page_offset"].metadata[0].ge,
+        ),
+    ] = QUERY_PARAMETERS["defaults"].page_offset
+
+    page_number: Annotated[
+        int | None,
+        Field(
+            description=QUERY_PARAMETERS["annotations"]["page_number"].description,
+        ),
+    ] = QUERY_PARAMETERS["defaults"].page_number
+
+    page_cursor: Annotated[
+        int | None,
+        Field(
+            description=QUERY_PARAMETERS["annotations"]["page_cursor"].description,
+            ge=QUERY_PARAMETERS["annotations"]["page_cursor"].metadata[0].ge,
+        ),
+    ] = QUERY_PARAMETERS["defaults"].page_cursor
+
+    page_above: Annotated[
+        int | None,
+        Field(
+            description=QUERY_PARAMETERS["annotations"]["page_above"].description,
+        ),
+    ] = QUERY_PARAMETERS["defaults"].page_above
+
+    page_below: Annotated[
+        int | None,
+        Field(
+            description=QUERY_PARAMETERS["annotations"]["page_below"].description,
+        ),
+    ] = QUERY_PARAMETERS["defaults"].page_below
+
+    include: Annotated[
+        str | None,
+        Field(
+            description=QUERY_PARAMETERS["annotations"]["include"].description,
+        ),
+    ] = QUERY_PARAMETERS["defaults"].include
+
+    api_hint: Annotated[
+        str | None,
+        Field(
+            description=QUERY_PARAMETERS["annotations"]["api_hint"].description,
+            pattern=QUERY_PARAMETERS["annotations"]["api_hint"].metadata[0].pattern,
+        ),
+    ] = QUERY_PARAMETERS["defaults"].api_hint
 
 
 class QueryState(Enum):
@@ -151,7 +209,8 @@ class QueryState(Enum):
 class EntryResource(OptimadeEntryResource):
     """Entry Resource ensuring datetimes are not naive."""
 
-    @validator("attributes")
+    @field_validator("attributes", mode="after")
+    @classmethod
     def ensure_non_naive_datetime(
         cls, value: EntryResourceAttributes
     ) -> EntryResourceAttributes:
@@ -164,76 +223,99 @@ class EntryResource(OptimadeEntryResource):
 class GatewayQueryResponse(Response):
     """Response from a Gateway Query."""
 
-    data: Dict[str, Union[List[EntryResource], List[Dict[str, Any]]]] = StrictField(
-        ..., uniqueItems=True, description="Outputted Data."
-    )
-    meta: ResponseMeta = StrictField(
-        ..., description="A meta object containing non-standard information."
-    )
-    errors: Optional[List[OptimadeError]] = StrictField(
-        [],
-        description=(
-            "A list of OPTIMADE-specific JSON API error objects, where the field "
-            "detail MUST be present."
-        ),
-        uniqueItems=True,
-    )
-    included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = Field(
-        None, uniqueItems=True
-    )
+    data: Annotated[
+        dict[str, list[EntryResource] | list[dict[str, Any]]],
+        StrictField(uniqueItems=True, description="Outputted Data."),
+    ]
 
-    @classmethod
-    def _remove_pre_root_validators(cls):
-        """Remove `either_data_meta_or_errors_must_be_set` pre root_validator.
-        This will always be available through `meta`, and more importantly,
+    meta: Annotated[
+        ResponseMeta,
+        StrictField(description="A meta object containing non-standard information."),
+    ]
+
+    errors: Annotated[
+        list[OptimadeError] | None,
+        StrictField(
+            description=(
+                "A list of OPTIMADE-specific JSON API error objects, where the field "
+                "detail MUST be present."
+            ),
+            uniqueItems=True,
+        ),
+    ] = []  # noqa: RUF012
+
+    included: Annotated[
+        list[EntryResource] | list[dict[str, Any]] | None,
+        StrictField(
+            description="A list of unique included OPTIMADE entry resources.",
+            uniqueItems=True,
+            union_mode="left_to_right",
+        ),
+    ] = None
+
+    @model_validator(mode="after")
+    def either_data_meta_or_errors_must_be_set(self) -> GatewayQueryResponse:
+        """Overwrite `either_data_meta_or_errors_must_be_set`.
+
         `errors` should be allowed to be present always for this special response.
         """
-        pre_root_validators = []
-        for validator_ in cls.__pre_root_validators__:
-            if not str(validator_).startswith(
-                "<function Response.either_data_meta_or_errors_must_be_set"
-            ):
-                pre_root_validators.append(validator_)
-        cls.__pre_root_validators__ = pre_root_validators
-
-    def __init__(self, **data: Any) -> None:
-        """Remove root_validator `either_data_meta_or_errors_must_be_set`."""
-        self._remove_pre_root_validators()
-        super().__init__(**data)
+        return self
 
 
 class QueryResourceAttributes(EntryResourceAttributes):
     """Attributes for an OPTIMADE gateway query."""
 
-    gateway_id: str = Field(
-        ...,
-        description="The OPTIMADE gateway ID for this query.",
-    )
-    query_parameters: OptimadeQueryParameters = Field(
-        ...,
-        description=(
-            "OPTIMADE query parameters for entry listing endpoints used for this query."
+    gateway_id: Annotated[
+        str,
+        Field(
+            description="The OPTIMADE gateway ID for this query.",
         ),
-        type="object",
-    )
-    state: QueryState = Field(
-        QueryState.CREATED,
-        description="Current state of Gateway Query.",
-        title="State",
-        type="enum",
-    )
-    response: Optional[GatewayQueryResponse] = Field(
-        None,
-        description="Response from gateway query.",
-    )
-    endpoint: EndpointEntryType = Field(
-        EndpointEntryType.STRUCTURES,
-        description="The entry endpoint queried, e.g., 'structures'.",
-        title="Endpoint",
-        type="enum",
-    )
+    ]
 
-    @validator("endpoint")
+    query_parameters: Annotated[
+        OptimadeQueryParameters,
+        Field(
+            description=(
+                "OPTIMADE query parameters for entry listing endpoints used for this "
+                "query."
+            ),
+            json_schema_extra={
+                "type": "object",
+            },
+        ),
+    ]
+
+    state: Annotated[
+        QueryState,
+        Field(
+            description="Current state of Gateway Query.",
+            title="State",
+            json_schema_extra={
+                "type": "enum",
+            },
+        ),
+    ] = QueryState.CREATED
+
+    response: Annotated[
+        GatewayQueryResponse | None,
+        Field(
+            description="Response from gateway query.",
+        ),
+    ] = None
+
+    endpoint: Annotated[
+        EndpointEntryType,
+        Field(
+            description="The entry endpoint queried, e.g., 'structures'.",
+            title="Endpoint",
+            json_schema_extra={
+                "type": "enum",
+            },
+        ),
+    ] = EndpointEntryType.STRUCTURES
+
+    @field_validator("endpoint", mode="after")
+    @classmethod
     def only_allow_structures(cls, value: EndpointEntryType) -> EndpointEntryType:
         """Temporarily only allow queries to "structures" endpoints."""
         if value != EndpointEntryType.STRUCTURES:
@@ -247,20 +329,22 @@ class QueryResourceAttributes(EntryResourceAttributes):
 class QueryResource(EntryResource):
     """OPTIMADE query resource for a gateway"""
 
-    type: str = Field(
-        "queries",
-        const=True,
-        description="The name of the type of an entry.",
-        regex="^queries$",
-    )
+    type: Annotated[
+        Literal["queries"],
+        Field(
+            description="The name of the type of an entry.",
+        ),
+    ] = "queries"
+
     attributes: QueryResourceAttributes
 
     async def response_as_optimade(
         self,
-        url: Optional[
-            Union[urllib.parse.ParseResult, urllib.parse.SplitResult, StarletteURL, str]
-        ] = None,
-    ) -> Union[EntryResponseMany, ErrorResponse]:
+        url: None
+        | (
+            urllib.parse.ParseResult | urllib.parse.SplitResult | StarletteURL | str
+        ) = None,
+    ) -> EntryResponseMany | ErrorResponse:
         """Return `attributes.response` as a valid OPTIMADE entry listing response.
 
         Note, this method disregards the state of the query and will simply return the
@@ -280,8 +364,8 @@ class QueryResource(EntryResource):
         )
 
         async def _update_id(
-            entry_: Union[EntryResource, Dict[str, Any]], database_provider_: str
-        ) -> Union[EntryResource, Dict[str, Any]]:
+            entry_: EntryResource | dict[str, Any], database_provider_: str
+        ) -> EntryResource | dict[str, Any]:
             """Internal utility function to prepend the entries' `id` with
             `provider/database/`.
 
@@ -296,10 +380,12 @@ class QueryResource(EntryResource):
             if isinstance(entry_, dict):
                 _entry = deepcopy(entry_)
                 _entry["id"] = f"{database_provider_}/{entry_['id']}"
-            else:
-                _entry = entry_.copy(deep=True)
-                _entry.id = f"{database_provider_}/{entry_.id}"  # type: ignore[union-attr]
-            return _entry
+                return _entry
+
+            return entry_.model_copy(
+                update={"id": f"{database_provider_}/{entry_.id}"},
+                deep=True,
+            ).model_dump(exclude_unset=True, exclude_none=True)
 
         if not self.attributes.response:
             # The query has not yet been initiated
@@ -325,7 +411,7 @@ class QueryResource(EntryResource):
         meta_ = self.attributes.response.meta
 
         if url:
-            meta_ = meta_.dict(exclude_unset=True)
+            meta_ = meta_.model_dump(exclude_unset=True)
             for repeated_key in (
                 "query",
                 "api_version",
@@ -360,10 +446,29 @@ class QueryResource(EntryResource):
 class QueryCreate(EntryResourceCreate, QueryResourceAttributes):
     """Model for creating new Query resources in the MongoDB"""
 
-    state: Optional[QueryState]  # type: ignore[assignment]
-    endpoint: Optional[EndpointEntryType]  # type: ignore[assignment]
+    state: Annotated[
+        QueryState | None,
+        Field(
+            title=QueryResourceAttributes.model_fields["state"].title,
+            description=QueryResourceAttributes.model_fields["state"].description,
+            json_schema_extra=QueryResourceAttributes.model_fields[
+                "state"
+            ].json_schema_extra,
+        ),
+    ] = None  # type: ignore[assignment]
+    endpoint: Annotated[
+        EndpointEntryType | None,
+        Field(
+            title=QueryResourceAttributes.model_fields["endpoint"].title,
+            description=QueryResourceAttributes.model_fields["endpoint"].description,
+            json_schema_extra=QueryResourceAttributes.model_fields[
+                "endpoint"
+            ].json_schema_extra,
+        ),
+    ] = None  # type: ignore[assignment]
 
-    @validator("query_parameters")
+    @field_validator("query_parameters", mode="after")
+    @classmethod
     def sort_not_supported(
         cls, value: OptimadeQueryParameters
     ) -> OptimadeQueryParameters:

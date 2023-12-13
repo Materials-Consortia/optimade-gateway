@@ -6,6 +6,10 @@ This file describes the router for:
 
 where, `id` may be left out.
 """
+from __future__ import annotations
+
+from typing import Annotated
+
 from fastapi import APIRouter, Depends, Request
 from optimade.models import ToplevelLinks
 from optimade.server.query_params import EntryListingQueryParams
@@ -40,7 +44,7 @@ ROUTER = APIRouter(redirect_slashes=True)
 )
 async def get_gateways(
     request: Request,
-    params: EntryListingQueryParams = Depends(),
+    params: Annotated[EntryListingQueryParams, Depends()],
 ) -> GatewaysResponse:
     """`GET /gateways`
 
@@ -82,7 +86,7 @@ async def post_gateways(
 
         current_database_ids = [_.id for _ in gateway.databases]
         gateway.databases.extend(
-            (_ for _ in databases if _.id not in current_database_ids)
+            _ for _ in databases if _.id not in current_database_ids
         )
 
     result, created = await resource_factory(gateway)
