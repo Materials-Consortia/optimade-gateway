@@ -118,7 +118,7 @@ async def test_get_as_optimade(
 ) -> None:
     """Test GET /search with `as_optimade=True`
 
-    This should be equivalent of `GET /gateways/{gateway_id}/structures`.
+    This should be equivalent to `GET /gateways/{gateway_id}/structures`.
     """
     import json
 
@@ -182,6 +182,8 @@ async def test_get_as_optimade(
     assert data_returned == response.meta.data_returned
     assert data_available == response.meta.data_available
     assert more_data_available == response.meta.more_data_available
+
+    print(response.data[0])
 
     assert data == response.model_dump(exclude_unset=True, exclude_none=True)["data"], (
         "IDs in test not in response: "

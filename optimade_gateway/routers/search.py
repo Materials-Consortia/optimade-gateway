@@ -15,7 +15,15 @@ from fastapi import APIRouter, Depends, Request, Response, status
 from fastapi.responses import RedirectResponse
 from optimade.models import LinksResource, LinksResourceAttributes, ToplevelLinks
 from optimade.models.links import LinkType
-from optimade.models.responses import EntryResponseMany, ErrorResponse
+from optimade.models.responses import (
+    EntryResponseMany as OptimadeEntryResponseMany,
+)
+from optimade.models.responses import (
+    ErrorResponse,
+    LinksResponse,
+    ReferenceResponseMany,
+    StructureResponseMany,
+)
 from optimade.server.exceptions import BadRequest, InternalServerError
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import meta_values
@@ -38,6 +46,13 @@ from optimade_gateway.queries.perform import perform_query
 from optimade_gateway.routers.utils import collection_factory, resource_factory
 
 ROUTER = APIRouter(redirect_slashes=True)
+
+EntryResponseMany = Union[
+    StructureResponseMany,
+    ReferenceResponseMany,
+    LinksResponse,
+    OptimadeEntryResponseMany,
+]
 
 
 @ROUTER.post(
@@ -193,7 +208,7 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
 
 @ROUTER.get(
     "/search",
-    response_model=Union[QueriesResponseSingle, EntryResponseMany, ErrorResponse],
+    response_model=Union[QueriesResponseSingle, ErrorResponse, EntryResponseMany],
     response_model_exclude_defaults=False,
     response_model_exclude_none=False,
     response_model_exclude_unset=True,
