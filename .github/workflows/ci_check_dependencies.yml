@@ -19,5 +19,6 @@ jobs:
       pr_labels: "dependencies"
       ignore: |
         dependency-name=httpx...versions=>=1
+        dependency-name=pytest-asyncio...versions=>=0.23.0
     secrets:
       PAT: ${{ secrets.RELEASE_PAT_CASPER }}
