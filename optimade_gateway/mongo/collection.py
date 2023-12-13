@@ -6,7 +6,7 @@ represents an asynchronous version of the equivalent MongoDB collection in `opti
 """
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 from os import getenv
 from typing import TYPE_CHECKING
 from warnings import warn
@@ -479,7 +479,7 @@ class AsyncMongoCollection(EntryCollection):
             The newly created document as a pydantic model entry resource.
 
         """
-        resource.last_modified = datetime.utcnow()
+        resource.last_modified = datetime.now(timezone.utc)
         result = await self.collection.insert_one(
             await clean_python_types(resource.model_dump(exclude_unset=True))
         )

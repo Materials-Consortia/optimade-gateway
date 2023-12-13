@@ -1,7 +1,7 @@
 """Utility functions for the `queries` module."""
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 from os import getenv
 from typing import TYPE_CHECKING
 
@@ -54,7 +54,7 @@ async def update_query(
     if operator and not operator.startswith("$"):
         operator = f"${operator}"
 
-    update_time = datetime.utcnow()
+    update_time = datetime.now(timezone.utc)
 
     update_kwargs = {"$set": {"last_modified": update_time}}
 
