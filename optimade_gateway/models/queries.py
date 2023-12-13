@@ -455,7 +455,7 @@ class QueryCreate(EntryResourceCreate, QueryResourceAttributes):
                 "state"
             ].json_schema_extra,
         ),
-    ] = None
+    ] = None  # type: ignore[assignment]
     endpoint: Annotated[
         EndpointEntryType | None,
         Field(
@@ -465,7 +465,7 @@ class QueryCreate(EntryResourceCreate, QueryResourceAttributes):
                 "endpoint"
             ].json_schema_extra,
         ),
-    ] = None
+    ] = None  # type: ignore[assignment]
 
     @field_validator("query_parameters", mode="after")
     @classmethod

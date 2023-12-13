@@ -75,7 +75,9 @@ async def test_post_gateways(client: AsyncGatewayClient) -> None:
     datum = response.data
     assert datum, response
 
-    for response_db, test_db in zip(datum.attributes.databases, data["databases"]):
+    for response_db, test_db in zip(
+        datum.attributes.databases, data["databases"], strict=True
+    ):
         assert (
             response_db.model_dump() == LinksResource(**test_db).model_dump()
         ), f"Response: {response_db!r}\n\nTest data: {LinksResource(**test_db)!r}"

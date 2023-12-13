@@ -134,7 +134,7 @@ class GatewayCreate(EntryResourceCreate, GatewayResourceAttributes):
         Field(
             description=GatewayResourceAttributes.model_fields["databases"].description
         ),
-    ] = None
+    ] = None  # type: ignore[assignment]
 
     @model_validator(mode="after")
     def specify_databases(self) -> GatewayCreate:

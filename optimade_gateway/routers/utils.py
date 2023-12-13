@@ -21,6 +21,7 @@ from optimade_gateway.common.logger import LOGGER
 from optimade_gateway.common.utils import clean_python_types, get_resource_attribute
 from optimade_gateway.models import (
     DatabaseCreate,
+    EndpointEntryType,
     GatewayCreate,
     QueryCreate,
     QueryState,
@@ -29,6 +30,7 @@ from optimade_gateway.mongo.collection import AsyncMongoCollection
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
     from collections.abc import Iterable
+    from typing import Any
 
     from fastapi import Request
     from optimade.models import EntryResource, EntryResponseMany, LinksResource
@@ -207,7 +209,7 @@ async def resource_factory(
 
         base_url = get_resource_attribute(create_resource, "base_url")
 
-        mongo_query = {
+        mongo_query: dict[str, Any] = {
             "$or": [
                 {"base_url": {"$eq": base_url}},
                 {"base_url.href": {"$eq": base_url}},
@@ -230,7 +232,7 @@ async def resource_factory(
             )
 
         mongo_query = {
-            "databases": {"$size": len(create_resource.databases)},
+            "databases": {"$size": len(create_resource.databases or [])},
             "databases.attributes.base_url": {
                 "$all": [_.attributes.base_url for _ in create_resource.databases or []]
             },
@@ -241,7 +243,9 @@ async def resource_factory(
         # Currently only /structures entry endpoints can be queried with multiple
         # expected responses.
         create_resource.endpoint = (
-            create_resource.endpoint if create_resource.endpoint else "structures"
+            create_resource.endpoint
+            if create_resource.endpoint is not None
+            else EndpointEntryType("structures")
         )
 
         mongo_query = {

@@ -22,16 +22,16 @@ async def clean_python_types(data: Any, **dump_kwargs: Any) -> Any:
     Turn tuples and sets into lists.
     """
     if isinstance(data, (list, tuple, set)):
-        res = []
+        res_list = []
         for datum in data:
-            res.append(await clean_python_types(datum, **dump_kwargs))
-        return res
+            res_list.append(await clean_python_types(datum, **dump_kwargs))
+        return res_list
 
     if isinstance(data, dict):
-        res = {}
+        res_dict = {}
         for key in list(data.keys()):
-            res[key] = await clean_python_types(data[key], **dump_kwargs)
-        return res
+            res_dict[key] = await clean_python_types(data[key], **dump_kwargs)
+        return res_dict
 
     if isinstance(data, BaseModel):
         # Pydantic model
