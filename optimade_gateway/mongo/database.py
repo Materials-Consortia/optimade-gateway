@@ -1,4 +1,5 @@
 """Initialize the MongoDB database."""
+
 from __future__ import annotations
 
 from os import getenv

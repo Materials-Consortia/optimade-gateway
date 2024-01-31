@@ -3,6 +3,7 @@
 The warnings in this module will all be caught by middleware and added to the response
 under `meta.warnings`.
 """
+
 from __future__ import annotations
 
 from optimade.server.warnings import OptimadeWarning

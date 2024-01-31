@@ -1,4 +1,5 @@
 """Pydantic models/schemas for the LinksResource used in /databases"""
+
 from __future__ import annotations
 
 from typing import Annotated

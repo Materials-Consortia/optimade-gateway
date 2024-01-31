@@ -5,6 +5,7 @@ This file describes the router for:
     /search
 
 """
+
 from __future__ import annotations
 
 import asyncio

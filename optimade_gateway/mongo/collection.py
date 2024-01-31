@@ -4,6 +4,7 @@ The [`AsyncMongoCollection`][optimade_gateway.mongo.collection.AsyncMongoCollect
 represents an asynchronous version of the equivalent MongoDB collection in `optimade`:
 [`MongoCollection`](https://www.optimade.org/optimade-python-tools/api_reference/server/entry_collections/mongo/#optimade.server.entry_collections.mongo.MongoCollection).
 """
+
 from __future__ import annotations
 
 from datetime import datetime, timezone

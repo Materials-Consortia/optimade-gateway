@@ -1,4 +1,5 @@
 """Utility functions for all routers."""
+
 from __future__ import annotations
 
 import urllib.parse

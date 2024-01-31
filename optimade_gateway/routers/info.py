@@ -6,6 +6,7 @@ This file describes the router for:
 
 where, `entry` may be left out.
 """
+
 from __future__ import annotations
 
 from fastapi import APIRouter, Request

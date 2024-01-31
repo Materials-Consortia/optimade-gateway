@@ -11,6 +11,7 @@ Database resources represent the available databases that may be used for the ga
 One can register a new database (by using `POST /databases`) or look through the
 available databases (by using `GET /databases`) using standard OPTIMADE filtering.
 """
+
 from __future__ import annotations
 
 from typing import Annotated

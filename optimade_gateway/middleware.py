@@ -4,6 +4,7 @@ These are in addition to the middleware available in OPTIMADE Python tools.
 For more information see
 https://www.optimade.org/optimade-python-tools/api_reference/server/middleware/.
 """
+
 from __future__ import annotations
 
 import re
