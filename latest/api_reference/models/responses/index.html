@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.5">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.6">
     
     
       
@@ -1771,8 +1771,7 @@ with the exception of the <code>data</code> field's description.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade_gateway/models/responses.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">14</span>
-<span class="normal">15</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">15</span>
 <span class="normal">16</span>
 <span class="normal">17</span>
 <span class="normal">18</span>
@@ -1789,7 +1788,8 @@ with the exception of the <code>data</code> field's description.</p>
 <span class="normal">29</span>
 <span class="normal">30</span>
 <span class="normal">31</span>
-<span class="normal">32</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DatabasesResponse</span><span class="p">(</span><span class="n">EntryResponseMany</span><span class="p">):</span>
+<span class="normal">32</span>
+<span class="normal">33</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DatabasesResponse</span><span class="p">(</span><span class="n">EntryResponseMany</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Successful response for `GET /databases`</span>
 
 <span class="sd">    This model is essentially equal to</span>
@@ -1871,8 +1871,7 @@ with the exception of the <code>data</code> field's description.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade_gateway/models/responses.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">35</span>
-<span class="normal">36</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">36</span>
 <span class="normal">37</span>
 <span class="normal">38</span>
 <span class="normal">39</span>
@@ -1884,7 +1883,8 @@ with the exception of the <code>data</code> field's description.</p>
 <span class="normal">45</span>
 <span class="normal">46</span>
 <span class="normal">47</span>
-<span class="normal">48</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DatabasesResponseSingle</span><span class="p">(</span><span class="n">EntryResponseOne</span><span class="p">):</span>
+<span class="normal">48</span>
+<span class="normal">49</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DatabasesResponseSingle</span><span class="p">(</span><span class="n">EntryResponseOne</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Successful response for `POST /databases` and `GET /databases/{database_id}`&quot;&quot;&quot;</span>
 
     <span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
@@ -1961,8 +1961,7 @@ with the exception of the <code>data</code> field's description.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade_gateway/models/responses.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">51</span>
-<span class="normal">52</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">52</span>
 <span class="normal">53</span>
 <span class="normal">54</span>
 <span class="normal">55</span>
@@ -1970,7 +1969,8 @@ with the exception of the <code>data</code> field's description.</p>
 <span class="normal">57</span>
 <span class="normal">58</span>
 <span class="normal">59</span>
-<span class="normal">60</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">GatewaysResponse</span><span class="p">(</span><span class="n">EntryResponseMany</span><span class="p">):</span>
+<span class="normal">60</span>
+<span class="normal">61</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">GatewaysResponse</span><span class="p">(</span><span class="n">EntryResponseMany</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Successful response for `GET /gateways`&quot;&quot;&quot;</span>
 
     <span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
@@ -2043,8 +2043,7 @@ with the exception of the <code>data</code> field's description.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade_gateway/models/responses.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">63</span>
-<span class="normal">64</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">64</span>
 <span class="normal">65</span>
 <span class="normal">66</span>
 <span class="normal">67</span>
@@ -2055,7 +2054,8 @@ with the exception of the <code>data</code> field's description.</p>
 <span class="normal">72</span>
 <span class="normal">73</span>
 <span class="normal">74</span>
-<span class="normal">75</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">GatewaysResponseSingle</span><span class="p">(</span><span class="n">EntryResponseOne</span><span class="p">):</span>
+<span class="normal">75</span>
+<span class="normal">76</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">GatewaysResponseSingle</span><span class="p">(</span><span class="n">EntryResponseOne</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Successful response for `POST /gateways` and `GET /gateways/{gateway_id}`.&quot;&quot;&quot;</span>
 
     <span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
@@ -2131,8 +2131,7 @@ with the exception of the <code>data</code> field's description.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade_gateway/models/responses.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">78</span>
-<span class="normal">79</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">79</span>
 <span class="normal">80</span>
 <span class="normal">81</span>
 <span class="normal">82</span>
@@ -2140,7 +2139,8 @@ with the exception of the <code>data</code> field's description.</p>
 <span class="normal">84</span>
 <span class="normal">85</span>
 <span class="normal">86</span>
-<span class="normal">87</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">QueriesResponse</span><span class="p">(</span><span class="n">EntryResponseMany</span><span class="p">):</span>
+<span class="normal">87</span>
+<span class="normal">88</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">QueriesResponse</span><span class="p">(</span><span class="n">EntryResponseMany</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Successful response for `GET /gateways/{gateway_ID}/queries`.&quot;&quot;&quot;</span>
 
     <span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
@@ -2214,8 +2214,7 @@ and <code>GET /gateways/{gateway_ID}/queries/{query_id}</code>.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade_gateway/models/responses.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 90</span>
-<span class="normal"> 91</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 91</span>
 <span class="normal"> 92</span>
 <span class="normal"> 93</span>
 <span class="normal"> 94</span>
@@ -2227,7 +2226,8 @@ and <code>GET /gateways/{gateway_ID}/queries/{query_id}</code>.</p>
 <span class="normal">100</span>
 <span class="normal">101</span>
 <span class="normal">102</span>
-<span class="normal">103</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">QueriesResponseSingle</span><span class="p">(</span><span class="n">EntryResponseOne</span><span class="p">):</span>
+<span class="normal">103</span>
+<span class="normal">104</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">QueriesResponseSingle</span><span class="p">(</span><span class="n">EntryResponseOne</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Successful response for `POST /gateways/{gateway_ID}/queries`</span>
 <span class="sd">    and `GET /gateways/{gateway_ID}/queries/{query_id}`.&quot;&quot;&quot;</span>
 
@@ -2371,7 +2371,7 @@ and <code>GET /gateways/{gateway_ID}/queries/{query_id}</code>.</p>
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.c18c5fb9.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.e1c3ead8.min.js"></script>
       
     
   </body>

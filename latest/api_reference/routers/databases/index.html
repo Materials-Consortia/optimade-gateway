@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.5">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.6">
     
     
       
@@ -1546,8 +1546,7 @@ representing the database resource object with <code>id={database ID}</code>.</p
 
           <details class="quote">
             <summary>Source code in <code>optimade_gateway/routers/databases.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 99</span>
-<span class="normal">100</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">100</span>
 <span class="normal">101</span>
 <span class="normal">102</span>
 <span class="normal">103</span>
@@ -1592,7 +1591,8 @@ representing the database resource object with <code>id={database ID}</code>.</p
 <span class="normal">142</span>
 <span class="normal">143</span>
 <span class="normal">144</span>
-<span class="normal">145</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@ROUTER</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<span class="normal">145</span>
+<span class="normal">146</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@ROUTER</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
     <span class="s2">&quot;/databases/{database_id:path}&quot;</span><span class="p">,</span>
     <span class="n">response_model</span><span class="o">=</span><span class="n">DatabasesResponseSingle</span><span class="p">,</span>
     <span class="n">response_model_exclude_defaults</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -1667,8 +1667,7 @@ representing the database resource object with <code>id={database ID}</code>.</p
 
           <details class="quote">
             <summary>Source code in <code>optimade_gateway/routers/databases.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">39</span>
-<span class="normal">40</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">40</span>
 <span class="normal">41</span>
 <span class="normal">42</span>
 <span class="normal">43</span>
@@ -1689,7 +1688,8 @@ representing the database resource object with <code>id={database ID}</code>.</p
 <span class="normal">58</span>
 <span class="normal">59</span>
 <span class="normal">60</span>
-<span class="normal">61</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@ROUTER</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<span class="normal">61</span>
+<span class="normal">62</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@ROUTER</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
     <span class="s2">&quot;/databases&quot;</span><span class="p">,</span>
     <span class="n">response_model</span><span class="o">=</span><span class="n">DatabasesResponse</span><span class="p">,</span>
     <span class="n">response_model_exclude_defaults</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -1742,8 +1742,7 @@ representing a database resource object, according to <code>database</code>.</p>
 
           <details class="quote">
             <summary>Source code in <code>optimade_gateway/routers/databases.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">64</span>
-<span class="normal">65</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">65</span>
 <span class="normal">66</span>
 <span class="normal">67</span>
 <span class="normal">68</span>
@@ -1774,7 +1773,8 @@ representing a database resource object, according to <code>database</code>.</p>
 <span class="normal">93</span>
 <span class="normal">94</span>
 <span class="normal">95</span>
-<span class="normal">96</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@ROUTER</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+<span class="normal">96</span>
+<span class="normal">97</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@ROUTER</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
     <span class="s2">&quot;/databases&quot;</span><span class="p">,</span>
     <span class="n">response_model</span><span class="o">=</span><span class="n">DatabasesResponseSingle</span><span class="p">,</span>
     <span class="n">response_model_exclude_defaults</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -1899,7 +1899,7 @@ representing a database resource object, according to <code>database</code>.</p>
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.c18c5fb9.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.e1c3ead8.min.js"></script>
       
     
   </body>
