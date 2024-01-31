@@ -4,6 +4,7 @@ These events can be run at application startup or shutdown.
 The specific events are listed in [`EVENTS`][optimade_gateway.events.EVENTS] along with
 their respected proper invocation time.
 """
+
 from __future__ import annotations
 
 import os

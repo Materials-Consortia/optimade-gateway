@@ -1,4 +1,5 @@
 """Pytest fixtures and configuration for all tests"""
+
 from __future__ import annotations
 
 import asyncio
@@ -29,20 +30,17 @@ if TYPE_CHECKING:
             base_url: str | None = None,
             method: Literal["get", "post", "put", "delete", "patch"] | None = None,
             **kwargs,
-        ) -> Awaitable[Response]:
-            ...
+        ) -> Awaitable[Response]: ...
 
     class GetGateway(Protocol):
         """Protocol for get_gateway fixture"""
 
-        def __call__(self, id: str) -> Awaitable[dict]:
-            ...
+        def __call__(self, id: str) -> Awaitable[dict]: ...
 
     class MockGatewayResponses(Protocol):
         """Protocol for mock_gateway_responses fixture"""
 
-        def __call__(self, gateway: dict) -> None:
-            ...
+        def __call__(self, gateway: dict) -> None: ...
 
     class DatabaseAttributesOptionalsDict(TypedDict, total=False):
         """Database attributes dict of optional fields"""

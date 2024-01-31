@@ -1,4 +1,5 @@
 """Pydantic models/schemas for the Search resource."""
+
 from __future__ import annotations
 
 import warnings

@@ -1,4 +1,5 @@
 """URL query parameters."""
+
 from typing import Annotated
 
 from fastapi import Query

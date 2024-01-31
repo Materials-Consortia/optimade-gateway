@@ -4,6 +4,7 @@ Based on the
 [`BaseResourceMapper`](https://www.optimade.org/optimade-python-tools/api_reference/server/mappers/entries/#optimade.server.mappers.entries.BaseResourceMapper)
 in OPTIMADE Python tools.
 """
+
 from __future__ import annotations
 
 from os import getenv

@@ -1,5 +1,6 @@
 """Resource mapper for
 [`QueryResource`][optimade_gateway.models.queries.QueryResource]."""
+
 from __future__ import annotations
 
 from optimade_gateway.mappers.base import BaseResourceMapper

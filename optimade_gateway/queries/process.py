@@ -1,4 +1,5 @@
 """Process performed OPTIMADE queries."""
+
 from __future__ import annotations
 
 from os import getenv
@@ -26,9 +27,7 @@ async def process_db_response(
     database_id: str,
     query: QueryResource,
     gateway: GatewayResource,
-) -> (
-    list[EntryResource] | list[dict[str, Any]] | EntryResource | dict[str, Any] | None
-):
+) -> list[EntryResource] | list[dict[str, Any]] | EntryResource | dict[str, Any] | None:
     """Process an OPTIMADE database response.
 
     The passed `query` will be updated with the top-level `meta` information:

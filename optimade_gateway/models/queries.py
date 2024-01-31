@@ -1,4 +1,5 @@
 """Pydantic models/schemas for the Queries resource."""
+
 from __future__ import annotations
 
 import inspect
@@ -340,8 +341,7 @@ class QueryResource(EntryResource):
 
     async def response_as_optimade(
         self,
-        url: None
-        | (
+        url: None | (
             urllib.parse.ParseResult | urllib.parse.SplitResult | StarletteURL | str
         ) = None,
     ) -> EntryResponseMany | ErrorResponse:

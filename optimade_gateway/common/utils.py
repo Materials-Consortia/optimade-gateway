@@ -2,6 +2,7 @@
 
 These functions may be used in general throughout the OPTIMADE Gateway Python code.
 """
+
 from __future__ import annotations
 
 from enum import Enum

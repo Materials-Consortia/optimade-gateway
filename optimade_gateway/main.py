@@ -1,4 +1,5 @@
 """The initialization of the ASGI FastAPI application."""
+
 from __future__ import annotations
 
 from fastapi import FastAPI, Request

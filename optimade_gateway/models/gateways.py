@@ -1,4 +1,5 @@
 """Pydantic models/schemas for the Gateways resource."""
+
 from __future__ import annotations
 
 import warnings

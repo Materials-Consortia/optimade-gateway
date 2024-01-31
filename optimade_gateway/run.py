@@ -1,4 +1,5 @@
 """Simplified function for running the server used in the CLI."""
+
 from __future__ import annotations
 
 import argparse

@@ -6,6 +6,7 @@ This file describes the router for:
 
 where, `id` may be left out.
 """
+
 from __future__ import annotations
 
 from typing import Annotated

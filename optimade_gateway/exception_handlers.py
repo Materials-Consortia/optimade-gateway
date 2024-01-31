@@ -4,6 +4,7 @@ These are in addition to the exception handlers available in OPTIMADE Python too
 For more information see
 https://www.optimade.org/optimade-python-tools/api_reference/server/exception_handlers/.
 """
+
 from __future__ import annotations
 
 from os import getenv
