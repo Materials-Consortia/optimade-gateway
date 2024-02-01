@@ -93,7 +93,7 @@ jobs:
 
     - name: Upload coverage to Codecov
       if: github.repository == 'Materials-Consortia/optimade-gateway'
-      uses: codecov/codecov-action@v4
+      uses: codecov/codecov-action@v3
       with:
         name: optimade-gateway
         files: ./coverage.xml
