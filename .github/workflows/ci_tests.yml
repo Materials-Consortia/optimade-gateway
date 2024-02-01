@@ -95,6 +95,7 @@ jobs:
       if: github.repository == 'Materials-Consortia/optimade-gateway'
       uses: codecov/codecov-action@v4
       with:
+        token: ${{ secrets.CODECOV_TOKEN }}
         name: optimade-gateway
         files: ./coverage.xml
         env_vars: OS,PYTHON
