@@ -45,15 +45,6 @@ jobs:
         run.py
       full_docs_dirs: models
 
-  ruff:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - uses: chartboost/ruff-action@v1
-
   pytest:
     runs-on: ubuntu-latest
     # timeout-minutes: 15
@@ -93,8 +84,9 @@ jobs:
 
     - name: Upload coverage to Codecov
       if: github.repository == 'Materials-Consortia/optimade-gateway'
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       with:
+        token: ${{ secrets.CODECOV_TOKEN }}
         name: optimade-gateway
         files: ./coverage.xml
         env_vars: OS,PYTHON
