@@ -23,7 +23,7 @@ class LinksMapper(BaseResourceMapper):
 
     @classmethod
     def map_back(cls, doc: dict) -> dict:
-        type_ = doc.get("type", None) or "links"
+        type_ = doc.get("type") or "links"
         newdoc = super().map_back(doc)
         newdoc["type"] = type_
         return newdoc
