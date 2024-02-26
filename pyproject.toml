@@ -48,7 +48,7 @@ dev = [
     "pytest>=7.4.0,<9",
     "pytest-asyncio>=0.21.1,<0.23",
     "pytest-cov~=4.1",
-    "pytest-httpx~=0.29.0",
+    "pytest-httpx~=0.30.0",
 ]
 
 [project.urls]
