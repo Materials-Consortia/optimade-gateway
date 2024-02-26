@@ -200,7 +200,7 @@ def _patch_mongo_db(top_dir: Path, monkeypatch: pytest.MonkeyPatch) -> None:
 @pytest.fixture()
 def client() -> AsyncGatewayClient:
     """Return function to make HTTP requests with async httpx client"""
-    from httpx import AsyncClient
+    from httpx import ASGITransport, AsyncClient
 
     async def _client(
         request: str,
@@ -223,7 +223,7 @@ def client() -> AsyncGatewayClient:
         method = method if method is not None else "get"
 
         async with AsyncClient(
-            app=app, base_url=base_url, follow_redirects=True
+            base_url=base_url, follow_redirects=True, transport=ASGITransport(app=app)
         ) as aclient:
             return await getattr(aclient, method)(request, **kwargs)
 
