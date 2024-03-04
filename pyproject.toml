@@ -39,10 +39,10 @@ docs = [
     "mkdocs~=1.5",
     "mkdocs-awesome-pages-plugin~=2.9",
     "mkdocs-material~=9.5",
-    "mkdocstrings[python]~=0.24.0",
+    "mkdocstrings[python]~=0.24.1",
 ]
 dev = [
-    "mongomock_motor~=0.0.27",
+    "mongomock_motor~=0.0.28",
     "optimade-gateway[docs]",
     "pre-commit~=3.6",
     "pytest>=7.4.0,<9",
