@@ -29,7 +29,7 @@ dynamic = ["version"]
 
 dependencies = [
     "httpx>=0.24.1,<1",
-    "motor~=3.3",
+    "motor~=3.4",
     "optimade[server]~=1.0",
 ]
 
@@ -39,7 +39,7 @@ docs = [
     "mkdocs~=1.5",
     "mkdocs-awesome-pages-plugin~=2.9",
     "mkdocs-material~=9.5",
-    "mkdocstrings[python]~=0.24.1",
+    "mkdocstrings[python]~=0.24.3",
 ]
 dev = [
     "mongomock_motor~=0.0.29",
