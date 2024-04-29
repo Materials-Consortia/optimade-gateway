@@ -13,7 +13,8 @@ if TYPE_CHECKING:
 
     from fastapi import FastAPI
     from httpx import Request, Response
-    from pymongo.database import Database
+    from mongomock_motor import AsyncMongoMockClient
+    from motor.motor_asyncio import AsyncIOMotorDatabase
     from pytest_httpx import HTTPXMock
 
     class AsyncGatewayClient(Protocol):
@@ -69,7 +70,7 @@ if TYPE_CHECKING:
 
 # UTILITY FUNCTIONS
 
-MONGO_DB_INFO: tuple[Database, bool] | None = None
+MONGO_DB_INFO: AsyncIOMotorDatabase | AsyncMongoMockClient | None = None
 
 
 def get_test_config(top_dir: Path | str) -> dict:
@@ -88,8 +89,9 @@ def get_test_config(top_dir: Path | str) -> dict:
     return test_config
 
 
-def get_mongo_db(top_dir: Path | str) -> tuple[Database, bool]:
+def get_mongo_db(top_dir: Path | str) -> AsyncIOMotorDatabase | AsyncMongoMockClient:
     """Utility function for getting the MongoDB"""
+    import asyncio
     import os
 
     global MONGO_DB_INFO  # noqa: PLW0603
@@ -107,7 +109,7 @@ def get_mongo_db(top_dir: Path | str) -> tuple[Database, bool]:
     ):
         from optimade_gateway.mongo.database import MONGO_DB
 
-        mock_client = False
+        MONGO_DB.get_io_loop = asyncio.get_running_loop
     else:
         from mongomock_motor import AsyncMongoMockClient
 
@@ -121,9 +123,7 @@ def get_mongo_db(top_dir: Path | str) -> tuple[Database, bool]:
             w="majority",
         )[test_config["mongo_database"]]
 
-        mock_client = True
-
-    MONGO_DB_INFO = MONGO_DB, mock_client
+    MONGO_DB_INFO = MONGO_DB
 
     return MONGO_DB_INFO
 
@@ -140,7 +140,7 @@ async def setup_db_utility(top_dir: Path | str) -> None:
 
     top_dir = Path(top_dir).resolve()
     test_config = get_test_config(top_dir)
-    MONGO_DB, _ = get_mongo_db(top_dir)
+    MONGO_DB = get_mongo_db(top_dir)
 
     assert (
         MONGO_DB.name == test_config["mongo_database"]
@@ -203,12 +203,11 @@ async def _setup_db(top_dir: Path) -> None:
 @pytest.fixture(autouse=True)
 def _patch_mongo_db(top_dir: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """Return test config dict"""
-    MONGO_DB, mock_client = get_mongo_db(top_dir)
+    from optimade_gateway.mongo import database
 
-    if mock_client:
-        from optimade_gateway.mongo import database
+    MONGO_DB = get_mongo_db(top_dir)
 
-        monkeypatch.setattr(database, "MONGO_DB", MONGO_DB)
+    monkeypatch.setattr(database, "MONGO_DB", MONGO_DB)
 
 
 @pytest.fixture()

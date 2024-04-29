@@ -2,20 +2,12 @@
 
 from __future__ import annotations
 
-from os import getenv
-from typing import TYPE_CHECKING
-
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.common.logger import LOGGER
 
-if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    from pymongo.database import Database
-    from pymongo.mongo_client import MongoClient
-
-
-MONGO_CLIENT: MongoClient = AsyncIOMotorClient(
+MONGO_CLIENT = AsyncIOMotorClient(
     CONFIG.mongo_uri,
     appname="optimade-gateway",
     readConcernLevel="majority",
@@ -24,7 +16,7 @@ MONGO_CLIENT: MongoClient = AsyncIOMotorClient(
 )
 """The MongoDB motor client."""
 
-MONGO_DB: Database = MONGO_CLIENT[CONFIG.mongo_database]
+MONGO_DB = MONGO_CLIENT[CONFIG.mongo_database]
 """The MongoDB motor database.
 This is a representation of the database used for the gateway service."""
 
