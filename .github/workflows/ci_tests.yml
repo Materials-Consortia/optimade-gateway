@@ -47,7 +47,6 @@ jobs:
 
   pytest:
     runs-on: ubuntu-latest
-    # timeout-minutes: 15
 
     strategy:
       fail-fast: false
@@ -98,7 +97,6 @@ jobs:
   docker:
     name: Docker
     runs-on: ubuntu-latest
-    # timeout-minutes
 
     steps:
     - name: Checout repository

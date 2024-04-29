@@ -1,21 +1,33 @@
 version: 2
 updates:
-- package-ecosystem: pip
-  directory: "/"
-  schedule:
-    interval: weekly
-    day: monday
-    time: "05:00"
-  # Should be bigger than or equal to the total number of dependencies (currently 14)
-  open-pull-requests-limit: 20
-  target-branch: ci/dependabot-updates
-  labels:
-  - dependencies
-- package-ecosystem: github-actions
-  directory: "/"
-  schedule:
-    interval: daily
-    time: "05:00"
-  target-branch: ci/dependabot-updates
-  labels:
-  - "CI/CD"
+  # Python
+  - package-ecosystem: pip
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "05:21"
+      timezone: "Europe/Oslo"
+    target-branch: main
+    labels:
+      - "CI/CD"
+      - "dependencies"
+      - "skip-changelog"
+    groups:
+      dependencies:
+        dependency-type: "production"
+
+  # GitHub Actions
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "05:17"
+      timezone: "Europe/Oslo"
+    target-branch: main
+    labels:
+      - "CI/CD"
+      - "skip-changelog"
+    groups:
+      actions:
+        patterns: ["*"]
