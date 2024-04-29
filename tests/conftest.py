@@ -2,17 +2,13 @@
 
 from __future__ import annotations
 
-import asyncio
-import json
-import os
-import re
-from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pytest
 
 if TYPE_CHECKING:
     from collections.abc import Awaitable
+    from pathlib import Path
     from typing import Literal, Protocol, TypedDict
 
     from fastapi import FastAPI
@@ -78,6 +74,9 @@ MONGO_DB_INFO: tuple[Database, bool] | None = None
 
 def get_test_config(top_dir: Path | str) -> dict:
     """Utility function for getting and parsing the test config."""
+    import json
+    from pathlib import Path
+
     top_dir = Path(top_dir).resolve()
 
     test_config: dict = json.loads(
@@ -91,6 +90,8 @@ def get_test_config(top_dir: Path | str) -> dict:
 
 def get_mongo_db(top_dir: Path | str) -> tuple[Database, bool]:
     """Utility function for getting the MongoDB"""
+    import os
+
     global MONGO_DB_INFO  # noqa: PLW0603
     test_config = get_test_config(top_dir)
 
@@ -134,6 +135,9 @@ async def setup_db_utility(top_dir: Path | str) -> None:
         top_dir: Path to the repository's directory.
 
     """
+    import json
+    from pathlib import Path
+
     top_dir = Path(top_dir).resolve()
     test_config = get_test_config(top_dir)
     MONGO_DB, _ = get_mongo_db(top_dir)
@@ -157,26 +161,55 @@ async def setup_db_utility(top_dir: Path | str) -> None:
         await MONGO_DB[collection].insert_many(data)
 
 
-# PYTEST FIXTURES AND CONFIGURATION
+# PYTEST CONFIGURATION
 
 
-def pytest_configure(config):  # noqa: ARG001
-    """Method that runs before pytest collects tests so no modules are imported"""
+def pytest_configure(config: pytest.Config):  # noqa: ARG001
+    """Allow plugins and conftest files to perform initial configuration.
+
+    This hook is called for every plugin and initial conftest file after command line
+    options have been parsed.
+
+    After that, the hook is called for other conftest files as they are imported.
+
+    ---
+
+    Here, we set the OPTIMADE_CONFIG_FILE environment variable to the test config file.
+    """
+    import os
+    from pathlib import Path
+
     cwd = Path(__file__).parent.resolve()
     os.environ["OPTIMADE_CONFIG_FILE"] = str(cwd / "static/test_config.json")
 
 
-@pytest.fixture(scope="session")
-def event_loop(request):  # noqa: ARG001
-    """Create an instance of the default event loop for each test case."""
-    loop = asyncio.get_event_loop_policy().new_event_loop()
-    yield loop
-    loop.close()
+def pytest_collection_modifyitems(
+    session: pytest.Session,  # noqa: ARG001
+    config: pytest.Config,  # noqa: ARG001
+    items: list[pytest.Item],
+):
+    """Called after collection has been performed. May filter or re-order the items
+    in-place.
+
+    ---
+
+    Here, we mark all async tests with the `session` scope, so that they are run in a
+    single event loop.
+    """
+    from pytest_asyncio import is_async_test
+
+    for async_test in (item for item in items if is_async_test(item)):
+        async_test.add_marker(pytest.mark.asyncio(scope="session"), append=False)
+
+
+# PYTEST FIXTURES
 
 
 @pytest.fixture(scope="session")
 def top_dir() -> Path:
     """Return Path instance for the repository's top (root) directory"""
+    from pathlib import Path
+
     return Path(__file__).parent.parent.resolve()
 
 
@@ -276,6 +309,8 @@ def mock_gateway_responses(
     to the database id.
 
     """
+    import json
+    import re
 
     def _mock_response(gateway: GatewayDict) -> None:
         """Add mock responses (`httpx_mock`) for `gateway`'s databases"""
