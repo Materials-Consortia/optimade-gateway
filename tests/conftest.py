@@ -183,25 +183,6 @@ def pytest_configure(config: pytest.Config):  # noqa: ARG001
     os.environ["OPTIMADE_CONFIG_FILE"] = str(cwd / "static/test_config.json")
 
 
-def pytest_collection_modifyitems(
-    session: pytest.Session,  # noqa: ARG001
-    config: pytest.Config,  # noqa: ARG001
-    items: list[pytest.Item],
-):
-    """Called after collection has been performed. May filter or re-order the items
-    in-place.
-
-    ---
-
-    Here, we mark all async tests with the `session` scope, so that they are run in a
-    single event loop.
-    """
-    from pytest_asyncio import is_async_test
-
-    for async_test in (item for item in items if is_async_test(item)):
-        async_test.add_marker(pytest.mark.asyncio(scope="session"), append=False)
-
-
 # PYTEST FIXTURES
 
 
@@ -291,7 +272,7 @@ async def random_gateway() -> dict:
 
 @pytest.fixture(autouse=True)
 async def _reset_db_after(top_dir: Path) -> None:
-    """Reset MongoDB with original test data after the test has run"""
+    """Reset MongoDB with original test data before the test has run"""
     try:
         yield
     finally:
