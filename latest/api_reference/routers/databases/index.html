@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.22">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.732c4fb1.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -1485,8 +1485,8 @@
 
 
 <a id="optimade_gateway.routers.databases"></a>
-  <div class="doc doc-contents first">
-  
+    <div class="doc doc-contents first">
+
       <p>/databases/*</p>
 <p>This file describes the router for:</p>
 <div class="highlight"><pre><span></span><code>/databases/{id}
@@ -1496,10 +1496,9 @@
 <p>One can register a new database (by using <code>POST /databases</code>) or look through the
 available databases (by using <code>GET /databases</code>) using standard OPTIMADE filtering.</p>
 
-  
+
 
   <div class="doc doc-children">
-
 
 
 
@@ -1512,10 +1511,9 @@ available databases (by using <code>GET /databases</code>) using standard OPTIMA
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade_gateway.routers.databases.get_database" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_database</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">database_id</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">get_database</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">database_id</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -1523,16 +1521,16 @@ available databases (by using <code>GET /databases</code>) using standard OPTIMA
 <a href="#optimade_gateway.routers.databases.get_database" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p><code>GET /databases/{database ID}</code></p>
 <p>Return a single
 <a href="https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResource"><code>LinksResource</code></a>
 representing the database resource object with <code>id={database ID}</code>.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/routers/databases.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">100</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/routers/databases.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">100</span>
 <span class="normal">101</span>
 <span class="normal">102</span>
 <span class="normal">103</span>
@@ -1626,19 +1624,17 @@ representing the database resource object with <code>id={database ID}</code>.</p
         <span class="p">),</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade_gateway.routers.databases.get_databases" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_databases</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">get_databases</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -1646,14 +1642,14 @@ representing the database resource object with <code>id={database ID}</code>.</p
 <a href="#optimade_gateway.routers.databases.get_databases" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p><code>GET /databases</code></p>
 <p>Return overview of all (active) databases.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/routers/databases.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">40</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/routers/databases.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">40</span>
 <span class="normal">41</span>
 <span class="normal">42</span>
 <span class="normal">43</span>
@@ -1699,19 +1695,17 @@ representing the database resource object with <code>id={database ID}</code>.</p
         <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade_gateway.routers.databases.post_databases" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">post_databases</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">database</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">post_databases</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">database</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -1719,16 +1713,16 @@ representing the database resource object with <code>id={database ID}</code>.</p
 <a href="#optimade_gateway.routers.databases.post_databases" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p><code>POST /databases</code></p>
 <p>Create/Register or return an existing
 <a href="https://www.optimade.org/optimade-python-tools/api_reference/models/links/#optimade.models.links.LinksResource"><code>LinksResource</code></a>,
 representing a database resource object, according to <code>database</code>.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/routers/databases.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">65</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/routers/databases.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">65</span>
 <span class="normal">66</span>
 <span class="normal">67</span>
 <span class="normal">68</span>
@@ -1794,8 +1788,8 @@ representing a database resource object, according to <code>database</code>.</p>
         <span class="p">),</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -1803,7 +1797,7 @@ representing a database resource object, according to <code>database</code>.</p>
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 
@@ -1885,7 +1879,7 @@ representing a database resource object, according to <code>database</code>.</p>
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.5cfa9459.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>

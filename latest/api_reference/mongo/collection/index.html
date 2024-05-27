@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.22">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.732c4fb1.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -1659,14 +1659,14 @@
 
 
 <a id="optimade_gateway.mongo.collection"></a>
-  <div class="doc doc-contents first">
-  
+    <div class="doc doc-contents first">
+
       <p>MongoDB collection for entry-endpoint resources.</p>
 <p>The <a class="autorefs autorefs-internal" href="#optimade_gateway.mongo.collection.AsyncMongoCollection"><code>AsyncMongoCollection</code></a>
 represents an asynchronous version of the equivalent MongoDB collection in <code>optimade</code>:
 <a href="https://www.optimade.org/optimade-python-tools/api_reference/server/entry_collections/mongo/#optimade.server.entry_collections.mongo.MongoCollection"><code>MongoCollection</code></a>.</p>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -1682,24 +1682,24 @@ represents an asynchronous version of the equivalent MongoDB collection in <code
 
 
 <h2 id="optimade_gateway.mongo.collection.AsyncMongoCollection" class="doc doc-heading">
-          <code>AsyncMongoCollection</code>
+            <code>AsyncMongoCollection</code>
 
 
 <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><span title="optimade.server.entry_collections.entry_collections.EntryCollection">EntryCollection</span></code></p>
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="optimade.server.entry_collections.entry_collections.EntryCollection">EntryCollection</span></code></p>
 
-  
+
       <p>MongoDB Collection for use with <code>asyncio</code></p>
 <p>The asynchronicity is implemented using <a href="https://motor.readthedocs.io"><code>motor</code></a> and
 <a href="https://asyncio.readthedocs.io/"><code>asyncio</code></a>.</p>
 
-            <details class="quote">
-              <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 40</span>
+              <details class="quote">
+                <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 40</span>
 <span class="normal"> 41</span>
 <span class="normal"> 42</span>
 <span class="normal"> 43</span>
@@ -2719,12 +2719,11 @@ represents an asynchronous version of the equivalent MongoDB collection in <code
 
         <span class="k">return</span> <span class="n">criteria</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
-
 
 
 
@@ -2737,79 +2736,77 @@ represents an asynchronous version of the equivalent MongoDB collection in <code
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">resource_cls</span><span class="p">,</span> <span class="n">resource_mapper</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">resource_cls</span><span class="p">,</span> <span class="n">resource_mapper</span><span class="p">)</span></code>
 
 <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.__init__" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Initialize the AsyncMongoCollection for the given parameters.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>name</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The name of the collection.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>resource_cls</code></td>
-          <td>
-                <code><span title="optimade.models.EntryResource">EntryResource</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The <code>EntryResource</code> model that is stored by the collection.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>resource_mapper</code></td>
-          <td>
-                <code><span title="optimade.server.mappers.entries.BaseResourceMapper">BaseResourceMapper</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A resource mapper object that handles aliases and format
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>name</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The name of the collection.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>resource_cls</code></td>
+            <td>
+                  <code><span title="optimade.models.EntryResource">EntryResource</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The <code>EntryResource</code> model that is stored by the collection.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>resource_mapper</code></td>
+            <td>
+                  <code><span title="optimade.server.mappers.entries.BaseResourceMapper">BaseResourceMapper</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A resource mapper object that handles aliases and format
 changes between deserialization and response.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">47</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">47</span>
 <span class="normal">48</span>
 <span class="normal">49</span>
 <span class="normal">50</span>
@@ -2871,19 +2868,17 @@ changes between deserialization and response.</p>
     <span class="bp">self</span><span class="o">.</span><span class="n">_check_aliases</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">all_aliases</span><span class="p">())</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_check_aliases</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">all_length_aliases</span><span class="p">())</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection.acount" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">acount</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">acount</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -2891,87 +2886,85 @@ changes between deserialization and response.</p>
 <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.acount" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Count documents in Collection.</p>
 <p>This is the asynchronous version of the parent class method named <code>count()</code>.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>params</code></td>
-          <td>
-                <code>None | <span title="optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</span> | <span title="optimade.server.query_params.SingleEntryQueryParams">SingleEntryQueryParams</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>URL query parameters, either from a general entry endpoint or a
-single-entry endpoint.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>**kwargs</code></td>
-          <td>
-                <code><span title="typing.Any">Any</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Query parameters as keyword arguments. Valid keys will be passed
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>params</code></td>
+            <td>
+                  <code>None | <span title="optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</span> | <span title="optimade.server.query_params.SingleEntryQueryParams">SingleEntryQueryParams</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>URL query parameters, either from a general entry endpoint or a
+single-entry endpoint.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>**kwargs</code></td>
+            <td>
+                  <code><span title="typing.Any">Any</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Query parameters as keyword arguments. Valid keys will be passed
 to the
 <a href="https://motor.readthedocs.io/en/stable/api-asyncio/asyncio_motor_collection.html#motor.motor_asyncio.AsyncIOMotorCollection.count_documents"><code>AsyncIOMotorCollection.count_documents</code></a>
 method.</p>
-            </div>
-          </td>
-          <td>
-                <code>{}</code>
-          </td>
+              </div>
+            </td>
+            <td>
+                  <code>{}</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+<th>Name</th>          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
-
-
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-<th>Name</th>        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-<td><code>int</code></td>          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The number of entries matching the query specified by the keyword
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+<td><code>int</code></td>            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The number of entries matching the query specified by the keyword
 arguments.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">132</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">132</span>
 <span class="normal">133</span>
 <span class="normal">134</span>
 <span class="normal">135</span>
@@ -3061,19 +3054,17 @@ arguments.</p>
 
     <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">count_documents</span><span class="p">(</span><span class="o">**</span><span class="n">criteria</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection.afind" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">afind</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">criteria</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">afind</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">criteria</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -3081,105 +3072,103 @@ arguments.</p>
 <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.afind" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Perform the query on the underlying MongoDB Collection, handling projection
 and pagination of the output.</p>
 <p>This is the asynchronous version of the parent class method named <code>count()</code>.</p>
 <p>Either provide <code>params</code> or <code>criteria</code>. Not both, but at least one.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>params</code></td>
-          <td>
-                <code>None | <span title="optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</span> | <span title="optimade.server.query_params.SingleEntryQueryParams">SingleEntryQueryParams</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>URL query parameters, either from a general entry endpoint or a
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>params</code></td>
+            <td>
+                  <code>None | <span title="optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</span> | <span title="optimade.server.query_params.SingleEntryQueryParams">SingleEntryQueryParams</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>URL query parameters, either from a general entry endpoint or a
 single-entry endpoint.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>criteria</code></td>
-          <td>
-                <code>dict[str, <span title="typing.Any">Any</span>] | None</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Already handled/parsed URL query parameters.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>criteria</code></td>
+            <td>
+                  <code>dict[str, <span title="typing.Any">Any</span>] | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Already handled/parsed URL query parameters.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>list[<span title="optimade.models.EntryResource">EntryResource</span>] | <span title="optimade.models.EntryResource">EntryResource</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A list of entry resource objects, how much data was returned for the query,</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>whether more data is available with pagination, and fields (excluded,</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code>bool</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>included).</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>list[<span title="optimade.models.EntryResource">EntryResource</span>] | <span title="optimade.models.EntryResource">EntryResource</span> | None</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A list of entry resource objects, how much data was returned for the query,</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>whether more data is available with pagination, and fields (excluded,</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td>
-                <code>bool</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>included).</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">207</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">207</span>
 <span class="normal">208</span>
 <span class="normal">209</span>
 <span class="normal">210</span>
@@ -3381,19 +3370,17 @@ single-entry endpoint.</p>
         <span class="n">include_fields</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection.ahandle_query_params" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">ahandle_query_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">ahandle_query_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -3401,12 +3388,13 @@ single-entry endpoint.</p>
 <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.ahandle_query_params" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Parse and interpret the backend-agnostic query parameter models into a
 dictionary that can be used by the specific backend.</p>
 <p>This is the asynchronous version of the parent class method named
 <code>handle_query_params()</code>.</p>
+
 
 <details class="note" open>
   <summary>Note</summary>
@@ -3414,97 +3402,94 @@ dictionary that can be used by the specific backend.</p>
 which will need modification for modified for other backends.</p>
 </details>
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>params</code></td>
-          <td>
-                <code><span title="optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</span> | <span title="optimade.server.query_params.SingleEntryQueryParams">SingleEntryQueryParams</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The initialized query parameter model from the server.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>params</code></td>
+            <td>
+                  <code><span title="optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</span> | <span title="optimade.server.query_params.SingleEntryQueryParams">SingleEntryQueryParams</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The initialized query parameter model from the server.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Raises:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>Forbidden</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If too large of a page limit is provided.</p>
-            </div>
-          </td>
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-        <tr class="doc-section-item">
-          <td>
-                <code><span title="optimade.server.exceptions.BadRequest">BadRequest</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If an invalid request is made, e.g., with incorrect fields or
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>Forbidden</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If too large of a page limit is provided.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="optimade.server.exceptions.BadRequest">BadRequest</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If an invalid request is made, e.g., with incorrect fields or
 response format.</p>
-            </div>
-          </td>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>dict[str, <span title="typing.Any">Any</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A dictionary representation of the query parameters.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>dict[str, <span title="typing.Any">Any</span>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A dictionary representation of the query parameters.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">338</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">338</span>
 <span class="normal">339</span>
 <span class="normal">340</span>
 <span class="normal">341</span>
@@ -3556,19 +3541,17 @@ response format.</p>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">handle_query_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection.ainsert" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">ainsert</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">ainsert</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -3576,44 +3559,43 @@ response format.</p>
 <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.ainsert" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Add the given entries to the underlying database.</p>
 <p>This is the asynchronous version of the parent class method named <code>insert()</code>.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>data</code></td>
-          <td>
-                <code>list[<span title="optimade.models.EntryResource">EntryResource</span>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The entry resource objects to add to the database.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>data</code></td>
+            <td>
+                  <code>list[<span title="optimade.models.EntryResource">EntryResource</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The entry resource objects to add to the database.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">113</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">113</span>
 <span class="normal">114</span>
 <span class="normal">115</span>
 <span class="normal">116</span>
@@ -3633,19 +3615,17 @@ response format.</p>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">insert_many</span><span class="p">(</span><span class="k">await</span> <span class="n">clean_python_types</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection.create_one" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">create_one</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">create_one</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -3653,70 +3633,68 @@ response format.</p>
 <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.create_one" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Create a new document in the MongoDB collection based on query parameters.</p>
 <p>Update the newly created document with an <code>"id"</code> field.
 The value will be the string representation of the <code>"_id"</code> field.
 This will only be done if <code>"id"</code> is not already present in <code>resource</code>.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>resource</code></td>
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.EntryResourceCreate" href="../../models/resources/#optimade_gateway.models.resources.EntryResourceCreate">EntryResourceCreate</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The resource to be created.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>resource</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.EntryResourceCreate" href="../../models/resources/#optimade_gateway.models.resources.EntryResourceCreate">EntryResourceCreate</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The resource to be created.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code><span title="optimade.models.EntryResource">EntryResource</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The newly created document as a pydantic model entry resource.</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="optimade.models.EntryResource">EntryResource</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The newly created document as a pydantic model entry resource.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">469</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">469</span>
 <span class="normal">470</span>
 <span class="normal">471</span>
 <span class="normal">472</span>
@@ -3788,19 +3766,17 @@ This will only be done if <code>"id"</code> is not already present in <code>reso
         <span class="p">)</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection.exists" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">exists</span><span class="p">(</span><span class="n">entry_id</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">exists</span><span class="p">(</span><span class="n">entry_id</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -3808,43 +3784,42 @@ This will only be done if <code>"id"</code> is not already present in <code>reso
 <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.exists" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Assert whether entry_id exists in the collection (value of <code>"id"</code>)</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>entry_id</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The <code>"id"</code> value of the entry.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>entry_id</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The <code>"id"</code> value of the entry.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">506</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">506</span>
 <span class="normal">507</span>
 <span class="normal">508</span>
 <span class="normal">509</span>
@@ -3860,24 +3835,22 @@ This will only be done if <code>"id"</code> is not already present in <code>reso
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">count_documents</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">entry_id</span><span class="p">}))</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection.find" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="p">)</span></code>
 
 <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.find" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Fetches results and indicates if more data is available.</p>
 <p>Also gives the total number of data available in the absence of <code>page_limit</code>.
 See
@@ -3885,82 +3858,80 @@ See
 for more information.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>params</code></td>
-          <td>
-                <code><span title="optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</span> | <span title="optimade.server.query_params.SingleEntryQueryParams">SingleEntryQueryParams</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Entry listing URL query params.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>params</code></td>
+            <td>
+                  <code><span title="optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</span> | <span title="optimade.server.query_params.SingleEntryQueryParams">SingleEntryQueryParams</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Entry listing URL query params.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>list[<span title="optimade.models.EntryResource">EntryResource</span>] | <span title="optimade.models.EntryResource">EntryResource</span> | None</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A tuple of various relevant values:</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-        <tr class="doc-section-item">
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>(<code>results</code>, <code>data_returned</code>, <code>more_data_available</code>, <code>exclude_fields</code>,</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td>
-                <code>bool</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p><code>include_fields</code>).</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>list[<span title="optimade.models.EntryResource">EntryResource</span>] | <span title="optimade.models.EntryResource">EntryResource</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A tuple of various relevant values:</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>(<code>results</code>, <code>data_returned</code>, <code>more_data_available</code>, <code>exclude_fields</code>,</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code>bool</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>include_fields</code>).</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">178</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">178</span>
 <span class="normal">179</span>
 <span class="normal">180</span>
 <span class="normal">181</span>
@@ -4016,19 +3987,17 @@ for more information.</p>
         <span class="s2">&quot;criteria: Optional[Dict[str, Any]])`.&quot;</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection.get_multiple" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_multiple</span><span class="p">(</span><span class="o">**</span><span class="n">criteria</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">get_multiple</span><span class="p">(</span><span class="o">**</span><span class="n">criteria</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -4036,9 +4005,10 @@ for more information.</p>
 <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.get_multiple" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Get a list of resources based on criteria</p>
+
 
 <details class="warning" open>
   <summary>Warning</summary>
@@ -4046,62 +4016,60 @@ for more information.</p>
 but is rather a utility function to easily retrieve a list of resources.</p>
 </details>
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>**criteria</code></td>
-          <td>
-                <code><span title="typing.Any">Any</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Already handled/parsed URL query parameters.</p>
-            </div>
-          </td>
-          <td>
-                <code>{}</code>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>**criteria</code></td>
+            <td>
+                  <code><span title="typing.Any">Any</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Already handled/parsed URL query parameters.</p>
+              </div>
+            </td>
+            <td>
+                  <code>{}</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>list[<span title="optimade.models.EntryResource">EntryResource</span>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A list of resources from the MongoDB (mapped to pydantic models).</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>list[<span title="optimade.models.EntryResource">EntryResource</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A list of resources from the MongoDB (mapped to pydantic models).</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">447</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">447</span>
 <span class="normal">448</span>
 <span class="normal">449</span>
 <span class="normal">450</span>
@@ -4143,19 +4111,17 @@ but is rather a utility function to easily retrieve a list of resources.</p>
 
     <span class="k">return</span> <span class="n">results</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection.get_one" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_one</span><span class="p">(</span><span class="o">**</span><span class="n">criteria</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">get_one</span><span class="p">(</span><span class="o">**</span><span class="n">criteria</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -4163,9 +4129,10 @@ but is rather a utility function to easily retrieve a list of resources.</p>
 <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.get_one" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Get one resource based on criteria</p>
+
 
 <details class="warning" open>
   <summary>Warning</summary>
@@ -4173,62 +4140,60 @@ but is rather a utility function to easily retrieve a list of resources.</p>
 but is rather a utility function to easily retrieve a single resource.</p>
 </details>
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>**criteria</code></td>
-          <td>
-                <code><span title="typing.Any">Any</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Already handled/parsed URL query parameters.</p>
-            </div>
-          </td>
-          <td>
-                <code>{}</code>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>**criteria</code></td>
+            <td>
+                  <code><span title="typing.Any">Any</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Already handled/parsed URL query parameters.</p>
+              </div>
+            </td>
+            <td>
+                  <code>{}</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code><span title="optimade.models.EntryResource">EntryResource</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A single resource from the MongoDB (mapped to pydantic models).</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="optimade.models.EntryResource">EntryResource</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A single resource from the MongoDB (mapped to pydantic models).</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">425</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">425</span>
 <span class="normal">426</span>
 <span class="normal">427</span>
 <span class="normal">428</span>
@@ -4270,26 +4235,25 @@ but is rather a utility function to easily retrieve a single resource.</p>
         <span class="p">)</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade_gateway.mongo.collection.AsyncMongoCollection.handle_query_params" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">handle_query_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">handle_query_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span></code>
 
 <a href="#optimade_gateway.mongo.collection.AsyncMongoCollection.handle_query_params" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Parse and interpret the backend-agnostic query parameter models into a
 dictionary that can be used by the specific backend.</p>
+
 
 <details class="note" open>
   <summary>Note</summary>
@@ -4297,97 +4261,94 @@ dictionary that can be used by the specific backend.</p>
 which will need modification for modified for other backends.</p>
 </details>
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>params</code></td>
-          <td>
-                <code><span title="optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</span> | <span title="optimade.server.query_params.SingleEntryQueryParams">SingleEntryQueryParams</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The initialized query parameter model from the server.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>params</code></td>
+            <td>
+                  <code><span title="optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</span> | <span title="optimade.server.query_params.SingleEntryQueryParams">SingleEntryQueryParams</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The initialized query parameter model from the server.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Raises:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>Forbidden</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If too large of a page limit is provided.</p>
-            </div>
-          </td>
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-        <tr class="doc-section-item">
-          <td>
-                <code><span title="optimade.server.exceptions.BadRequest">BadRequest</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If an invalid request is made, e.g., with incorrect fields
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>Forbidden</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If too large of a page limit is provided.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="optimade.server.exceptions.BadRequest">BadRequest</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If an invalid request is made, e.g., with incorrect fields
 or response format.</p>
-            </div>
-          </td>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>dict[str, <span title="typing.Any">Any</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A dictionary representation of the query parameters.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>dict[str, <span title="typing.Any">Any</span>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A dictionary representation of the query parameters.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">309</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/mongo/collection.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">309</span>
 <span class="normal">310</span>
 <span class="normal">311</span>
 <span class="normal">312</span>
@@ -4443,8 +4404,8 @@ or response format.</p>
         <span class="s2">&quot;SingleEntryQueryParams])`.&quot;</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -4452,8 +4413,7 @@ or response format.</p>
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -4462,7 +4422,7 @@ or response format.</p>
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 
@@ -4544,7 +4504,7 @@ or response format.</p>
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.5cfa9459.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>

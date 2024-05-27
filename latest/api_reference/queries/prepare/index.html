@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.22">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.732c4fb1.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -1467,14 +1467,13 @@
 
 
 <a id="optimade_gateway.queries.prepare"></a>
-  <div class="doc doc-contents first">
-  
+    <div class="doc doc-contents first">
+
       <p>Prepare OPTIMADE queries.</p>
 
-  
+
 
   <div class="doc doc-children">
-
 
 
 
@@ -1487,10 +1486,9 @@
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade_gateway.queries.prepare.get_query_params" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_query_params</span><span class="p">(</span><span class="n">query_parameters</span><span class="p">,</span> <span class="n">database_id</span><span class="p">,</span> <span class="n">filter_mapping</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">get_query_params</span><span class="p">(</span><span class="n">query_parameters</span><span class="p">,</span> <span class="n">database_id</span><span class="p">,</span> <span class="n">filter_mapping</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -1498,13 +1496,13 @@
 <a href="#optimade_gateway.queries.prepare.get_query_params" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Construct the parsed URL query parameters</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/queries/prepare.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">84</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/queries/prepare.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">84</span>
 <span class="normal">85</span>
 <span class="normal">86</span>
 <span class="normal">87</span>
@@ -1528,19 +1526,17 @@
         <span class="n">query_params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;filter&quot;</span><span class="p">:</span> <span class="n">filter_mapping</span><span class="p">[</span><span class="n">database_id</span><span class="p">]})</span>
     <span class="k">return</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlencode</span><span class="p">(</span><span class="n">query_params</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade_gateway.queries.prepare.prepare_query_filter" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">prepare_query_filter</span><span class="p">(</span><span class="n">database_ids</span><span class="p">,</span> <span class="n">filter_query</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">prepare_query_filter</span><span class="p">(</span><span class="n">database_ids</span><span class="p">,</span> <span class="n">filter_query</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -1548,86 +1544,84 @@
 <a href="#optimade_gateway.queries.prepare.prepare_query_filter" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Update the query parameter <code>filter</code> value to be database-specific</p>
 <p>This is needed due to the served change of <code>id</code> values.
 If someone searches for a gateway-changed <code>id</code>, it needs to be reverted to be
 database-specific.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>database_ids</code></td>
-          <td>
-                <code>list[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>List of the databases to create updated filter values for.
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>database_ids</code></td>
+            <td>
+                  <code>list[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>List of the databases to create updated filter values for.
 These values are part of the gateway-changed <code>id</code> values and are essential.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>filter_query</code></td>
-          <td>
-                <code>str | None</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The submitted <code>filter</code> query parameter value. Can be <code>None</code> if not
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>filter_query</code></td>
+            <td>
+                  <code>str | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The submitted <code>filter</code> query parameter value. Can be <code>None</code> if not
 supplied.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="collections.abc.Mapping">Mapping</span>[str, str | None]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A mapping for database IDs to database-specific <code>filter</code> query parameter values.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code><span title="collections.abc.Mapping">Mapping</span>[str, str | None]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A mapping for database IDs to database-specific <code>filter</code> query parameter values.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/queries/prepare.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">19</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/queries/prepare.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">19</span>
 <span class="normal">20</span>
 <span class="normal">21</span>
 <span class="normal">22</span>
@@ -1753,8 +1747,8 @@ supplied.</p>
             <span class="p">)</span>
     <span class="k">return</span> <span class="n">updated_filter</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -1762,7 +1756,7 @@ supplied.</p>
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 
@@ -1844,7 +1838,7 @@ supplied.</p>
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.5cfa9459.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>

@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.22">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.732c4fb1.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -1449,14 +1449,13 @@
 
 
 <a id="optimade_gateway.queries.process"></a>
-  <div class="doc doc-contents first">
-  
+    <div class="doc doc-contents first">
+
       <p>Process performed OPTIMADE queries.</p>
 
-  
+
 
   <div class="doc doc-children">
-
 
 
 
@@ -1469,10 +1468,9 @@
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade_gateway.queries.process.process_db_response" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">process_db_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">database_id</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">gateway</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">process_db_response</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">database_id</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">gateway</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -1480,8 +1478,8 @@
 <a href="#optimade_gateway.queries.process.process_db_response" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Process an OPTIMADE database response.</p>
 <p>The passed <code>query</code> will be updated with the top-level <code>meta</code> information:
 <code>data_available</code>, <code>data_returned</code>, and <code>more_data_available</code>.</p>
@@ -1489,105 +1487,103 @@
 be either an empty list or <code>None</code>.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>response</code></td>
-          <td>
-                <code><span title="optimade.models.ErrorResponse">ErrorResponse</span> | <span title="optimade.models.EntryResponseMany">EntryResponseMany</span> | <span title="optimade.models.EntryResponseOne">EntryResponseOne</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The OPTIMADE database response to be processed.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>database_id</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The database's <code>id</code> under which the returned resources or errors
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>response</code></td>
+            <td>
+                  <code><span title="optimade.models.ErrorResponse">ErrorResponse</span> | <span title="optimade.models.EntryResponseMany">EntryResponseMany</span> | <span title="optimade.models.EntryResponseOne">EntryResponseOne</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The OPTIMADE database response to be processed.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>database_id</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The database's <code>id</code> under which the returned resources or errors
 will be delivered.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>query</code></td>
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.QueryResource" href="../../models/queries/#optimade_gateway.models.queries.QueryResource">QueryResource</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A resource representing the performed query.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>gateway</code></td>
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.GatewayResource" href="../../models/gateways/#optimade_gateway.models.gateways.GatewayResource">GatewayResource</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A resource representing the gateway that was queried.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>query</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.QueryResource" href="../../models/queries/#optimade_gateway.models.queries.QueryResource">QueryResource</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A resource representing the performed query.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>gateway</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.GatewayResource" href="../../models/gateways/#optimade_gateway.models.gateways.GatewayResource">GatewayResource</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A resource representing the gateway that was queried.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>list[<span title="optimade.models.EntryResource">EntryResource</span>] | list[dict[str, <span title="typing.Any">Any</span>]] | <span title="optimade.models.EntryResource">EntryResource</span> | dict[str, <span title="typing.Any">Any</span>] | None</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The response's <code>data</code>.</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>list[<span title="optimade.models.EntryResource">EntryResource</span>] | list[dict[str, <span title="typing.Any">Any</span>]] | <span title="optimade.models.EntryResource">EntryResource</span> | dict[str, <span title="typing.Any">Any</span>] | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The response's <code>data</code>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/queries/process.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 25</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/queries/process.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 25</span>
 <span class="normal"> 26</span>
 <span class="normal"> 27</span>
 <span class="normal"> 28</span>
@@ -1803,8 +1799,8 @@ will be delivered.</p>
 
     <span class="k">return</span> <span class="n">results</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -1812,7 +1808,7 @@ will be delivered.</p>
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 
@@ -1894,7 +1890,7 @@ will be delivered.</p>
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.5cfa9459.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>

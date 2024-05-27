@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.22">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.732c4fb1.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -1449,11 +1449,11 @@
 
 
 <a id="optimade_gateway.queries.params"></a>
-  <div class="doc doc-contents first">
-  
+    <div class="doc doc-contents first">
+
       <p>URL query parameters.</p>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -1469,15 +1469,15 @@
 
 
 <h2 id="optimade_gateway.queries.params.SearchQueryParams" class="doc doc-heading">
-          <code>SearchQueryParams</code>
+            <code>SearchQueryParams</code>
 
 
 <a href="#optimade_gateway.queries.params.SearchQueryParams" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
+    <div class="doc doc-contents ">
 
-  
+
       <p>URL query parameters for <code>GET /search</code></p>
 <p>This is an extension of the
 <a href="https://www.optimade.org/optimade-python-tools/api_reference/server/query_params/#optimade.server.query_params.EntryListingQueryParams"><code>EntryListingQueryParams</code></a>
@@ -1486,94 +1486,93 @@ parameters.</p>
 <p>The extra query parameters are as follows.</p>
 
 
-
-  <p><span class="doc-section-title">Attributes:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade_gateway.queries.params.SearchQueryParams.database_ids">database_ids</span></code></td>
-          <td>
-                <code>set[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>List of possible database IDs that are already known by
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade_gateway.queries.params.SearchQueryParams.database_ids">database_ids</span></code></td>
+            <td>
+                  <code>set[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>List of possible database IDs that are already known by
 the gateway. To be known they need to be registered with the gateway
 (currently not possible).</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade_gateway.queries.params.SearchQueryParams.optimade_urls">optimade_urls</span></code></td>
-          <td>
-                <code>set[<span title="pydantic.AnyUrl">AnyUrl</span>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A list of OPTIMADE base URLs. If a versioned base
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade_gateway.queries.params.SearchQueryParams.optimade_urls">optimade_urls</span></code></td>
+            <td>
+                  <code>set[<span title="pydantic.AnyUrl">AnyUrl</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A list of OPTIMADE base URLs. If a versioned base
 URL is supplied it will be used as is, as long as it represents a supported
 version. If an un-versioned base URL, standard version negotiation will be
 conducted to get the versioned base URL, which will be used as long as it
 represents a supported version.</p>
 <p><strong>Example</strong>: <code>http://example.org/optimade/v1/search?optimade_urls="https://example.org/optimade_db/v1","https://optimade.herokuapp.com"</code></p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade_gateway.queries.params.SearchQueryParams.endpoint">endpoint</span></code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The entry endpoint queried. According to the OPTIMADE
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade_gateway.queries.params.SearchQueryParams.endpoint">endpoint</span></code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The entry endpoint queried. According to the OPTIMADE
 specification, this is the same as the resource's type.</p>
 <p><strong>Example</strong>: <code>structures</code></p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade_gateway.queries.params.SearchQueryParams.timeout">timeout</span></code></td>
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Timeout time (in seconds) to wait for a query to finish before
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade_gateway.queries.params.SearchQueryParams.timeout">timeout</span></code></td>
+            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Timeout time (in seconds) to wait for a query to finish before
 redirecting (<em>after</em> starting the query). Note, if the query has not
 finished after the timeout time, a redirection will still be performed, but
 to a zero-results page, which can be refreshed to get the finished query
 (once it has finished).</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade_gateway.queries.params.SearchQueryParams.as_optimade">as_optimade</span></code></td>
-          <td>
-                <code>bool</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Return the response as a standard OPTIMADE entry listing
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade_gateway.queries.params.SearchQueryParams.as_optimade">as_optimade</span></code></td>
+            <td>
+                  <code>bool</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Return the response as a standard OPTIMADE entry listing
 endpoint response. Otherwise, the response will be based on the
 <a class="autorefs autorefs-internal" href="../../models/responses/#optimade_gateway.models.responses.QueriesResponseSingle"><code>QueriesResponseSingle</code></a>
 model.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-            <details class="quote">
-              <summary>Source code in <code>optimade_gateway/queries/params.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  9</span>
+              <details class="quote">
+                <summary>Source code in <code>optimade_gateway/queries/params.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  9</span>
 <span class="normal"> 10</span>
 <span class="normal"> 11</span>
 <span class="normal"> 12</span>
@@ -1781,9 +1780,9 @@ model.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">as_optimade</span> <span class="o">=</span> <span class="n">as_optimade</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -1799,8 +1798,7 @@ model.</p>
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -1809,7 +1807,7 @@ model.</p>
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 
@@ -1891,7 +1889,7 @@ model.</p>
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.5cfa9459.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>

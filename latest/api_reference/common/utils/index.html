@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.22">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.732c4fb1.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -1467,15 +1467,14 @@
 
 
 <a id="optimade_gateway.common.utils"></a>
-  <div class="doc doc-contents first">
-  
+    <div class="doc doc-contents first">
+
       <p>Common utility functions.</p>
 <p>These functions may be used in general throughout the OPTIMADE Gateway Python code.</p>
 
-  
+
 
   <div class="doc doc-children">
-
 
 
 
@@ -1488,10 +1487,9 @@
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade_gateway.common.utils.clean_python_types" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">clean_python_types</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">dump_kwargs</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">clean_python_types</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">dump_kwargs</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -1499,16 +1497,16 @@
 <a href="#optimade_gateway.common.utils.clean_python_types" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Turn any types into MongoDB-friendly Python types.</p>
 <p>Use <code>model_dump()</code> method for Pydantic models.
 Use <code>value</code> property for Enums.
 Turn tuples and sets into lists.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/common/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">18</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/common/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">18</span>
 <span class="normal">19</span>
 <span class="normal">20</span>
 <span class="normal">21</span>
@@ -1580,24 +1578,22 @@ Turn tuples and sets into lists.</p>
     <span class="c1"># Unknown or other basic type, e.g., str, int, etc.</span>
     <span class="k">return</span> <span class="n">data</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade_gateway.common.utils.get_resource_attribute" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_resource_attribute</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">disambiguate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">get_resource_attribute</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">disambiguate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
 <a href="#optimade_gateway.common.utils.get_resource_attribute" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Return a resource's field's value</p>
 <p>Get the field value no matter if the resource is a pydantic model or a Python
 dictionary.</p>
@@ -1611,107 +1607,105 @@ it can be either a string, a
 model or a dictionary resembling the <code>Link</code> model.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>resource</code></td>
-          <td>
-                <code><span title="pydantic.BaseModel">BaseModel</span> | dict[str, <span title="typing.Any">Any</span>] | None</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The resource, from which to get the field value.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>field</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The resource field. This can be a dot-separated nested field, e.g.,
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>resource</code></td>
+            <td>
+                  <code><span title="pydantic.BaseModel">BaseModel</span> | dict[str, <span title="typing.Any">Any</span>] | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The resource, from which to get the field value.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>field</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The resource field. This can be a dot-separated nested field, e.g.,
 <code>"attributes.base_url"</code>.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>default</code></td>
-          <td>
-                <code><span title="typing.Any">Any</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The default value to return if <code>field</code> does not exist.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>disambiguate</code></td>
-          <td>
-                <code>bool</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Whether or not to "shortcut" a field value.
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>default</code></td>
+            <td>
+                  <code><span title="typing.Any">Any</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The default value to return if <code>field</code> does not exist.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>disambiguate</code></td>
+            <td>
+                  <code>bool</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether or not to "shortcut" a field value.
 For example, for <code>attributes.base_url</code>, if <code>True</code>, this would return the
 string value or the value of it's <code>"href"</code> key.</p>
-            </div>
-          </td>
-          <td>
-                <code>True</code>
-          </td>
+              </div>
+            </td>
+            <td>
+                  <code>True</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="typing.Any">Any</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The resource's field's value.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code><span title="typing.Any">Any</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The resource's field's value.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/common/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 56</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/common/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 56</span>
 <span class="normal"> 57</span>
 <span class="normal"> 58</span>
 <span class="normal"> 59</span>
@@ -1837,8 +1831,8 @@ string value or the value of it's <code>"href"</code> key.</p>
 
     <span class="k">return</span> <span class="n">value</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -1846,7 +1840,7 @@ string value or the value of it's <code>"href"</code> key.</p>
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 
@@ -1928,7 +1922,7 @@ string value or the value of it's <code>"href"</code> key.</p>
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.5cfa9459.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>

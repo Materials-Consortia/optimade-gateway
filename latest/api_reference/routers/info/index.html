@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.22">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.732c4fb1.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -1485,15 +1485,15 @@
 
 
 <a id="optimade_gateway.routers.info"></a>
-  <div class="doc doc-contents first">
-  
+    <div class="doc doc-contents first">
+
       <p>/info/*</p>
 <p>This file describes the router for:</p>
 <div class="highlight"><pre><span></span><code>/info/{entry}
 </code></pre></div>
 <p>where, <code>entry</code> may be left out.</p>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -1508,8 +1508,8 @@
 
 
 <h2 id="optimade_gateway.routers.info.ENTRY_INFO_SCHEMAS" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">ENTRY_INFO_SCHEMAS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;databases&#39;</span><span class="p">:</span> <span class="n">LinksResource</span><span class="p">,</span> <span class="s1">&#39;gateways&#39;</span><span class="p">:</span> <span class="n">GatewayResource</span><span class="p">,</span> <span class="s1">&#39;queries&#39;</span><span class="p">:</span> <span class="n">QueryResource</span><span class="p">}</span></code>
-  
+            <code class="highlight language-python"><span class="n">ENTRY_INFO_SCHEMAS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;databases&#39;</span><span class="p">:</span> <span class="n">LinksResource</span><span class="p">,</span> <span class="s1">&#39;gateways&#39;</span><span class="p">:</span> <span class="n">GatewayResource</span><span class="p">,</span> <span class="s1">&#39;queries&#39;</span><span class="p">:</span> <span class="n">QueryResource</span><span class="p">}</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
   </span>
@@ -1517,23 +1517,21 @@
 <a href="#optimade_gateway.routers.info.ENTRY_INFO_SCHEMAS" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>This dictionary is used to define the <code>/info/&lt;entry_type&gt;</code> endpoints.</p>
-  </div>
+    </div>
 
 </div>
-
 
 
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade_gateway.routers.info.get_entry_info" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_entry_info</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">get_entry_info</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -1541,14 +1539,14 @@
 <a href="#optimade_gateway.routers.info.get_entry_info" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p><code>GET /info/{entry}</code></p>
 <p>Get information about the gateway service's entry-listing endpoints.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/routers/info.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 96</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/routers/info.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 96</span>
 <span class="normal"> 97</span>
 <span class="normal"> 98</span>
 <span class="normal"> 99</span>
@@ -1640,19 +1638,17 @@
         <span class="p">),</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade_gateway.routers.info.get_info" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_info</span><span class="p">(</span><span class="n">request</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">get_info</span><span class="p">(</span><span class="n">request</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -1660,14 +1656,14 @@
 <a href="#optimade_gateway.routers.info.get_info" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p><code>GET /info</code></p>
 <p>An introspective endpoint for the gateway service.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/routers/info.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">41</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/routers/info.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">41</span>
 <span class="normal">42</span>
 <span class="normal">43</span>
 <span class="normal">44</span>
@@ -1773,8 +1769,8 @@
         <span class="p">),</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -1782,7 +1778,7 @@
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 
@@ -1864,7 +1860,7 @@
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.5cfa9459.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>

@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.22">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -26,7 +26,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.732c4fb1.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -1555,11 +1555,11 @@
 
 
 <a id="optimade_gateway.routers.utils"></a>
-  <div class="doc doc-contents first">
-  
+    <div class="doc doc-contents first">
+
       <p>Utility functions for all routers.</p>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -1574,8 +1574,8 @@
 
 
 <h2 id="optimade_gateway.routers.utils.COLLECTIONS" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">COLLECTIONS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">AsyncMongoCollection</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span></code>
-  
+            <code class="highlight language-python"><span class="n">COLLECTIONS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">AsyncMongoCollection</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
   </span>
@@ -1583,23 +1583,21 @@
 <a href="#optimade_gateway.routers.utils.COLLECTIONS" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>A lazy-loaded dictionary of asynchronous MongoDB entry-endpoint collections.</p>
-  </div>
+    </div>
 
 </div>
-
 
 
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade_gateway.routers.utils.aretrieve_queryable_properties" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">aretrieve_queryable_properties</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">queryable_properties</span><span class="p">,</span> <span class="n">entry_type</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">aretrieve_queryable_properties</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">queryable_properties</span><span class="p">,</span> <span class="n">entry_type</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -1607,8 +1605,8 @@
 <a href="#optimade_gateway.routers.utils.aretrieve_queryable_properties" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Asynchronous implementation of <code>retrieve_queryable_properties()</code> from <code>optimade</code></p>
 <p>Reference to the function in the <code>optimade</code> API documentation:
 <a href="https://www.optimade.org/optimade-python-tools/api_reference/server/schemas/#optimade.server.schemas.retrieve_queryable_properties"><code>retrieve_queryable_properties()</code></a>.</p>
@@ -1617,100 +1615,98 @@ references, returning a dictionary of all the OPTIMADE-queryable properties of t
 model.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>schema</code></td>
-          <td>
-                <code>type[<span title="optimade.models.EntryResource">EntryResource</span>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The schema of the pydantic model.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>queryable_properties</code></td>
-          <td>
-                <code><span title="collections.abc.Iterable">Iterable</span>[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The list of properties to find in the schema.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>entry_type</code></td>
-          <td>
-                <code>str | None</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The entry type of the model, if any.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>schema</code></td>
+            <td>
+                  <code>type[<span title="optimade.models.EntryResource">EntryResource</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The schema of the pydantic model.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>queryable_properties</code></td>
+            <td>
+                  <code><span title="collections.abc.Iterable">Iterable</span>[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The list of properties to find in the schema.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>entry_type</code></td>
+            <td>
+                  <code>str | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The entry type of the model, if any.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code><span title="optimade.server.schemas.QueryableProperties">QueryableProperties</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A flat dictionary with properties as keys, containing the field description,</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-        <tr class="doc-section-item">
-          <td>
-                <code><span title="optimade.server.schemas.QueryableProperties">QueryableProperties</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>unit, sortability, support level, queryability and type, where provided.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="optimade.server.schemas.QueryableProperties">QueryableProperties</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A flat dictionary with properties as keys, containing the field description,</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="optimade.server.schemas.QueryableProperties">QueryableProperties</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>unit, sortability, support level, queryability and type, where provided.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 90</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 90</span>
 <span class="normal"> 91</span>
 <span class="normal"> 92</span>
 <span class="normal"> 93</span>
@@ -1768,19 +1764,17 @@ model.</p>
         <span class="n">entry_type</span><span class="o">=</span><span class="n">entry_type</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade_gateway.routers.utils.collection_factory" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">collection_factory</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">collection_factory</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -1788,105 +1782,102 @@ model.</p>
 <a href="#optimade_gateway.routers.utils.collection_factory" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Get or initiate an entry-endpoint resource collection.</p>
 <p>This factory utilizes the global dictionary
 <a class="autorefs autorefs-internal" href="#optimade_gateway.routers.utils.COLLECTIONS"><code>COLLECTIONS</code></a>.
 It lazily instantiates the collections and then caches them in the dictionary.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>name</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The configured name for the entry-endpoint resource collection.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>name</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The configured name for the entry-endpoint resource collection.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade_gateway.mongo.collection.AsyncMongoCollection" href="../../mongo/collection/#optimade_gateway.mongo.collection.AsyncMongoCollection">AsyncMongoCollection</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The OPTIMADE Gateway asynchronous implementation of the</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-        <tr class="doc-section-item">
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade_gateway.mongo.collection.AsyncMongoCollection" href="../../mongo/collection/#optimade_gateway.mongo.collection.AsyncMongoCollection">AsyncMongoCollection</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p><a href="https://www.optimade.org/optimade-python-tools/api_reference/server/entry_collections/mongo/#optimade.server.entry_collections.mongo.MongoCollection"><code>MongoCollection</code></a>.</p>
-            </div>
-          </td>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="optimade_gateway.mongo.collection.AsyncMongoCollection" href="../../mongo/collection/#optimade_gateway.mongo.collection.AsyncMongoCollection">AsyncMongoCollection</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The OPTIMADE Gateway asynchronous implementation of the</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="optimade_gateway.mongo.collection.AsyncMongoCollection" href="../../mongo/collection/#optimade_gateway.mongo.collection.AsyncMongoCollection">AsyncMongoCollection</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><a href="https://www.optimade.org/optimade-python-tools/api_reference/server/entry_collections/mongo/#optimade.server.entry_collections.mongo.MongoCollection"><code>MongoCollection</code></a>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
-
-
-
-  <p><span class="doc-section-title">Raises:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>ValueError</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If the supplied <code>name</code> is not one of the configured valid collection
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>ValueError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If the supplied <code>name</code> is not one of the configured valid collection
 names.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">316</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">316</span>
 <span class="normal">317</span>
 <span class="normal">318</span>
 <span class="normal">319</span>
@@ -1986,19 +1977,17 @@ names.</p>
 
     <span class="k">return</span> <span class="n">COLLECTIONS</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade_gateway.routers.utils.get_entries" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_entries</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">response_cls</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">get_entries</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">response_cls</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -2006,13 +1995,13 @@ names.</p>
 <a href="#optimade_gateway.routers.utils.get_entries" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Generalized <code>/{entries}</code> endpoint getter</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">48</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">48</span>
 <span class="normal">49</span>
 <span class="normal">50</span>
 <span class="normal">51</span>
@@ -2092,19 +2081,17 @@ names.</p>
         <span class="p">),</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade_gateway.routers.utils.get_valid_resource" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_valid_resource</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">entry_id</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">get_valid_resource</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">entry_id</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -2112,13 +2099,13 @@ names.</p>
 <a href="#optimade_gateway.routers.utils.get_valid_resource" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Validate and retrieve a resource</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">129</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">129</span>
 <span class="normal">130</span>
 <span class="normal">131</span>
 <span class="normal">132</span>
@@ -2130,19 +2117,17 @@ names.</p>
     <span class="k">await</span> <span class="n">validate_resource</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">entry_id</span><span class="p">)</span>
     <span class="k">return</span> <span class="k">await</span> <span class="n">collection</span><span class="o">.</span><span class="n">get_one</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">entry_id</span><span class="p">})</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade_gateway.routers.utils.resource_factory" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">resource_factory</span><span class="p">(</span><span class="n">create_resource</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">resource_factory</span><span class="p">(</span><span class="n">create_resource</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -2150,8 +2135,8 @@ names.</p>
 <a href="#optimade_gateway.routers.utils.resource_factory" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Get or create a resource</p>
 <p>Currently supported resources:</p>
 <ul>
@@ -2205,53 +2190,51 @@ resource model.</p>
 </div>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>create_resource</code></td>
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.DatabaseCreate" href="../../models/databases/#optimade_gateway.models.databases.DatabaseCreate">DatabaseCreate</a> | <a class="autorefs autorefs-internal" title="optimade_gateway.models.GatewayCreate" href="../../models/gateways/#optimade_gateway.models.gateways.GatewayCreate">GatewayCreate</a> | <a class="autorefs autorefs-internal" title="optimade_gateway.models.QueryCreate" href="../../models/queries/#optimade_gateway.models.queries.QueryCreate">QueryCreate</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The resource to be retrieved or created anew.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>create_resource</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.DatabaseCreate" href="../../models/databases/#optimade_gateway.models.databases.DatabaseCreate">DatabaseCreate</a> | <a class="autorefs autorefs-internal" title="optimade_gateway.models.GatewayCreate" href="../../models/gateways/#optimade_gateway.models.gateways.GatewayCreate">GatewayCreate</a> | <a class="autorefs autorefs-internal" title="optimade_gateway.models.QueryCreate" href="../../models/queries/#optimade_gateway.models.queries.QueryCreate">QueryCreate</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The resource to be retrieved or created anew.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>tuple[<span title="optimade.models.LinksResource">LinksResource</span> | <a class="autorefs autorefs-internal" title="optimade_gateway.models.GatewayResource" href="../../models/gateways/#optimade_gateway.models.gateways.GatewayResource">GatewayResource</a> | <a class="autorefs autorefs-internal" title="optimade_gateway.models.QueryResource" href="../../models/queries/#optimade_gateway.models.queries.QueryResource">QueryResource</a>, bool]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Two things in a tuple:</p>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>tuple[<span title="optimade.models.LinksResource">LinksResource</span> | <a class="autorefs autorefs-internal" title="optimade_gateway.models.GatewayResource" href="../../models/gateways/#optimade_gateway.models.gateways.GatewayResource">GatewayResource</a> | <a class="autorefs autorefs-internal" title="optimade_gateway.models.QueryResource" href="../../models/queries/#optimade_gateway.models.queries.QueryResource">QueryResource</a>, bool]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Two things in a tuple:</p>
 <ul>
 <li>Either a
     <a class="autorefs autorefs-internal" href="../../models/gateways/#optimade_gateway.models.gateways.GatewayResource"><code>GatewayResource</code></a>;
@@ -2260,15 +2243,15 @@ resource model.</p>
     and</li>
 <li>whether or not the resource was newly created.</li>
 </ul>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">137</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">137</span>
 <span class="normal">138</span>
 <span class="normal">139</span>
 <span class="normal">140</span>
@@ -2622,19 +2605,17 @@ resource model.</p>
 
     <span class="k">return</span> <span class="n">result</span><span class="p">,</span> <span class="n">created</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade_gateway.routers.utils.validate_resource" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">validate_resource</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">entry_id</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">validate_resource</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">entry_id</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -2642,13 +2623,13 @@ resource model.</p>
 <a href="#optimade_gateway.routers.utils.validate_resource" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Validate whether a resource exists in a collection</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">121</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/routers/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">121</span>
 <span class="normal">122</span>
 <span class="normal">123</span>
 <span class="normal">124</span>
@@ -2660,8 +2641,8 @@ resource model.</p>
             <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Resource &lt;id=</span><span class="si">{</span><span class="n">entry_id</span><span class="si">}</span><span class="s2">&gt; not found in </span><span class="si">{</span><span class="n">collection</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -2669,7 +2650,7 @@ resource model.</p>
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 
@@ -2751,7 +2732,7 @@ resource model.</p>
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.5cfa9459.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>

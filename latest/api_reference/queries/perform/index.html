@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.22">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.732c4fb1.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -1485,14 +1485,13 @@
 
 
 <a id="optimade_gateway.queries.perform"></a>
-  <div class="doc doc-contents first">
-  
+    <div class="doc doc-contents first">
+
       <p>Perform OPTIMADE queries</p>
 
-  
+
 
   <div class="doc doc-children">
-
 
 
 
@@ -1505,133 +1504,130 @@
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade_gateway.queries.perform.db_find" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">db_find</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">response_model</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">raw_url</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">db_find</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">response_model</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">raw_url</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#optimade_gateway.queries.perform.db_find" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Imitate <code>Collection.find()</code> for any given database for entry-resource endpoints</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>database</code></td>
-          <td>
-                <code><span title="optimade.models.LinksResource">LinksResource</span> | dict[str, <span title="typing.Any">Any</span>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The OPTIMADE implementation to be queried.
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>database</code></td>
+            <td>
+                  <code><span title="optimade.models.LinksResource">LinksResource</span> | dict[str, <span title="typing.Any">Any</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The OPTIMADE implementation to be queried.
 It <strong>must</strong> have a valid base URL and id.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>endpoint</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The entry-listing endpoint, e.g., <code>"structures"</code>.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>response_model</code></td>
-          <td>
-                <code><span title="optimade.models.EntryResponseMany">EntryResponseMany</span> | <span title="optimade.models.EntryResponseOne">EntryResponseOne</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The expected OPTIMADE pydantic response model, e.g.,
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>endpoint</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The entry-listing endpoint, e.g., <code>"structures"</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>response_model</code></td>
+            <td>
+                  <code><span title="optimade.models.EntryResponseMany">EntryResponseMany</span> | <span title="optimade.models.EntryResponseOne">EntryResponseOne</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The expected OPTIMADE pydantic response model, e.g.,
 <code>optimade.models.StructureResponseMany</code>.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>query_params</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>URL query parameters to pass to the database.</p>
-            </div>
-          </td>
-          <td>
-                <code>&#39;&#39;</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>raw_url</code></td>
-          <td>
-                <code><span title="pydantic.AnyUrl">AnyUrl</span> | str | None</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A raw URL to use straight up instead of deriving a URL from <code>database</code>,
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>query_params</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>URL query parameters to pass to the database.</p>
+              </div>
+            </td>
+            <td>
+                  <code>&#39;&#39;</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>raw_url</code></td>
+            <td>
+                  <code><span title="pydantic.AnyUrl">AnyUrl</span> | str | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A raw URL to use straight up instead of deriving a URL from <code>database</code>,
 <code>endpoint</code>, and <code>query_params</code>.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>tuple[<span title="optimade.models.ErrorResponse">ErrorResponse</span> | <span title="optimade.models.EntryResponseMany">EntryResponseMany</span> | <span title="optimade.models.EntryResponseOne">EntryResponseOne</span>, str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Response as an <code>optimade</code> pydantic model and the <code>database</code>'s ID.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>tuple[<span title="optimade.models.ErrorResponse">ErrorResponse</span> | <span title="optimade.models.EntryResponseMany">EntryResponseMany</span> | <span title="optimade.models.EntryResponseOne">EntryResponseOne</span>, str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Response as an <code>optimade</code> pydantic model and the <code>database</code>'s ID.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/queries/perform.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">150</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/queries/perform.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">150</span>
 <span class="normal">151</span>
 <span class="normal">152</span>
 <span class="normal">153</span>
@@ -1899,19 +1895,17 @@ It <strong>must</strong> have a valid base URL and id.</p>
 
     <span class="k">return</span> <span class="n">response</span><span class="p">,</span> <span class="n">get_resource_attribute</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade_gateway.queries.perform.db_get_all_resources" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">db_get_all_resources</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">response_model</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">raw_url</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">db_get_all_resources</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">response_model</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">raw_url</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -1919,8 +1913,8 @@ It <strong>must</strong> have a valid base URL and id.</p>
 <a href="#optimade_gateway.queries.perform.db_get_all_resources" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Recursively retrieve all resources from an entry-listing endpoint</p>
 <p>This function keeps pulling the <code>links.next</code> link if <code>meta.more_data_available</code> is
 <code>True</code> to ultimately retrieve <em>all</em> entries for <code>endpoint</code>.</p>
@@ -1931,121 +1925,119 @@ entries is requested.</p>
 </div>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>database</code></td>
-          <td>
-                <code><span title="optimade.models.LinksResource">LinksResource</span> | dict[str, <span title="typing.Any">Any</span>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The OPTIMADE implementation to be queried.
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>database</code></td>
+            <td>
+                  <code><span title="optimade.models.LinksResource">LinksResource</span> | dict[str, <span title="typing.Any">Any</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The OPTIMADE implementation to be queried.
 It <strong>must</strong> have a valid base URL and id.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>endpoint</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The entry-listing endpoint, e.g., <code>"structures"</code>.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>response_model</code></td>
-          <td>
-                <code><span title="optimade.models.EntryResponseMany">EntryResponseMany</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The expected OPTIMADE pydantic response model, e.g.,
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>endpoint</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The entry-listing endpoint, e.g., <code>"structures"</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>response_model</code></td>
+            <td>
+                  <code><span title="optimade.models.EntryResponseMany">EntryResponseMany</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The expected OPTIMADE pydantic response model, e.g.,
 <code>optimade.models.StructureResponseMany</code>.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>query_params</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>URL query parameters to pass to the database.</p>
-            </div>
-          </td>
-          <td>
-                <code>&#39;&#39;</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>raw_url</code></td>
-          <td>
-                <code><span title="pydantic.AnyUrl">AnyUrl</span> | str | None</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A raw URL to use straight up instead of deriving a URL from <code>database</code>,
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>query_params</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>URL query parameters to pass to the database.</p>
+              </div>
+            </td>
+            <td>
+                  <code>&#39;&#39;</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>raw_url</code></td>
+            <td>
+                  <code><span title="pydantic.AnyUrl">AnyUrl</span> | str | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A raw URL to use straight up instead of deriving a URL from <code>database</code>,
 <code>endpoint</code>, and <code>query_params</code>.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>tuple[list[<span title="optimade.models.EntryResource">EntryResource</span> | dict[str, <span title="typing.Any">Any</span>]], <span title="optimade.models.LinksResource">LinksResource</span> | dict[str, <span title="typing.Any">Any</span>]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A collected list of successful responses' <code>data</code> value and the <code>database</code>'s ID.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>tuple[list[<span title="optimade.models.EntryResource">EntryResource</span> | dict[str, <span title="typing.Any">Any</span>]], <span title="optimade.models.LinksResource">LinksResource</span> | dict[str, <span title="typing.Any">Any</span>]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A collected list of successful responses' <code>data</code> value and the <code>database</code>'s ID.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/queries/perform.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">286</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/queries/perform.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">286</span>
 <span class="normal">287</span>
 <span class="normal">288</span>
 <span class="normal">289</span>
@@ -2193,19 +2185,17 @@ It <strong>must</strong> have a valid base URL and id.</p>
 
     <span class="k">return</span> <span class="n">resulting_resources</span><span class="p">,</span> <span class="n">database</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade_gateway.queries.perform.perform_query" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">perform_query</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">perform_query</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -2213,91 +2203,89 @@ It <strong>must</strong> have a valid base URL and id.</p>
 <a href="#optimade_gateway.queries.perform.perform_query" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Perform OPTIMADE query with gateway.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>url</code></td>
-          <td>
-                <code><span title="starlette.datastructures.URL">URL</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Original request URL.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>query</code></td>
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.QueryResource" href="../../models/queries/#optimade_gateway.models.queries.QueryResource">QueryResource</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The query to be performed.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>url</code></td>
+            <td>
+                  <code><span title="starlette.datastructures.URL">URL</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Original request URL.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>query</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.QueryResource" href="../../models/queries/#optimade_gateway.models.queries.QueryResource">QueryResource</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The query to be performed.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="optimade.models.EntryResponseMany">EntryResponseMany</span> | <span title="optimade.models.ErrorResponse">ErrorResponse</span> | <a class="autorefs autorefs-internal" title="optimade_gateway.models.GatewayQueryResponse" href="../../models/queries/#optimade_gateway.models.queries.GatewayQueryResponse">GatewayQueryResponse</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>This function returns the final response; a</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="optimade.models.EntryResponseMany">EntryResponseMany</span> | <span title="optimade.models.ErrorResponse">ErrorResponse</span> | <a class="autorefs autorefs-internal" title="optimade_gateway.models.GatewayQueryResponse" href="../../models/queries/#optimade_gateway.models.queries.GatewayQueryResponse">GatewayQueryResponse</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><a class="autorefs autorefs-internal" href="../../models/queries/#optimade_gateway.models.queries.GatewayQueryResponse"><code>GatewayQueryResponse</code></a>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code><span title="optimade.models.EntryResponseMany">EntryResponseMany</span> | <span title="optimade.models.ErrorResponse">ErrorResponse</span> | <a class="autorefs autorefs-internal" title="optimade_gateway.models.GatewayQueryResponse" href="../../models/queries/#optimade_gateway.models.queries.GatewayQueryResponse">GatewayQueryResponse</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>This function returns the final response; a</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td>
-                <code><span title="optimade.models.EntryResponseMany">EntryResponseMany</span> | <span title="optimade.models.ErrorResponse">ErrorResponse</span> | <a class="autorefs autorefs-internal" title="optimade_gateway.models.GatewayQueryResponse" href="../../models/queries/#optimade_gateway.models.queries.GatewayQueryResponse">GatewayQueryResponse</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p><a class="autorefs autorefs-internal" href="../../models/queries/#optimade_gateway.models.queries.GatewayQueryResponse"><code>GatewayQueryResponse</code></a>.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/queries/perform.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 41</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/queries/perform.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 41</span>
 <span class="normal"> 42</span>
 <span class="normal"> 43</span>
 <span class="normal"> 44</span>
@@ -2511,8 +2499,8 @@ It <strong>must</strong> have a valid base URL and id.</p>
     <span class="k">await</span> <span class="n">update_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="s2">&quot;state&quot;</span><span class="p">,</span> <span class="n">QueryState</span><span class="o">.</span><span class="n">FINISHED</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">response</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -2520,7 +2508,7 @@ It <strong>must</strong> have a valid base URL and id.</p>
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 
@@ -2602,7 +2590,7 @@ It <strong>must</strong> have a valid base URL and id.</p>
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.5cfa9459.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>

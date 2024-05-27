@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.22">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.732c4fb1.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -1683,11 +1683,11 @@
 
 
 <a id="optimade_gateway.models.gateways"></a>
-  <div class="doc doc-contents first">
-  
+    <div class="doc doc-contents first">
+
       <p>Pydantic models/schemas for the Gateways resource.</p>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -1703,22 +1703,22 @@
 
 
 <h2 id="optimade_gateway.models.gateways.GatewayCreate" class="doc doc-heading">
-          <code>GatewayCreate</code>
+            <code>GatewayCreate</code>
 
 
 <a href="#optimade_gateway.models.gateways.GatewayCreate" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.resources.EntryResourceCreate" href="../resources/#optimade_gateway.models.resources.EntryResourceCreate">EntryResourceCreate</a></code>, <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.gateways.GatewayResourceAttributes" href="#optimade_gateway.models.gateways.GatewayResourceAttributes">GatewayResourceAttributes</a></code></p>
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.resources.EntryResourceCreate" href="../resources/#optimade_gateway.models.resources.EntryResourceCreate">EntryResourceCreate</a></code>, <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.gateways.GatewayResourceAttributes" href="#optimade_gateway.models.gateways.GatewayResourceAttributes">GatewayResourceAttributes</a></code></p>
 
-  
+
       <p>Model for creating new Gateway resources in the MongoDB</p>
 
-            <details class="quote">
-              <summary>Source code in <code>optimade_gateway/models/gateways.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">111</span>
+              <details class="quote">
+                <summary>Source code in <code>optimade_gateway/models/gateways.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">111</span>
 <span class="normal">112</span>
 <span class="normal">113</span>
 <span class="normal">114</span>
@@ -1792,9 +1792,9 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Either &#39;database_ids&#39; or &#39;databases&#39; MUST be specified&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -1809,8 +1809,8 @@
 
 
 <h3 id="optimade_gateway.models.gateways.GatewayCreate.database_ids" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">database_ids</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A unique list of database IDs for registered databases.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
-  
+            <code class="highlight language-python"><span class="n">database_ids</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A unique list of database IDs for registered databases.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -1819,8 +1819,8 @@
 <a href="#optimade_gateway.models.gateways.GatewayCreate.database_ids" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  </div>
+    <div class="doc doc-contents ">
+    </div>
 
 </div>
 
@@ -1829,8 +1829,8 @@
 
 
 <h3 id="optimade_gateway.models.gateways.GatewayCreate.databases" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">databases</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">GatewayResourceAttributes</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;databases&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
-  
+            <code class="highlight language-python"><span class="n">databases</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">GatewayResourceAttributes</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;databases&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -1839,8 +1839,8 @@
 <a href="#optimade_gateway.models.gateways.GatewayCreate.databases" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  </div>
+    <div class="doc doc-contents ">
+    </div>
 
 </div>
 
@@ -1849,8 +1849,8 @@
 
 
 <h3 id="optimade_gateway.models.gateways.GatewayCreate.id" class="doc doc-heading">
-          <code class="highlight language-python"><span class="nb">id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">EntryResource</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">EntryResource</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">json_schema_extra</span><span class="p">[</span><span class="s1">&#39;x-optimade-support&#39;</span><span class="p">],</span> <span class="n">queryable</span><span class="o">=</span><span class="n">EntryResource</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">json_schema_extra</span><span class="p">[</span><span class="s1">&#39;x-optimade-queryable&#39;</span><span class="p">],</span> <span class="n">pattern</span><span class="o">=</span><span class="s1">&#39;^[^/]*$&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
-  
+            <code class="highlight language-python"><span class="nb">id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">EntryResource</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">EntryResource</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">json_schema_extra</span><span class="p">[</span><span class="s1">&#39;x-optimade-support&#39;</span><span class="p">],</span> <span class="n">queryable</span><span class="o">=</span><span class="n">EntryResource</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">json_schema_extra</span><span class="p">[</span><span class="s1">&#39;x-optimade-queryable&#39;</span><span class="p">],</span> <span class="n">pattern</span><span class="o">=</span><span class="s1">&#39;^[^/]*$&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -1859,32 +1859,30 @@
 <a href="#optimade_gateway.models.gateways.GatewayCreate.id" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  </div>
+    <div class="doc doc-contents ">
+    </div>
 
 </div>
-
 
 
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade_gateway.models.gateways.GatewayCreate.specify_databases" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">specify_databases</span><span class="p">()</span></code>
+            <code class="highlight language-python"><span class="n">specify_databases</span><span class="p">()</span></code>
 
 <a href="#optimade_gateway.models.gateways.GatewayCreate.specify_databases" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Either <code>database_ids</code> or <code>databases</code> must be non-empty.
 Both together is also fine.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/models/gateways.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">140</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/models/gateways.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">140</span>
 <span class="normal">141</span>
 <span class="normal">142</span>
 <span class="normal">143</span>
@@ -1900,8 +1898,8 @@ Both together is also fine.</p>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Either &#39;database_ids&#39; or &#39;databases&#39; MUST be specified&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -1909,8 +1907,7 @@ Both together is also fine.</p>
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -1919,26 +1916,26 @@ Both together is also fine.</p>
 
 
 <h2 id="optimade_gateway.models.gateways.GatewayResource" class="doc doc-heading">
-          <code>GatewayResource</code>
+            <code>GatewayResource</code>
 
 
 <a href="#optimade_gateway.models.gateways.GatewayResource" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><span title="optimade.models.EntryResource">EntryResource</span></code></p>
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="optimade.models.EntryResource">EntryResource</span></code></p>
 
-  
+
       <p>OPTIMADE gateway</p>
 <p>A resource representing a dynamic collection of OPTIMADE databases.
 The gateway can be treated as any other OPTIMADE gateway, but the entries are an
 aggregate of multiple databases. The <code>id</code> of each aggregated resource will reflect
 the originating database.</p>
 
-            <details class="quote">
-              <summary>Source code in <code>optimade_gateway/models/gateways.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 77</span>
+              <details class="quote">
+                <summary>Source code in <code>optimade_gateway/models/gateways.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 77</span>
 <span class="normal"> 78</span>
 <span class="normal"> 79</span>
 <span class="normal"> 80</span>
@@ -2002,9 +1999,9 @@ the originating database.</p>
         <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">EntryResource</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">),</span>
     <span class="p">]</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -2019,8 +2016,8 @@ the originating database.</p>
 
 
 <h3 id="optimade_gateway.models.gateways.GatewayResource.attributes" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">attributes</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">GatewayResourceAttributes</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">EntryResource</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;attributes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">)]</span></code>
-  
+            <code class="highlight language-python"><span class="n">attributes</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">GatewayResourceAttributes</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">EntryResource</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;attributes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">)]</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
@@ -2028,8 +2025,8 @@ the originating database.</p>
 <a href="#optimade_gateway.models.gateways.GatewayResource.attributes" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  </div>
+    <div class="doc doc-contents ">
+    </div>
 
 </div>
 
@@ -2038,8 +2035,8 @@ the originating database.</p>
 
 
 <h3 id="optimade_gateway.models.gateways.GatewayResource.id" class="doc doc-heading">
-          <code class="highlight language-python"><span class="nb">id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">EntryResource</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">EntryResource</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">json_schema_extra</span><span class="p">[</span><span class="s1">&#39;x-optimade-support&#39;</span><span class="p">],</span> <span class="n">queryable</span><span class="o">=</span><span class="n">EntryResource</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">json_schema_extra</span><span class="p">[</span><span class="s1">&#39;x-optimade-queryable&#39;</span><span class="p">],</span> <span class="n">pattern</span><span class="o">=</span><span class="s1">&#39;^[^/]*$&#39;</span><span class="p">)]</span></code>
-  
+            <code class="highlight language-python"><span class="nb">id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">EntryResource</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">EntryResource</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">json_schema_extra</span><span class="p">[</span><span class="s1">&#39;x-optimade-support&#39;</span><span class="p">],</span> <span class="n">queryable</span><span class="o">=</span><span class="n">EntryResource</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">json_schema_extra</span><span class="p">[</span><span class="s1">&#39;x-optimade-queryable&#39;</span><span class="p">],</span> <span class="n">pattern</span><span class="o">=</span><span class="s1">&#39;^[^/]*$&#39;</span><span class="p">)]</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
@@ -2047,8 +2044,8 @@ the originating database.</p>
 <a href="#optimade_gateway.models.gateways.GatewayResource.id" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  </div>
+    <div class="doc doc-contents ">
+    </div>
 
 </div>
 
@@ -2057,8 +2054,8 @@ the originating database.</p>
 
 
 <h3 id="optimade_gateway.models.gateways.GatewayResource.type" class="doc doc-heading">
-          <code class="highlight language-python"><span class="nb">type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;gateways&#39;</span><span class="p">],</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The name of the type of an entry.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="s1">&#39;gateways&#39;</span></code>
-  
+            <code class="highlight language-python"><span class="nb">type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;gateways&#39;</span><span class="p">],</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The name of the type of an entry.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="s1">&#39;gateways&#39;</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -2067,8 +2064,8 @@ the originating database.</p>
 <a href="#optimade_gateway.models.gateways.GatewayResource.type" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  </div>
+    <div class="doc doc-contents ">
+    </div>
 
 </div>
 
@@ -2078,8 +2075,7 @@ the originating database.</p>
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -2088,22 +2084,22 @@ the originating database.</p>
 
 
 <h2 id="optimade_gateway.models.gateways.GatewayResourceAttributes" class="doc doc-heading">
-          <code>GatewayResourceAttributes</code>
+            <code>GatewayResourceAttributes</code>
 
 
 <a href="#optimade_gateway.models.gateways.GatewayResourceAttributes" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><span title="optimade.models.EntryResourceAttributes">EntryResourceAttributes</span></code></p>
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="optimade.models.EntryResourceAttributes">EntryResourceAttributes</span></code></p>
 
-  
+
       <p>Attributes for an OPTIMADE gateway</p>
 
-            <details class="quote">
-              <summary>Source code in <code>optimade_gateway/models/gateways.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">17</span>
+              <details class="quote">
+                <summary>Source code in <code>optimade_gateway/models/gateways.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">17</span>
 <span class="normal">18</span>
 <span class="normal">19</span>
 <span class="normal">20</span>
@@ -2219,9 +2215,9 @@ the originating database.</p>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">new_databases</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -2236,8 +2232,8 @@ the originating database.</p>
 
 
 <h3 id="optimade_gateway.models.gateways.GatewayResourceAttributes.databases" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">databases</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">],</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of databases (OPTIMADE &#39;links&#39;) to be queried in this gateway.&quot;</span><span class="p">)]</span></code>
-  
+            <code class="highlight language-python"><span class="n">databases</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">],</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of databases (OPTIMADE &#39;links&#39;) to be queried in this gateway.&quot;</span><span class="p">)]</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
@@ -2245,21 +2241,19 @@ the originating database.</p>
 <a href="#optimade_gateway.models.gateways.GatewayResourceAttributes.databases" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  </div>
+    <div class="doc doc-contents ">
+    </div>
 
 </div>
-
 
 
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade_gateway.models.gateways.GatewayResourceAttributes.unique_base_urls" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">unique_base_urls</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">unique_base_urls</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
@@ -2267,8 +2261,8 @@ the originating database.</p>
 <a href="#optimade_gateway.models.gateways.GatewayResourceAttributes.unique_base_urls" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Remove extra entries with repeated base_urls.</p>
 <p>Also, ensure databases are not of type <code>"root"</code> or <code>"providers"</code></p>
 <div class="admonition note">
@@ -2277,9 +2271,9 @@ the originating database.</p>
 but <code>"root"</code> and <code>"providers"</code> can not represent "regular" dbs.</p>
 </div>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade_gateway/models/gateways.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">29</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade_gateway/models/gateways.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">29</span>
 <span class="normal">30</span>
 <span class="normal">31</span>
 <span class="normal">32</span>
@@ -2371,8 +2365,8 @@ but <code>"root"</code> and <code>"providers"</code> can not represent "regular"
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">new_databases</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -2380,8 +2374,7 @@ but <code>"root"</code> and <code>"providers"</code> can not represent "regular"
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -2390,7 +2383,7 @@ but <code>"root"</code> and <code>"providers"</code> can not represent "regular"
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 
@@ -2472,7 +2465,7 @@ but <code>"root"</code> and <code>"providers"</code> can not represent "regular"
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.5cfa9459.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>
