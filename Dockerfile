@@ -15,4 +15,4 @@ ARG CONFIG_FILE=optimade_gateway/config.json
 COPY ${CONFIG_FILE} ./config.json
 ENV OPTIMADE_CONFIG_FILE /app/config.json
 
-CMD [ "uvicorn", "--host", "0.0.0.0", "--port", "${PORT}", "optimade_gateway.main:APP" ]
+CMD uvicorn --host=0.0.0.0 --port=${PORT} optimade_gateway.main:APP
