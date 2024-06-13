@@ -1486,7 +1486,7 @@
 
 
 <h2 id="optimade_gateway.mongo.database.MONGO_CLIENT" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">MONGO_CLIENT</span> <span class="o">=</span> <span class="n">AsyncIOMotorClient</span><span class="p">(</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">mongo_uri</span><span class="p">,</span> <span class="n">appname</span><span class="o">=</span><span class="s1">&#39;optimade-gateway&#39;</span><span class="p">,</span> <span class="n">readConcernLevel</span><span class="o">=</span><span class="s1">&#39;majority&#39;</span><span class="p">,</span> <span class="n">readPreference</span><span class="o">=</span><span class="s1">&#39;primary&#39;</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="s1">&#39;majority&#39;</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">MONGO_CLIENT</span> <span class="o">=</span> <span class="n">AsyncIOMotorClient</span><span class="p">(</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">mongo_uri</span><span class="p">,</span> <span class="o">**</span><span class="n">mongo_client_configuration</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
