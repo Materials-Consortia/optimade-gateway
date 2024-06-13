@@ -1,4 +1,7 @@
 """Simplified function for running the server used in the CLI."""
+
+from __future__ import annotations
+
 import argparse
 import os
 from pathlib import Path
@@ -7,11 +10,10 @@ from typing import TYPE_CHECKING
 import uvicorn
 
 if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    # pylint: disable=unused-import
-    from typing import Optional, Sequence, Text
+    from collections.abc import Sequence
 
 
-def run(argv: "Optional[Sequence[Text]]" = None) -> None:
+def run(argv: Sequence[str] | None = None) -> None:
     """Run OPTIMADE Gateway REST API server."""
     parser = argparse.ArgumentParser(
         "optimade-gateway",
@@ -37,7 +39,7 @@ def run(argv: "Optional[Sequence[Text]]" = None) -> None:
         "log_level": "debug",
     }
 
-    os.environ["optimade_load_optimade_providers_databases"] = (
+    os.environ["OPTIMADE_LOAD_OPTIMADE_PROVIDERS_DATABASES"] = (
         "True" if args.load_providers else "False"
     )
 

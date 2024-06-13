@@ -1,25 +1,14 @@
 """Tests for /links endpoint"""
+
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
-import pytest
-
 if TYPE_CHECKING:
-    from typing import Awaitable, Callable
-
-    try:
-        from typing import Literal
-    except ImportError:
-        from typing_extensions import Literal
-
-    from fastapi import FastAPI
-    from httpx import Response
+    from ..conftest import AsyncGatewayClient
 
 
-async def test_get_links(
-    client: (
-        'Callable[ [str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
-    ),
-):
+async def test_get_links(client: AsyncGatewayClient) -> None:
     """Test GET /links"""
     from optimade.models import LinksResponse
 

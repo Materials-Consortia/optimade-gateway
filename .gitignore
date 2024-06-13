@@ -1,8 +1,9 @@
 # Tools
 .coverage
 htmlcov/
-.mypy*
-.pytest*
+.*_cache/
+build/
+dist/
 
 # Python
 *.egg*

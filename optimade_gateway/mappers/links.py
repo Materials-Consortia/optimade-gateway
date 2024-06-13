@@ -1,7 +1,9 @@
-# pylint: disable=line-too-long
 """Replicate of
 [`LinksMapper`](https://www.optimade.org/optimade-python-tools/api_reference/server/mappers/links/#optimade.server.mappers.links.LinksMapper)
 in OPTIMADE Python tools."""
+
+from __future__ import annotations
+
 from optimade.models.links import LinksResource
 
 from optimade_gateway.mappers.base import BaseResourceMapper
@@ -21,7 +23,7 @@ class LinksMapper(BaseResourceMapper):
 
     @classmethod
     def map_back(cls, doc: dict) -> dict:
-        type_ = doc.get("type", None) or "links"
+        type_ = doc.get("type") or "links"
         newdoc = super().map_back(doc)
         newdoc["type"] = type_
         return newdoc

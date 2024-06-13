@@ -1,4 +1,7 @@
 """Specific OPTIMADE Gateway Python exceptions."""
+
+from __future__ import annotations
+
 __all__ = ("OptimadeGatewayError",)
 
 

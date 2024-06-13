@@ -1,6 +1,0 @@
-invoke~=2.1
-mike~=1.1
-mkdocs~=1.4
-mkdocs-awesome-pages-plugin~=2.9
-mkdocs-material~=9.1
-mkdocstrings[python-legacy]~=0.21.2

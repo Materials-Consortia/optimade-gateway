@@ -1,4 +1,7 @@
 """The initialization of the ASGI FastAPI application."""
+
+from __future__ import annotations
+
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import RedirectResponse
@@ -43,14 +46,16 @@ for middleware in OPTIMADE_MIDDLEWARE:
 # Add exception handlers
 for exception, handler in OPTIMADE_EXCEPTIONS:
     if exception == RequestValidationError:
-        handler = request_validation_exception_handler
-    APP.add_exception_handler(exception, handler)
+        APP.add_exception_handler(exception, request_validation_exception_handler)
+    else:
+        APP.add_exception_handler(exception, handler)
+
 
 # Add the special /versions endpoint(s)
 APP.include_router(versions_router)
 
 # Add endpoints to / and /vMAJOR
-for prefix in list(BASE_URL_PREFIXES.values()) + [""]:
+for prefix in [*list(BASE_URL_PREFIXES.values()), ""]:
     for router in (databases, gateways, info, links, queries, search):
         APP.include_router(
             router.ROUTER,  # type: ignore[attr-defined]

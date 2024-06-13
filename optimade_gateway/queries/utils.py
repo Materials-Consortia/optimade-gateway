@@ -1,6 +1,8 @@
 """Utility functions for the `queries` module."""
-# pylint: disable=import-outside-toplevel
-from datetime import datetime
+
+from __future__ import annotations
+
+from datetime import datetime, timezone
 from os import getenv
 from typing import TYPE_CHECKING
 
@@ -10,8 +12,7 @@ from optimade_gateway.common.utils import clean_python_types
 from optimade_gateway.routers.utils import collection_factory
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    # pylint: disable=unused-import,ungrouped-imports
-    from typing import Any, Dict, Optional, Union
+    from typing import Any
 
     from pydantic import BaseModel
     from pymongo.results import UpdateResult
@@ -19,12 +20,12 @@ if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
     from optimade_gateway.models import QueryResource
 
 
-async def update_query(  # pylint: disable=too-many-branches
-    query: "QueryResource",
+async def update_query(
+    query: QueryResource,
     field: str,
-    value: "Any",
-    operator: "Optional[str]" = None,
-    **mongo_kwargs: "Any",
+    value: Any,
+    operator: str | None = None,
+    **mongo_kwargs: Any,
 ) -> None:
     """Update a query's `field` attribute with `value`.
 
@@ -54,7 +55,7 @@ async def update_query(  # pylint: disable=too-many-branches
     if operator and not operator.startswith("$"):
         operator = f"${operator}"
 
-    update_time = datetime.utcnow()
+    update_time = datetime.now(timezone.utc)
 
     update_kwargs = {"$set": {"last_modified": update_time}}
 
@@ -71,7 +72,7 @@ async def update_query(  # pylint: disable=too-many-branches
 
     # MongoDB
     collection = await collection_factory(CONFIG.queries_collection)
-    result: "UpdateResult" = await collection.collection.update_one(
+    result: UpdateResult = await collection.collection.update_one(
         filter={"id": {"$eq": query.id}},
         update=await clean_python_types(update_kwargs),
     )
@@ -89,9 +90,7 @@ async def update_query(  # pylint: disable=too-many-branches
     query.attributes.last_modified = update_time
     if "." in field:
         field_list = field.split(".")
-        sub_field: "Union[BaseModel, Dict[str, Any]]" = getattr(
-            query.attributes, field_list[0]
-        )
+        sub_field: BaseModel | dict[str, Any] = getattr(query.attributes, field_list[0])
         for field_part in field_list[1:-1]:
             if isinstance(sub_field, dict):
                 sub_field = sub_field.get(field_part, {})

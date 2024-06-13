@@ -1,42 +1,147 @@
 """Pytest fixtures and configuration for all tests"""
-import asyncio
-import json
-import os
-import re
-from pathlib import Path
+
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 import pytest
 
 if TYPE_CHECKING:
-    from typing import Awaitable, Callable, Union
-
-    try:
-        from typing import Literal
-    except ImportError:
-        from typing_extensions import Literal
+    from collections.abc import Awaitable
+    from pathlib import Path
+    from typing import Literal, Protocol, TypedDict
 
     from fastapi import FastAPI
     from httpx import Request, Response
+    from mongomock_motor import AsyncMongoMockClient
+    from motor.motor_asyncio import AsyncIOMotorDatabase
     from pytest_httpx import HTTPXMock
+
+    class AsyncGatewayClient(Protocol):
+        """Protocol for async client fixture"""
+
+        def __call__(
+            self,
+            request: str,
+            app: FastAPI | None = None,
+            base_url: str | None = None,
+            method: Literal["get", "post", "put", "delete", "patch"] | None = None,
+            **kwargs,
+        ) -> Awaitable[Response]: ...
+
+    class GetGateway(Protocol):
+        """Protocol for get_gateway fixture"""
+
+        def __call__(self, id: str) -> Awaitable[dict]: ...
+
+    class MockGatewayResponses(Protocol):
+        """Protocol for mock_gateway_responses fixture"""
+
+        def __call__(self, gateway: dict) -> None: ...
+
+    class DatabaseAttributesOptionalsDict(TypedDict, total=False):
+        """Database attributes dict of optional fields"""
+
+        aggregate: str
+
+    class DatabaseAttributesDict(DatabaseAttributesOptionalsDict):
+        """Database attributes dict"""
+
+        name: str
+        description: str
+        base_url: str
+        homepage: str | None
+        link_type: str
+
+    class DatabaseDict(TypedDict):
+        """Database dict"""
+
+        id: str
+        type: str
+        attributes: DatabaseAttributesDict
+
+    class GatewayDict(TypedDict):
+        """Gateway dict"""
+
+        id: str
+        last_modified: str
+        databases: list[DatabaseDict]
 
 
 # UTILITY FUNCTIONS
 
+MONGO_DB_INFO: AsyncIOMotorDatabase | AsyncMongoMockClient | None = None
 
-async def setup_db_utility(top_dir: "Union[Path, str]") -> None:
+
+def get_test_config(top_dir: Path | str) -> dict:
+    """Utility function for getting and parsing the test config."""
+    import json
+    from pathlib import Path
+
+    top_dir = Path(top_dir).resolve()
+
+    test_config: dict = json.loads(
+        (top_dir / "tests" / "static" / "test_config.json").read_bytes()
+    )
+
+    assert isinstance(test_config, dict), "Test config is not a dict!"
+
+    return test_config
+
+
+def get_mongo_db(top_dir: Path | str) -> AsyncIOMotorDatabase | AsyncMongoMockClient:
+    """Utility function for getting the MongoDB"""
+    import asyncio
+    import os
+
+    global MONGO_DB_INFO  # noqa: PLW0603
+    test_config = get_test_config(top_dir)
+
+    if MONGO_DB_INFO is not None:
+        return MONGO_DB_INFO
+
+    if any(
+        _ == "mongodb"
+        for _ in (
+            os.getenv("OPTIMADE_DATABASE_BACKEND"),
+            test_config["database_backend"],
+        )
+    ):
+        from optimade_gateway.mongo.database import MONGO_DB
+
+        MONGO_DB.get_io_loop = asyncio.get_running_loop
+    else:
+        from mongomock_motor import AsyncMongoMockClient
+
+        from optimade_gateway.common.config import CONFIG
+
+        MONGO_DB = AsyncMongoMockClient(
+            host=CONFIG.mongo_uri,
+            appname="optimade-gateway",
+            readConcernLevel="majority",
+            readPreference="primary",
+            w="majority",
+        )[test_config["mongo_database"]]
+
+    MONGO_DB_INFO = MONGO_DB
+
+    return MONGO_DB_INFO
+
+
+async def setup_db_utility(top_dir: Path | str) -> None:
     """Utility function for setting up/resetting the MongoDB
 
     Parameters:
         top_dir: Path to the repository's directory.
 
     """
-    from optimade_gateway.mongo.database import MONGO_DB
+    import json
+    from pathlib import Path
 
     top_dir = Path(top_dir).resolve()
+    test_config = get_test_config(top_dir)
+    MONGO_DB = get_mongo_db(top_dir)
 
-    with open(top_dir.joinpath("tests/static/test_config.json")) as handle:
-        test_config = json.load(handle)
     assert (
         MONGO_DB.name == test_config["mongo_database"]
     ), "Test DB has not been loaded!"
@@ -45,60 +150,78 @@ async def setup_db_utility(top_dir: "Union[Path, str]") -> None:
         collection = test_config.get(f"{resource}_collection", resource)
         await MONGO_DB[collection].drop()
 
-        data_file = top_dir.joinpath(f"tests/static/test_{resource}.json")
+        data_file = top_dir / "tests" / "static" / f"test_{resource}.json"
+
         assert (
             data_file.exists()
         ), f"Test data file at {data_file} does not seem to exist!"
 
-        with open(data_file) as handle:
-            data = json.load(handle)
+        data: list[dict] = json.loads(data_file.read_bytes())
 
         await MONGO_DB[collection].insert_many(data)
 
 
-# PYTEST FIXTURES AND CONFIGURATION
+# PYTEST CONFIGURATION
 
 
-def pytest_configure(config):
-    """Method that runs before pytest collects tests so no modules are imported"""
+def pytest_configure(config: pytest.Config):  # noqa: ARG001
+    """Allow plugins and conftest files to perform initial configuration.
+
+    This hook is called for every plugin and initial conftest file after command line
+    options have been parsed.
+
+    After that, the hook is called for other conftest files as they are imported.
+
+    ---
+
+    Here, we set the OPTIMADE_CONFIG_FILE environment variable to the test config file.
+    """
+    import os
+    from pathlib import Path
+
     cwd = Path(__file__).parent.resolve()
     os.environ["OPTIMADE_CONFIG_FILE"] = str(cwd / "static/test_config.json")
 
 
-@pytest.fixture(scope="session")
-def event_loop(request):
-    """Create an instance of the default event loop for each test case."""
-    loop = asyncio.get_event_loop_policy().new_event_loop()
-    yield loop
-    loop.close()
+# PYTEST FIXTURES
 
 
 @pytest.fixture(scope="session")
 def top_dir() -> Path:
     """Return Path instance for the repository's top (root) directory"""
+    from pathlib import Path
+
     return Path(__file__).parent.parent.resolve()
 
 
 @pytest.fixture(scope="session", autouse=True)
-async def setup_db(top_dir: Path) -> None:
+async def _setup_db(top_dir: Path) -> None:
     """Setup test DB"""
     await setup_db_utility(top_dir)
 
 
-@pytest.fixture
-def client() -> (
-    'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
-):
+@pytest.fixture(autouse=True)
+def _patch_mongo_db(top_dir: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Return test config dict"""
+    from optimade_gateway.mongo import database
+
+    MONGO_DB = get_mongo_db(top_dir)
+
+    monkeypatch.setattr(database, "MONGO_DB", MONGO_DB)
+
+
+@pytest.fixture()
+def client() -> AsyncGatewayClient:
     """Return function to make HTTP requests with async httpx client"""
-    from httpx import AsyncClient
+    from httpx import ASGITransport, AsyncClient
 
     async def _client(
         request: str,
-        app: "FastAPI" = None,
-        base_url: str = None,
-        method: 'Literal["get", "post", "put", "delete", "patch"]' = None,
+        app: FastAPI | None = None,
+        base_url: str | None = None,
+        method: Literal["get", "post", "put", "delete", "patch"] | None = None,
         **kwargs,
-    ) -> "Response":
+    ) -> Response:
         """Perform async HTTP request
 
         Parameters:
@@ -113,17 +236,15 @@ def client() -> (
         method = method if method is not None else "get"
 
         async with AsyncClient(
-            app=app, base_url=base_url, follow_redirects=True
+            base_url=base_url, follow_redirects=True, transport=ASGITransport(app=app)
         ) as aclient:
-            response = await getattr(aclient, method)(request, **kwargs)
-
-        return response
+            return await getattr(aclient, method)(request, **kwargs)
 
     return _client
 
 
-@pytest.fixture
-def get_gateway() -> "Callable[[str], Awaitable[dict]]":
+@pytest.fixture()
+def get_gateway() -> GetGateway:
     """Return function to find a single gateway in the current MongoDB"""
 
     async def _get_gateway(id: str) -> dict:
@@ -135,7 +256,7 @@ def get_gateway() -> "Callable[[str], Awaitable[dict]]":
     return _get_gateway
 
 
-@pytest.fixture
+@pytest.fixture()
 async def random_gateway() -> dict:
     """Get a random gateway currently in the MongoDB"""
     from optimade_gateway.mongo.database import MONGO_DB
@@ -148,9 +269,9 @@ async def random_gateway() -> dict:
     return gateway_ids.pop()
 
 
-@pytest.fixture
-async def reset_db_after(top_dir: Path) -> None:
-    """Reset MongoDB with original test data after the test has run"""
+@pytest.fixture(autouse=True)
+async def _reset_db_after(top_dir: Path) -> None:
+    """Reset MongoDB with original test data before the test has run"""
     try:
         yield
     finally:
@@ -158,18 +279,20 @@ async def reset_db_after(top_dir: Path) -> None:
         await setup_db_utility(top_dir)
 
 
-@pytest.fixture
+@pytest.fixture()
 def mock_gateway_responses(
-    httpx_mock: "HTTPXMock", top_dir: Path
-) -> "Callable[[dict], None]":
+    httpx_mock: HTTPXMock, top_dir: Path
+) -> MockGatewayResponses:
     """Add mock responses for gateway databases
 
-    (Successful) mock responses are loaded from local JSON files and returned according to the
-    database id.
+    (Successful) mock responses are loaded from local JSON files and returned according
+    to the database id.
 
     """
+    import json
+    import re
 
-    def _mock_response(gateway: dict) -> None:
+    def _mock_response(gateway: GatewayDict) -> None:
         """Add mock responses (`httpx_mock`) for `gateway`'s databases"""
         for database in gateway["databases"]:
             if database["id"].startswith("sleep"):
@@ -181,11 +304,11 @@ def mock_gateway_responses(
                 gateway["id"].startswith("single-structure")
                 and "_single" not in database["id"]
             ):
-                # Don't mock database responses for single-structure gateways' databases that are
-                # not queried.
+                # Don't mock database responses for single-structure gateways'
+                # databases that are not queried.
                 pass
             else:
-                data: "Union[dict, list]" = json.loads(
+                data: dict | list = json.loads(
                     (
                         top_dir
                         / "tests"
@@ -206,12 +329,14 @@ def mock_gateway_responses(
                     status_code = 200
 
                 httpx_mock.add_response(
-                    url=re.compile(rf"{database['attributes']['base_url']}.*"),
+                    url=re.compile(
+                        rf"{re.escape(database['attributes']['base_url'])}.*"
+                    ),
                     json=data,
                     status_code=status_code,
                 )
 
-    def sleep_response(request: "Request") -> "Response":
+    def sleep_response(request: Request) -> Response:
         """A mock response from an external OPTIMADE DB URL
 
         This response sleeps for X seconds, where X is derived from the database ID.
@@ -223,26 +348,31 @@ def mock_gateway_responses(
 
         std_response_params = {
             "status_code": 200,
-            "extensions": {"http_version": "HTTP/1.1".encode("ascii")},
+            "extensions": {"http_version": b"HTTP/1.1"},
         }
 
         sleep_arg = int(request.url.host.split("-")[-1])
 
         with ThreadPoolExecutor(max_workers=1) as executor:
             executor.map(time.sleep, [sleep_arg])
-        with open(top_dir / "tests/static/db_responses/optimade-sample.json") as handle:
-            data = json.load(handle)
+
+        data = json.loads(
+            (
+                top_dir / "tests" / "static" / "db_responses" / "optimade-sample.json"
+            ).read_bytes()
+        )
+
         return Response(json=data, **std_response_params)
 
     return _mock_response
 
 
-@pytest.fixture
+@pytest.fixture()
 def non_mocked_hosts() -> list:
     return ["example.org"]
 
 
-@pytest.fixture
+@pytest.fixture()
 def generic_meta() -> dict:
     """A generic valid OPTIMADE response meta value"""
     return {

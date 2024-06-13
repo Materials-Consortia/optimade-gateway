@@ -1,11 +1,13 @@
 """Pydantic models/schemas for the LinksResource used in /databases"""
-# pylint: disable=no-self-argument,line-too-long
-from typing import Optional, Union
 
-from optimade.models import Link, LinksResourceAttributes
-from optimade.models.links import LinkType
+from __future__ import annotations
+
+from typing import Annotated
+
+from optimade.models import LinksResourceAttributes
+from optimade.models.links import JsonLinkType, LinkType
 from optimade.models.utils import StrictField
-from pydantic import AnyUrl, validator
+from pydantic import field_validator
 
 from optimade_gateway.models.resources import EntryResourceCreate
 
@@ -29,24 +31,37 @@ class DatabaseCreate(EntryResourceCreate, LinksResourceAttributes):
 
     """
 
-    description: Optional[str]
-    base_url: Union[AnyUrl, Link]
-    homepage: Optional[Union[AnyUrl, Link]] = StrictField(
-        None,
-        description=(
-            "JSON API links object, pointing to a homepage URL for this implementation."
+    description: Annotated[
+        str | None,
+        StrictField(
+            description=LinksResourceAttributes.model_fields["description"].description
         ),
-    )
-    link_type: Optional[LinkType] = StrictField(
-        None,
-        title="Link Type",
-        description=(
-            "The type of the linked relation.\nMUST be one of these values: 'child', "
-            "'root', 'external', 'providers'."
-        ),
-    )
+    ] = None
 
-    @validator("link_type")
+    base_url: Annotated[
+        JsonLinkType,
+        StrictField(
+            description=LinksResourceAttributes.model_fields["base_url"].description
+        ),
+    ]
+
+    homepage: Annotated[
+        JsonLinkType | None,
+        StrictField(
+            description=LinksResourceAttributes.model_fields["homepage"].description,
+        ),
+    ] = None
+
+    link_type: Annotated[
+        LinkType | None,
+        StrictField(
+            title=LinksResourceAttributes.model_fields["link_type"].title,
+            description=LinksResourceAttributes.model_fields["link_type"].description,
+        ),
+    ] = None
+
+    @field_validator("link_type", mode="after")
+    @classmethod
     def ensure_database_link_type(cls, value: LinkType) -> LinkType:
         """Ensure databases are not index meta-database-only types
 

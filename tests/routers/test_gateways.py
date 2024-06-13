@@ -1,28 +1,19 @@
 """Tests for /gateways endpoints"""
-# pylint: disable=no-name-in-module
-from typing import TYPE_CHECKING
 
-import pytest
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from pathlib import Path
-    from typing import Awaitable, Callable
 
-    try:
-        from typing import Literal
-    except ImportError:
-        from typing_extensions import Literal
-
-    from fastapi import FastAPI
-    from httpx import Response
+    from ..conftest import AsyncGatewayClient
 
 
 async def test_get_gateways(
-    client: (
-        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
-    ),
-    top_dir: "Path",
-):
+    client: AsyncGatewayClient,
+    top_dir: Path,
+) -> None:
     """Test GET /gateways"""
     import json
 
@@ -34,20 +25,16 @@ async def test_get_gateways(
     response = GatewaysResponse(**response.json())
     assert response
 
-    with open(top_dir / "tests/static/test_gateways.json") as handle:
-        test_data = json.load(handle)
+    test_data = json.loads(
+        (top_dir / "tests" / "static" / "test_gateways.json").read_text()
+    )
 
     assert response.meta.data_returned == len(test_data)
     assert response.meta.data_available == len(test_data)
     assert not response.meta.more_data_available
 
 
-@pytest.mark.usefixtures("reset_db_after")
-async def test_post_gateways(
-    client: (
-        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
-    ),
-):
+async def test_post_gateways(client: AsyncGatewayClient) -> None:
     """Test POST /gateways"""
     from bson.objectid import ObjectId
     from optimade.models import LinksResource
@@ -67,7 +54,7 @@ async def test_post_gateways(
                     "name": "PyTest test_post_gateways",
                     "description": "This is a valid test database",
                     "base_url": "https://example.org/test",
-                    "homepage": "https://example.org",
+                    "homepage": "https://example.org/",
                     "link_type": "child",
                 },
             }
@@ -84,20 +71,21 @@ async def test_post_gateways(
 
     assert getattr(
         response.meta, f"_{CONFIG.provider.prefix}_created"
-    ), response.meta.dict()
+    ), response.meta.model_dump()
 
     datum = response.data
     assert datum, response
 
-    for response_db, test_db in zip(datum.attributes.databases, data["databases"]):
+    for response_db, test_db in zip(
+        datum.attributes.databases, data["databases"], strict=True
+    ):
         assert (
-            response_db.dict() == LinksResource(**test_db).dict()
+            response_db.model_dump() == LinksResource(**test_db).model_dump()
         ), f"Response: {response_db!r}\n\nTest data: {LinksResource(**test_db)!r}"
-    assert datum.links.dict() == {
+    assert datum.links.model_dump() == {
         "self": AnyUrl(
-            url=f"{'/'.join(str(url).split('/')[:-1])}{BASE_URL_PREFIXES['major']}/gateways/{datum.id}",
-            scheme=url.scheme,
-            host=url.host,
+            f"{'/'.join(str(url).split('/')[:-1])}"
+            f"{BASE_URL_PREFIXES['major']}/gateways/{datum.id}"
         )
     }
 
@@ -108,11 +96,9 @@ async def test_post_gateways(
 
 
 async def test_path_id_raises(
-    client: (
-        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
-    ),
-    top_dir: "Path",
-):
+    client: AsyncGatewayClient,
+    top_dir: Path,
+) -> None:
     """Ensure a suggested gateway id with a forward slash gives an error"""
     import json
 
@@ -131,17 +117,14 @@ async def test_path_id_raises(
     mongo_filter = {"id": bad_gateway_id}
     assert await MONGO_DB["gateways"].count_documents(mongo_filter) == 0
 
-    with open(top_dir / "tests/static/test_gateways.json") as handle:
-        test_data = json.load(handle)
+    test_data = json.loads(
+        (top_dir / "tests" / "static" / "test_gateways.json").read_text()
+    )
 
     assert await MONGO_DB["gateways"].count_documents({}) == len(test_data)
 
 
-async def test_post_gateways_database_ids(
-    client: (
-        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
-    ),
-):
+async def test_post_gateways_database_ids(client: AsyncGatewayClient) -> None:
     """Test POST /gateways with `database_ids` specified"""
     from optimade.server.routers.utils import BASE_URL_PREFIXES
     from pydantic import AnyUrl
@@ -163,7 +146,7 @@ async def test_post_gateways_database_ids(
 
     assert not getattr(
         response.meta, f"_{CONFIG.provider.prefix}_created"
-    ), response.meta.dict()
+    ), response.meta.model_dump()
 
     datum = response.data
     assert datum, response
@@ -172,11 +155,10 @@ async def test_post_gateways_database_ids(
     for database in datum.attributes.databases:
         assert database.id in data["database_ids"]
 
-    assert datum.links.dict() == {
+    assert datum.links.model_dump() == {
         "self": AnyUrl(
-            url=f"{'/'.join(str(url).split('/')[:-1])}{BASE_URL_PREFIXES['major']}/gateways/{datum.id}",
-            scheme=url.scheme,
-            host=url.host,
+            f"{'/'.join(str(url).split('/')[:-1])}"
+            f"{BASE_URL_PREFIXES['major']}/gateways/{datum.id}"
         )
     }
 
@@ -187,12 +169,7 @@ async def test_post_gateways_database_ids(
         assert db["id"] in data["database_ids"]
 
 
-@pytest.mark.usefixtures("reset_db_after")
-async def test_post_gateways_create_with_db_ids(
-    client: (
-        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
-    ),
-):
+async def test_post_gateways_create_with_db_ids(client: AsyncGatewayClient) -> None:
     """Test POST /gateways with `database_ids`, while creating gateway"""
     from optimade.server.routers.utils import BASE_URL_PREFIXES
     from pydantic import AnyUrl
@@ -210,7 +187,7 @@ async def test_post_gateways_create_with_db_ids(
                     "name": "PyTest test_post_gateways",
                     "description": "This is a valid test database",
                     "base_url": "https://example.org/test",
-                    "homepage": "https://example.org",
+                    "homepage": "https://example.org/",
                     "link_type": "child",
                 },
             }
@@ -228,7 +205,7 @@ async def test_post_gateways_create_with_db_ids(
 
     assert getattr(
         response.meta, f"_{CONFIG.provider.prefix}_created"
-    ), response.meta.dict()
+    ), response.meta.model_dump()
 
     datum = response.data
     assert datum, response
@@ -236,11 +213,10 @@ async def test_post_gateways_create_with_db_ids(
     for database in datum.attributes.databases:
         assert database.id in [data["databases"][0]["id"], data["database_ids"][0]]
 
-    assert datum.links.dict() == {
+    assert datum.links.model_dump() == {
         "self": AnyUrl(
-            url=f"{'/'.join(str(url).split('/')[:-1])}{BASE_URL_PREFIXES['major']}/gateways/{datum.id}",
-            scheme=url.scheme,
-            host=url.host,
+            f"{'/'.join(str(url).split('/')[:-1])}"
+            f"{BASE_URL_PREFIXES['major']}/gateways/{datum.id}",
         )
     }
 
@@ -252,12 +228,10 @@ async def test_post_gateways_create_with_db_ids(
 
 
 async def test_get_single_gateway(
-    client: (
-        'Callable[[str, FastAPI, str, Literal["get", "post", "put", "delete", "patch"]], Awaitable[Response]]'
-    ),
+    client: AsyncGatewayClient,
     random_gateway: str,
-    top_dir: "Path",
-):
+    top_dir: Path,
+) -> None:
     """Test GET /gateways/{gateway_id}"""
     import json
 
@@ -269,8 +243,9 @@ async def test_get_single_gateway(
     response = GatewaysResponseSingle(**response.json())
     assert response
 
-    with open(top_dir / "tests/static/test_gateways.json") as handle:
-        test_data = json.load(handle)
+    test_data = json.loads(
+        (top_dir / "tests" / "static" / "test_gateways.json").read_text()
+    )
 
     assert response.meta.data_returned == 1
     assert response.meta.data_available == len(test_data)

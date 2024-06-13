@@ -2,56 +2,67 @@
 
 These functions may be used in general throughout the OPTIMADE Gateway Python code.
 """
-# pylint: disable=line-too-long
+
+from __future__ import annotations
+
 from enum import Enum
 from os import getenv
 from typing import TYPE_CHECKING
 
-from pydantic import BaseModel
+from pydantic import AnyUrl, BaseModel
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    # pylint: disable=unused-import
-    from typing import Any, Dict, Union
+    from typing import Any
 
 
-async def clean_python_types(data: "Any") -> "Any":
+async def clean_python_types(data: Any, **dump_kwargs: Any) -> Any:
     """Turn any types into MongoDB-friendly Python types.
 
-    Use `dict()` method for Pydantic models.
+    Use `model_dump()` method for Pydantic models.
     Use `value` property for Enums.
     Turn tuples and sets into lists.
     """
-    res: "Any" = None
     if isinstance(data, (list, tuple, set)):
-        res = []
+        res_list = []
         for datum in data:
-            res.append(await clean_python_types(datum))
-    elif isinstance(data, dict):
-        res = {}
+            res_list.append(await clean_python_types(datum, **dump_kwargs))
+        return res_list
+
+    if isinstance(data, dict):
+        res_dict = {}
         for key in list(data.keys()):
-            res[key] = await clean_python_types(data[key])
-    elif isinstance(data, BaseModel):
+            res_dict[key] = await clean_python_types(data[key], **dump_kwargs)
+        return res_dict
+
+    if isinstance(data, BaseModel):
         # Pydantic model
-        res = await clean_python_types(data.dict())
-    elif isinstance(data, Enum):
-        res = await clean_python_types(data.value)
-    elif isinstance(data, type):
-        res = await clean_python_types(f"{data.__module__}.{data.__name__}")
-    else:
-        # Unknown or other basic type, e.g., str, int, etc.
-        res = data
-    return res
+        return await clean_python_types(data.model_dump(**dump_kwargs))
+
+    if isinstance(data, Enum):
+        return await clean_python_types(data.value, **dump_kwargs)
+
+    if isinstance(data, type):
+        return await clean_python_types(
+            f"{data.__module__}.{data.__name__}", **dump_kwargs
+        )
+
+    if isinstance(data, AnyUrl):
+        return await clean_python_types(str(data), **dump_kwargs)
+
+    # Unknown or other basic type, e.g., str, int, etc.
+    return data
 
 
 def get_resource_attribute(
-    resource: "Union[BaseModel, Dict[str, Any], None]",
+    resource: BaseModel | dict[str, Any] | None,
     field: str,
-    default: "Any" = None,
+    default: Any = None,
     disambiguate: bool = True,
-) -> "Any":
+) -> Any:
     """Return a resource's field's value
 
-    Get the field value no matter if the resource is a pydantic model or a Python dictionary.
+    Get the field value no matter if the resource is a pydantic model or a Python
+    dictionary.
 
     Determine ambiguous field values and return them if desired (`disambiguate`).
     For example, if
@@ -79,7 +90,7 @@ def get_resource_attribute(
         _get_attr = getattr
     elif isinstance(resource, dict):
 
-        def _get_attr(mapping: dict, key: str, default: "Any") -> "Any":  # type: ignore[misc]
+        def _get_attr(mapping: dict, key: str, default: Any) -> Any:  # type: ignore[misc]
             return mapping.get(key, default)
 
     elif resource is None:
@@ -87,8 +98,8 @@ def get_resource_attribute(
         return default
     else:
         raise TypeError(
-            "resource must be either a pydantic model or a Python dictionary, it was of "
-            f"type {type(resource)!r}"
+            "resource must be either a pydantic model or a Python dictionary, it was "
+            f"of type {type(resource)!r}"
         )
 
     fields = field.split(".")
@@ -97,9 +108,11 @@ def get_resource_attribute(
     field = fields[-1]
     value = _get_attr(resource, field, default)
 
-    if disambiguate:
-        if field in ("base_url", "next", "prev", "last", "first"):
-            if not isinstance(value, str):
-                value = _get_attr(value, "href", default)
+    if (
+        disambiguate
+        and field in ("base_url", "next", "prev", "last", "first")
+        and not isinstance(value, (str, AnyUrl))
+    ):
+        value = _get_attr(value, "href", default)
 
     return value

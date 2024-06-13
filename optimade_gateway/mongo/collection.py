@@ -1,11 +1,13 @@
-# pylint: disable=line-too-long,too-many-branches
 """MongoDB collection for entry-endpoint resources.
 
 The [`AsyncMongoCollection`][optimade_gateway.mongo.collection.AsyncMongoCollection]
 represents an asynchronous version of the equivalent MongoDB collection in `optimade`:
 [`MongoCollection`](https://www.optimade.org/optimade-python-tools/api_reference/server/entry_collections/mongo/#optimade.server.entry_collections.mongo.MongoCollection).
 """
-from datetime import datetime
+
+from __future__ import annotations
+
+from datetime import datetime, timezone
 from os import getenv
 from typing import TYPE_CHECKING
 from warnings import warn
@@ -23,8 +25,7 @@ from optimade_gateway.common.utils import clean_python_types
 from optimade_gateway.warnings import OptimadeGatewayWarning
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    # pylint: disable=unused-import,ungrouped-imports
-    from typing import Any, Dict, List, Optional, Set, Tuple, Union
+    from typing import Any
 
     from optimade.models import EntryResource
     from optimade.server.mappers.entries import BaseResourceMapper
@@ -46,8 +47,8 @@ class AsyncMongoCollection(EntryCollection):
     def __init__(
         self,
         name: str,
-        resource_cls: "EntryResource",
-        resource_mapper: "BaseResourceMapper",
+        resource_cls: EntryResource,
+        resource_mapper: BaseResourceMapper,
     ):
         """Initialize the AsyncMongoCollection for the given parameters.
 
@@ -58,7 +59,7 @@ class AsyncMongoCollection(EntryCollection):
                 changes between deserialization and response.
 
         """
-        from optimade_gateway.mongo.database import (  # pylint: disable=import-outside-toplevel
+        from optimade_gateway.mongo.database import (
             MONGO_DB,
         )
 
@@ -95,21 +96,21 @@ class AsyncMongoCollection(EntryCollection):
         warn(
             OptimadeGatewayWarning(
                 detail=(
-                    "Cannot calculate length of collection using `len()`. Use `count()` "
-                    "instead."
+                    "Cannot calculate length of collection using `len()`. Use "
+                    "`count()` instead."
                 )
             )
         )
         return 0
 
-    def insert(self, data: "List[EntryResource]") -> None:
+    def insert(self, data: list[EntryResource]) -> None:
         raise NotImplementedError(
-            "This method cannot be used with this class and is a remnant from the parent "
-            "class. Use instead the asynchronous method `ainsert(data: "
+            "This method cannot be used with this class and is a remnant from the "
+            "parent class. Use instead the asynchronous method `ainsert(data: "
             "List[EntryResource])`."
         )
 
-    async def ainsert(self, data: "List[EntryResource]") -> None:
+    async def ainsert(self, data: list[EntryResource]) -> None:
         """Add the given entries to the underlying database.
 
         This is the asynchronous version of the parent class method named `insert()`.
@@ -122,16 +123,16 @@ class AsyncMongoCollection(EntryCollection):
 
     def count(self, **kwargs) -> int:
         raise NotImplementedError(
-            "This method cannot be used with this class and is a remnant from the parent "
-            "class. Use instead the asynchronous method `acount(params: "
+            "This method cannot be used with this class and is a remnant from the "
+            "parent class. Use instead the asynchronous method `acount(params: "
             "Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]], "
             "**kwargs)`."
         )
 
     async def acount(
         self,
-        params: "Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]" = None,
-        **kwargs: "Any",
+        params: None | (EntryListingQueryParams | SingleEntryQueryParams) = None,
+        **kwargs: Any,
     ) -> int:
         """Count documents in Collection.
 
@@ -175,8 +176,10 @@ class AsyncMongoCollection(EntryCollection):
         return await self.collection.count_documents(**criteria)
 
     def find(
-        self, params: "Union[EntryListingQueryParams, SingleEntryQueryParams]"
-    ) -> "Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]":
+        self, params: EntryListingQueryParams | SingleEntryQueryParams
+    ) -> tuple[
+        list[EntryResource] | EntryResource | None, int, bool, set[str], set[str]
+    ]:
         """
         Fetches results and indicates if more data is available.
 
@@ -195,17 +198,19 @@ class AsyncMongoCollection(EntryCollection):
 
         """
         raise NotImplementedError(
-            "This method cannot be used with this class and is a remnant from the parent "
-            "class. Use instead the asynchronous method `afind(params: "
-            "Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]], criteria: "
-            "Optional[Dict[str, Any]])`."
+            "This method cannot be used with this class and is a remnant from the "
+            "parent class. Use instead the asynchronous method `afind(params: "
+            "Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]], "
+            "criteria: Optional[Dict[str, Any]])`."
         )
 
     async def afind(
         self,
-        params: "Optional[Union[EntryListingQueryParams, SingleEntryQueryParams]]" = None,
-        criteria: "Optional[Dict[str, Any]]" = None,
-    ) -> "Tuple[Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]]":
+        params: None | (EntryListingQueryParams | SingleEntryQueryParams) = None,
+        criteria: dict[str, Any] | None = None,
+    ) -> tuple[
+        list[EntryResource] | EntryResource | None, int, bool, set[str], set[str]
+    ]:
         """Perform the query on the underlying MongoDB Collection, handling projection
         and pagination of the output.
 
@@ -302,8 +307,8 @@ class AsyncMongoCollection(EntryCollection):
         )
 
     def handle_query_params(
-        self, params: "Union[EntryListingQueryParams, SingleEntryQueryParams]"
-    ) -> "Dict[str, Any]":
+        self, params: EntryListingQueryParams | SingleEntryQueryParams
+    ) -> dict[str, Any]:
         """Parse and interpret the backend-agnostic query parameter models into a
         dictionary that can be used by the specific backend.
 
@@ -324,14 +329,15 @@ class AsyncMongoCollection(EntryCollection):
 
         """
         raise NotImplementedError(
-            "This method cannot be used with this class and is a remnant from the parent "
-            "class. Use instead the asynchronous method `ahandle_query_params(params: "
-            "Union[EntryListingQueryParams, SingleEntryQueryParams])`."
+            "This method cannot be used with this class and is a remnant from the "
+            "parent class. Use instead the asynchronous method "
+            "`ahandle_query_params(params: Union[EntryListingQueryParams, "
+            "SingleEntryQueryParams])`."
         )
 
     async def ahandle_query_params(
-        self, params: "Union[EntryListingQueryParams, SingleEntryQueryParams]"
-    ) -> "Dict[str, Any]":
+        self, params: EntryListingQueryParams | SingleEntryQueryParams
+    ) -> dict[str, Any]:
         """Parse and interpret the backend-agnostic query parameter models into a
         dictionary that can be used by the specific backend.
 
@@ -357,24 +363,25 @@ class AsyncMongoCollection(EntryCollection):
         return super().handle_query_params(params)
 
     def _run_db_query(
-        self, criteria: "Dict[str, Any]", single_entry: bool = False
-    ) -> "Tuple[List[Dict[str, Any]], int, bool]":
+        self, criteria: dict[str, Any], single_entry: bool = False
+    ) -> tuple[list[dict[str, Any]], int, bool]:
         raise NotImplementedError(
-            "This method cannot be used with this class and is a remnant from the parent "
-            "class. Use instead the asynchronous method `_arun_db_query(criteria: "
-            "Dict[str, Any], single_entry: bool)`."
+            "This method cannot be used with this class and is a remnant from the "
+            "parent class. Use instead the asynchronous method "
+            "`_arun_db_query(criteria: Dict[str, Any], single_entry: bool)`."
         )
 
     async def _arun_db_query(
-        self, criteria: "Dict[str, Any]", single_entry: bool = False
-    ) -> "Tuple[List[Dict[str, Any]], int, bool]":
+        self, criteria: dict[str, Any], single_entry: bool = False
+    ) -> tuple[list[dict[str, Any]], int, bool]:
         """Run the query on the backend and collect the results.
 
         This is the asynchronous version of the parent class method named `count()`.
 
         Arguments:
             criteria: A dictionary representation of the query parameters.
-            single_entry: Whether or not the caller is expecting a single entry response.
+            single_entry: Whether or not the caller is expecting a single entry
+                response.
 
         Returns:
             The list of entries from the database (without any re-mapping), the total
@@ -400,7 +407,7 @@ class AsyncMongoCollection(EntryCollection):
         return results, data_returned, more_data_available
 
     @staticmethod
-    def _check_aliases(aliases: "Tuple[Tuple[str, str]]") -> None:
+    def _check_aliases(aliases: tuple[tuple[str, str]]) -> None:
         """Check that aliases do not clash with mongo keywords.
 
         Parameters:
@@ -415,7 +422,7 @@ class AsyncMongoCollection(EntryCollection):
         ):
             raise RuntimeError(f"Cannot define an alias starting with a '$': {aliases}")
 
-    async def get_one(self, **criteria: "Any") -> "EntryResource":
+    async def get_one(self, **criteria: Any) -> EntryResource:
         """Get one resource based on criteria
 
         Warning:
@@ -437,7 +444,7 @@ class AsyncMongoCollection(EntryCollection):
             )
         )
 
-    async def get_multiple(self, **criteria: "Any") -> "List[EntryResource]":
+    async def get_multiple(self, **criteria: Any) -> list[EntryResource]:
         """Get a list of resources based on criteria
 
         Warning:
@@ -459,7 +466,7 @@ class AsyncMongoCollection(EntryCollection):
 
         return results
 
-    async def create_one(self, resource: "EntryResourceCreate") -> "EntryResource":
+    async def create_one(self, resource: EntryResourceCreate) -> EntryResource:
         """Create a new document in the MongoDB collection based on query parameters.
 
         Update the newly created document with an `"id"` field.
@@ -473,9 +480,9 @@ class AsyncMongoCollection(EntryCollection):
             The newly created document as a pydantic model entry resource.
 
         """
-        resource.last_modified = datetime.utcnow()
+        resource.last_modified = datetime.now(timezone.utc)
         result = await self.collection.insert_one(
-            await clean_python_types(resource.dict(exclude_unset=True))
+            await clean_python_types(resource.model_dump(exclude_unset=True))
         )
         LOGGER.debug(
             "Inserted resource %r in DB collection %s with ID %s",
@@ -506,7 +513,7 @@ class AsyncMongoCollection(EntryCollection):
         return bool(await self.collection.count_documents({"id": entry_id}))
 
     @staticmethod
-    def _valid_find_keys(**kwargs: "Dict[str, Any]") -> "Dict[str, Any]":
+    def _valid_find_keys(**kwargs: dict[str, Any]) -> dict[str, Any]:
         """Return valid MongoDB find() keys with values from kwargs
 
         Note, not including deprecated flags

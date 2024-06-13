@@ -1,9 +1,9 @@
-FROM python:3.8-alpine
+FROM python:3.10-alpine
 
 WORKDIR /app
 
 # Copy repo contents
-COPY setup.py README.md requirements*.txt ./
+COPY pyproject.toml README.md ./
 COPY optimade_gateway ./optimade_gateway
 COPY .ci ./.ci
 RUN pip install -e .

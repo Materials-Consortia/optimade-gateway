@@ -1,4 +1,7 @@
 """Test queries/perform.py"""
+
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 import pytest
@@ -8,8 +11,8 @@ if TYPE_CHECKING:
 
 
 async def test_db_get_all_resources_recursivity(
-    httpx_mock: "HTTPXMock", generic_meta: dict
-):
+    httpx_mock: HTTPXMock, generic_meta: dict
+) -> None:
     """Test the recursivity of db_get_all_resources()"""
     import re
 
@@ -73,8 +76,8 @@ async def test_db_get_all_resources_recursivity(
 
 
 async def test_db_get_all_resources_error_response(
-    httpx_mock: "HTTPXMock", caplog: pytest.LogCaptureFixture, generic_meta: dict
-):
+    httpx_mock: HTTPXMock, caplog: pytest.LogCaptureFixture, generic_meta: dict
+) -> None:
     """Test db_get_all_resources when an ErrorResponse is received"""
     import re
 
@@ -111,6 +114,6 @@ async def test_db_get_all_resources_error_response(
 
     assert not resources
     assert (
-        f"Error while querying database (id={response['data'][0]['id']!r}). Full response:"
-        in caplog.text
+        f"Error while querying database (id={response['data'][0]['id']!r}). Full "
+        "response:" in caplog.text
     )

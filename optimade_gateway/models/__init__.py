@@ -1,12 +1,21 @@
 """
 Pydantic models
 
-All pydantic data and response models used to define the API can be found in this module.
+All pydantic data and response models used to define the API can be found in this
+module.
 """
+
+from __future__ import annotations
 
 from .databases import DatabaseCreate
 from .gateways import GatewayCreate, GatewayResource, GatewayResourceAttributes
-from .queries import GatewayQueryResponse, QueryCreate, QueryResource, QueryState
+from .queries import (
+    EndpointEntryType,
+    GatewayQueryResponse,
+    QueryCreate,
+    QueryResource,
+    QueryState,
+)
 from .resources import EntryResourceCreate
 from .responses import (
     DatabasesResponse,
@@ -22,6 +31,7 @@ __all__ = (
     "DatabaseCreate",
     "DatabasesResponse",
     "DatabasesResponseSingle",
+    "EndpointEntryType",
     "EntryResourceCreate",
     "GatewayCreate",
     "GatewayQueryResponse",

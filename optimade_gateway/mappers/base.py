@@ -1,8 +1,12 @@
-# pylint: disable=line-too-long,import-outside-toplevel
 """Base resource mapper.
 
-Based on the [`BaseResourceMapper`](https://www.optimade.org/optimade-python-tools/api_reference/server/mappers/entries/#optimade.server.mappers.entries.BaseResourceMapper) in OPTIMADE Python tools.
+Based on the
+[`BaseResourceMapper`](https://www.optimade.org/optimade-python-tools/api_reference/server/mappers/entries/#optimade.server.mappers.entries.BaseResourceMapper)
+in OPTIMADE Python tools.
 """
+
+from __future__ import annotations
+
 from os import getenv
 from typing import TYPE_CHECKING
 
@@ -14,8 +18,7 @@ from pydantic import AnyUrl
 from optimade_gateway.common.config import CONFIG
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    # pylint: disable=unused-import,ungrouped-imports
-    from typing import Iterable, List, Union
+    from collections.abc import Iterable
 
     from optimade.models import EntryResource
 
@@ -54,8 +57,8 @@ class BaseResourceMapper(OptimadeBaseResourceMapper):
 
     @classmethod
     async def adeserialize(
-        cls, results: "Union[dict, Iterable[dict]]"
-    ) -> "Union[List[EntryResource], EntryResource]":
+        cls, results: dict | Iterable[dict]
+    ) -> list[EntryResource] | EntryResource:
         """Asynchronous version of the `deserialize()` class method.
 
         Parameters:
@@ -67,7 +70,7 @@ class BaseResourceMapper(OptimadeBaseResourceMapper):
             `results`.
 
         """
-        return super(BaseResourceMapper, cls).deserialize(results)
+        return super().deserialize(results)
 
     @classmethod
     def map_back(cls, doc: dict) -> dict:
@@ -84,8 +87,6 @@ class BaseResourceMapper(OptimadeBaseResourceMapper):
                     f"{CONFIG.base_url.strip('/')}{BASE_URL_PREFIXES['major']}"
                     f"/{cls.ENDPOINT}/{doc['id']}"
                 ),
-                scheme=CONFIG.base_url.split("://", maxsplit=1)[0],
-                host=CONFIG.base_url.split("://", maxsplit=2)[1].split("/")[0],
             )
         }
         return super().map_back(doc)

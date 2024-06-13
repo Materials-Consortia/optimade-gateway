@@ -4,6 +4,9 @@ These are in addition to the middleware available in OPTIMADE Python tools.
 For more information see
 https://www.optimade.org/optimade-python-tools/api_reference/server/middleware/.
 """
+
+from __future__ import annotations
+
 import re
 from os import getenv
 from typing import TYPE_CHECKING
@@ -13,7 +16,6 @@ from optimade.server.routers.utils import BASE_URL_PREFIXES, get_base_url
 from starlette.middleware.base import BaseHTTPMiddleware
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    # pylint: disable=unused-import,ungrouped-imports
     from fastapi import Request
     from starlette.datastructures import URL
 
@@ -23,7 +25,7 @@ class CheckWronglyVersionedBaseUrlsGateways(BaseHTTPMiddleware):
     return `553 Version Not Supported`."""
 
     @staticmethod
-    async def check_url(url: "URL"):
+    async def check_url(url: URL):
         """Check URL path for versioned part.
 
         Parameters:
@@ -39,19 +41,20 @@ class CheckWronglyVersionedBaseUrlsGateways(BaseHTTPMiddleware):
         match = re.match(
             r"^/gateways/[^/\s]+(?P<version>/v[0-9]+(\.[0-9]+){0,2}).*", optimade_path
         )
-        if match is not None:
-            if match.group("version") not in BASE_URL_PREFIXES.values():
-                raise VersionNotSupported(
-                    detail=(
-                        f"The parsed versioned base URL {match.group('version')!r} from "
-                        f"{url} is not supported by this implementation. "
-                        "Supported versioned base URLs are: "
-                        f"{', '.join(BASE_URL_PREFIXES.values())}"
-                    )
+        if (
+            match is not None
+            and match.group("version") not in BASE_URL_PREFIXES.values()
+        ):
+            raise VersionNotSupported(
+                detail=(
+                    f"The parsed versioned base URL {match.group('version')!r} "
+                    f"from {url} is not supported by this implementation. "
+                    "Supported versioned base URLs are: "
+                    f"{', '.join(BASE_URL_PREFIXES.values())}"
                 )
+            )
 
-    async def dispatch(self, request: "Request", call_next):
+    async def dispatch(self, request: Request, call_next):
         if request.url.path:
             await self.check_url(request.url)
-        response = await call_next(request)
-        return response
+        return await call_next(request)

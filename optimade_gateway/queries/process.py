@@ -1,4 +1,7 @@
 """Process performed OPTIMADE queries."""
+
+from __future__ import annotations
+
 from os import getenv
 from typing import TYPE_CHECKING
 from warnings import warn
@@ -12,8 +15,7 @@ from optimade_gateway.queries.utils import update_query
 from optimade_gateway.warnings import OptimadeGatewayWarning
 
 if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
-    # pylint: disable=unused-import,ungrouped-imports
-    from typing import Any, Dict, List, Union
+    from typing import Any
 
     from optimade.models import EntryResource, EntryResponseMany, EntryResponseOne
 
@@ -21,11 +23,11 @@ if TYPE_CHECKING or bool(getenv("MKDOCS_BUILD", "")):  # pragma: no cover
 
 
 async def process_db_response(
-    response: "Union[ErrorResponse, EntryResponseMany, EntryResponseOne]",
+    response: ErrorResponse | EntryResponseMany | EntryResponseOne,
     database_id: str,
-    query: "QueryResource",
-    gateway: "GatewayResource",
-) -> "Union[List[EntryResource], List[Dict[str, Any]], EntryResource, Dict[str, Any], None]":  # pylint: disable=line-too-long
+    query: QueryResource,
+    gateway: GatewayResource,
+) -> list[EntryResource] | list[dict[str, Any]] | EntryResource | dict[str, Any] | None:
     """Process an OPTIMADE database response.
 
     The passed `query` will be updated with the top-level `meta` information:
@@ -60,7 +62,7 @@ async def process_db_response(
                 # model.
                 meta_error = {}
                 if error.meta:
-                    meta_error = error.meta.dict()
+                    meta_error = error.meta.model_dump()
                 meta_error.update(
                     {
                         f"_{CONFIG.provider.prefix}_source_gateway": {
