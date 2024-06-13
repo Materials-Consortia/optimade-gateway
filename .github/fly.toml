@@ -8,6 +8,8 @@ primary_region = "arn"
 
 [build.args]
   CONFIG_FILE = "config_fly.yml"
+
+[env]
   PORT = "8080"
 
 [http_service]

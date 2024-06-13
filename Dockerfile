@@ -8,7 +8,7 @@ COPY optimade_gateway ./optimade_gateway
 COPY .ci ./.ci
 RUN pip install -e .
 
-ARG PORT=80
+ENV PORT=80
 EXPOSE ${PORT}
 
 ARG CONFIG_FILE=optimade_gateway/config.json
