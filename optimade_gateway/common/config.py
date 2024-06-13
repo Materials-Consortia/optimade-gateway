@@ -93,6 +93,7 @@ class ServerConfig(OptimadeServerConfig):
     def write_pem_content_to_file(self) -> ServerConfig:
         """Write the MongoDB Atlas PEM content to a file"""
         if self.mongo_atlas_pem_content:
+            self.mongo_certfile.parent.mkdir(parents=True, exist_ok=True)
             self.mongo_certfile.write_text(
                 self.mongo_atlas_pem_content.get_secret_value()
             )
