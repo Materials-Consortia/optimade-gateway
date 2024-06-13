@@ -13,6 +13,8 @@ MONGO_CLIENT = AsyncIOMotorClient(
     readConcernLevel="majority",
     readPreference="primary",
     w="majority",
+    tls=True,
+    tlsCertificateKeyFile=str(CONFIG.mongo_certfile),
 )
 """The MongoDB motor client."""
 

@@ -4,11 +4,12 @@ from __future__ import annotations
 
 import os
 import re
+from pathlib import Path
 from typing import Annotated
 from warnings import warn
 
 from optimade.server.config import ServerConfig as OptimadeServerConfig
-from pydantic import Field, field_validator
+from pydantic import Field, SecretStr, field_validator, model_validator
 
 from optimade_gateway.warnings import OptimadeGatewayWarning
 
@@ -51,6 +52,20 @@ class ServerConfig(OptimadeServerConfig):
         ),
     ] = True
 
+    mongo_certfile: Annotated[
+        Path,
+        Field(
+            description="Path to the MongoDB certificate file.",
+        ),
+    ] = Path("/certs/mongodb.pem")
+
+    mongo_atlas_pem_content: Annotated[
+        SecretStr | None,
+        Field(
+            description="PEM content for MongoDB Atlas certificate.",
+        ),
+    ] = None
+
     @field_validator("mongo_uri", mode="after")
     @classmethod
     def replace_with_env_vars(cls, value: str) -> str:
@@ -73,6 +88,16 @@ class ServerConfig(OptimadeServerConfig):
                     )
                 )
         return res
+
+    @model_validator(mode="after")
+    def write_pem_content_to_file(self) -> ServerConfig:
+        """Write the MongoDB Atlas PEM content to a file"""
+        if self.mongo_atlas_pem_content:
+            self.mongo_certfile.write_text(
+                self.mongo_atlas_pem_content.get_secret_value()
+            )
+
+        return self
 
 
 CONFIG = ServerConfig()
