@@ -1,0 +1,28 @@
+debug: true
+mongo_uri: "mongodb+srv://optimade.6zqxq.mongodb.net/?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority"
+mongo_database: optimade_gateway
+database_backend: mongodb
+page_limit: 20
+page_limit_max: 500
+base_url: "https://optimade-gateway.fly.dev"
+implementation:
+  name: OPTIMADE Gateway
+  version: "0.4.0"
+  source_url: "https://github.com/Materials-Consortia/optimade-gateway"
+  maintainer:
+    email: "casper.w.andersen@sintef.no"
+  issue_tracker: "https://github.com/Materials-Consortia/optimade-gateway/issues"
+index_base_url: null
+provider:
+  name: OPTIMADE Gateway
+  description: A gateway server to query multiple OPTIMADE databases.
+  prefix: gateway
+  homepage: "https://github.com/Materials-Consortia/optimade-gateway"
+provider_fields: {}
+aliases: {}
+length_aliases: {}
+log_level: debug
+log_dir: "/app/logs/"
+load_optimade_providers_databases: false
+# hydra_application_id: 1bb6b264-d896-47e2-b54d-6d49e05299f2
+# hydra_scopes: ["openid", "email"]

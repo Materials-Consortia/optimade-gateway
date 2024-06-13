@@ -7,12 +7,24 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from optimade_gateway.common.config import CONFIG
 from optimade_gateway.common.logger import LOGGER
 
+mongo_client_configuration: dict[str, str | bool] = {
+    "appname": "optimade-gateway",
+    "readConcernLevel": "majority",
+    "readPreference": "primary",
+    "w": "majority",
+}
+
+if CONFIG.mongo_atlas_pem_content:
+    mongo_client_configuration.update(
+        {
+            "tls": True,
+            "tlsCertificateKeyFile": str(CONFIG.mongo_certfile),
+        }
+    )
+
 MONGO_CLIENT = AsyncIOMotorClient(
     CONFIG.mongo_uri,
-    appname="optimade-gateway",
-    readConcernLevel="majority",
-    readPreference="primary",
-    w="majority",
+    **mongo_client_configuration,
 )
 """The MongoDB motor client."""
 

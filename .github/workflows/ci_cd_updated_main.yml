@@ -32,3 +32,27 @@ jobs:
       docs_framework: mkdocs
     secrets:
       PAT: ${{ secrets.RELEASE_PAT_CASPER }}
+
+  deploy-fly:
+    name: Deploy to Fly
+    if: github.repository_owner == 'Materials-Consortia'
+    runs-on: ubuntu-latest
+
+    environment:
+      name: fly
+      url: https://optimade-gateway.fly.dev
+
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up Fly
+      uses: superfly/flyctl-actions/setup-flyctl@v1
+
+    - name: Deploy to Fly
+      run: flyctl deploy --remote-only -c ./.github/fly.toml
