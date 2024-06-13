@@ -38,6 +38,10 @@ jobs:
     if: github.repository_owner == 'Materials-Consortia'
     runs-on: ubuntu-latest
 
+    environment:
+      name: fly
+      url: https://optimade-gateway.fly.dev
+
     env:
       FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
       OPTIMADE_CONFIG_FILE: /app/tests/test_config.json
