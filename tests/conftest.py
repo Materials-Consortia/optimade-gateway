@@ -210,7 +210,7 @@ def _patch_mongo_db(top_dir: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(database, "MONGO_DB", MONGO_DB)
 
 
-@pytest.fixture()
+@pytest.fixture
 def client() -> AsyncGatewayClient:
     """Return function to make HTTP requests with async httpx client"""
     from httpx import ASGITransport, AsyncClient
@@ -243,7 +243,7 @@ def client() -> AsyncGatewayClient:
     return _client
 
 
-@pytest.fixture()
+@pytest.fixture
 def get_gateway() -> GetGateway:
     """Return function to find a single gateway in the current MongoDB"""
 
@@ -256,7 +256,7 @@ def get_gateway() -> GetGateway:
     return _get_gateway
 
 
-@pytest.fixture()
+@pytest.fixture
 async def random_gateway() -> dict:
     """Get a random gateway currently in the MongoDB"""
     from optimade_gateway.mongo.database import MONGO_DB
@@ -279,7 +279,7 @@ async def _reset_db_after(top_dir: Path) -> None:
         await setup_db_utility(top_dir)
 
 
-@pytest.fixture()
+@pytest.fixture
 def mock_gateway_responses(
     httpx_mock: HTTPXMock, top_dir: Path
 ) -> MockGatewayResponses:
@@ -367,12 +367,12 @@ def mock_gateway_responses(
     return _mock_response
 
 
-@pytest.fixture()
+@pytest.fixture
 def non_mocked_hosts() -> list:
     return ["example.org"]
 
 
-@pytest.fixture()
+@pytest.fixture
 def generic_meta() -> dict:
     """A generic valid OPTIMADE response meta value"""
     return {
