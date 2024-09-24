@@ -92,7 +92,7 @@ async def load_optimade_providers_databases() -> None:
     if TYPE_CHECKING or bool(os.getenv("MKDOCS_BUILD", "")):  # pragma: no cover
         providers: httpx.Response | LinksResponse
 
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(timeout=5.0) as client:
         providers = await client.get(
             "https://providers.optimade.org/v"
             f"{__api_version__.split('.', maxsplit=1)[0]}/links"
@@ -187,7 +187,7 @@ async def load_optimade_providers_databases() -> None:
                 get_resource_attribute(database, "id"),
             )
 
-            async with httpx.AsyncClient() as client:
+            async with httpx.AsyncClient(timeout=5.0) as client:
                 try:
                     db_response = await client.get(
                         f"{str(get_resource_attribute(database, 'attributes.base_url')).rstrip('/')}"  # noqa: E501
