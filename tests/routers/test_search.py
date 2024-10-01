@@ -11,6 +11,8 @@ if TYPE_CHECKING:
 
     from ..conftest import AsyncGatewayClient, GetGateway, MockGatewayResponses
 
+pytestmark = pytest.mark.httpx_mock(can_send_already_matched_responses=True)
+
 
 async def test_get_search(
     client: AsyncGatewayClient,
@@ -453,6 +455,7 @@ async def test_sort_no_effect(
         )
 
 
+@pytest.mark.httpx_mock(assert_all_requests_were_expected=False)
 async def test_get_search_not_finishing(
     client: AsyncGatewayClient,
     mock_gateway_responses: MockGatewayResponses,

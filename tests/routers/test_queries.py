@@ -216,6 +216,7 @@ async def test_errored_query_results(
     assert response.data.attributes.response.errors
 
 
+@pytest.mark.httpx_mock(can_send_already_matched_responses=True)
 async def test_sort_no_effect(
     client: AsyncGatewayClient,
     get_gateway: GetGateway,

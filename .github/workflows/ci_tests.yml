@@ -85,7 +85,7 @@ jobs:
       env:
         OPTIMADE_MONGO_URI: "mongodb://localhost:27017"
         OPTIMADE_DATABASE_BACKEND: ${{ matrix.database-backend }}
-      run: pytest -vvv --cov-report=xml
+      run: pytest -vvv --cov-report=xml --color=yes
 
     - name: Upload coverage to Codecov
       if: github.repository == 'Materials-Consortia/optimade-gateway'

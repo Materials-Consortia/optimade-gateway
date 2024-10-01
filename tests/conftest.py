@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import pytest
+import pytest_asyncio
 
 if TYPE_CHECKING:
     from collections.abc import Awaitable
@@ -186,7 +187,7 @@ def pytest_configure(config: pytest.Config):  # noqa: ARG001
 # PYTEST FIXTURES
 
 
-@pytest.fixture(scope="session")
+@pytest_asyncio.fixture(loop_scope="session", scope="session")
 def top_dir() -> Path:
     """Return Path instance for the repository's top (root) directory"""
     from pathlib import Path
@@ -194,7 +195,7 @@ def top_dir() -> Path:
     return Path(__file__).parent.parent.resolve()
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest_asyncio.fixture(loop_scope="session", scope="session", autouse=True)
 async def _setup_db(top_dir: Path) -> None:
     """Setup test DB"""
     await setup_db_utility(top_dir)
