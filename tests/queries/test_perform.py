@@ -9,6 +9,8 @@ import pytest
 if TYPE_CHECKING:
     from pytest_httpx import HTTPXMock
 
+pytestmark = pytest.mark.httpx_mock(can_send_already_matched_responses=True)
+
 
 async def test_db_get_all_resources_recursivity(
     httpx_mock: HTTPXMock, generic_meta: dict

@@ -14,6 +14,8 @@ if TYPE_CHECKING:
 
     from .conftest import GetGateway, MockGatewayResponses
 
+pytestmark = pytest.mark.httpx_mock(can_send_already_matched_responses=True)
+
 
 async def test_ci_dev_startup_ci(
     caplog: pytest.LogCaptureFixture, top_dir: Path
