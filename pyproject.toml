@@ -44,7 +44,7 @@ docs = [
 dev = [
     "mongomock_motor~=0.0.29",
     "optimade-gateway[docs]",
-    "pre-commit~=3.7",
+    "pre-commit~=4.0",
     "pytest~=8.2",
     "pytest-asyncio~=0.24.0",
     "pytest-cov~=5.0",
