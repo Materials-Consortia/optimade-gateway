@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -2463,6 +2463,11 @@
 
 
 
+
+
+
+
+
   <div class="doc doc-children">
 
 
@@ -2507,11 +2512,16 @@
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="enum.Enum">Enum</span></code></p>
+              Bases: <code>Enum</code></p>
 
 
         <p>Entry endpoint resource types, mapping to their pydantic models from the
 <code>optimade</code> package.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
@@ -2742,10 +2752,15 @@
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="optimade.models.EntryResource">EntryResource</span></code></p>
+              Bases: <code>EntryResource</code></p>
 
 
         <p>Entry Resource ensuring datetimes are not naive.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
@@ -2850,10 +2865,15 @@
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="optimade.models.Response">Response</span></code></p>
+              Bases: <code>Response</code></p>
 
 
         <p>Response from a Gateway Query.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
@@ -3085,10 +3105,15 @@
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+              Bases: <code>BaseModel</code></p>
 
 
         <p>Common OPTIMADE entry listing endpoint query parameters.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
@@ -3589,10 +3614,15 @@
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.resources.EntryResourceCreate" href="../resources/#optimade_gateway.models.resources.EntryResourceCreate">EntryResourceCreate</a></code>, <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.queries.QueryResourceAttributes" href="#optimade_gateway.models.queries.QueryResourceAttributes">QueryResourceAttributes</a></code></p>
+              Bases: <code>EntryResourceCreate</code>, <code>QueryResourceAttributes</code></p>
 
 
         <p>Model for creating new Query resources in the MongoDB</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
@@ -3783,10 +3813,15 @@
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="typing.TypedDict">TypedDict</span></code></p>
+              Bases: <code>TypedDict</code></p>
 
 
         <p>Type definition for <code>QUERY_PARAMETERS</code>.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
@@ -3873,10 +3908,15 @@
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.queries.EntryResource" href="#optimade_gateway.models.queries.EntryResource">EntryResource</a></code></p>
+              Bases: <code>EntryResource</code></p>
 
 
         <p>OPTIMADE query resource for a gateway</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
@@ -4193,9 +4233,11 @@ query results as they currently are (if there are any at all).</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>url</code></td>
             <td>
-                  <code>None | <span title="urllib.parse.ParseResult">ParseResult</span> | <span title="urllib.parse.SplitResult">SplitResult</span> | <span title="starlette.datastructures.URL">URL</span> | str</code>
+                <code>url</code>
+            </td>
+            <td>
+                  <code>None | ParseResult | SplitResult | URL | str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4221,7 +4263,7 @@ query results as they currently are (if there are any at all).</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><span title="optimade.models.EntryResponseMany">EntryResponseMany</span> | <span title="optimade.models.ErrorResponse">ErrorResponse</span></code>
+                  <code>EntryResponseMany | ErrorResponse</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4231,7 +4273,7 @@ query results as they currently are (if there are any at all).</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                  <code><span title="optimade.models.EntryResponseMany">EntryResponseMany</span> | <span title="optimade.models.ErrorResponse">ErrorResponse</span></code>
+                  <code>EntryResponseMany | ErrorResponse</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4241,7 +4283,7 @@ query results as they currently are (if there are any at all).</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                  <code><span title="optimade.models.EntryResponseMany">EntryResponseMany</span> | <span title="optimade.models.ErrorResponse">ErrorResponse</span></code>
+                  <code>EntryResponseMany | ErrorResponse</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4484,10 +4526,15 @@ query results as they currently are (if there are any at all).</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="optimade.models.EntryResourceAttributes">EntryResourceAttributes</span></code></p>
+              Bases: <code>EntryResourceAttributes</code></p>
 
 
         <p>Attributes for an OPTIMADE gateway query.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
@@ -4792,11 +4839,16 @@ query results as they currently are (if there are any at all).</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="enum.Enum">Enum</span></code></p>
+              Bases: <code>Enum</code></p>
 
 
         <p>Enumeration of possible states for a Gateway Query.</p>
 <p>The states are enumerated here in the expected evolvement.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>

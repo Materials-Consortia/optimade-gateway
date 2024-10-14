@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -1455,6 +1455,11 @@
 
 
 
+
+
+
+
+
   <div class="doc doc-children">
 
 
@@ -1499,9 +1504,11 @@ be either an empty list or <code>None</code>.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>response</code></td>
             <td>
-                  <code><span title="optimade.models.ErrorResponse">ErrorResponse</span> | <span title="optimade.models.EntryResponseMany">EntryResponseMany</span> | <span title="optimade.models.EntryResponseOne">EntryResponseOne</span></code>
+                <code>response</code>
+            </td>
+            <td>
+                  <code>ErrorResponse | EntryResponseMany | EntryResponseOne</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1513,7 +1520,9 @@ be either an empty list or <code>None</code>.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>database_id</code></td>
+            <td>
+                <code>database_id</code>
+            </td>
             <td>
                   <code>str</code>
             </td>
@@ -1528,9 +1537,11 @@ will be delivered.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>query</code></td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.QueryResource" href="../../models/queries/#optimade_gateway.models.queries.QueryResource">QueryResource</a></code>
+                <code>query</code>
+            </td>
+            <td>
+                  <code>QueryResource</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1542,9 +1553,11 @@ will be delivered.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>gateway</code></td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.GatewayResource" href="../../models/gateways/#optimade_gateway.models.gateways.GatewayResource">GatewayResource</a></code>
+                <code>gateway</code>
+            </td>
+            <td>
+                  <code>GatewayResource</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1570,7 +1583,7 @@ will be delivered.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>list[<span title="optimade.models.EntryResource">EntryResource</span>] | list[dict[str, <span title="typing.Any">Any</span>]] | <span title="optimade.models.EntryResource">EntryResource</span> | dict[str, <span title="typing.Any">Any</span>] | None</code>
+                  <code>list[EntryResource] | list[dict[str, Any]] | EntryResource | dict[str, Any] | None</code>
             </td>
             <td>
               <div class="doc-md-description">

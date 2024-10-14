@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -1689,6 +1689,11 @@
 
 
 
+
+
+
+
+
   <div class="doc doc-children">
 
 
@@ -1711,10 +1716,15 @@
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.resources.EntryResourceCreate" href="../resources/#optimade_gateway.models.resources.EntryResourceCreate">EntryResourceCreate</a></code>, <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.gateways.GatewayResourceAttributes" href="#optimade_gateway.models.gateways.GatewayResourceAttributes">GatewayResourceAttributes</a></code></p>
+              Bases: <code>EntryResourceCreate</code>, <code>GatewayResourceAttributes</code></p>
 
 
         <p>Model for creating new Gateway resources in the MongoDB</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade_gateway/models/gateways.py</code></summary>
@@ -1924,7 +1934,7 @@ Both together is also fine.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="optimade.models.EntryResource">EntryResource</span></code></p>
+              Bases: <code>EntryResource</code></p>
 
 
         <p>OPTIMADE gateway</p>
@@ -1932,6 +1942,11 @@ Both together is also fine.</p>
 The gateway can be treated as any other OPTIMADE gateway, but the entries are an
 aggregate of multiple databases. The <code>id</code> of each aggregated resource will reflect
 the originating database.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade_gateway/models/gateways.py</code></summary>
@@ -2092,10 +2107,15 @@ the originating database.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="optimade.models.EntryResourceAttributes">EntryResourceAttributes</span></code></p>
+              Bases: <code>EntryResourceAttributes</code></p>
 
 
         <p>Attributes for an OPTIMADE gateway</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade_gateway/models/gateways.py</code></summary>

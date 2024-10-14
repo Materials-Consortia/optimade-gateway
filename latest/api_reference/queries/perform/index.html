@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -1491,6 +1491,11 @@
 
 
 
+
+
+
+
+
   <div class="doc doc-children">
 
 
@@ -1527,9 +1532,11 @@
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>database</code></td>
             <td>
-                  <code><span title="optimade.models.LinksResource">LinksResource</span> | dict[str, <span title="typing.Any">Any</span>]</code>
+                <code>database</code>
+            </td>
+            <td>
+                  <code>LinksResource | dict[str, Any]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1542,7 +1549,9 @@ It <strong>must</strong> have a valid base URL and id.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>endpoint</code></td>
+            <td>
+                <code>endpoint</code>
+            </td>
             <td>
                   <code>str</code>
             </td>
@@ -1556,9 +1565,11 @@ It <strong>must</strong> have a valid base URL and id.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>response_model</code></td>
             <td>
-                  <code><span title="optimade.models.EntryResponseMany">EntryResponseMany</span> | <span title="optimade.models.EntryResponseOne">EntryResponseOne</span></code>
+                <code>response_model</code>
+            </td>
+            <td>
+                  <code>EntryResponseMany | EntryResponseOne</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1571,7 +1582,9 @@ It <strong>must</strong> have a valid base URL and id.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>query_params</code></td>
+            <td>
+                <code>query_params</code>
+            </td>
             <td>
                   <code>str</code>
             </td>
@@ -1585,9 +1598,11 @@ It <strong>must</strong> have a valid base URL and id.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>raw_url</code></td>
             <td>
-                  <code><span title="pydantic.AnyUrl">AnyUrl</span> | str | None</code>
+                <code>raw_url</code>
+            </td>
+            <td>
+                  <code>AnyUrl | str | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1614,7 +1629,7 @@ It <strong>must</strong> have a valid base URL and id.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>tuple[<span title="optimade.models.ErrorResponse">ErrorResponse</span> | <span title="optimade.models.EntryResponseMany">EntryResponseMany</span> | <span title="optimade.models.EntryResponseOne">EntryResponseOne</span>, str]</code>
+                  <code>tuple[ErrorResponse | EntryResponseMany | EntryResponseOne, str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1937,9 +1952,11 @@ entries is requested.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>database</code></td>
             <td>
-                  <code><span title="optimade.models.LinksResource">LinksResource</span> | dict[str, <span title="typing.Any">Any</span>]</code>
+                <code>database</code>
+            </td>
+            <td>
+                  <code>LinksResource | dict[str, Any]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1952,7 +1969,9 @@ It <strong>must</strong> have a valid base URL and id.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>endpoint</code></td>
+            <td>
+                <code>endpoint</code>
+            </td>
             <td>
                   <code>str</code>
             </td>
@@ -1966,9 +1985,11 @@ It <strong>must</strong> have a valid base URL and id.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>response_model</code></td>
             <td>
-                  <code><span title="optimade.models.EntryResponseMany">EntryResponseMany</span></code>
+                <code>response_model</code>
+            </td>
+            <td>
+                  <code>EntryResponseMany</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1981,7 +2002,9 @@ It <strong>must</strong> have a valid base URL and id.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>query_params</code></td>
+            <td>
+                <code>query_params</code>
+            </td>
             <td>
                   <code>str</code>
             </td>
@@ -1995,9 +2018,11 @@ It <strong>must</strong> have a valid base URL and id.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>raw_url</code></td>
             <td>
-                  <code><span title="pydantic.AnyUrl">AnyUrl</span> | str | None</code>
+                <code>raw_url</code>
+            </td>
+            <td>
+                  <code>AnyUrl | str | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2024,7 +2049,7 @@ It <strong>must</strong> have a valid base URL and id.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>tuple[list[<span title="optimade.models.EntryResource">EntryResource</span> | dict[str, <span title="typing.Any">Any</span>]], <span title="optimade.models.LinksResource">LinksResource</span> | dict[str, <span title="typing.Any">Any</span>]]</code>
+                  <code>tuple[list[EntryResource | dict[str, Any]], LinksResource | dict[str, Any]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2220,9 +2245,11 @@ It <strong>must</strong> have a valid base URL and id.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>url</code></td>
             <td>
-                  <code><span title="starlette.datastructures.URL">URL</span></code>
+                <code>url</code>
+            </td>
+            <td>
+                  <code>URL</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2234,9 +2261,11 @@ It <strong>must</strong> have a valid base URL and id.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>query</code></td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.QueryResource" href="../../models/queries/#optimade_gateway.models.queries.QueryResource">QueryResource</a></code>
+                <code>query</code>
+            </td>
+            <td>
+                  <code>QueryResource</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2262,7 +2291,7 @@ It <strong>must</strong> have a valid base URL and id.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><span title="optimade.models.EntryResponseMany">EntryResponseMany</span> | <span title="optimade.models.ErrorResponse">ErrorResponse</span> | <a class="autorefs autorefs-internal" title="optimade_gateway.models.GatewayQueryResponse" href="../../models/queries/#optimade_gateway.models.queries.GatewayQueryResponse">GatewayQueryResponse</a></code>
+                  <code>EntryResponseMany | ErrorResponse | GatewayQueryResponse</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2272,7 +2301,7 @@ It <strong>must</strong> have a valid base URL and id.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                  <code><span title="optimade.models.EntryResponseMany">EntryResponseMany</span> | <span title="optimade.models.ErrorResponse">ErrorResponse</span> | <a class="autorefs autorefs-internal" title="optimade_gateway.models.GatewayQueryResponse" href="../../models/queries/#optimade_gateway.models.queries.GatewayQueryResponse">GatewayQueryResponse</a></code>
+                  <code>EntryResponseMany | ErrorResponse | GatewayQueryResponse</code>
             </td>
             <td>
               <div class="doc-md-description">

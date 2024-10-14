@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -1486,6 +1486,11 @@ https://www.optimade.org/optimade-python-tools/api_reference/server/middleware/.
 
 
 
+
+
+
+
+
   <div class="doc doc-children">
 
 
@@ -1508,11 +1513,16 @@ https://www.optimade.org/optimade-python-tools/api_reference/server/middleware/.
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="starlette.middleware.base.BaseHTTPMiddleware">BaseHTTPMiddleware</span></code></p>
+              Bases: <code>BaseHTTPMiddleware</code></p>
 
 
         <p>If a non-supported versioned base URL is supplied to a gateway
 return <code>553 Version Not Supported</code>.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade_gateway/middleware.py</code></summary>
@@ -1637,9 +1647,11 @@ return <code>553 Version Not Supported</code>.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>url</code></td>
             <td>
-                  <code><span title="starlette.datastructures.URL">URL</span></code>
+                <code>url</code>
+            </td>
+            <td>
+                  <code>URL</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1665,7 +1677,7 @@ return <code>553 Version Not Supported</code>.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><span title="optimade.server.exceptions.VersionNotSupported">VersionNotSupported</span></code>
+                  <code>VersionNotSupported</code>
             </td>
             <td>
               <div class="doc-md-description">

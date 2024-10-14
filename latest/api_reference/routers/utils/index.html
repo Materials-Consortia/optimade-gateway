@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -1561,6 +1561,11 @@
 
 
 
+
+
+
+
+
   <div class="doc doc-children">
 
 
@@ -1627,9 +1632,11 @@ model.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>schema</code></td>
             <td>
-                  <code>type[<span title="optimade.models.EntryResource">EntryResource</span>]</code>
+                <code>schema</code>
+            </td>
+            <td>
+                  <code>type[EntryResource]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1641,9 +1648,11 @@ model.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>queryable_properties</code></td>
             <td>
-                  <code><span title="collections.abc.Iterable">Iterable</span>[str]</code>
+                <code>queryable_properties</code>
+            </td>
+            <td>
+                  <code>Iterable[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1655,7 +1664,9 @@ model.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>entry_type</code></td>
+            <td>
+                <code>entry_type</code>
+            </td>
             <td>
                   <code>str | None</code>
             </td>
@@ -1683,7 +1694,7 @@ model.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><span title="optimade.server.schemas.QueryableProperties">QueryableProperties</span></code>
+                  <code>QueryableProperties</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1693,7 +1704,7 @@ model.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                  <code><span title="optimade.server.schemas.QueryableProperties">QueryableProperties</span></code>
+                  <code>QueryableProperties</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1802,7 +1813,9 @@ It lazily instantiates the collections and then caches them in the dictionary.</
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>name</code></td>
+            <td>
+                <code>name</code>
+            </td>
             <td>
                   <code>str</code>
             </td>
@@ -1830,7 +1843,7 @@ It lazily instantiates the collections and then caches them in the dictionary.</
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><a class="autorefs autorefs-internal" title="optimade_gateway.mongo.collection.AsyncMongoCollection" href="../../mongo/collection/#optimade_gateway.mongo.collection.AsyncMongoCollection">AsyncMongoCollection</a></code>
+                  <code>AsyncMongoCollection</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1840,7 +1853,7 @@ It lazily instantiates the collections and then caches them in the dictionary.</
           </tr>
           <tr class="doc-section-item">
             <td>
-                  <code><a class="autorefs autorefs-internal" title="optimade_gateway.mongo.collection.AsyncMongoCollection" href="../../mongo/collection/#optimade_gateway.mongo.collection.AsyncMongoCollection">AsyncMongoCollection</a></code>
+                  <code>AsyncMongoCollection</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2202,9 +2215,11 @@ resource model.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>create_resource</code></td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.DatabaseCreate" href="../../models/databases/#optimade_gateway.models.databases.DatabaseCreate">DatabaseCreate</a> | <a class="autorefs autorefs-internal" title="optimade_gateway.models.GatewayCreate" href="../../models/gateways/#optimade_gateway.models.gateways.GatewayCreate">GatewayCreate</a> | <a class="autorefs autorefs-internal" title="optimade_gateway.models.QueryCreate" href="../../models/queries/#optimade_gateway.models.queries.QueryCreate">QueryCreate</a></code>
+                <code>create_resource</code>
+            </td>
+            <td>
+                  <code>DatabaseCreate | GatewayCreate | QueryCreate</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2230,7 +2245,7 @@ resource model.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>tuple[<span title="optimade.models.LinksResource">LinksResource</span> | <a class="autorefs autorefs-internal" title="optimade_gateway.models.GatewayResource" href="../../models/gateways/#optimade_gateway.models.gateways.GatewayResource">GatewayResource</a> | <a class="autorefs autorefs-internal" title="optimade_gateway.models.QueryResource" href="../../models/queries/#optimade_gateway.models.queries.QueryResource">QueryResource</a>, bool]</code>
+                  <code>tuple[LinksResource | GatewayResource | QueryResource, bool]</code>
             </td>
             <td>
               <div class="doc-md-description">

@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -1488,6 +1488,11 @@ in OPTIMADE Python tools.</p>
 
 
 
+
+
+
+
+
   <div class="doc doc-children">
 
 
@@ -1510,7 +1515,7 @@ in OPTIMADE Python tools.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="optimade.server.mappers.entries.BaseResourceMapper">BaseResourceMapper</span></code></p>
+              Bases: <code>BaseResourceMapper</code></p>
 
 
         <p>Generic Resource Mapper that defines and performs the mapping
@@ -1635,6 +1640,11 @@ the <code>type</code> in the schema of the entry resource class.</p>
           </tr>
       </tbody>
     </table>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade_gateway/mappers/base.py</code></summary>
@@ -1817,9 +1827,11 @@ the <code>type</code> in the schema of the entry resource class.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>results</code></td>
             <td>
-                  <code>dict | <span title="collections.abc.Iterable">Iterable</span>[dict]</code>
+                <code>results</code>
+            </td>
+            <td>
+                  <code>dict | Iterable[dict]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1846,7 +1858,7 @@ resource.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>list[<span title="optimade.models.EntryResource">EntryResource</span>] | <span title="optimade.models.EntryResource">EntryResource</span></code>
+                  <code>list[EntryResource] | EntryResource</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1856,7 +1868,7 @@ resource.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                  <code>list[<span title="optimade.models.EntryResource">EntryResource</span>] | <span title="optimade.models.EntryResource">EntryResource</span></code>
+                  <code>list[EntryResource] | EntryResource</code>
             </td>
             <td>
               <div class="doc-md-description">
