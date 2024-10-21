@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.41">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
     
     
       
@@ -1695,7 +1695,7 @@ represents an asynchronous version of the equivalent MongoDB collection in <code
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code>EntryCollection</code></p>
+              Bases: <code><span title="optimade.server.entry_collections.entry_collections.EntryCollection">EntryCollection</span></code></p>
 
 
         <p>MongoDB Collection for use with <code>asyncio</code></p>
@@ -2789,7 +2789,7 @@ represents an asynchronous version of the equivalent MongoDB collection in <code
                 <code>resource_cls</code>
             </td>
             <td>
-                  <code>EntryResource</code>
+                  <code><span title="optimade.models.EntryResource">EntryResource</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2805,7 +2805,7 @@ represents an asynchronous version of the equivalent MongoDB collection in <code
                 <code>resource_mapper</code>
             </td>
             <td>
-                  <code>BaseResourceMapper</code>
+                  <code><span title="optimade.server.mappers.entries.BaseResourceMapper">BaseResourceMapper</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2924,7 +2924,7 @@ changes between deserialization and response.</p>
                 <code>params</code>
             </td>
             <td>
-                  <code>None | EntryListingQueryParams | SingleEntryQueryParams</code>
+                  <code>None | <span title="optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</span> | <span title="optimade.server.query_params.SingleEntryQueryParams">SingleEntryQueryParams</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2941,7 +2941,7 @@ single-entry endpoint.</p>
                 <code>**kwargs</code>
             </td>
             <td>
-                  <code>Any</code>
+                  <code><span title="typing.Any">Any</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3116,7 +3116,7 @@ and pagination of the output.</p>
                 <code>params</code>
             </td>
             <td>
-                  <code>None | EntryListingQueryParams | SingleEntryQueryParams</code>
+                  <code>None | <span title="optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</span> | <span title="optimade.server.query_params.SingleEntryQueryParams">SingleEntryQueryParams</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3133,7 +3133,7 @@ single-entry endpoint.</p>
                 <code>criteria</code>
             </td>
             <td>
-                  <code>dict[str, Any] | None</code>
+                  <code>dict[str, <span title="typing.Any">Any</span>] | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3159,7 +3159,7 @@ single-entry endpoint.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>list[EntryResource] | EntryResource | None</code>
+                  <code>list[<span title="optimade.models.EntryResource">EntryResource</span>] | <span title="optimade.models.EntryResource">EntryResource</span> | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3442,7 +3442,7 @@ which will need modification for modified for other backends.</p>
                 <code>params</code>
             </td>
             <td>
-                  <code>EntryListingQueryParams | SingleEntryQueryParams</code>
+                  <code><span title="optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</span> | <span title="optimade.server.query_params.SingleEntryQueryParams">SingleEntryQueryParams</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3478,7 +3478,7 @@ which will need modification for modified for other backends.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                  <code>BadRequest</code>
+                  <code><span title="optimade.server.exceptions.BadRequest">BadRequest</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3502,7 +3502,7 @@ response format.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>dict[str, Any]</code>
+                  <code>dict[str, <span title="typing.Any">Any</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3607,7 +3607,7 @@ response format.</p>
                 <code>data</code>
             </td>
             <td>
-                  <code>list[EntryResource]</code>
+                  <code>list[<span title="optimade.models.EntryResource">EntryResource</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3685,7 +3685,7 @@ This will only be done if <code>"id"</code> is not already present in <code>reso
                 <code>resource</code>
             </td>
             <td>
-                  <code>EntryResourceCreate</code>
+                  <code><a class="autorefs autorefs-internal" title="optimade_gateway.models.EntryResourceCreate" href="../../models/resources/#optimade_gateway.models.resources.EntryResourceCreate">EntryResourceCreate</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3711,7 +3711,7 @@ This will only be done if <code>"id"</code> is not already present in <code>reso
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>EntryResource</code>
+                  <code><span title="optimade.models.EntryResource">EntryResource</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3906,7 +3906,7 @@ for more information.</p>
                 <code>params</code>
             </td>
             <td>
-                  <code>EntryListingQueryParams | SingleEntryQueryParams</code>
+                  <code><span title="optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</span> | <span title="optimade.server.query_params.SingleEntryQueryParams">SingleEntryQueryParams</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3932,7 +3932,7 @@ for more information.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>list[EntryResource] | EntryResource | None</code>
+                  <code>list[<span title="optimade.models.EntryResource">EntryResource</span>] | <span title="optimade.models.EntryResource">EntryResource</span> | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4066,7 +4066,7 @@ but is rather a utility function to easily retrieve a list of resources.</p>
                 <code>**criteria</code>
             </td>
             <td>
-                  <code>Any</code>
+                  <code><span title="typing.Any">Any</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4092,7 +4092,7 @@ but is rather a utility function to easily retrieve a list of resources.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>list[EntryResource]</code>
+                  <code>list[<span title="optimade.models.EntryResource">EntryResource</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4192,7 +4192,7 @@ but is rather a utility function to easily retrieve a single resource.</p>
                 <code>**criteria</code>
             </td>
             <td>
-                  <code>Any</code>
+                  <code><span title="typing.Any">Any</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4218,7 +4218,7 @@ but is rather a utility function to easily retrieve a single resource.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>EntryResource</code>
+                  <code><span title="optimade.models.EntryResource">EntryResource</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4315,7 +4315,7 @@ which will need modification for modified for other backends.</p>
                 <code>params</code>
             </td>
             <td>
-                  <code>EntryListingQueryParams | SingleEntryQueryParams</code>
+                  <code><span title="optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</span> | <span title="optimade.server.query_params.SingleEntryQueryParams">SingleEntryQueryParams</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4351,7 +4351,7 @@ which will need modification for modified for other backends.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                  <code>BadRequest</code>
+                  <code><span title="optimade.server.exceptions.BadRequest">BadRequest</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4375,7 +4375,7 @@ or response format.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>dict[str, Any]</code>
+                  <code>dict[str, <span title="typing.Any">Any</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
