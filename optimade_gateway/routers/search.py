@@ -84,20 +84,22 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
     # NOTE: It may be that the final list of base URLs (`base_urls`) contains the same
     # provider(s), but with differring base URLS, if, for example, a versioned base URL
     # is supplied.
-    base_urls: set[AnyUrl] = set()
+    base_urls: list[AnyUrl] = []
 
     if search.database_ids:
         databases = await databases_collection.get_multiple(
             filter={"id": {"$in": await clean_python_types(search.database_ids)}}
         )
-        base_urls |= {
-            get_resource_attribute(database, "attributes.base_url")
-            for database in databases
-            if get_resource_attribute(database, "attributes.base_url") is not None
-        }
+        base_urls.extend(
+            [
+                get_resource_attribute(database, "attributes.base_url")
+                for database in databases
+                if get_resource_attribute(database, "attributes.base_url") is not None
+            ]
+        )
 
     if search.optimade_urls:
-        base_urls |= {_ for _ in search.optimade_urls if _ is not None}
+        base_urls.extend([_ for _ in search.optimade_urls if _ is not None])
 
     if not base_urls:
         msg = "No (valid) OPTIMADE URLs with:"
@@ -128,10 +130,13 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
 
     elif len(databases) < len(base_urls):
         # There are unregistered databases, i.e., databases not in the local collection
-        current_base_urls: set[AnyUrl] = {
+        current_base_urls: list[AnyUrl] = [
             get_resource_attribute(database, "attributes.base_url")
             for database in databases
-        }
+        ]
+        diff_base_urls = [
+            base_url for base_url in base_urls if base_url not in current_base_urls
+        ]
         databases.extend(
             [
                 LinksResource(
@@ -150,7 +155,7 @@ async def post_search(request: Request, search: Search) -> QueriesResponseSingle
                         homepage=None,
                     ),
                 )
-                for url in base_urls - current_base_urls
+                for url in diff_base_urls
             ]
         )
     else:

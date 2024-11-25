@@ -46,7 +46,15 @@ class GatewayResourceAttributes(EntryResourceAttributes):
                 )
 
         db_base_urls = [_.attributes.base_url for _ in value]
-        unique_base_urls = set(db_base_urls)
+
+        unique_base_urls = []
+        for base_url in db_base_urls:
+            if base_url is None:
+                continue
+            if base_url in unique_base_urls:
+                continue
+            unique_base_urls.append(base_url)
+
         if len(db_base_urls) == len(unique_base_urls):
             return value
 

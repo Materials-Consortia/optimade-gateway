@@ -40,7 +40,7 @@ class Search(BaseModel):
     ] = set()
 
     optimade_urls: Annotated[
-        set[AnyUrl],
+        list[AnyUrl],
         Field(
             description=(
                 "A list of OPTIMADE base URLs. If a versioned base URL is supplied it "
@@ -52,7 +52,7 @@ class Search(BaseModel):
                 "the server logic."
             ),
         ),
-    ] = set()
+    ] = []
 
     endpoint: Annotated[
         str,
