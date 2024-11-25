@@ -244,7 +244,7 @@ class AsyncMongoCollection(EntryCollection):
         else:
             single_entry = isinstance(params, SingleEntryQueryParams)
 
-        response_fields = criteria.pop("fields", self.all_fields)
+        response_fields: set[str] = criteria.pop("fields", self.all_fields)
 
         results, data_returned, more_data_available = await self._arun_db_query(
             criteria=criteria,
@@ -264,8 +264,8 @@ class AsyncMongoCollection(EntryCollection):
         include_fields = (
             response_fields - self.resource_mapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS
         )
-        bad_optimade_fields = set()
-        bad_provider_fields = set()
+        bad_optimade_fields: set[str] = set()
+        bad_provider_fields: set[str] = set()
         for field in include_fields:
             if field not in self.resource_mapper.ALL_ATTRIBUTES:
                 if field.startswith("_"):

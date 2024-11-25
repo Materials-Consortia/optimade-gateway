@@ -262,7 +262,7 @@ async def random_gateway() -> dict:
     """Get a random gateway currently in the MongoDB"""
     from optimade_gateway.mongo.database import MONGO_DB
 
-    gateway_ids = set()
+    gateway_ids: set[str] = set()
     async for gateway in MONGO_DB["gateways"].find(
         filter={}, projection={"id": True, "_id": False}
     ):

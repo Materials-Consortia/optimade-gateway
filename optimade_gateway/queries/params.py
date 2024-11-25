@@ -21,7 +21,7 @@ class SearchQueryParams:
             the gateway. To be known they need to be registered with the gateway
             (currently not possible).
 
-        optimade_urls (set[AnyUrl]): A list of OPTIMADE base URLs. If a versioned base
+        optimade_urls (list[AnyUrl]): A list of OPTIMADE base URLs. If a versioned base
             URL is supplied it will be used as is, as long as it represents a supported
             version. If an un-versioned base URL, standard version negotiation will be
             conducted to get the versioned base URL, which will be used as long as it
@@ -61,7 +61,7 @@ class SearchQueryParams:
             ),
         ] = set(),
         optimade_urls: Annotated[
-            set[AnyUrl],
+            list[AnyUrl],
             Query(
                 description=(
                     "A unique list of OPTIMADE base URLs. If a versioned base URL is "
@@ -71,7 +71,7 @@ class SearchQueryParams:
                     "which will be used as long as it represents a supported version."
                 ),
             ),
-        ] = set(),
+        ] = [],
         endpoint: Annotated[
             str,
             Query(
