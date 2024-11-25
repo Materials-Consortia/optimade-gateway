@@ -128,7 +128,7 @@ async def get_database(
         include_fields,
     ) = await collection.afind(params=params)
 
-    if fields or include_fields and result is not None:
+    if fields or (include_fields and result is not None):
         result = handle_response_fields(result, fields, include_fields)
 
     result = result[0] if isinstance(result, list) and data_returned else None

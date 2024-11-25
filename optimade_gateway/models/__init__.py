@@ -39,10 +39,10 @@ __all__ = (
     "GatewayResourceAttributes",
     "GatewaysResponse",
     "GatewaysResponseSingle",
+    "QueriesResponse",
+    "QueriesResponseSingle",
     "QueryCreate",
     "QueryResource",
     "QueryState",
-    "QueriesResponse",
-    "QueriesResponseSingle",
     "Search",
 )
