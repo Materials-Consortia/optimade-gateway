@@ -94,8 +94,8 @@ async def test_post_queries(
     mongo_filter = {"_id": ObjectId(datum.id)}
     assert await MONGO_DB["queries"].count_documents(mongo_filter) == 1
     db_datum = await MONGO_DB["queries"].find_one(mongo_filter)
-    for key in data:
-        assert db_datum[key] == data[key]
+    for key, value in data.items():
+        assert db_datum[key] == value, f"Response: {db_datum!r}\n\nTest data: {data!r}"
 
     await asyncio.sleep(1)  # Ensure mock URL is queried
 

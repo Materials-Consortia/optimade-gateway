@@ -66,15 +66,15 @@ async def test_post_databases(client: AsyncGatewayClient) -> None:
     datum = response.data
     assert datum, response
 
-    for field in data:
+    for field, field_value in data.items():
         value = getattr(response.data.attributes, field)
         if isinstance(value, AnyUrl):
-            assert str(value) == data[field], (
+            assert str(value) == field_value, (
                 f"Response: {response.data.attributes.model_dump()!r}\n\n"
                 f"Test data: {data!r}"
             )
         else:
-            assert value == data[field], (
+            assert value == field_value, (
                 f"Response: {response.data.attributes.model_dump()!r}\n\n"
                 f"Test data: {data!r}"
             )
@@ -88,8 +88,10 @@ async def test_post_databases(client: AsyncGatewayClient) -> None:
     mongo_filter = {"_id": ObjectId(datum.id)}
     assert await MONGO_DB["databases"].count_documents(mongo_filter) == 1
     db_datum = await MONGO_DB["databases"].find_one(mongo_filter)
-    for field in data:
-        assert db_datum[field] == data[field]
+    for field, field_value in data.items():
+        assert (
+            db_datum[field] == field_value
+        ), f"Response: {db_datum!r}\n\nTest data: {data!r}"
 
 
 async def test_get_single_database(
