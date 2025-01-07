@@ -1660,7 +1660,7 @@ For more information see the
     <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Search&quot;</span><span class="p">],</span>
     <span class="n">responses</span><span class="o">=</span><span class="n">ERROR_RESPONSES</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">get_search</span><span class="p">(</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_search</span><span class="p">(</span>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
     <span class="n">response</span><span class="p">:</span> <span class="n">Response</span><span class="p">,</span>
     <span class="n">search_params</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">SearchQueryParams</span><span class="p">,</span> <span class="n">Depends</span><span class="p">()],</span>
@@ -1710,7 +1710,7 @@ For more information see the
                 <span class="s2">&quot;A Search object could not be created from the given URL query &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;parameters. Error(s): </span><span class="si">{</span><span class="n">exc</span><span class="o">.</span><span class="n">errors</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
-        <span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
+        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
 
     <span class="n">queries_response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">post_search</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="n">search</span><span class="p">)</span>
 
@@ -1972,7 +1972,7 @@ For more information see the
     <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_202_ACCEPTED</span><span class="p">,</span>
     <span class="n">responses</span><span class="o">=</span><span class="n">ERROR_RESPONSES</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">post_search</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">search</span><span class="p">:</span> <span class="n">Search</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QueriesResponseSingle</span><span class="p">:</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">post_search</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">search</span><span class="p">:</span> <span class="n">Search</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QueriesResponseSingle</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;`POST /search`</span>
 
 <span class="sd">    Coordinate a new OPTIMADE query in multiple databases through a gateway:</span>

@@ -2481,7 +2481,7 @@
 
 
 <h2 id="optimade_gateway.models.queries.QUERY_PARAMETERS" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">QUERY_PARAMETERS</span><span class="p">:</span> <span class="n">QueryParameters</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;annotations&#39;</span><span class="p">:</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">FieldInfo</span><span class="o">.</span><span class="n">from_annotation</span><span class="p">(</span><span class="n">parameter</span><span class="o">.</span><span class="n">annotation</span><span class="p">)</span><span class="k">for</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">parameter</span><span class="p">)</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">EntryListingQueryParams</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">()},</span> <span class="s1">&#39;defaults&#39;</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span><span class="p">()}</span></code>
+            <code class="highlight language-python"><span class="n">QUERY_PARAMETERS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;annotations&#39;</span><span class="p">:</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">FieldInfo</span><span class="o">.</span><span class="n">from_annotation</span><span class="p">(</span><span class="n">parameter</span><span class="o">.</span><span class="n">annotation</span><span class="p">)</span><span class="k">for</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">parameter</span><span class="p">)</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">EntryListingQueryParams</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">()},</span> <span class="s1">&#39;defaults&#39;</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span><span class="p">()}</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
@@ -2556,21 +2556,21 @@
 <span class="normal">76</span>
 <span class="normal">77</span>
 <span class="normal">78</span>
-<span class="normal">79</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">EndpointEntryType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="normal">79</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">EndpointEntryType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Entry endpoint resource types, mapping to their pydantic models from the</span>
 <span class="sd">    `optimade` package.&quot;&quot;&quot;</span>
 
     <span class="n">REFERENCES</span> <span class="o">=</span> <span class="s2">&quot;references&quot;</span>
     <span class="n">STRUCTURES</span> <span class="o">=</span> <span class="s2">&quot;structures&quot;</span>
 
-    <span class="k">def</span> <span class="nf">get_resource_model</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ReferenceResource</span> <span class="o">|</span> <span class="n">StructureResource</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_resource_model</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ReferenceResource</span> <span class="o">|</span> <span class="n">StructureResource</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the matching pydantic model for a resource.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="s2">&quot;references&quot;</span><span class="p">:</span> <span class="n">ReferenceResource</span><span class="p">,</span>
             <span class="s2">&quot;structures&quot;</span><span class="p">:</span> <span class="n">StructureResource</span><span class="p">,</span>
         <span class="p">}[</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">get_response_model</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_response_model</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">single</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span>
         <span class="n">ReferenceResponseMany</span>
@@ -2663,7 +2663,7 @@
 <span class="normal">57</span>
 <span class="normal">58</span>
 <span class="normal">59</span>
-<span class="normal">60</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_resource_model</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ReferenceResource</span> <span class="o">|</span> <span class="n">StructureResource</span><span class="p">:</span>
+<span class="normal">60</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_resource_model</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ReferenceResource</span> <span class="o">|</span> <span class="n">StructureResource</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the matching pydantic model for a resource.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">{</span>
         <span class="s2">&quot;references&quot;</span><span class="p">:</span> <span class="n">ReferenceResource</span><span class="p">,</span>
@@ -2707,7 +2707,7 @@
 <span class="normal">76</span>
 <span class="normal">77</span>
 <span class="normal">78</span>
-<span class="normal">79</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_response_model</span><span class="p">(</span>
+<span class="normal">79</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_response_model</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">single</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span>
     <span class="n">ReferenceResponseMany</span>
@@ -2775,12 +2775,12 @@
 <span class="normal">218</span>
 <span class="normal">219</span>
 <span class="normal">220</span>
-<span class="normal">221</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">EntryResource</span><span class="p">(</span><span class="n">OptimadeEntryResource</span><span class="p">):</span>
+<span class="normal">221</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">EntryResource</span><span class="p">(</span><span class="n">OptimadeEntryResource</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Entry Resource ensuring datetimes are not naive.&quot;&quot;&quot;</span>
 
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;attributes&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">ensure_non_naive_datetime</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ensure_non_naive_datetime</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">EntryResourceAttributes</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EntryResourceAttributes</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set timezone to UTC if datetime is naive.&quot;&quot;&quot;</span>
@@ -2831,7 +2831,7 @@
 <span class="normal">220</span>
 <span class="normal">221</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;attributes&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
 <span class="nd">@classmethod</span>
-<span class="k">def</span> <span class="nf">ensure_non_naive_datetime</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ensure_non_naive_datetime</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">EntryResourceAttributes</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EntryResourceAttributes</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Set timezone to UTC if datetime is naive.&quot;&quot;&quot;</span>
@@ -2916,7 +2916,7 @@
 <span class="normal">260</span>
 <span class="normal">261</span>
 <span class="normal">262</span>
-<span class="normal">263</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">GatewayQueryResponse</span><span class="p">(</span><span class="n">Response</span><span class="p">):</span>
+<span class="normal">263</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">GatewayQueryResponse</span><span class="p">(</span><span class="n">Response</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Response from a Gateway Query.&quot;&quot;&quot;</span>
 
     <span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
@@ -2950,7 +2950,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GatewayQueryResponse</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GatewayQueryResponse</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Overwrite `either_data_meta_or_errors_must_be_set`.</span>
 
 <span class="sd">        `errors` should be allowed to be present always for this special response.</span>
@@ -2974,7 +2974,7 @@
 
 
 <h3 id="optimade_gateway.models.queries.GatewayQueryResponse.data" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Outputted Data.&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">data</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -2993,7 +2993,7 @@
 
 
 <h3 id="optimade_gateway.models.queries.GatewayQueryResponse.errors" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">errors</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">OptimadeError</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of OPTIMADE-specific JSON API error objects, where the field detail MUST be present.&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[]</span></code>
+            <code class="highlight language-python"><span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3013,7 +3013,7 @@
 
 
 <h3 id="optimade_gateway.models.queries.GatewayQueryResponse.included" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">included</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique included OPTIMADE entry resources.&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">union_mode</span><span class="o">=</span><span class="s1">&#39;left_to_right&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">included</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3033,7 +3033,7 @@
 
 
 <h3 id="optimade_gateway.models.queries.GatewayQueryResponse.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ResponseMeta</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A meta object containing non-standard information.&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">meta</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -3072,7 +3072,7 @@
 <span class="normal">261</span>
 <span class="normal">262</span>
 <span class="normal">263</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GatewayQueryResponse</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GatewayQueryResponse</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Overwrite `either_data_meta_or_errors_must_be_set`.</span>
 
 <span class="sd">    `errors` should be allowed to be present always for this special response.</span>
@@ -3217,7 +3217,7 @@
 <span class="normal">192</span>
 <span class="normal">193</span>
 <span class="normal">194</span>
-<span class="normal">195</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">OptimadeQueryParameters</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="normal">195</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">OptimadeQueryParameters</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Common OPTIMADE entry listing endpoint query parameters.&quot;&quot;&quot;</span>
 
     <span class="nb">filter</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
@@ -3336,7 +3336,7 @@
 
 
 <h3 id="optimade_gateway.models.queries.OptimadeQueryParameters.api_hint" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">api_hint</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">][</span><span class="s1">&#39;api_hint&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">][</span><span class="s1">&#39;api_hint&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pattern</span><span class="p">)]</span> <span class="o">=</span> <span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">api_hint</span></code>
+            <code class="highlight language-python"><span class="n">api_hint</span> <span class="o">=</span> <span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">api_hint</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3356,7 +3356,7 @@
 
 
 <h3 id="optimade_gateway.models.queries.OptimadeQueryParameters.email_address" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">email_address</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">EmailStr</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">][</span><span class="s1">&#39;email_address&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">)]</span> <span class="o">=</span> <span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">email_address</span></code>
+            <code class="highlight language-python"><span class="n">email_address</span> <span class="o">=</span> <span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">email_address</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3376,7 +3376,7 @@
 
 
 <h3 id="optimade_gateway.models.queries.OptimadeQueryParameters.filter" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">filter</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">][</span><span class="s1">&#39;filter&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">)]</span> <span class="o">=</span> <span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">filter</span></code>
+            <code class="highlight language-python"><span class="nb">filter</span> <span class="o">=</span> <span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">filter</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3396,7 +3396,7 @@
 
 
 <h3 id="optimade_gateway.models.queries.OptimadeQueryParameters.include" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">include</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">][</span><span class="s1">&#39;include&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">)]</span> <span class="o">=</span> <span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">include</span></code>
+            <code class="highlight language-python"><span class="n">include</span> <span class="o">=</span> <span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">include</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3416,7 +3416,7 @@
 
 
 <h3 id="optimade_gateway.models.queries.OptimadeQueryParameters.page_above" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">page_above</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">][</span><span class="s1">&#39;page_above&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">)]</span> <span class="o">=</span> <span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">page_above</span></code>
+            <code class="highlight language-python"><span class="n">page_above</span> <span class="o">=</span> <span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">page_above</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3436,7 +3436,7 @@
 
 
 <h3 id="optimade_gateway.models.queries.OptimadeQueryParameters.page_below" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">page_below</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">][</span><span class="s1">&#39;page_below&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">)]</span> <span class="o">=</span> <span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">page_below</span></code>
+            <code class="highlight language-python"><span class="n">page_below</span> <span class="o">=</span> <span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">page_below</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3456,7 +3456,7 @@
 
 
 <h3 id="optimade_gateway.models.queries.OptimadeQueryParameters.page_cursor" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">page_cursor</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">][</span><span class="s1">&#39;page_cursor&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">][</span><span class="s1">&#39;page_cursor&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ge</span><span class="p">)]</span> <span class="o">=</span> <span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">page_cursor</span></code>
+            <code class="highlight language-python"><span class="n">page_cursor</span> <span class="o">=</span> <span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">page_cursor</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3476,7 +3476,7 @@
 
 
 <h3 id="optimade_gateway.models.queries.OptimadeQueryParameters.page_limit" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">page_limit</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">][</span><span class="s1">&#39;page_limit&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">][</span><span class="s1">&#39;page_limit&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ge</span><span class="p">)]</span> <span class="o">=</span> <span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">page_limit</span></code>
+            <code class="highlight language-python"><span class="n">page_limit</span> <span class="o">=</span> <span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">page_limit</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3496,7 +3496,7 @@
 
 
 <h3 id="optimade_gateway.models.queries.OptimadeQueryParameters.page_number" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">page_number</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">][</span><span class="s1">&#39;page_number&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">)]</span> <span class="o">=</span> <span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">page_number</span></code>
+            <code class="highlight language-python"><span class="n">page_number</span> <span class="o">=</span> <span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">page_number</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3516,7 +3516,7 @@
 
 
 <h3 id="optimade_gateway.models.queries.OptimadeQueryParameters.page_offset" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">page_offset</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">][</span><span class="s1">&#39;page_offset&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">][</span><span class="s1">&#39;page_offset&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ge</span><span class="p">)]</span> <span class="o">=</span> <span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">page_offset</span></code>
+            <code class="highlight language-python"><span class="n">page_offset</span> <span class="o">=</span> <span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">page_offset</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3536,7 +3536,7 @@
 
 
 <h3 id="optimade_gateway.models.queries.OptimadeQueryParameters.response_fields" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">response_fields</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">][</span><span class="s1">&#39;response_fields&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">][</span><span class="s1">&#39;response_fields&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pattern</span><span class="p">)]</span> <span class="o">=</span> <span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">response_fields</span></code>
+            <code class="highlight language-python"><span class="n">response_fields</span> <span class="o">=</span> <span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">response_fields</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3556,7 +3556,7 @@
 
 
 <h3 id="optimade_gateway.models.queries.OptimadeQueryParameters.response_format" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">response_format</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">][</span><span class="s1">&#39;response_format&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">)]</span> <span class="o">=</span> <span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">response_format</span></code>
+            <code class="highlight language-python"><span class="n">response_format</span> <span class="o">=</span> <span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">response_format</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3576,7 +3576,7 @@
 
 
 <h3 id="optimade_gateway.models.queries.OptimadeQueryParameters.sort" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">sort</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">][</span><span class="s1">&#39;sort&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">][</span><span class="s1">&#39;sort&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pattern</span><span class="p">)]</span> <span class="o">=</span> <span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sort</span></code>
+            <code class="highlight language-python"><span class="n">sort</span> <span class="o">=</span> <span class="n">QUERY_PARAMETERS</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sort</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3659,7 +3659,7 @@
 <span class="normal">476</span>
 <span class="normal">477</span>
 <span class="normal">478</span>
-<span class="normal">479</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">QueryCreate</span><span class="p">(</span><span class="n">EntryResourceCreate</span><span class="p">,</span> <span class="n">QueryResourceAttributes</span><span class="p">):</span>
+<span class="normal">479</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">QueryCreate</span><span class="p">(</span><span class="n">EntryResourceCreate</span><span class="p">,</span> <span class="n">QueryResourceAttributes</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Model for creating new Query resources in the MongoDB&quot;&quot;&quot;</span>
 
     <span class="n">state</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
@@ -3685,7 +3685,7 @@
 
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;query_parameters&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">sort_not_supported</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sort_not_supported</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">OptimadeQueryParameters</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OptimadeQueryParameters</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Warn and reset value if `sort` is supplied.&quot;&quot;&quot;</span>
@@ -3711,7 +3711,7 @@
 
 
 <h3 id="optimade_gateway.models.queries.QueryCreate.endpoint" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">endpoint</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">EndpointEntryType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">QueryResourceAttributes</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;endpoint&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">QueryResourceAttributes</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;endpoint&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="n">QueryResourceAttributes</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;endpoint&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">json_schema_extra</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">endpoint</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3731,7 +3731,7 @@
 
 
 <h3 id="optimade_gateway.models.queries.QueryCreate.state" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">state</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">QueryState</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">QueryResourceAttributes</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">QueryResourceAttributes</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="n">QueryResourceAttributes</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">json_schema_extra</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">state</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3778,7 +3778,7 @@
 <span class="normal">478</span>
 <span class="normal">479</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;query_parameters&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
 <span class="nd">@classmethod</span>
-<span class="k">def</span> <span class="nf">sort_not_supported</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sort_not_supported</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">OptimadeQueryParameters</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OptimadeQueryParameters</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Warn and reset value if `sort` is supplied.&quot;&quot;&quot;</span>
@@ -3829,7 +3829,7 @@
 <span class="normal">42</span>
 <span class="normal">43</span>
 <span class="normal">44</span>
-<span class="normal">45</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">QueryParameters</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+<span class="normal">45</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">QueryParameters</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Type definition for `QUERY_PARAMETERS`.&quot;&quot;&quot;</span>
 
     <span class="n">annotations</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">FieldInfo</span><span class="p">]</span>
@@ -3852,7 +3852,7 @@
 
 
 <h3 id="optimade_gateway.models.queries.QueryParameters.annotations" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">annotations</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">FieldInfo</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">annotations</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -3871,7 +3871,7 @@
 
 
 <h3 id="optimade_gateway.models.queries.QueryParameters.defaults" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">defaults</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span></code>
+            <code class="highlight language-python"><span class="n">defaults</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -4033,7 +4033,7 @@
 <span class="normal">440</span>
 <span class="normal">441</span>
 <span class="normal">442</span>
-<span class="normal">443</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">QueryResource</span><span class="p">(</span><span class="n">EntryResource</span><span class="p">):</span>
+<span class="normal">443</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">QueryResource</span><span class="p">(</span><span class="n">EntryResource</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;OPTIMADE query resource for a gateway&quot;&quot;&quot;</span>
 
     <span class="nb">type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
@@ -4045,7 +4045,7 @@
 
     <span class="n">attributes</span><span class="p">:</span> <span class="n">QueryResourceAttributes</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">response_as_optimade</span><span class="p">(</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">response_as_optimade</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">url</span><span class="p">:</span> <span class="kc">None</span> <span class="o">|</span> <span class="p">(</span>
             <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">ParseResult</span> <span class="o">|</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">SplitResult</span> <span class="o">|</span> <span class="n">StarletteURL</span> <span class="o">|</span> <span class="nb">str</span>
@@ -4065,11 +4065,11 @@
 <span class="sd">            or an error response, if errors were returned or occurred during the query.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">optimade.server.routers.utils</span> <span class="kn">import</span> <span class="p">(</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">optimade.server.routers.utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
             <span class="n">meta_values</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="k">async</span> <span class="k">def</span> <span class="nf">_update_id</span><span class="p">(</span>
+        <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_update_id</span><span class="p">(</span>
             <span class="n">entry_</span><span class="p">:</span> <span class="n">EntryResource</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">database_provider_</span><span class="p">:</span> <span class="nb">str</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EntryResource</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Internal utility function to prepend the entries&#39; `id` with</span>
@@ -4165,7 +4165,7 @@
 
 
 <h3 id="optimade_gateway.models.queries.QueryResource.attributes" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">attributes</span><span class="p">:</span> <span class="n">QueryResourceAttributes</span></code>
+            <code class="highlight language-python"><span class="n">attributes</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -4184,7 +4184,7 @@
 
 
 <h3 id="optimade_gateway.models.queries.QueryResource.type" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;queries&#39;</span><span class="p">],</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The name of the type of an entry.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="s1">&#39;queries&#39;</span></code>
+            <code class="highlight language-python"><span class="nb">type</span> <span class="o">=</span> <span class="s1">&#39;queries&#39;</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4397,7 +4397,7 @@ query results as they currently are (if there are any at all).</p>
 <span class="normal">440</span>
 <span class="normal">441</span>
 <span class="normal">442</span>
-<span class="normal">443</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">response_as_optimade</span><span class="p">(</span>
+<span class="normal">443</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">response_as_optimade</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">url</span><span class="p">:</span> <span class="kc">None</span> <span class="o">|</span> <span class="p">(</span>
         <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">ParseResult</span> <span class="o">|</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">SplitResult</span> <span class="o">|</span> <span class="n">StarletteURL</span> <span class="o">|</span> <span class="nb">str</span>
@@ -4417,11 +4417,11 @@ query results as they currently are (if there are any at all).</p>
 <span class="sd">        or an error response, if errors were returned or occurred during the query.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">optimade.server.routers.utils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">optimade.server.routers.utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
         <span class="n">meta_values</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">_update_id</span><span class="p">(</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_update_id</span><span class="p">(</span>
         <span class="n">entry_</span><span class="p">:</span> <span class="n">EntryResource</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">database_provider_</span><span class="p">:</span> <span class="nb">str</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EntryResource</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal utility function to prepend the entries&#39; `id` with</span>
@@ -4599,7 +4599,7 @@ query results as they currently are (if there are any at all).</p>
 <span class="normal">324</span>
 <span class="normal">325</span>
 <span class="normal">326</span>
-<span class="normal">327</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">QueryResourceAttributes</span><span class="p">(</span><span class="n">EntryResourceAttributes</span><span class="p">):</span>
+<span class="normal">327</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">QueryResourceAttributes</span><span class="p">(</span><span class="n">EntryResourceAttributes</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Attributes for an OPTIMADE gateway query.&quot;&quot;&quot;</span>
 
     <span class="n">gateway_id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
@@ -4653,7 +4653,7 @@ query results as they currently are (if there are any at all).</p>
 
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;endpoint&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">only_allow_structures</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">EndpointEntryType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EndpointEntryType</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">only_allow_structures</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">EndpointEntryType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EndpointEntryType</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Temporarily only allow queries to &quot;structures&quot; endpoints.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="n">EndpointEntryType</span><span class="o">.</span><span class="n">STRUCTURES</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
@@ -4679,7 +4679,7 @@ query results as they currently are (if there are any at all).</p>
 
 
 <h3 id="optimade_gateway.models.queries.QueryResourceAttributes.endpoint" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">endpoint</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">EndpointEntryType</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;The entry endpoint queried, e.g., &#39;structures&#39;.&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Endpoint&#39;</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;enum&#39;</span><span class="p">})]</span> <span class="o">=</span> <span class="n">EndpointEntryType</span><span class="o">.</span><span class="n">STRUCTURES</span></code>
+            <code class="highlight language-python"><span class="n">endpoint</span> <span class="o">=</span> <span class="n">EndpointEntryType</span><span class="o">.</span><span class="n">STRUCTURES</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4699,7 +4699,7 @@ query results as they currently are (if there are any at all).</p>
 
 
 <h3 id="optimade_gateway.models.queries.QueryResourceAttributes.gateway_id" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">gateway_id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The OPTIMADE gateway ID for this query.&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">gateway_id</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -4718,7 +4718,7 @@ query results as they currently are (if there are any at all).</p>
 
 
 <h3 id="optimade_gateway.models.queries.QueryResourceAttributes.query_parameters" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">query_parameters</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">OptimadeQueryParameters</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;OPTIMADE query parameters for entry listing endpoints used for this query.&#39;</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;object&#39;</span><span class="p">})]</span></code>
+            <code class="highlight language-python"><span class="n">query_parameters</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -4737,7 +4737,7 @@ query results as they currently are (if there are any at all).</p>
 
 
 <h3 id="optimade_gateway.models.queries.QueryResourceAttributes.response" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">response</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">GatewayQueryResponse</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Response from gateway query.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">response</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4757,7 +4757,7 @@ query results as they currently are (if there are any at all).</p>
 
 
 <h3 id="optimade_gateway.models.queries.QueryResourceAttributes.state" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">state</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">QueryState</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Current state of Gateway Query.&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;State&#39;</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;enum&#39;</span><span class="p">})]</span> <span class="o">=</span> <span class="n">QueryState</span><span class="o">.</span><span class="n">CREATED</span></code>
+            <code class="highlight language-python"><span class="n">state</span> <span class="o">=</span> <span class="n">QueryState</span><span class="o">.</span><span class="n">CREATED</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4804,7 +4804,7 @@ query results as they currently are (if there are any at all).</p>
 <span class="normal">326</span>
 <span class="normal">327</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;endpoint&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
 <span class="nd">@classmethod</span>
-<span class="k">def</span> <span class="nf">only_allow_structures</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">EndpointEntryType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EndpointEntryType</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">only_allow_structures</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">EndpointEntryType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EndpointEntryType</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Temporarily only allow queries to &quot;structures&quot; endpoints.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="n">EndpointEntryType</span><span class="o">.</span><span class="n">STRUCTURES</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
@@ -4861,7 +4861,7 @@ query results as they currently are (if there are any at all).</p>
 <span class="normal">204</span>
 <span class="normal">205</span>
 <span class="normal">206</span>
-<span class="normal">207</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">QueryState</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="normal">207</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">QueryState</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Enumeration of possible states for a Gateway Query.</span>
 
 <span class="sd">    The states are enumerated here in the expected evolvement.</span>

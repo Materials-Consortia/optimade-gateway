@@ -1513,7 +1513,7 @@
 
 
 <h2 id="optimade_gateway.routers.info.ENTRY_INFO_SCHEMAS" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">ENTRY_INFO_SCHEMAS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;databases&#39;</span><span class="p">:</span> <span class="n">LinksResource</span><span class="p">,</span> <span class="s1">&#39;gateways&#39;</span><span class="p">:</span> <span class="n">GatewayResource</span><span class="p">,</span> <span class="s1">&#39;queries&#39;</span><span class="p">:</span> <span class="n">QueryResource</span><span class="p">}</span></code>
+            <code class="highlight language-python"><span class="n">ENTRY_INFO_SCHEMAS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;databases&#39;</span><span class="p">:</span> <span class="n">LinksResource</span><span class="p">,</span> <span class="s1">&#39;gateways&#39;</span><span class="p">:</span> <span class="n">GatewayResource</span><span class="p">,</span> <span class="s1">&#39;queries&#39;</span><span class="p">:</span> <span class="n">QueryResource</span><span class="p">}</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
@@ -1605,7 +1605,7 @@
     <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Info&quot;</span><span class="p">],</span>
     <span class="n">responses</span><span class="o">=</span><span class="n">ERROR_RESPONSES</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">get_entry_info</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">entry</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EntryInfoResponse</span><span class="p">:</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_entry_info</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">entry</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EntryInfoResponse</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;`GET /info/{entry}`</span>
 
 <span class="sd">    Get information about the gateway service&#39;s entry-listing endpoints.</span>
@@ -1729,7 +1729,7 @@
     <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Info&quot;</span><span class="p">],</span>
     <span class="n">responses</span><span class="o">=</span><span class="n">ERROR_RESPONSES</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">get_info</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InfoResponse</span><span class="p">:</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_info</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InfoResponse</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;`GET /info`</span>
 
 <span class="sd">    An introspective endpoint for the gateway service.</span>

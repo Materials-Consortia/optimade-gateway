@@ -1775,7 +1775,7 @@ It <strong>must</strong> have a valid base URL and id.</p>
 <span class="normal">280</span>
 <span class="normal">281</span>
 <span class="normal">282</span>
-<span class="normal">283</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">db_find</span><span class="p">(</span>
+<span class="normal">283</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">db_find</span><span class="p">(</span>
     <span class="n">database</span><span class="p">:</span> <span class="n">LinksResource</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
     <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">response_model</span><span class="p">:</span> <span class="n">EntryResponseMany</span> <span class="o">|</span> <span class="n">EntryResponseOne</span><span class="p">,</span>
@@ -2135,7 +2135,7 @@ It <strong>must</strong> have a valid base URL and id.</p>
 <span class="normal">356</span>
 <span class="normal">357</span>
 <span class="normal">358</span>
-<span class="normal">359</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">db_get_all_resources</span><span class="p">(</span>
+<span class="normal">359</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">db_get_all_resources</span><span class="p">(</span>
     <span class="n">database</span><span class="p">:</span> <span class="n">LinksResource</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
     <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">response_model</span><span class="p">:</span> <span class="n">EntryResponseMany</span><span class="p">,</span>
@@ -2420,7 +2420,7 @@ It <strong>must</strong> have a valid base URL and id.</p>
 <span class="normal">144</span>
 <span class="normal">145</span>
 <span class="normal">146</span>
-<span class="normal">147</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">perform_query</span><span class="p">(</span>
+<span class="normal">147</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">perform_query</span><span class="p">(</span>
     <span class="n">url</span><span class="p">:</span> <span class="n">URL</span><span class="p">,</span>
     <span class="n">query</span><span class="p">:</span> <span class="n">QueryResource</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EntryResponseMany</span> <span class="o">|</span> <span class="n">ErrorResponse</span> <span class="o">|</span> <span class="n">GatewayQueryResponse</span><span class="p">:</span>

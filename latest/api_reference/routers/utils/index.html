@@ -1579,7 +1579,7 @@
 
 
 <h2 id="optimade_gateway.routers.utils.COLLECTIONS" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">COLLECTIONS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">AsyncMongoCollection</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span></code>
+            <code class="highlight language-python"><span class="n">COLLECTIONS</span> <span class="o">=</span> <span class="p">{}</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
@@ -1745,7 +1745,7 @@ model.</p>
 <span class="normal">115</span>
 <span class="normal">116</span>
 <span class="normal">117</span>
-<span class="normal">118</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">aretrieve_queryable_properties</span><span class="p">(</span>
+<span class="normal">118</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">aretrieve_queryable_properties</span><span class="p">(</span>
     <span class="n">schema</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span>
     <span class="n">queryable_properties</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">entry_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1939,7 +1939,7 @@ names.</p>
 <span class="normal">362</span>
 <span class="normal">363</span>
 <span class="normal">364</span>
-<span class="normal">365</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">collection_factory</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncMongoCollection</span><span class="p">:</span>
+<span class="normal">365</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">collection_factory</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncMongoCollection</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get or initiate an entry-endpoint resource collection.</span>
 
 <span class="sd">    This factory utilizes the global dictionary</span>
@@ -1962,17 +1962,17 @@ names.</p>
         <span class="k">return</span> <span class="n">COLLECTIONS</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">databases_collection</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">optimade_gateway.mappers.databases</span> <span class="kn">import</span> <span class="n">DatabasesMapper</span> <span class="k">as</span> <span class="n">ResourceMapper</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">optimade_gateway.mappers.databases</span><span class="w"> </span><span class="kn">import</span> <span class="n">DatabasesMapper</span> <span class="k">as</span> <span class="n">ResourceMapper</span>
     <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">gateways_collection</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">optimade_gateway.mappers.gateways</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># type: ignore[no-redef]</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">optimade_gateway.mappers.gateways</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>  <span class="c1"># type: ignore[no-redef]</span>
             <span class="n">GatewaysMapper</span> <span class="k">as</span> <span class="n">ResourceMapper</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">queries_collection</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">optimade_gateway.mappers.queries</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># type: ignore[no-redef]</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">optimade_gateway.mappers.queries</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>  <span class="c1"># type: ignore[no-redef]</span>
             <span class="n">QueryMapper</span> <span class="k">as</span> <span class="n">ResourceMapper</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">links_collection</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">optimade_gateway.mappers.links</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># type: ignore[no-redef]</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">optimade_gateway.mappers.links</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>  <span class="c1"># type: ignore[no-redef]</span>
             <span class="n">LinksMapper</span> <span class="k">as</span> <span class="n">ResourceMapper</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
@@ -2053,7 +2053,7 @@ names.</p>
 <span class="normal">84</span>
 <span class="normal">85</span>
 <span class="normal">86</span>
-<span class="normal">87</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_entries</span><span class="p">(</span>
+<span class="normal">87</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_entries</span><span class="p">(</span>
     <span class="n">collection</span><span class="p">:</span> <span class="n">AsyncMongoCollection</span><span class="p">,</span>
     <span class="n">response_cls</span><span class="p">:</span> <span class="n">EntryResponseMany</span><span class="p">,</span>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
@@ -2123,7 +2123,7 @@ names.</p>
 <span class="normal">131</span>
 <span class="normal">132</span>
 <span class="normal">133</span>
-<span class="normal">134</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_valid_resource</span><span class="p">(</span>
+<span class="normal">134</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_valid_resource</span><span class="p">(</span>
     <span class="n">collection</span><span class="p">:</span> <span class="n">AsyncMongoCollection</span><span class="p">,</span> <span class="n">entry_id</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EntryResource</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate and retrieve a resource&quot;&quot;&quot;</span>
@@ -2442,7 +2442,7 @@ resource model.</p>
 <span class="normal">310</span>
 <span class="normal">311</span>
 <span class="normal">312</span>
-<span class="normal">313</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">resource_factory</span><span class="p">(</span>
+<span class="normal">313</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">resource_factory</span><span class="p">(</span>
     <span class="n">create_resource</span><span class="p">:</span> <span class="n">DatabaseCreate</span> <span class="o">|</span> <span class="n">GatewayCreate</span> <span class="o">|</span> <span class="n">QueryCreate</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">LinksResource</span> <span class="o">|</span> <span class="n">GatewayResource</span> <span class="o">|</span> <span class="n">QueryResource</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get or create a resource</span>
@@ -2649,7 +2649,7 @@ resource model.</p>
 <span class="normal">123</span>
 <span class="normal">124</span>
 <span class="normal">125</span>
-<span class="normal">126</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">validate_resource</span><span class="p">(</span><span class="n">collection</span><span class="p">:</span> <span class="n">AsyncMongoCollection</span><span class="p">,</span> <span class="n">entry_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">126</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">validate_resource</span><span class="p">(</span><span class="n">collection</span><span class="p">:</span> <span class="n">AsyncMongoCollection</span><span class="p">,</span> <span class="n">entry_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate whether a resource exists in a collection&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="k">await</span> <span class="n">collection</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">entry_id</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">NotFound</span><span class="p">(</span>

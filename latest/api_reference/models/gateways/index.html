@@ -1764,7 +1764,7 @@
 <span class="normal">152</span>
 <span class="normal">153</span>
 <span class="normal">154</span>
-<span class="normal">155</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">GatewayCreate</span><span class="p">(</span><span class="n">EntryResourceCreate</span><span class="p">,</span> <span class="n">GatewayResourceAttributes</span><span class="p">):</span>
+<span class="normal">155</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">GatewayCreate</span><span class="p">(</span><span class="n">EntryResourceCreate</span><span class="p">,</span> <span class="n">GatewayResourceAttributes</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Model for creating new Gateway resources in the MongoDB&quot;&quot;&quot;</span>
 
     <span class="nb">id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
@@ -1794,7 +1794,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: ignore[assignment]</span>
 
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">specify_databases</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GatewayCreate</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">specify_databases</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GatewayCreate</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Either `database_ids` or `databases` must be non-empty.</span>
 <span class="sd">        Both together is also fine.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1819,7 +1819,7 @@
 
 
 <h3 id="optimade_gateway.models.gateways.GatewayCreate.database_ids" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">database_ids</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A unique list of database IDs for registered databases.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">database_ids</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -1839,7 +1839,7 @@
 
 
 <h3 id="optimade_gateway.models.gateways.GatewayCreate.databases" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">databases</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">GatewayResourceAttributes</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;databases&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">databases</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -1859,7 +1859,7 @@
 
 
 <h3 id="optimade_gateway.models.gateways.GatewayCreate.id" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">EntryResource</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">EntryResource</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">json_schema_extra</span><span class="p">[</span><span class="s1">&#39;x-optimade-support&#39;</span><span class="p">],</span> <span class="n">queryable</span><span class="o">=</span><span class="n">EntryResource</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">json_schema_extra</span><span class="p">[</span><span class="s1">&#39;x-optimade-queryable&#39;</span><span class="p">],</span> <span class="n">pattern</span><span class="o">=</span><span class="s1">&#39;^[^/]*$&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="nb">id</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -1900,7 +1900,7 @@ Both together is also fine.</p>
 <span class="normal">153</span>
 <span class="normal">154</span>
 <span class="normal">155</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">specify_databases</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GatewayCreate</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">specify_databases</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GatewayCreate</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Either `database_ids` or `databases` must be non-empty.</span>
 <span class="sd">    Both together is also fine.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1981,7 +1981,7 @@ the originating database.</p>
 <span class="normal">113</span>
 <span class="normal">114</span>
 <span class="normal">115</span>
-<span class="normal">116</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">GatewayResource</span><span class="p">(</span><span class="n">EntryResource</span><span class="p">):</span>
+<span class="normal">116</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">GatewayResource</span><span class="p">(</span><span class="n">EntryResource</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;OPTIMADE gateway</span>
 
 <span class="sd">    A resource representing a dynamic collection of OPTIMADE databases.</span>
@@ -2031,7 +2031,7 @@ the originating database.</p>
 
 
 <h3 id="optimade_gateway.models.gateways.GatewayResource.attributes" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">attributes</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">GatewayResourceAttributes</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">EntryResource</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;attributes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">attributes</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -2050,7 +2050,7 @@ the originating database.</p>
 
 
 <h3 id="optimade_gateway.models.gateways.GatewayResource.id" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">EntryResource</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">EntryResource</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">json_schema_extra</span><span class="p">[</span><span class="s1">&#39;x-optimade-support&#39;</span><span class="p">],</span> <span class="n">queryable</span><span class="o">=</span><span class="n">EntryResource</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">json_schema_extra</span><span class="p">[</span><span class="s1">&#39;x-optimade-queryable&#39;</span><span class="p">],</span> <span class="n">pattern</span><span class="o">=</span><span class="s1">&#39;^[^/]*$&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="nb">id</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -2069,7 +2069,7 @@ the originating database.</p>
 
 
 <h3 id="optimade_gateway.models.gateways.GatewayResource.type" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;gateways&#39;</span><span class="p">],</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The name of the type of an entry.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="s1">&#39;gateways&#39;</span></code>
+            <code class="highlight language-python"><span class="nb">type</span> <span class="o">=</span> <span class="s1">&#39;gateways&#39;</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -2184,7 +2184,7 @@ the originating database.</p>
 <span class="normal">79</span>
 <span class="normal">80</span>
 <span class="normal">81</span>
-<span class="normal">82</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">GatewayResourceAttributes</span><span class="p">(</span><span class="n">EntryResourceAttributes</span><span class="p">):</span>
+<span class="normal">82</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">GatewayResourceAttributes</span><span class="p">(</span><span class="n">EntryResourceAttributes</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Attributes for an OPTIMADE gateway&quot;&quot;&quot;</span>
 
     <span class="n">databases</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
@@ -2198,7 +2198,7 @@ the originating database.</p>
 
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;databases&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">unique_base_urls</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">unique_base_urls</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove extra entries with repeated base_urls.</span>
 
 <span class="sd">        Also, ensure databases are not of type `&quot;root&quot;` or `&quot;providers&quot;`</span>
@@ -2268,7 +2268,7 @@ the originating database.</p>
 
 
 <h3 id="optimade_gateway.models.gateways.GatewayResourceAttributes.databases" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">databases</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">],</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of databases (OPTIMADE &#39;links&#39;) to be queried in this gateway.&quot;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">databases</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -2364,7 +2364,7 @@ but <code>"root"</code> and <code>"providers"</code> can not represent "regular"
 <span class="normal">81</span>
 <span class="normal">82</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;databases&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
 <span class="nd">@classmethod</span>
-<span class="k">def</span> <span class="nf">unique_base_urls</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">unique_base_urls</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove extra entries with repeated base_urls.</span>
 
 <span class="sd">    Also, ensure databases are not of type `&quot;root&quot;` or `&quot;providers&quot;`</span>

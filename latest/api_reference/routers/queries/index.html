@@ -1561,7 +1561,7 @@
     <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Queries&quot;</span><span class="p">],</span>
     <span class="n">responses</span><span class="o">=</span><span class="n">ERROR_RESPONSES</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">get_queries</span><span class="p">(</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_queries</span><span class="p">(</span>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">EntryListingQueryParams</span><span class="p">,</span> <span class="n">Depends</span><span class="p">()],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QueriesResponse</span><span class="p">:</span>
@@ -1655,7 +1655,7 @@
     <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Queries&quot;</span><span class="p">],</span>
     <span class="n">responses</span><span class="o">=</span><span class="n">ERROR_RESPONSES</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">get_query</span><span class="p">(</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_query</span><span class="p">(</span>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
     <span class="n">query_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">response</span><span class="p">:</span> <span class="n">Response</span><span class="p">,</span>
@@ -1778,7 +1778,7 @@
     <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_202_ACCEPTED</span><span class="p">,</span>
     <span class="n">responses</span><span class="o">=</span><span class="n">ERROR_RESPONSES</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">post_queries</span><span class="p">(</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">post_queries</span><span class="p">(</span>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
     <span class="n">query</span><span class="p">:</span> <span class="n">QueryCreate</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QueriesResponseSingle</span><span class="p">:</span>

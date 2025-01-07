@@ -1517,7 +1517,7 @@ in OPTIMADE Python tools.</p>
 <span class="normal">26</span>
 <span class="normal">27</span>
 <span class="normal">28</span>
-<span class="normal">29</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">LinksMapper</span><span class="p">(</span><span class="n">BaseResourceMapper</span><span class="p">):</span>
+<span class="normal">29</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">LinksMapper</span><span class="p">(</span><span class="n">BaseResourceMapper</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Replicate of</span>
 <span class="sd">    [`LinksMapper`](https://www.optimade.org/optimade-python-tools/api_reference/server/mappers/links/#optimade.server.mappers.links.LinksMapper)</span>
 <span class="sd">    in OPTIMADE Python tools.</span>
@@ -1530,7 +1530,7 @@ in OPTIMADE Python tools.</p>
     <span class="n">ENTRY_RESOURCE_CLASS</span> <span class="o">=</span> <span class="n">LinksResource</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">map_back</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">map_back</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="n">type_</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;links&quot;</span>
         <span class="n">newdoc</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">map_back</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
         <span class="n">newdoc</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">type_</span>

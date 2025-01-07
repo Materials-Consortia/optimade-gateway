@@ -1590,7 +1590,7 @@ representing the database resource object with <code>id={database ID}</code>.</p
     <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Databases&quot;</span><span class="p">],</span>
     <span class="n">responses</span><span class="o">=</span><span class="n">ERROR_RESPONSES</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">get_database</span><span class="p">(</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_database</span><span class="p">(</span>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
     <span class="n">database_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">SingleEntryQueryParams</span><span class="p">,</span> <span class="n">Depends</span><span class="p">()],</span>
@@ -1685,7 +1685,7 @@ representing the database resource object with <code>id={database ID}</code>.</p
     <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Databases&quot;</span><span class="p">],</span>
     <span class="n">responses</span><span class="o">=</span><span class="n">ERROR_RESPONSES</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">get_databases</span><span class="p">(</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_databases</span><span class="p">(</span>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">EntryListingQueryParams</span><span class="p">,</span> <span class="n">Depends</span><span class="p">()],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DatabasesResponse</span><span class="p">:</span>
@@ -1768,7 +1768,7 @@ representing a database resource object, according to <code>database</code>.</p>
     <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Databases&quot;</span><span class="p">],</span>
     <span class="n">responses</span><span class="o">=</span><span class="n">ERROR_RESPONSES</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">post_databases</span><span class="p">(</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">post_databases</span><span class="p">(</span>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">database</span><span class="p">:</span> <span class="n">DatabaseCreate</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DatabasesResponseSingle</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;`POST /databases`</span>

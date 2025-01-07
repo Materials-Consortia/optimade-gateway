@@ -1510,7 +1510,7 @@ their respected proper invocation time.</p>
 
 
 <h2 id="optimade_gateway.events.EVENTS" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">EVENTS</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">Coroutine</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]]</span> <span class="o">=</span> <span class="p">((</span><span class="s1">&#39;startup&#39;</span><span class="p">,</span> <span class="n">ci_dev_startup</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;startup&#39;</span><span class="p">,</span> <span class="n">load_optimade_providers_databases</span><span class="p">))</span></code>
+            <code class="highlight language-python"><span class="n">EVENTS</span> <span class="o">=</span> <span class="p">((</span><span class="s1">&#39;startup&#39;</span><span class="p">,</span> <span class="n">ci_dev_startup</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;startup&#39;</span><span class="p">,</span> <span class="n">load_optimade_providers_databases</span><span class="p">))</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
@@ -1523,7 +1523,7 @@ their respected proper invocation time.</p>
 
         <p>A tuple of all pairs of events and event functions.</p>
 <p>To use this tuple of tuples:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
 <span class="n">APP</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">event</span><span class="p">,</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">EVENTS</span><span class="p">:</span>
     <span class="n">APP</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
@@ -1596,7 +1596,7 @@ data.</p>
 <span class="normal">60</span>
 <span class="normal">61</span>
 <span class="normal">62</span>
-<span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">ci_dev_startup</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">ci_dev_startup</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to run at app startup - only relevant for CI or development to add test</span>
 <span class="sd">    data.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;CI&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)):</span>
@@ -1613,10 +1613,10 @@ data.</p>
         <span class="k">return</span>
 
     <span class="c1"># Add test gateways</span>
-    <span class="kn">import</span> <span class="nn">json</span>
-    <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
-    <span class="kn">from</span> <span class="nn">optimade_gateway.mongo.database</span> <span class="kn">import</span> <span class="n">MONGO_DB</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">optimade_gateway.mongo.database</span><span class="w"> </span><span class="kn">import</span> <span class="n">MONGO_DB</span>
 
     <span class="n">test_data</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;.ci/test_gateways.json&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
@@ -1835,25 +1835,25 @@ Load in all databases with a valid base URL.</p>
 <span class="normal">231</span>
 <span class="normal">232</span>
 <span class="normal">233</span>
-<span class="normal">234</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">load_optimade_providers_databases</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">234</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">load_optimade_providers_databases</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Load in the providers&#39; OPTIMADE databases from Materials-Consortia</span>
 
 <span class="sd">    Utilize the Materials-Consortia list of OPTIMADE providers at</span>
 <span class="sd">    [https://providers.optimade.org](https://providers.optimade.org).</span>
 <span class="sd">    Load in all databases with a valid base URL.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">asyncio</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
 
-    <span class="kn">import</span> <span class="nn">httpx</span>
-    <span class="kn">from</span> <span class="nn">optimade</span> <span class="kn">import</span> <span class="n">__api_version__</span>
-    <span class="kn">from</span> <span class="nn">optimade.models</span> <span class="kn">import</span> <span class="n">LinksResponse</span>
-    <span class="kn">from</span> <span class="nn">optimade.models.links</span> <span class="kn">import</span> <span class="n">LinkType</span>
-    <span class="kn">from</span> <span class="nn">optimade.server.routers.utils</span> <span class="kn">import</span> <span class="n">BASE_URL_PREFIXES</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">optimade</span><span class="w"> </span><span class="kn">import</span> <span class="n">__api_version__</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">optimade.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinksResponse</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">optimade.models.links</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinkType</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">optimade.server.routers.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">BASE_URL_PREFIXES</span>
 
-    <span class="kn">from</span> <span class="nn">optimade_gateway.common.utils</span> <span class="kn">import</span> <span class="n">clean_python_types</span><span class="p">,</span> <span class="n">get_resource_attribute</span>
-    <span class="kn">from</span> <span class="nn">optimade_gateway.models.databases</span> <span class="kn">import</span> <span class="n">DatabaseCreate</span>
-    <span class="kn">from</span> <span class="nn">optimade_gateway.queries.perform</span> <span class="kn">import</span> <span class="n">db_get_all_resources</span>
-    <span class="kn">from</span> <span class="nn">optimade_gateway.routers.utils</span> <span class="kn">import</span> <span class="n">resource_factory</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">optimade_gateway.common.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">clean_python_types</span><span class="p">,</span> <span class="n">get_resource_attribute</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">optimade_gateway.models.databases</span><span class="w"> </span><span class="kn">import</span> <span class="n">DatabaseCreate</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">optimade_gateway.queries.perform</span><span class="w"> </span><span class="kn">import</span> <span class="n">db_get_all_resources</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">optimade_gateway.routers.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">resource_factory</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">load_optimade_providers_databases</span><span class="p">:</span>
         <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>

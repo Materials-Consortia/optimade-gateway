@@ -1675,7 +1675,7 @@ model:</p>
 <span class="normal">77</span>
 <span class="normal">78</span>
 <span class="normal">79</span>
-<span class="normal">80</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DatabaseCreate</span><span class="p">(</span><span class="n">EntryResourceCreate</span><span class="p">,</span> <span class="n">LinksResourceAttributes</span><span class="p">):</span>
+<span class="normal">80</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DatabaseCreate</span><span class="p">(</span><span class="n">EntryResourceCreate</span><span class="p">,</span> <span class="n">LinksResourceAttributes</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Model for creating new LinksResources representing `/databases` resources in the</span>
 <span class="sd">    MongoDB.</span>
 
@@ -1725,7 +1725,7 @@ model:</p>
 
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;link_type&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">ensure_database_link_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">LinkType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LinkType</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ensure_database_link_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">LinkType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LinkType</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Ensure databases are not index meta-database-only types</span>
 
 <span class="sd">        I.e., ensure they&#39;re not of type `&quot;root&quot;` or `&quot;providers&quot;`.</span>
@@ -1759,7 +1759,7 @@ model:</p>
 
 
 <h3 id="optimade_gateway.models.databases.DatabaseCreate.base_url" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">base_url</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonLinkType</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">LinksResourceAttributes</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;base_url&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">base_url</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -1778,7 +1778,7 @@ model:</p>
 
 
 <h3 id="optimade_gateway.models.databases.DatabaseCreate.description" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">description</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">LinksResourceAttributes</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">description</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -1798,7 +1798,7 @@ model:</p>
 
 
 <h3 id="optimade_gateway.models.databases.DatabaseCreate.homepage" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">homepage</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonLinkType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">LinksResourceAttributes</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;homepage&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">homepage</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -1818,7 +1818,7 @@ model:</p>
 
 
 <h3 id="optimade_gateway.models.databases.DatabaseCreate.link_type" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">link_type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">LinkType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">LinksResourceAttributes</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;link_type&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">LinksResourceAttributes</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s1">&#39;link_type&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">link_type</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -1879,7 +1879,7 @@ but <code>"root"</code> and <code>"providers"</code> can not represent "regular"
 <span class="normal">79</span>
 <span class="normal">80</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;link_type&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
 <span class="nd">@classmethod</span>
-<span class="k">def</span> <span class="nf">ensure_database_link_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">LinkType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LinkType</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ensure_database_link_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">LinkType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LinkType</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure databases are not index meta-database-only types</span>
 
 <span class="sd">    I.e., ensure they&#39;re not of type `&quot;root&quot;` or `&quot;providers&quot;`.</span>
