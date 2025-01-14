@@ -83,9 +83,11 @@ async def test_post_queries(
     )
 
     assert datum.links.model_dump() == {
-        "self": AnyUrl(
-            f"{'/'.join(str(url).split('/')[:-1])}{BASE_URL_PREFIXES['major']}"
-            f"/queries/{datum.id}"
+        "self": str(
+            AnyUrl(
+                f"{'/'.join(str(url).split('/')[:-1])}{BASE_URL_PREFIXES['major']}"
+                f"/queries/{datum.id}"
+            )
         )
     }
     assert datum.attributes.state == QueryState.CREATED
