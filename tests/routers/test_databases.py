@@ -79,9 +79,11 @@ async def test_post_databases(client: AsyncGatewayClient) -> None:
                 f"Test data: {data!r}"
             )
     assert datum.links.model_dump() == {
-        "self": AnyUrl(
-            f"{'/'.join(str(url).split('/')[:-1])}"
-            f"{BASE_URL_PREFIXES['major']}/databases/{datum.id}"
+        "self": str(
+            AnyUrl(
+                f"{'/'.join(str(url).split('/')[:-1])}"
+                f"{BASE_URL_PREFIXES['major']}/databases/{datum.id}"
+            )
         )
     }
 
@@ -146,9 +148,11 @@ async def test_get_single_database(
             f"Test data: {data!r}"
         )
     test_links = {
-        "self": AnyUrl(
-            f"{'/'.join(str(url).split('/')[:-3])}{BASE_URL_PREFIXES['major']}"
-            f"/databases/{datum.id}"
+        "self": str(
+            AnyUrl(
+                f"{'/'.join(str(url).split('/')[:-3])}{BASE_URL_PREFIXES['major']}"
+                f"/databases/{datum.id}"
+            )
         )
     }
     assert (
