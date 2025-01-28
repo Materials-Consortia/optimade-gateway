@@ -83,11 +83,9 @@ async def test_post_gateways(client: AsyncGatewayClient) -> None:
             response_db.model_dump() == LinksResource(**test_db).model_dump()
         ), f"Response: {response_db!r}\n\nTest data: {LinksResource(**test_db)!r}"
     assert datum.links.model_dump() == {
-        "self": str(
-            AnyUrl(
-                f"{'/'.join(str(url).split('/')[:-1])}"
-                f"{BASE_URL_PREFIXES['major']}/gateways/{datum.id}"
-            )
+        "self": AnyUrl(
+            f"{'/'.join(str(url).split('/')[:-1])}"
+            f"{BASE_URL_PREFIXES['major']}/gateways/{datum.id}"
         )
     }
 
@@ -158,11 +156,9 @@ async def test_post_gateways_database_ids(client: AsyncGatewayClient) -> None:
         assert database.id in data["database_ids"]
 
     assert datum.links.model_dump() == {
-        "self": str(
-            AnyUrl(
-                f"{'/'.join(str(url).split('/')[:-1])}"
-                f"{BASE_URL_PREFIXES['major']}/gateways/{datum.id}"
-            )
+        "self": AnyUrl(
+            f"{'/'.join(str(url).split('/')[:-1])}"
+            f"{BASE_URL_PREFIXES['major']}/gateways/{datum.id}"
         )
     }
 
@@ -218,11 +214,9 @@ async def test_post_gateways_create_with_db_ids(client: AsyncGatewayClient) -> N
         assert database.id in [data["databases"][0]["id"], data["database_ids"][0]]
 
     assert datum.links.model_dump() == {
-        "self": str(
-            AnyUrl(
-                f"{'/'.join(str(url).split('/')[:-1])}"
-                f"{BASE_URL_PREFIXES['major']}/gateways/{datum.id}",
-            )
+        "self": AnyUrl(
+            f"{'/'.join(str(url).split('/')[:-1])}"
+            f"{BASE_URL_PREFIXES['major']}/gateways/{datum.id}",
         )
     }
 
