@@ -4,6 +4,7 @@ htmlcov/
 .*_cache/
 build/
 dist/
+.vscode/
 
 # Python
 *.egg*

@@ -3,7 +3,7 @@ FROM python:3.10-alpine
 WORKDIR /app
 
 # Copy repo contents
-COPY pyproject.toml README.md ./
+COPY pyproject.toml README.md LICENSE ./
 COPY optimade_gateway ./optimade_gateway
 COPY .ci ./.ci
 RUN pip install -e .
