@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.8">
     
     
       
@@ -1559,14 +1559,14 @@
 <ol>
 <li>Create a <a class="autorefs autorefs-internal" href="../../models/search/#optimade_gateway.models.search.Search"><code>Search</code></a> <code>POST</code> data - calling
     <code>POST /search</code>.</li>
-<li>Wait <a class="autorefs autorefs-internal" href="../../queries/params/#optimade_gateway.queries.params.SearchQueryParams"><code>search_params.timeout</code></a>
+<li>Wait <a class="autorefs autorefs-internal" title="SearchQueryParams" href="../../queries/params/#optimade_gateway.queries.params.SearchQueryParams"><code>search_params.timeout</code></a>
     seconds before returning the query, if it has not finished before.</li>
 <li>Return query - similar to <code>GET /queries/{query_id}</code>.</li>
 </ol>
 <p>This endpoint works similarly to <code>GET /queries/{query_id}</code>, where one passes the
 query parameters directly in the URL, instead of first POSTing a query and then
 going to its URL. Hence, a
-<a class="autorefs autorefs-internal" href="../../models/responses/#optimade_gateway.models.responses.QueriesResponseSingle"><code>QueryResponseSingle</code></a> is
+<a class="autorefs autorefs-internal" title="QueriesResponseSingle" href="../../models/responses/#optimade_gateway.models.responses.QueriesResponseSingle"><code>QueryResponseSingle</code></a> is
 the standard response model for this endpoint.</p>
 <p>If the timeout time is reached and the query has not yet finished, the user is
 redirected to the specific URL for the query.</p>
@@ -1850,7 +1850,7 @@ For more information see the
 <li>Search for gateway in DB using <code>optimade_urls</code> and <code>database_ids</code></li>
 <li>Create <a class="autorefs autorefs-internal" href="../../models/gateways/#optimade_gateway.models.gateways.GatewayCreate"><code>GatewayCreate</code></a> model</li>
 <li><code>POST</code> gateway resource to get ID - using functionality of <code>POST /gateways</code></li>
-<li>Create new <a class="autorefs autorefs-internal" href="../../models/queries/#optimade_gateway.models.queries.QueryCreate">Query</a> resource</li>
+<li>Create new <a class="autorefs autorefs-internal" title="QueryCreate" href="../../models/queries/#optimade_gateway.models.queries.QueryCreate">Query</a> resource</li>
 <li><code>POST</code> Query resource - using functionality of <code>POST /queries</code></li>
 <li>Return <code>POST /queries</code> response -
     <a class="autorefs autorefs-internal" href="../../models/responses/#optimade_gateway.models.responses.QueriesResponseSingle"><code>QueriesResponseSingle</code></a></li>
