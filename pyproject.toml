@@ -96,8 +96,8 @@ filterwarnings = [
     # Treat all warnings as errors
     "error",
 
-    # mongomock uses pkg_resources
-    "ignore:.*pkg_resources is deprecated as an API.*:DeprecationWarning",
+    # Ignore pydantic v2.11 deprecation warning for things in OPT
+    "ignore:.*Accessing this attribute on the instance is deprecated.*:pydantic.warnings.PydanticDeprecatedSince211",
 ]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
