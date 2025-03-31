@@ -46,7 +46,7 @@ dev = [
     "optimade-gateway[docs]",
     "pre-commit~=4.0",
     "pytest~=8.2",
-    "pytest-asyncio~=0.25.0",
+    "pytest-asyncio~=0.26.0",
     "pytest-cov~=6.0",
     "pytest-httpx~=0.35.0",
 ]
@@ -96,8 +96,8 @@ filterwarnings = [
     # Treat all warnings as errors
     "error",
 
-    # mongomock uses pkg_resources
-    "ignore:.*pkg_resources is deprecated as an API.*:DeprecationWarning",
+    # Ignore pydantic v2.11 deprecation warning for things in OPT
+    "ignore:.*Accessing this attribute on the instance is deprecated.*:pydantic.warnings.PydanticDeprecatedSince211",
 ]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
