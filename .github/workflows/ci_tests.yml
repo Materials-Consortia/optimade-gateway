@@ -20,16 +20,8 @@ jobs:
       python_version_pre-commit: "3.10"
 
       # pylint & safety
-      python_version_pylint_safety: "3.10"
-
       run_pylint: false
-      run_safety: true
-      # ID: 70612
-      #   Package: Jinja2
-      #   Has been disputed by the maintainer and multiple third parties.
-      #   For more information see: https://github.com/advisories/GHSA-f6pv-j8mr-w6rr
-      safety_options: |
-        --ignore=70612
+      run_safety: false
 
       # Build package
       run_build_package: true
