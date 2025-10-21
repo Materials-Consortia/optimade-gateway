@@ -126,6 +126,7 @@ async def get_entry_info(request: Request, entry: str) -> EntryInfoResponse:
 
     return EntryInfoResponse(
         data=EntryInfoResource(
+            id=entry,
             formats=list(output_fields_by_format),
             description=getattr(schema, "__doc__", "Entry Resources"),
             properties=properties,
