@@ -2586,7 +2586,7 @@
 
 
 <h2 id="optimade_gateway.models.queries.QUERY_PARAMETERS" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">QUERY_PARAMETERS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;annotations&#39;</span><span class="p">:</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="p">(</span><span class="n">FieldInfo</span><span class="o">.</span><span class="n">from_annotation</span><span class="p">(</span><span class="n">parameter</span><span class="o">.</span><span class="n">annotation</span><span class="p">))</span><span class="k">for</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">parameter</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">EntryListingQueryParams</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">())},</span> <span class="s1">&#39;defaults&#39;</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span><span class="p">()}</span></code>
+            <code class="highlight language-python"><span class="n">QUERY_PARAMETERS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;annotations&#39;</span><span class="p">:</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="p">(</span><span class="n">FieldInfo</span><span class="o">.</span><span class="n">from_annotation</span><span class="p">(</span><span class="n">parameter</span><span class="o">.</span><span class="n">annotation</span><span class="p">))</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">EntryListingQueryParams</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">())},</span> <span class="s1">&#39;defaults&#39;</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span><span class="p">()}</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
@@ -2622,6 +2622,7 @@
               Bases: <code><span title="enum.Enum">Enum</span></code></p>
 
 
+
         <p>Entry endpoint resource types, mapping to their pydantic models from the
 <code>optimade</code> package.</p>
 
@@ -2632,7 +2633,7 @@
 
 
 
-              <details class="quote">
+              <details class="mkdocstrings-source">
                 <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">48</span>
 <span class="normal">49</span>
@@ -2769,7 +2770,7 @@
         <p>Get the matching pydantic model for a resource.</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">55</span>
 <span class="normal">56</span>
@@ -2802,7 +2803,7 @@
         <p>Get the matching pydantic model for a successful response.</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">62</span>
 <span class="normal">63</span>
@@ -2869,6 +2870,7 @@
               Bases: <code><span title="optimade.models.EntryResource">EntryResource</span></code></p>
 
 
+
         <p>Entry Resource ensuring datetimes are not naive.</p>
 
 
@@ -2878,7 +2880,7 @@
 
 
 
-              <details class="quote">
+              <details class="mkdocstrings-source">
                 <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">210</span>
 <span class="normal">211</span>
@@ -2937,7 +2939,7 @@
         <p>Set timezone to UTC if datetime is naive.</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">213</span>
 <span class="normal">214</span>
@@ -2986,6 +2988,7 @@
               Bases: <code><span title="optimade.models.Response">Response</span></code></p>
 
 
+
         <p>Response from a Gateway Query.</p>
 
 
@@ -2995,7 +2998,7 @@
 
 
 
-              <details class="quote">
+              <details class="mkdocstrings-source">
                 <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">224</span>
 <span class="normal">225</span>
@@ -3189,7 +3192,7 @@
 <p><code>errors</code> should be allowed to be present always for this special response.</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">257</span>
 <span class="normal">258</span>
@@ -3234,6 +3237,7 @@
               Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
 
 
+
         <p>Common OPTIMADE entry listing endpoint query parameters.</p>
 
 
@@ -3243,7 +3247,7 @@
 
 
 
-              <details class="quote">
+              <details class="mkdocstrings-source">
                 <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 95</span>
 <span class="normal"> 96</span>
@@ -3759,6 +3763,7 @@
               Bases: <code><a class="autorefs autorefs-internal" title="EntryResourceCreate (optimade_gateway.models.resources.EntryResourceCreate)" href="../resources/#optimade_gateway.models.resources.EntryResourceCreate">EntryResourceCreate</a></code>, <code><a class="autorefs autorefs-internal" title="QueryResourceAttributes (optimade_gateway.models.queries.QueryResourceAttributes)" href="#optimade_gateway.models.queries.QueryResourceAttributes">QueryResourceAttributes</a></code></p>
 
 
+
         <p>Model for creating new Query resources in the MongoDB</p>
 
 
@@ -3768,7 +3773,7 @@
 
 
 
-              <details class="quote">
+              <details class="mkdocstrings-source">
                 <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">446</span>
 <span class="normal">447</span>
@@ -3913,7 +3918,7 @@
         <p>Warn and reset value if <code>sort</code> is supplied.</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">470</span>
 <span class="normal">471</span>
@@ -3964,6 +3969,7 @@
               Bases: <code><span title="typing.TypedDict">TypedDict</span></code></p>
 
 
+
         <p>Type definition for <code>QUERY_PARAMETERS</code>.</p>
 
 
@@ -3973,7 +3979,7 @@
 
 
 
-              <details class="quote">
+              <details class="mkdocstrings-source">
                 <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">41</span>
 <span class="normal">42</span>
@@ -4064,6 +4070,7 @@
               Bases: <code><a class="autorefs autorefs-internal" title="EntryResource (optimade_gateway.models.queries.EntryResource)" href="#optimade_gateway.models.queries.EntryResource">EntryResource</a></code></p>
 
 
+
         <p>OPTIMADE query resource for a gateway</p>
 
 
@@ -4073,7 +4080,7 @@
 
 
 
-              <details class="quote">
+              <details class="mkdocstrings-source">
                 <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">330</span>
 <span class="normal">331</span>
@@ -4453,7 +4460,7 @@ query results as they currently are (if there are any at all).</p>
     </table>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">342</span>
 <span class="normal">343</span>
@@ -4688,6 +4695,7 @@ query results as they currently are (if there are any at all).</p>
               Bases: <code><span title="optimade.models.EntryResourceAttributes">EntryResourceAttributes</span></code></p>
 
 
+
         <p>Attributes for an OPTIMADE gateway query.</p>
 
 
@@ -4697,7 +4705,7 @@ query results as they currently are (if there are any at all).</p>
 
 
 
-              <details class="quote">
+              <details class="mkdocstrings-source">
                 <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">266</span>
 <span class="normal">267</span>
@@ -4959,7 +4967,7 @@ query results as they currently are (if there are any at all).</p>
         <p>Temporarily only allow queries to "structures" endpoints.</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">318</span>
 <span class="normal">319</span>
@@ -5010,6 +5018,7 @@ query results as they currently are (if there are any at all).</p>
               Bases: <code><span title="enum.Enum">Enum</span></code></p>
 
 
+
         <p>Enumeration of possible states for a Gateway Query.</p>
 <p>The states are enumerated here in the expected evolvement.</p>
 
@@ -5020,7 +5029,7 @@ query results as they currently are (if there are any at all).</p>
 
 
 
-              <details class="quote">
+              <details class="mkdocstrings-source">
                 <summary>Source code in <code>optimade_gateway/models/queries.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">198</span>
 <span class="normal">199</span>
