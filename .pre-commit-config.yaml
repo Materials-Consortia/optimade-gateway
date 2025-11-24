@@ -29,7 +29,7 @@ repos:
     args: [--markdown-linebreak-ext=md]
 
 - repo: https://github.com/asottile/pyupgrade
-  rev: v3.21.1
+  rev: v3.21.2
   hooks:
   - id: pyupgrade
     args: [--py310-plus]
@@ -40,7 +40,7 @@ repos:
   - id: black
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.14.5
+  rev: v0.14.6
   hooks:
   - id: ruff
     args:
@@ -50,7 +50,7 @@ repos:
       - --exit-non-zero-on-fix
 
 - repo: https://github.com/PyCQA/bandit
-  rev: '1.9.0'
+  rev: '1.9.2'
   hooks:
   - id: bandit
     args: [-r]
