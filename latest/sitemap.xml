@@ -2,154 +2,154 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/CHANGELOG/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/LICENSE/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/design/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/events/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/exception_handlers/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/main/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/middleware/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/warnings/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/common/config/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/common/exceptions/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/common/logger/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/common/utils/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/mappers/base/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/mappers/databases/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/mappers/gateways/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/mappers/links/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/mappers/queries/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/models/databases/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/models/gateways/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/models/queries/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/models/resources/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/models/responses/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/models/search/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/mongo/collection/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/mongo/database/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/queries/params/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/queries/perform/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/queries/prepare/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/queries/process/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/queries/utils/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/routers/databases/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/routers/gateways/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/routers/info/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/routers/links/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/routers/queries/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/routers/search/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://www.optimade.org/optimade-gateway/latest/api_reference/routers/utils/</loc>
-         <lastmod>2025-11-24</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
 </urlset>
