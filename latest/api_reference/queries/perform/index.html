@@ -2881,7 +2881,7 @@ It <strong>must</strong> have a valid base URL and id.</p>
             <span class="p">)</span>
 
         <span class="k">for</span> <span class="n">query_task</span> <span class="ow">in</span> <span class="n">query_tasks</span><span class="p">:</span>
-            <span class="p">(</span><span class="n">db_response</span><span class="p">,</span> <span class="n">db_id</span><span class="p">)</span> <span class="o">=</span> <span class="k">await</span> <span class="n">query_task</span>
+            <span class="n">db_response</span><span class="p">,</span> <span class="n">db_id</span> <span class="o">=</span> <span class="k">await</span> <span class="n">query_task</span>
 
             <span class="k">await</span> <span class="n">process_db_response</span><span class="p">(</span>
                 <span class="n">response</span><span class="o">=</span><span class="n">db_response</span><span class="p">,</span>
