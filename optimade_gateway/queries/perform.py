@@ -113,7 +113,7 @@ async def perform_query(
             )
 
         for query_task in query_tasks:
-            (db_response, db_id) = await query_task
+            db_response, db_id = await query_task
 
             await process_db_response(
                 response=db_response,
