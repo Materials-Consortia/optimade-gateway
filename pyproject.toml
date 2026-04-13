@@ -28,9 +28,9 @@ requires-python = ">=3.10"
 dynamic = ["version"]
 
 dependencies = [
-    "httpx>=0.24.1,<1",
-    "motor~=3.4",
-    "optimade[server]~=1.0",
+    "httpx>=0.28.1,<1",
+    "motor~=3.7",
+    "optimade[server]~=1.4",
 ]
 
 [project.optional-dependencies]
