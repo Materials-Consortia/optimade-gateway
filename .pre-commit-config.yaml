@@ -35,12 +35,12 @@ repos:
     args: [--py310-plus]
 
 - repo: https://github.com/psf/black-pre-commit-mirror
-  rev: 26.1.0
+  rev: 26.5.1
   hooks:
   - id: black
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.15.0
+  rev: v0.16.6
   hooks:
   - id: ruff
     args:
@@ -50,14 +50,14 @@ repos:
       - --exit-non-zero-on-fix
 
 - repo: https://github.com/PyCQA/bandit
-  rev: '1.9.3'
+  rev: '1.9.4'
   hooks:
   - id: bandit
     args: [-r]
     exclude: ^tests/.*$
 
 - repo: https://github.com/pre-commit/mirrors-mypy
-  rev: v1.19.1
+  rev: v2.3.1
   hooks:
   - id: mypy
     exclude: ^tests/.*$
@@ -65,7 +65,7 @@ repos:
       - "pydantic>=2"
 
 - repo: https://github.com/SINTEF/ci-cd
-  rev: v2.9.2
+  rev: v2.10.0
   hooks:
   - id: docs-api-reference
     args:
